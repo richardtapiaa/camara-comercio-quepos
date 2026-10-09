@@ -1,0 +1,29 @@
+---
+import { Image } from "astro:assets";
+import BeneficiosHorizontal from "../ReactComponentes/BeneficiosHorizontal.jsx";
+
+import fondo from "../../assets/imagenes/beneficios-seccion.jpg";
+---
+
+<section id="objetivos" class="relative isolate overflow-clip">
+  <!-- El fondo se mantiene fijo en pantalla mientras la sección (muy alta) se desplaza -->
+  <div class="absolute inset-0 -z-20" aria-hidden="true">
+    <div class="sticky top-0 h-screen w-full">
+      <Image src={fondo} alt="" class="h-full w-full object-cover" />
+    </div>
+  </div>
+
+  <!-- Continúa el azul con el que termina Visión (#054B80) y se desvanece de forma gradual sobre la imagen -->
+  <div
+    class="pointer-events-none absolute inset-x-0 -top-px -z-10 h-24 sm:h-36"
+    style="background: linear-gradient(to bottom, #054B80 0%, rgba(5,75,128,0.6) 20%, rgba(5,75,128,0.25) 45%, rgba(5,75,128,0.08) 70%, rgba(5,75,128,0) 100%);"
+  ></div>
+
+  <!-- Se funde con el verde oliva con el que empieza Checkout -->
+  <div
+    class="pointer-events-none absolute inset-x-0 -bottom-px -z-10 h-36 sm:h-56"
+    style="background: linear-gradient(to bottom, rgba(93,106,48,0.000) 0%, rgba(93,106,48,0.028) 10%, rgba(93,106,48,0.104) 20%, rgba(93,106,48,0.216) 30%, rgba(93,106,48,0.352) 40%, rgba(93,106,48,0.500) 50%, rgba(93,106,48,0.648) 60%, rgba(93,106,48,0.784) 70%, rgba(93,106,48,0.896) 80%, rgba(93,106,48,0.972) 90%, rgba(93,106,48,1.000) 100%);"
+  ></div>
+
+  <BeneficiosHorizontal client:load />
+</section>

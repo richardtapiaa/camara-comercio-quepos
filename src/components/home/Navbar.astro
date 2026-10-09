@@ -1,0 +1,77 @@
+---
+import { Image } from "astro:assets";
+import logo from "../../assets/imagenes/logo-camara.webp";
+import NavbarScripts from "../Scripts/home/NavbarScripts.astro";
+
+const links = [
+  { label: "La Cámara", href: "#mision" },
+  { label: "Quepos", href: "#quepos" },
+  { label: "Únete", href: "#unete" },
+  { label: "Contacto", href: "#contacto" },
+  { label: "Bolsa De Empleo", href: "#bolsa-de-empleo" },
+  { label: "Visitors", href: "#visitors" },
+];
+---
+
+<header
+  id="site-header"
+  data-solid="false"
+  class="group/nav fixed inset-x-0 top-0 z-50 w-full rounded-b-[32px] transition-all duration-300 data-[solid=false]:bg-gradient-to-b data-[solid=false]:from-black/50 data-[solid=false]:to-transparent data-[solid=true]:bg-white data-[solid=true]:shadow-md data-[hidden=true]:-translate-y-full"
+>
+  <nav class="mx-auto flex h-24 max-w-7xl items-center gap-6 px-6" aria-label="Principal">
+    <a href="/" class="shrink-0" aria-label="Cámara de Comercio, Industria y Turismo de Quepos">
+      <Image src={logo} alt="Cámara de Comercio, Industria y Turismo - Quepos Costa Rica" class="h-23 w-auto" loading="eager" />
+    </a>
+
+    <button
+      id="nav-toggle"
+      type="button"
+      class="ml-auto rounded-xl p-2 text-slate-700 group-data-[solid=false]/nav:text-white md:hidden"
+      aria-label="Abrir menú"
+      aria-expanded="false"
+      aria-controls="nav-menu"
+    >
+      <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M4 6h16M4 12h16M4 18h16"></path>
+      </svg>
+    </button>
+
+    <div
+      id="nav-menu"
+      class="absolute inset-x-0 top-full hidden flex-col gap-4 rounded-b-[32px] bg-white px-6 py-4 shadow-md md:static md:ml-10 md:flex md:flex-1 md:flex-row md:items-center md:gap-10 md:rounded-none md:bg-transparent md:p-0 md:shadow-none"
+    >
+      <ul class="flex flex-col gap-4 md:flex-row md:items-center md:gap-10">
+        {
+          links.map((link) => (
+            <li>
+              <a href={link.href} class="text-[15px] font-medium text-slate-800 transition-colors hover:text-sky-700 md:group-data-[solid=false]/nav:text-white md:group-data-[solid=false]/nav:hover:text-sky-200">
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <!-- Buscar Formulario -->
+      <form role="search" action="/buscar" class="flex items-center gap-3 text-slate-600 md:ml-4 md:group-data-[solid=false]/nav:text-white">
+        <button type="submit" aria-label="Buscar" class="shrink-0 rounded-full bg-white/90 px-2.5 py-1.5 shadow-sm">
+          <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+        </button>
+        <input
+          type="search"
+          name="q"
+          placeholder="Buscar"
+          aria-label="Buscar"
+          class="w-32 bg-transparent text-[15px] text-slate-700 placeholder:text-slate-600 md:group-data-[solid=false]/nav:placeholder:text-white/80 focus:outline-none"
+        />
+      </form>
+    </div>
+  </nav>
+</header>
+
+
+<NavbarScripts />
+
