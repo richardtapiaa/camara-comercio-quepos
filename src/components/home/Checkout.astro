@@ -1,0 +1,64 @@
+---
+import { Image } from "astro:assets";
+import fondo from "../../assets/imagenes/seccion-checkout.jpg";
+import ChekoutScripts from "../Scripts/home/ChekoutScripts.astro";
+import TextType from "../ReactComponentes/TextType.jsx";
+---
+
+<section id="visitors" class="relative isolate flex min-h-[24rem] sm:min-h-[55svh] items-end justify-center overflow-hidden text-center text-white">
+  <div data-parallax-bg class="absolute inset-x-0 -top-[30%] -z-20 h-[160%] will-change-transform">
+    <Image src={fondo} alt="Costa de Quepos" class="h-full w-full object-cover" />
+  </div>
+  <div class="absolute inset-0 -z-10 bg-gradient-to-t from-black/60 via-black/15 to-transparent"></div>
+  <!-- Mismo verde oliva con el que termina Objetivos; se desvanece sobre la imagen -->
+  <div
+    class="pointer-events-none absolute inset-x-0 -top-px -z-10 h-36 sm:h-56"
+    style="background: linear-gradient(to bottom, rgba(93,106,48,1.000) 0%, rgba(93,106,48,0.972) 10%, rgba(93,106,48,0.896) 20%, rgba(93,106,48,0.784) 30%, rgba(93,106,48,0.648) 40%, rgba(93,106,48,0.500) 50%, rgba(93,106,48,0.352) 60%, rgba(93,106,48,0.216) 70%, rgba(93,106,48,0.104) 80%, rgba(93,106,48,0.028) 90%, rgba(93,106,48,0.000) 100%);"
+  ></div>
+
+  <div data-parallax-content class="px-6 pb-20 sm:pb-32">
+    <!-- Cada texto real (invisible) reserva el espacio; TextType escribe encima sin mover el diseño -->
+    <div class="relative inline-block">
+      <h2 class="font-serif text-5xl font-extrabold uppercase tracking-tight opacity-0 sm:text-7xl">Para Visitantes</h2>
+      <TextType
+        client:load
+        as="span"
+        aria-hidden="true"
+        className="absolute left-0 top-0 w-full whitespace-nowrap text-left font-serif text-5xl font-extrabold uppercase tracking-tight drop-shadow-lg sm:text-7xl"
+        text="Para Visitantes"
+        typingSpeed={80}
+        initialDelay={400}
+        loop={false}
+        showCursor={false}
+        startOnVisible
+      />
+    </div>
+
+    <div class="relative mt-4 inline-block max-w-3xl">
+      <p class="text-left text-sm font-bold uppercase tracking-wide opacity-0 sm:text-lg">
+        Descubre lo que puedes hacer mientras visitas nuestro cantón
+      </p>
+      <TextType
+        client:load
+        as="span"
+        aria-hidden="true"
+        className="absolute left-0 top-0 w-[calc(100%+1.5rem)] text-left text-sm font-bold uppercase tracking-wide drop-shadow-md sm:text-lg"
+        text="Descubre lo que puedes hacer mientras visitas nuestro cantón"
+        typingSpeed={25}
+        initialDelay={1800}
+        loop={false}
+        cursorCharacter="_"
+        startOnVisible
+      />
+    </div>
+    <br />
+    <a
+      href="#visitors"
+      class="mt-8 inline-block rounded-full bg-rose-500 px-8 py-3 text-sm font-semibold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-rose-600"
+    >
+      Visitantes
+    </a>
+  </div>
+</section>
+
+<ChekoutScripts />

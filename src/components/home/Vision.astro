@@ -1,0 +1,39 @@
+---
+import { Image } from "astro:assets";
+import imagen from "../../assets/imagenes/vision-seccion.jpg";
+import fondo from "../../assets/imagenes/seccion-ejemplo.jpg";
+---
+
+<section id="vision" class="relative isolate overflow-hidden pt-32 pb-20 text-white sm:pt-44 sm:pb-28">
+  <Image src={fondo} alt="" class="absolute inset-0 -z-20 h-full w-full object-cover" aria-hidden="true" />
+  <div class="absolute inset-0 -z-10 bg-gradient-to-b from-blue-950/55 via-blue-950/45 via-80% to-[#054B80]"></div>
+
+  <svg
+    class="pointer-events-none absolute inset-x-0 -top-px h-10 w-full rotate-180 sm:h-14 lg:h-16"
+    viewBox="0 0 1440 100"
+    preserveAspectRatio="none"
+    aria-hidden="true"
+  >
+    <path fill="#4B6388" fill-opacity="0.45" d="M0 40C180 90 360 0 600 30S1020 95 1200 55C1320 28 1400 40 1440 50V100H0Z"></path>
+    <path fill="#4B6388" d="M0 62C200 100 420 28 680 58S1140 100 1440 60V100H0Z"></path>
+  </svg>
+
+  <div class="mx-auto grid max-w-6xl items-center gap-10 px-6 md:grid-cols-2 md:gap-16">
+    <div class="md:order-1">
+      <span class="text-sm font-semibold uppercase tracking-[0.25em] text-sky-300">Hacia dónde vamos</span>
+      <h2 class="mt-3 font-serif text-5xl font-bold uppercase tracking-tight text-white sm:text-6xl">Visión</h2>
+      <div class="mt-5 h-1.5 w-20 rounded-full bg-gradient-to-r from-sky-300 to-white"></div>
+      <p class="mt-8 text-xl font-medium leading-relaxed text-white sm:text-2xl">
+        Convertir a Quepos en el cantón costero más desarrollado de Costa Rica y en armonía con el ambiente.
+      </p>
+      <p class="mt-5 text-base italic leading-relaxed text-white/85 sm:text-lg">
+        Desarrollado en términos sociales y económicos, que brinde al visitante todos los servicios necesarios para sus necesidades y al ciudadano que vive en Quepos lo permee de ese desarrollo a través de su crecimiento personal y oportunidades reales, así como el crecimiento de las empresas privadas ubicadas en el cantón.
+      </p>
+    </div>
+
+    <div class="relative md:order-2">
+      <div class="absolute -bottom-4 -right-4 h-full w-full rounded-2xl bg-gradient-to-br from-sky-400 to-blue-700" aria-hidden="true"></div>
+      <Image src={imagen} alt="Visión de la Cámara de Comercio de Quepos" class="relative aspect-[4/3] w-full rounded-2xl object-cover shadow-xl" />
+    </div>
+  </div>
+</section>

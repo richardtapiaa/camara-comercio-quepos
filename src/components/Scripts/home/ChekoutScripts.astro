@@ -1,0 +1,26 @@
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const section = document.getElementById("visitors");
+  const fondo = section?.querySelector<HTMLElement>("[data-parallax-bg]");
+  const contenido = section?.querySelector<HTMLElement>("[data-parallax-content]");
+
+  // Sin animación si el usuario prefiere menos movimiento
+  if (section && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    // Termina cuando la sección queda completa en pantalla, así llega al final aunque sea lo último de la página
+    const scrollTrigger = { trigger: section, start: "top bottom", end: "bottom bottom", scrub: 0.6 };
+
+    // El fondo es 60% más alto que la sección (30% de sobrante arriba y abajo) y se desplaza hacia abajo
+    // mientras la página sube: así se mueve más lento que el resto y nunca deja huecos.
+    if (fondo) {
+      gsap.fromTo(fondo, { yPercent: -15 }, { yPercent: 15, ease: "none", scrollTrigger });
+    }
+
+    if (contenido) {
+      gsap.fromTo(contenido, { y: 30 }, { y: -10, ease: "none", scrollTrigger });
+    }
+  }
+</script>

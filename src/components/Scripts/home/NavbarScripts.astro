@@ -1,0 +1,36 @@
+
+<script>
+  const header = document.getElementById("site-header");
+  const hero = document.getElementById("hero");
+  const toggle = document.getElementById("nav-toggle");
+  const menu = document.getElementById("nav-menu");
+
+  toggle?.addEventListener("click", () => {
+    const open = menu?.classList.toggle("hidden") === false;
+    toggle.setAttribute("aria-expanded", String(open));
+  });
+
+  // Sobre el hero: transparente. Después del hero: se oculta al bajar y reaparece (blanco) al subir.
+  let lastY = window.scrollY;
+  const update = () => {
+    if (!header) return;
+    const y = window.scrollY;
+    const heroEnd = hero ? hero.offsetTop + hero.offsetHeight : 0;
+    const pastHero = y >= heroEnd - header.offsetHeight;
+
+    if (!pastHero) {
+      header.dataset.solid = "false";
+      header.dataset.hidden = "false";
+    } else {
+      header.dataset.solid = "true";
+      const scrollingDown = y > lastY;
+      const menuOpen = toggle?.getAttribute("aria-expanded") === "true";
+      header.dataset.hidden = String(scrollingDown && !menuOpen);
+    }
+    lastY = y;
+  };
+
+  window.addEventListener("scroll", update, { passive: true });
+  window.addEventListener("resize", update);
+  update();
+</script>
