@@ -6,10 +6,9 @@ import NavbarScripts from "../Scripts/home/NavbarScripts.astro";
 const links = [
   { label: "La Cámara", href: "#mision" },
   { label: "Quepos", href: "#quepos" },
-  { label: "Únete", href: "#unete" },
-  { label: "Contacto", href: "#contacto" },
+  { label: "Únete", href: "/unete/" },
+  { label: "Contacto", href: "/contacto/" },
   { label: "Bolsa De Empleo", href: "#bolsa-de-empleo" },
-  { label: "Visitors", href: "#visitors" },
 ];
 ---
 
@@ -50,6 +49,36 @@ const links = [
             </li>
           ))
         }
+        <li class="relative" data-nav-dropdown>
+          <button
+            type="button"
+            data-nav-dropdown-toggle
+            class="flex items-center gap-1 text-[15px] font-medium text-slate-800 transition-colors hover:text-sky-700 md:group-data-[solid=false]/nav:text-white md:group-data-[solid=false]/nav:hover:text-sky-200"
+            aria-expanded="false"
+            aria-haspopup="true"
+            aria-controls="visitors-submenu"
+          >
+            Visitors
+            <svg class="h-4 w-4 transition-transform duration-200" data-nav-dropdown-icon viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <path d="m6 9 6 6 6-6"></path>
+            </svg>
+          </button>
+          <ul
+            id="visitors-submenu"
+            data-nav-dropdown-menu
+            class="absolute left-0 top-full z-10 mt-3 hidden min-w-44 rounded-xl bg-white p-2 text-slate-800 shadow-lg ring-1 ring-black/5"
+          >
+            <li>
+              <a href="/visitors/" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[#f4efe9] hover:text-sky-700">Visitors</a>
+            </li>
+            <li>
+              <a href="/hotels/" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[#f4efe9] hover:text-sky-700">Hotels</a>
+            </li>
+            <li>
+              <a href="/activities/" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[#f4efe9] hover:text-sky-700">Activities</a>
+            </li>
+          </ul>
+        </li>
       </ul>
 
       <!-- Buscar Formulario -->
@@ -74,4 +103,3 @@ const links = [
 
 
 <NavbarScripts />
-

@@ -1,0 +1,86 @@
+---
+import mainHotel from "../../assets/imagenes visitors/visitors-5.jpg";
+import hotelDetail from "../../assets/imagenes visitors/visitors-6.jpg";
+import hotelInterior from "../../assets/imagenes visitors/visitors-7.jpg";
+import hotelNature from "../../assets/imagenes visitors/visitors-8.jpg";
+import hotelRoom from "../../assets/imagenes visitors/visitors-9.jpg";
+import hotelView from "../../assets/imagenes visitors/visitors-10.jpg";
+---
+
+<section id="hotels" class="relative overflow-hidden bg-[#f4efe9] px-6 py-20 text-[#403c39] sm:px-10 sm:py-28 lg:px-16">
+  <div class="mx-auto max-w-7xl space-y-24 lg:space-y-36">
+    <div class="grid items-center gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+      <div class="relative z-10 max-w-md">
+        <span class="text-xs font-semibold uppercase tracking-[0.28em] text-[#8c8078]">Where to stay</span>
+        <h2 class="mt-4 max-w-sm font-sans text-4xl font-bold leading-[0.95] tracking-tight text-[#373330] sm:text-6xl">
+          Hotels in the Area
+        </h2>
+        <p class="mt-8 text-sm leading-7 text-[#766e68] sm:text-base">
+          Given that there are so many attractions within this slice of paradise, there are also numerous hotels within the area to accommodate all of the visitors who vacation here. From backpacking to luxury resorts, there are a myriad of dwellings in this area to shelter every kind of traveller.
+        </p>
+        <a
+          href="#tours"
+          class="mt-8 inline-flex rounded-lg bg-[#403c39] px-5 py-3 text-xs font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#5d5853]"
+        >
+          Explore the area
+        </a>
+      </div>
+
+      <div class="relative grid grid-cols-[1.7fr_1fr] gap-2 sm:gap-3">
+        <div class="overflow-hidden rounded-2xl">
+          <img src={mainHotel.src} alt="Paisaje de Quepos" class="h-64 w-full object-cover sm:h-[27rem]" />
+        </div>
+        <div class="grid gap-2 sm:gap-3">
+          <div class="overflow-hidden rounded-2xl">
+            <img src={hotelDetail.src} alt="Vista de la costa de Quepos" class="h-32 w-full object-cover sm:h-52" />
+          </div>
+            <div class="grid grid-cols-2 gap-2 sm:gap-3">
+              <div class="overflow-hidden rounded-2xl">
+                <img src={hotelRoom.src} alt="Interior de un alojamiento" class="h-28 w-full object-cover sm:h-36" />
+              </div>
+            </div>
+          </div>
+        <div class="pointer-events-none absolute -right-5 -top-8 hidden grid-cols-4 gap-2 opacity-40 sm:grid" aria-hidden="true">
+          {Array.from({ length: 8 }).map(() => <span class="h-1 w-1 rounded-full bg-[#c8a989]"></span>)}
+        </div>
+      </div>
+    </div>
+
+    <div class="grid items-center gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:gap-20">
+      <div class="relative grid grid-cols-[1.7fr_1fr] gap-2 sm:gap-3 lg:order-1">
+        <div class="overflow-hidden rounded-2xl">
+          <img src={hotelInterior.src} alt="Interior de un hotel en la zona" class="h-64 w-full object-cover sm:h-[27rem]" />
+        </div>
+        <div class="grid gap-2 sm:gap-3">
+          <div class="overflow-hidden rounded-2xl">
+            <img src={hotelNature.src} alt="Jardín de un alojamiento" class="h-32 w-full object-cover sm:h-52" />
+          </div>
+          <div class="grid grid-cols-2 gap-2 sm:gap-3">
+            <div class="overflow-hidden rounded-2xl">
+              <img src={hotelView.src} alt="Vista panorámica desde el hotel" class="h-28 w-full object-cover sm:h-36" />
+            </div>
+          </div>
+        </div>
+        <div class="pointer-events-none absolute -bottom-8 -left-5 hidden grid-cols-4 gap-2 opacity-40 sm:grid" aria-hidden="true">
+          {Array.from({ length: 8 }).map(() => <span class="h-1 w-1 rounded-full bg-[#c8a989]"></span>)}
+        </div>
+      </div>
+
+      <div id="tours" class="max-w-md lg:order-2">
+        <span class="text-xs font-semibold uppercase tracking-[0.28em] text-[#8c8078]">Plan your stay</span>
+        <h3 class="mt-4 font-sans text-4xl font-bold leading-tight text-[#373330] sm:text-5xl">
+          Comfort for every traveller
+        </h3>
+        <p class="mt-7 text-sm leading-7 text-[#766e68] sm:text-base">
+          In Quepos, Manuel Antonio and the area between the two, you cannot go far without coming across a place to lay your head at night. If you are on a tight budget, hostels can cost as low as US$15 and offer a safe place to recharge.
+        </p>
+        <p class="mt-5 text-sm leading-7 text-[#766e68] sm:text-base">
+          In contrast, if you want to splurge and lodge luxuriously, explore the many resorts and hideaways right on the pristine beaches or high in the hills with exquisite views of our paradise.
+        </p>
+        <h4 class="mt-9 font-sans text-2xl font-bold text-[#373330] sm:text-3xl">
+          Here are some tours for your Tour Bucket List
+        </h4>
+      </div>
+    </div>
+  </div>
+</section>
