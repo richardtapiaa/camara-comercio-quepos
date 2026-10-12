@@ -4,10 +4,61 @@
   const hero = document.getElementById("hero");
   const toggle = document.getElementById("nav-toggle");
   const menu = document.getElementById("nav-menu");
+  const dropdown = document.querySelector("[data-nav-dropdown]");
+  const dropdownToggle = document.querySelector("[data-nav-dropdown-toggle]");
+  const dropdownMenu = document.querySelector("[data-nav-dropdown-menu]");
+  const dropdownIcon = document.querySelector("[data-nav-dropdown-icon]");
+
+  const setDropdownOpen = (open) => {
+    if (!dropdownToggle || !dropdownMenu) return;
+    dropdownMenu.classList.toggle("hidden", !open);
+    dropdownToggle.setAttribute("aria-expanded", String(open));
+    dropdownIcon?.classList.toggle("rotate-180", open);
+  };
+
+  const closeMenu = () => {
+    setDropdownOpen(false);
+    menu?.classList.add("hidden");
+    toggle?.setAttribute("aria-expanded", "false");
+    toggle?.setAttribute("aria-label", "Abrir menú");
+    header?.setAttribute("data-menu-open", "false");
+  };
 
   toggle?.addEventListener("click", () => {
     const open = menu?.classList.toggle("hidden") === false;
     toggle.setAttribute("aria-expanded", String(open));
+    toggle.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+    header?.setAttribute("data-menu-open", String(open));
+    if (open) header?.setAttribute("data-hidden", "false");
+    setDropdownOpen(false);
+  });
+
+  dropdownToggle?.addEventListener("click", () => {
+    const open = dropdownToggle.getAttribute("aria-expanded") === "true";
+    setDropdownOpen(!open);
+  });
+
+  dropdown?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", closeMenu);
+  });
+
+  menu?.querySelectorAll(":scope > ul > li > a").forEach((link) => {
+    link.addEventListener("click", closeMenu);
+  });
+
+  document.addEventListener("click", (event) => {
+    if (dropdown && !event.composedPath().includes(dropdown)) {
+      setDropdownOpen(false);
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      const menuOpen = toggle?.getAttribute("aria-expanded") === "true";
+      closeMenu();
+      if (menuOpen) toggle?.focus();
+      else dropdownToggle?.focus();
+    }
   });
 
   // Sobre el hero: transparente. Al salir del hero: barra blanca visible (con margen de gracia).
