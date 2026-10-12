@@ -1,0 +1,33 @@
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const imagenes = document.querySelectorAll<HTMLElement>("[data-parallax-img]");
+
+  // Sin animación si el usuario prefiere menos movimiento
+  if (imagenes.length && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    imagenes.forEach((img) => {
+      // La imagen mide el doble que su marco y empieza una altura por encima; al bajar 50% de su alto
+      // (= 100% del marco) el marco queda siempre cubierto.
+      const animacion = gsap.to(img, { yPercent: 50, ease: "none", paused: true });
+      const panelFijo = img.closest<HTMLElement>(".panel.pinned");
+
+      const actualizar = (st: ScrollTrigger) => {
+        // Cuando el panel queda fijo su marco ya no sube; se congela el parallax en ese punto
+        const inicioFijo = panelFijo ? ScrollTrigger.getById("pin-" + panelFijo.id)?.start : undefined;
+        const scroll = inicioFijo === undefined ? st.scroll() : Math.min(st.scroll(), inicioFijo);
+        animacion.progress(gsap.utils.clamp(0, 1, (scroll - st.start) / (st.end - st.start)));
+      };
+
+      ScrollTrigger.create({
+        trigger: img.parentElement,
+        start: "top bottom",
+        end: "bottom top",
+        onUpdate: actualizar,
+        onRefresh: actualizar,
+      });
+    });
+  }
+</script>

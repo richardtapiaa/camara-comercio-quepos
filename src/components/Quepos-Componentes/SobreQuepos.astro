@@ -1,0 +1,53 @@
+---
+import { Image } from "astro:assets";
+import imagen from "../../assets/imagenes/beneficios-seccion.jpg";
+import MisionScripts from "../Scripts/home/MisionScripts.astro";
+---
+
+<section id="sobre-quepos" class="overflow-x-clip bg-white py-16 sm:py-24">
+  <div class="mx-auto grid max-w-6xl px-6 md:grid-cols-12">
+    <!-- Sale del contenedor hasta el borde izquierdo de la pantalla y se monta sobre el panel -->
+    <div class="relative z-10 -ml-[calc(max(0px,(100vw_-_72rem)/2)+1.5rem)] mb-8 aspect-[4/3] overflow-hidden md:col-span-4 md:col-start-1 md:row-start-1 md:mt-24 md:self-start md:aspect-[8/7]">
+      <Image
+        src={imagen}
+        alt="Cascada en Quepos"
+        class="absolute inset-x-0 -top-full h-[200%] w-full max-w-none object-cover will-change-transform"
+        data-parallax-img
+      />
+    </div>
+
+    <!-- Panel que sale del contenedor hasta el borde derecho de la pantalla -->
+    <div
+      class="-mr-[calc(max(0px,(100vw_-_72rem)/2)+1.5rem)] bg-[#E8F4FA] py-12 pl-6 pr-[calc(max(0px,(100vw_-_72rem)/2)+3rem)] md:col-span-9 md:col-start-4 md:row-start-1 md:py-16 md:pl-[calc(100%/9+2rem)]"
+    >
+      <h2 class="font-serif text-4xl font-normal uppercase leading-[1.05] tracking-[0.12em] text-neutral-700 sm:text-5xl lg:text-6xl">
+        Sobre Quepos
+      </h2>
+
+      <p class="mt-8 max-w-xl font-serif text-xl leading-snug tracking-wide text-neutral-800 sm:text-2xl">
+        Quepos es el cantón número 6 de la provincia de Puntarenas, ubicado en la costa pacífica central de Costa Rica.
+      </p>
+
+      <div class="mt-8 grid gap-6 text-sm leading-relaxed text-neutral-700 lg:grid-cols-2">
+        <div class="space-y-4">
+          <p>
+            Posee una extensión de terreno de 547,77 km2 y divididos en tres distritos, limita al Norte con Tarrazú, Dota y Pérez Zeledón, al Oeste con Parrita, al Este con el cantón de Osa y al Sur con el Océano Pacífico y la cabecera es Quepos. Es un pueblo que tiene la categoría de ciudad y fue fundada el 30 de octubre 1948 con el nombre de Aguirre.
+          </p>
+          <p>
+            Esta ciudad debió su nombre inicial por dos características, en un primer lugar se dice que en dicha región habitó un grupo indígena entre los cuales el cacique tuvo como nombre Corrohore de la tribu Quepo y de ahí surgió el nombre Quepos y su nacimiento Aguirre por los años 1918-1948, dedicada al señor Rolando Aguirre Lobo quien fuese un hombre conocido por luchar siempre por las mejoras de ese pueblo como ciudadano ejemplar.
+          </p>
+        </div>
+        <div class="space-y-4">
+          <p>
+            Este nombre estuvo vigente desde Octubre de 1948, a seis meses de la muerte de Aguirre cuando se hizo oficial por decreto de la junta fundadora de la segunda república.
+          </p>
+          <p>
+            Sin embargo, por decreto de la asamblea legislativa y hasta febrero del 2015 por unanimidad cambió su nombre oficial quedando como Quepos cantón y cabecera el mismo nombre. Este cisma se da como homenaje a la etnia indígena que es una referencia histórica por el nacimiento de la comunidad y como homenaje a la tribu Huetar de los Quepo o Quepos la cual habitaron la zona en la época precolombina y colonial.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<MisionScripts />

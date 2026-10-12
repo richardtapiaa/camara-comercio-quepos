@@ -1,29 +1,33 @@
 ---
-import { Image } from "astro:assets";
-import BeneficiosHorizontal from "../ReactComponentes/BeneficiosHorizontal.jsx";
+import ObjetivosCards from "../ReactComponentes/INICIO/ObjetivosCards.tsx";
 
-import fondo from "../../assets/imagenes/beneficios-seccion.jpg";
+const objetivos = [
+  { letra: "A", texto: "Ser reconocido por todos los actores del cantón como el ente coordinador para el desarrollo socioeconómico del cantón de Quepos." },
+  { letra: "B", texto: "Buscar el mayor nivel de consenso mediante el diálogo con los sectores de toda la sociedad." },
+  { letra: "C", texto: "Apoyar la toma de decisiones del gobierno local para un mayor desarrollo socioeconómico." },
+  { letra: "D", texto: "Ser la organización no gubernamental con la mayor cantidad de afiliados en el cantón." },
+  { letra: "E", texto: "Promover al cantón a nivel nacional e internacional." },
+  { letra: "F", texto: "Mejorar las aptitudes y actitudes de todas las personas del cantón para hacer sentir a nuestros visitantes como en casa." },
+  { letra: "G", texto: "Ser percibido por todas las personas como el ente que promueve su desarrollo humano." },
+  { letra: "H", texto: "Fomentar en toda la sociedad la armonía con la naturaleza y el desarrollo sostenible." },
+  { letra: "I", texto: "Apoyar las iniciativas que vengan a reducir las brechas sociales en el cantón." },
+];
 ---
 
-<section id="objetivos" class="relative isolate overflow-clip">
-  <!-- El fondo se mantiene fijo en pantalla mientras la sección (muy alta) se desplaza -->
-  <div class="absolute inset-0 -z-20" aria-hidden="true">
-    <div class="sticky top-0 h-screen w-full">
-      <Image src={fondo} alt="" class="h-full w-full object-cover" />
+<!-- Panel que se desliza por encima de Visión (que queda fijo detrás) -->
+<section id="objetivos" class="panel relative z-10 min-h-screen rounded-t-[40px] bg-[#E8F4FA] py-20 shadow-[0_-20px_50px_rgba(0,0,0,0.35)] sm:py-28">
+  <div class="mx-auto max-w-6xl px-6">
+    <header class="mx-auto max-w-2xl text-center">
+     
+      <h2 class="mt-3 font-serif text-3xl font-bold uppercase tracking-tight text-neutral-700 sm:text-4xl">Objetivos específicos de la Cámara</h2>
+      
+    </header>
+
+    <div class="mt-14">
+      <ObjetivosCards client:load objetivos={objetivos} />
     </div>
   </div>
 
-  <!-- Continúa el azul con el que termina Visión (#054B80) y se desvanece de forma gradual sobre la imagen -->
-  <div
-    class="pointer-events-none absolute inset-x-0 -top-px -z-10 h-24 sm:h-36"
-    style="background: linear-gradient(to bottom, #054B80 0%, rgba(5,75,128,0.6) 20%, rgba(5,75,128,0.25) 45%, rgba(5,75,128,0.08) 70%, rgba(5,75,128,0) 100%);"
-  ></div>
-
-  <!-- Se funde con el verde oliva con el que empieza Checkout -->
-  <div
-    class="pointer-events-none absolute inset-x-0 -bottom-px -z-10 h-36 sm:h-56"
-    style="background: linear-gradient(to bottom, rgba(93,106,48,0.000) 0%, rgba(93,106,48,0.028) 10%, rgba(93,106,48,0.104) 20%, rgba(93,106,48,0.216) 30%, rgba(93,106,48,0.352) 40%, rgba(93,106,48,0.500) 50%, rgba(93,106,48,0.648) 60%, rgba(93,106,48,0.784) 70%, rgba(93,106,48,0.896) 80%, rgba(93,106,48,0.972) 90%, rgba(93,106,48,1.000) 100%);"
-  ></div>
-
-  <BeneficiosHorizontal client:load />
+  <!-- Cuando este marcador llega al fondo de la pantalla, Visión deja de estar fijo -->
+  <div class="end-pin h-px"></div>
 </section>
