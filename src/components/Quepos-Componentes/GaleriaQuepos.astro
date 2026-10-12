@@ -1,0 +1,30 @@
+---
+import { getImage } from "astro:assets";
+import CircularGallery from "../ReactComponentes/QUEPOS/CircularGallery.jsx";
+import beneficios from "../../assets/imagenes/beneficios-seccion.jpg";
+import mision from "../../assets/imagenes/mision-seccion.jpg";
+import vision from "../../assets/imagenes/vision-seccion.jpg";
+import checkout from "../../assets/imagenes/seccion-checkout.jpg";
+import ejemplo from "../../assets/imagenes/seccion-ejemplo.jpg";
+import hero from "../../assets/imagenes/quepos-hero.webp";
+import fondo from "../../assets/imagenes/fondo-inicio-queposx.webp";
+
+// Se reutilizan imágenes existentes; reemplazar por fotos de Quepos cuando estén disponibles
+const fuentes = [hero, beneficios, mision, ejemplo, vision, checkout, fondo, hero, beneficios, mision, ejemplo, vision];
+
+const items = await Promise.all(
+  fuentes.map(async (src) => ({
+    image: (await getImage({ src, width: 1000, format: "webp" })).src,
+  })),
+);
+---
+
+<section id="galeria-quepos" class="bg-white py-16 sm:py-24">
+  <h2 class="px-6 text-center font-serif text-4xl font-normal uppercase tracking-[0.12em] text-neutral-700 sm:text-5xl lg:text-6xl">
+    Galería
+  </h2>
+  <div class="mt-8 h-[420px] w-full sm:h-[520px] lg:h-[600px]">
+    <CircularGallery client:visible items={items} showTitles={false} wheelOnClick bend={3} borderRadius={0.05} scrollSpeed={2} scrollEase={0.05} />
+  </div>
+</section>
+    

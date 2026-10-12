@@ -1,0 +1,28 @@
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Sin paneles fijos si el usuario prefiere menos movimiento
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const pinnedPanels = gsap.utils.toArray<HTMLElement>(".panel.pinned");
+
+    pinnedPanels.forEach((panel) => {
+      ScrollTrigger.create({
+        trigger: panel,
+        // Si el panel es más alto que la pantalla, se fija cuando se ve completo hasta su final
+        start: () => (panel.offsetHeight > window.innerHeight ? "bottom bottom" : "top top"),
+        endTrigger: ".end-pin",
+        // El siguiente panel ya cubre toda la pantalla, así el panel fijo no reaparece debajo
+        end: "top bottom",
+        pin: true,
+        pinSpacing: false,
+        invalidateOnRefresh: true,
+        onLeave: () => gsap.set(panel, { visibility: "hidden" }),
+        onEnterBack: () => gsap.set(panel, { visibility: "visible" }),
+        id: "pin-" + panel.id,
+      });
+    });
+  }
+</script>

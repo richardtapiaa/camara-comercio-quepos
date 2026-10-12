@@ -1,0 +1,36 @@
+---
+import PolaroidLineCarousel from "../ReactComponentes/INICIO/InicioQuepos.tsx";
+import hero from "../../assets/imagenes/quepos-hero.webp";
+import fondo from "../../assets/imagenes/fondo-inicio-queposx.webp";
+import mision from "../../assets/imagenes/mision-seccion.jpg";
+import vision from "../../assets/imagenes/vision-seccion.jpg";
+import beneficios from "../../assets/imagenes/beneficios-seccion.jpg";
+import checkout from "../../assets/imagenes/seccion-checkout.jpg";
+
+const slides = [
+  { image: hero.src, title: "Quepos", caption: "Costa del Pacífico, Costa Rica." },
+  { image: fondo.src, title: "Nuestro cantón", caption: "Naturaleza y turismo en un solo lugar." },
+  { image: mision.src, title: "Misión", caption: "Fomentar el desarrollo socioeconómico del cantón." },
+  { image: vision.src, title: "Visión", caption: "Un Quepos próspero y sostenible." },
+  { image: beneficios.src, title: "Beneficios", caption: "Ser parte de la Cámara tiene sus ventajas." },
+  { image: checkout.src, title: "Visítanos", caption: "Descubre la costa de Quepos." },
+];
+---
+
+<section id="conozca-quepos" class="pt-16 sm:pt-24">
+  <div class="relative z-10 mx-auto max-w-6xl px-6">
+    <div class="rounded-2xl bg-white px-6 py-6 text-center shadow-xl sm:px-10 sm:py-8">
+      <h2 class="font-serif text-4xl font-bold uppercase tracking-tight text-slate-900 sm:text-5xl">Conozca Quepos</h2>
+    </div>
+  </div>
+  <div class="-mt-20 sm:-mt-28">
+  <PolaroidLineCarousel
+    client:load
+    slides={slides}
+    ariaLabel="Conozca Quepos"
+    background="#ffffff"
+    ink="#0f172a"
+    string="#475569"
+  />
+  </div>
+</section>

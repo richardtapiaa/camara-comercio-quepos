@@ -10,8 +10,13 @@
     toggle.setAttribute("aria-expanded", String(open));
   });
 
-  // Sobre el hero: transparente. Después del hero: se oculta al bajar y reaparece (blanco) al subir.
+  // Sobre el hero: transparente. Al salir del hero: barra blanca visible (con margen de gracia).
+  // Más abajo: se oculta al bajar y reaparece al subir.
+  const HIDE_BUFFER = 300;
+  const DELTA = 6;
   let lastY = window.scrollY;
+  let hidden = false;
+
   const update = () => {
     if (!header) return;
     const y = window.scrollY;
@@ -20,14 +25,20 @@
 
     if (!pastHero) {
       header.dataset.solid = "false";
-      header.dataset.hidden = "false";
+      hidden = false;
     } else {
       header.dataset.solid = "true";
-      const scrollingDown = y > lastY;
       const menuOpen = toggle?.getAttribute("aria-expanded") === "true";
-      header.dataset.hidden = String(scrollingDown && !menuOpen);
+      if (menuOpen || y < heroEnd + HIDE_BUFFER) {
+        hidden = false;
+      } else if (y - lastY > DELTA) {
+        hidden = true;
+      } else if (lastY - y > DELTA) {
+        hidden = false;
+      }
     }
-    lastY = y;
+    header.dataset.hidden = String(hidden);
+    if (Math.abs(y - lastY) > DELTA || !pastHero) lastY = y;
   };
 
   window.addEventListener("scroll", update, { passive: true });
