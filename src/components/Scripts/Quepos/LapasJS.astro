@@ -1,0 +1,375 @@
+<script>
+// @ts-nocheck: código JS plano (var/any), sin tipos
+// three.js se descarga bajo demanda (chunk aparte), cuando la sección está por verse
+var THREE;
+
+function initLapas(band) {
+  var canvas = band.querySelector('.lapas-canvas');
+  if (!canvas) return function () {};
+
+  var mq = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+  var reduced = !!(mq && mq.matches);
+
+  /* ---------- Escena ---------- */
+  var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setClearColor(0x000000, 0);
+
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(32, 1, 0.1, 100);
+  camera.position.set(0, 1.6, 14);
+  camera.lookAt(0, 0.2, 0);
+
+  // three >= r155: luces en unidades físicas (sin el factor π "legacy"), por eso ~ × π
+  scene.add(new THREE.AmbientLight(0xffffff, 2.7));
+  var sun = new THREE.DirectionalLight(0xffffff, 2.2);
+  sun.position.set(3, 6, 5);
+  scene.add(sun);
+
+  /* ---------- Colores de la lapa roja ---------- */
+  function mat(c) { return new THREE.MeshLambertMaterial({ color: c, side: THREE.DoubleSide }); }
+  var M = {
+    red: mat(0xd9241c),
+    yellow: mat(0xf7c32e),
+    blue: mat(0x1c6bd6),
+    white: mat(0xf4efe4),
+    beak: mat(0xe9ddc2),
+    dark: mat(0x16161a)
+  };
+
+  var sphereGeo = new THREE.SphereGeometry(1, 20, 16);
+  function part(geo, material, x, y, z) {
+    var m = new THREE.Mesh(geo, material);
+    m.position.set(x, y, z);
+    return m;
+  }
+
+  /* ---------- Ala: polígono recortado en 3 franjas de color ---------- */
+  // x = hacia adelante, y = envergadura (del hombro a la punta)
+  var WING = [
+    [0.35, 0], [0.32, 0.4], [0.22, 0.9], [0.05, 1.35], [-0.2, 1.7], [-0.4, 1.9],
+    [-0.5, 1.65], [-0.45, 1.4], [-0.62, 1.3], [-0.55, 1.05], [-0.7, 0.9],
+    [-0.6, 0.6], [-0.65, 0.35], [-0.5, 0.15], [-0.35, 0]
+  ];
+
+  function clipHalf(poly, keep, edge) {
+    var out = [];
+    for (var i = 0; i < poly.length; i++) {
+      var a = poly[i], b = poly[(i + 1) % poly.length];
+      var ka = keep(a), kb = keep(b);
+      if (ka) out.push(a);
+      if (ka !== kb) {
+        var t = (edge - a[1]) / (b[1] - a[1]);
+        out.push([a[0] + t * (b[0] - a[0]), edge]);
+      }
+    }
+    return out;
+  }
+  function clipBand(poly, y0, y1) {
+    var p = clipHalf(poly, function (q) { return q[1] >= y0; }, y0);
+    return clipHalf(p, function (q) { return q[1] <= y1; }, y1);
+  }
+  // layer: separa ligeramente las franjas solapadas en la normal del ala (evita z-fighting)
+  function wingPiece(y0, y1, material, shiftY, rotX, layer) {
+    var pts = clipBand(WING, y0, y1).map(function (p) {
+      return new THREE.Vector2(p[0], p[1] - shiftY);
+    });
+    var mesh = new THREE.Mesh(new THREE.ShapeGeometry(new THREE.Shape(pts)), material);
+    mesh.rotation.x = rotX; // la envergadura (y) pasa a ser el eje z
+    mesh.position.y = (layer || 0) * 0.003; // tras la rotación, la normal del ala es el eje y
+    return mesh;
+  }
+  function buildWing(side) { // side: +1 derecha, -1 izquierda
+    var rotX = side * Math.PI / 2;
+    var shoulder = new THREE.Group();
+    shoulder.add(wingPiece(0, 0.62, M.red, 0, rotX, 0));        // cobertoras rojas
+    var wrist = new THREE.Group();                               // "muñeca": segunda articulación
+    wrist.position.z = side * 0.6;
+    wrist.add(wingPiece(0.6, 1.22, M.yellow, 0.6, rotX, 1));     // franja amarilla
+    wrist.add(wingPiece(1.2, 1.9, M.blue, 0.6, rotX, 2));        // primarias azules
+    shoulder.add(wrist);
+    return { shoulder: shoulder, wrist: wrist };
+  }
+
+  /* ---------- Lapa completa ---------- */
+  function buildMacaw() {
+    var root = new THREE.Group();
+    var rig = new THREE.Group();
+    root.add(rig);
+
+    var body = part(sphereGeo, M.red, 0, 0, 0);
+    body.scale.set(0.75, 0.32, 0.28);
+    rig.add(body);
+
+    var head = part(sphereGeo, M.red, 0.7, 0.14, 0);
+    head.scale.set(0.27, 0.27, 0.27);
+    rig.add(head);
+
+    [-1, 1].forEach(function (s) {
+      var patch = part(sphereGeo, M.white, 0.8, 0.12, s * 0.235);
+      patch.scale.set(0.17, 0.15, 0.06);
+      rig.add(patch);
+      var eye = part(sphereGeo, M.dark, 0.83, 0.19, s * 0.285);
+      eye.scale.set(0.04, 0.04, 0.04);
+      rig.add(eye);
+    });
+
+    var upper = part(new THREE.ConeGeometry(0.13, 0.4, 10), M.beak, 1.1, 0.03, 0);
+    upper.rotation.z = -Math.PI / 2 - 0.5;
+    upper.scale.set(1, 1, 0.9);
+    rig.add(upper);
+    var lower = part(new THREE.ConeGeometry(0.09, 0.26, 8), M.dark, 1.04, -0.05, 0);
+    lower.rotation.z = -Math.PI / 2 - 0.2;
+    rig.add(lower);
+
+    // Cola larga: tramo rojo + punta azul
+    var tail = new THREE.Group();
+    tail.position.set(-0.6, -0.02, 0);
+    tail.scale.set(1, 0.38, 1.1);
+    tail.rotation.z = 0.1;
+    var tRed = part(new THREE.CylinderGeometry(0.16, 0.24, 1.2, 8), M.red, -0.6, 0, 0);
+    tRed.rotation.z = Math.PI / 2;
+    var tBlue = part(new THREE.CylinderGeometry(0.05, 0.16, 0.7, 8), M.blue, -1.55, 0, 0);
+    tBlue.rotation.z = Math.PI / 2;
+    tail.add(tRed, tBlue);
+    rig.add(tail);
+
+    var wR = buildWing(1), wL = buildWing(-1);
+    wR.shoulder.position.set(0.1, 0.14, 0.12);
+    wL.shoulder.position.set(0.1, 0.14, -0.12);
+    rig.add(wR.shoulder, wL.shoulder);
+
+    root.rotation.y = -0.25; // ligeramente de 3/4 hacia la cámara
+    return { root: root, rig: rig, wR: wR, wL: wL };
+  }
+
+  /* ---------- Bandadas (las lapas vuelan en pareja) ---------- */
+  var groups = [
+    { v: 4,   y: 0.9,  rest: 1.5, delay: 0,   members: [
+      { dx: 0,    dy: 0,    dz: 0,   s: 1.0,  ph: 0 },
+      { dx: -1.8, dy: -0.5, dz: 0.9, s: 0.92, ph: 1.3 } ] },
+    { v: 3.1, y: -0.8, rest: 2,   delay: 2,   members: [
+      { dx: 0,    dy: 0,    dz: 0.4, s: 0.85, ph: 2.1 } ] },
+    { v: 3.6, y: 0.1,  rest: 2.5, delay: 4,   members: [
+      { dx: 0,    dy: 0,    dz: -0.3, s: 0.95, ph: 0.6 },
+      { dx: -1.6, dy: 0.55, dz: 0.5,  s: 0.88, ph: 2.6 } ] }
+  ];
+  groups.forEach(function (g) {
+    g.x = 0; g.wait = g.delay;
+    g.members.forEach(function (m) {
+      m.bird = buildMacaw();
+      m.bird.root.scale.setScalar(m.s);
+      m.bird.root.visible = false;
+      scene.add(m.bird.root);
+    });
+  });
+
+  /* ---------- Tamaño ---------- */
+  var halfW = 8;
+  var sized = false;
+  function resize() {
+    var w = band.clientWidth, h = band.clientHeight;
+    if (!w || !h) return false; // contenedor aún sin tamaño (CSS no aplicado, display:none...)
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    halfW = Math.tan(camera.fov * Math.PI / 360) * camera.position.z * camera.aspect;
+    return true;
+  }
+
+  function resetGroups() {
+    groups.forEach(function (g) {
+      g.x = -halfW - 5;
+      g.wait = g.delay;
+      g.members.forEach(function (m) { m.bird.root.visible = false; });
+    });
+  }
+
+  /* ---------- Animación ---------- */
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+  var TAU = Math.PI * 2;
+
+  function pose(m, g, t) {
+    var b = m.bird;
+    var x = g.x + m.dx;
+    var ph = t * 2.3 * TAU + m.ph;                         // ciclo de aleteo
+    var glide = clamp(0.55 + 0.9 * Math.sin(t * 0.5 + m.ph), 0, 1);
+    var amp = 0.12 + 0.88 * glide * glide * (3 - 2 * glide); // a veces planean
+
+    var wave = 0.55 * x + m.ph;
+    var y = g.y + m.dy + 0.4 * Math.sin(wave) - 0.1 * amp * Math.cos(ph);
+    var slope = 0.22 * Math.cos(wave);
+
+    b.root.position.set(x, y, m.dz);
+    b.rig.rotation.z = Math.atan(slope) + 0.07 * amp * Math.cos(ph);
+    b.rig.rotation.x = 0.1 * Math.sin(t * 0.9 + m.ph);
+
+    var s = 0.12 + amp * 0.75 * Math.sin(ph);              // hombro
+    var w = amp * 0.55 * Math.sin(ph - 1.1);               // muñeca (con retraso)
+    b.wR.shoulder.rotation.x = -s;  b.wL.shoulder.rotation.x = s;
+    b.wR.wrist.rotation.x = -w;     b.wL.wrist.rotation.x = w;
+  }
+
+  var last = performance.now(), clock = 0, running = false, rafId = 0;
+  function frame(now) {
+    if (!running) return;
+    var dt = Math.min((now - last) / 1000, 0.05);
+    last = now; clock += dt;
+
+    // misma duración de cruce sin importar el ancho de pantalla
+    var speedScale = (2 * halfW + 10) / 26;
+    var anyVisible = false;
+
+    groups.forEach(function (g) {
+      if (g.wait > 0) {
+        g.wait -= dt;
+        if (g.wait <= 0) g.x = -halfW - 5;
+        g.members.forEach(function (m) { m.bird.root.visible = false; });
+        return;
+      }
+      g.x += g.v * speedScale * dt;
+      if (g.x > halfW + 5) {
+        g.wait = g.rest + Math.random() * 2;
+        g.members.forEach(function (m) { m.bird.root.visible = false; });
+        return;
+      }
+      anyVisible = true;
+      g.members.forEach(function (m) { m.bird.root.visible = true; pose(m, g, clock); });
+    });
+
+    // evita renderizar una escena vacía; limpia el último cuadro una sola vez
+    if (anyVisible || frame.hadBirds) renderer.render(scene, camera);
+    frame.hadBirds = anyVisible;
+
+    rafId = requestAnimationFrame(frame);
+  }
+  function start() {
+    if (running || reduced || !sized) return;
+    running = true;
+    last = performance.now();
+    rafId = requestAnimationFrame(frame);
+  }
+  function stop() {
+    running = false;
+    cancelAnimationFrame(rafId); // cancela el frame pendiente: evita bucles dobles
+  }
+
+  function drawStill() { // movimiento reducido: una imagen fija con las lapas en vuelo
+    if (!sized) return;
+    groups.forEach(function (g, i) {
+      g.x = -halfW * 0.5 + i * halfW * 0.55;
+      g.members.forEach(function (m) { m.bird.root.visible = true; pose(m, g, 1.2); });
+    });
+    renderer.render(scene, camera);
+  }
+
+  /* ---------- Visibilidad, tamaño y preferencia de movimiento ---------- */
+  var inView = true;
+  function sync() {
+    if (inView && !reduced) start(); else stop();
+  }
+
+  function onResize() {
+    var ok = resize();
+    if (!ok) return;
+    if (!sized) { // primera vez que el contenedor tiene tamaño real
+      sized = true;
+      resetGroups();
+    }
+    if (reduced) drawStill(); else sync();
+  }
+
+  function onMotionChange() {
+    reduced = !!(mq && mq.matches);
+    stop();
+    resetGroups();
+    if (reduced) { drawStill(); } else { sync(); }
+  }
+
+  var ro = null;
+  if ('ResizeObserver' in window) {
+    ro = new ResizeObserver(onResize);
+    ro.observe(band);
+  } else {
+    window.addEventListener('resize', onResize);
+  }
+  if (mq && mq.addEventListener) mq.addEventListener('change', onMotionChange);
+
+  var observer = null;
+  if ('IntersectionObserver' in window) {
+    inView = false;
+    observer = new IntersectionObserver(function (e) {
+      inView = e[e.length - 1].isIntersecting;
+      sync();
+    });
+    observer.observe(band);
+  }
+
+  onResize(); // intento inicial (si aún mide 0, el ResizeObserver lo reintentará)
+
+  // Limpieza (útil con ClientRouter / View Transitions de Astro)
+  return function destroy() {
+    stop();
+    if (observer) observer.disconnect();
+    if (ro) ro.disconnect(); else window.removeEventListener('resize', onResize);
+    if (mq && mq.removeEventListener) mq.removeEventListener('change', onMotionChange);
+
+    scene.traverse(function (o) {
+      if (o.geometry) o.geometry.dispose();
+    });
+    Object.keys(M).forEach(function (k) { M[k].dispose(); });
+    sphereGeo.dispose();
+    renderer.dispose();
+    renderer.forceContextLoss();
+  };
+}
+
+/* ---------- Arranque automático ---------- */
+var mounted = [];
+
+function mountBand(entry) {
+  import('three').then(function (mod) {
+    if (entry.cancelled) return;
+    THREE = mod;
+    entry.destroy = initLapas(entry.band);
+  });
+}
+
+function mountAll() {
+  document.querySelectorAll('.lapas-band').forEach(function (band) {
+    if (band.dataset.lapas) return;
+    band.dataset.lapas = '1';
+    var entry = { band: band, destroy: null, cancelled: false, io: null };
+    mounted.push(entry);
+    if ('IntersectionObserver' in window) {
+      entry.io = new IntersectionObserver(function (e) {
+        if (!e[e.length - 1].isIntersecting) return;
+        entry.io.disconnect();
+        entry.io = null;
+        mountBand(entry);
+      }, { rootMargin: '400px' });
+      entry.io.observe(band);
+    } else {
+      mountBand(entry);
+    }
+  });
+}
+function unmountAll() {
+  mounted.forEach(function (m) {
+    m.cancelled = true;
+    if (m.io) m.io.disconnect();
+    if (m.destroy) m.destroy();
+    delete m.band.dataset.lapas;
+  });
+  mounted = [];
+}
+
+if (typeof document !== 'undefined') {
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mountAll);
+  else mountAll();
+  document.addEventListener('astro:page-load', mountAll);
+  document.addEventListener('astro:before-swap', unmountAll);
+}
+
+</script>
+
