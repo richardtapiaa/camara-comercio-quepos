@@ -1,0 +1,32 @@
+---
+import GaleriaQuepos from "../../ReactComponentes/QUEPOS/GaleriaQuepos";
+import beneficios from "../../../assets/imagenes/beneficios-seccion.jpg";
+import checkout from "../../../assets/imagenes/seccion-checkout.jpg";
+import ejemplo from "../../../assets/imagenes/seccion-ejemplo.jpg";
+import fondo from "../../../assets/imagenes/fondo-inicio-queposx.webp";
+import hero from "../../../assets/imagenes/quepos-hero.webp";
+import mision from "../../../assets/imagenes/mision-seccion.jpg";
+import vision from "../../../assets/imagenes/vision-seccion.jpg";
+
+const items = [
+  { id: 1, src: hero.src, alt: "Paisaje de Quepos" },
+  { id: 2, src: fondo.src, alt: "Naturaleza de Quepos" },
+  { id: 3, src: mision.src, alt: "Misión de la Cámara" },
+  { id: 4, src: vision.src, alt: "Visión de la Cámara" },
+  { id: 5, src: beneficios.src, alt: "Beneficios para afiliados" },
+  { id: 6, src: checkout.src, alt: "Costa de Quepos" },
+  { id: 7, src: ejemplo.src, alt: "Ejemplo de emprendimiento local" },
+];
+---
+
+<section id="galeria-completa" class="bg-white px-6 py-16 sm:py-24">
+  <div class="mx-auto max-w-7xl">
+    <h2 class="text-center font-serif text-4xl font-bold uppercase tracking-tight text-slate-900 sm:text-5xl">
+      Galería de Quepos
+    </h2>
+    <p class="mx-auto mt-4 max-w-2xl text-center text-slate-600">
+      Descubre nuestro cantón, su naturaleza y la comunidad que lo hace especial.
+    </p>
+    <GaleriaQuepos client:load items={items} className="mt-10" />
+  </div>
+</section>

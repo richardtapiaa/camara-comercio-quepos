@@ -3,7 +3,8 @@ import fondo from "../../assets/imagenes/quepos-hero.webp";
 import videoHero from "../../assets/quepos-videos/hero-quepos-inicio.mp4";
 ---
 
-<section id="hero" class="relative isolate h-svh w-full md:h-auto md:aspect-[1920/1000] overflow-hidden bg-black">
+<!-- Queda fijo mientras Misión se desliza por encima: escritorio con ScrollTrigger (PanelesScripts), móvil con sticky nativo (sin saltos) -->
+<section id="hero" data-end-pin="#mision" data-pin-desktop class="panel pinned sticky top-0 isolate md:relative h-svh w-full md:h-auto md:aspect-[1920/1000] overflow-hidden bg-black">
   <video
     src={videoHero}
     poster={fondo.src}
