@@ -2,6 +2,7 @@
 import "../styles/global.css";
 
 import "../assets/imagenes/logo-camara.webp"
+import PiePagina from "../components/home/pie_pagina.astro";
 ---
 
 
@@ -19,8 +20,9 @@ import "../assets/imagenes/logo-camara.webp"
 		<meta name="generator" content={Astro.generator} />
 		<title>Camara Comercio Quepos.</title>
 	</head>
-	<body>
+	<body id="top">
 		<slot />
+		<PiePagina />
 	</body>
 </html>
 

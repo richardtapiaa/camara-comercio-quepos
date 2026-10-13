@@ -1,0 +1,94 @@
+---
+import { Image } from "astro:assets";
+import logo from "../../assets/imagenes/logo-camara.webp";
+import footerImage from "../../assets/imagenes/piepagina.jpg";
+
+const links = [
+  { label: "La Cámara", href: "/" },
+  { label: "Quepos", href: "/quepos" },
+  { label: "Únete", href: "/unete" },
+  { label: "Contacto", href: "/contacto" },
+  { label: "Bolsa de Empleo", href: "/bolsa-de-empleo" },
+  { label: "Visitors", href: "/visitors/" },
+];
+
+const socialLinks = {
+  facebook: "https://www.facebook.com/CCITQuepos",
+  instagram: "https://www.instagram.com/camaradequepos",
+};
+---
+
+<footer
+  class="relative isolate overflow-hidden text-white"
+>
+  <img
+    src={footerImage.src}
+    alt=""
+    aria-hidden="true"
+    class="absolute inset-0 z-0 h-full w-full object-cover object-[center_18%]"
+  />
+  <div class="absolute inset-0 z-0 bg-black/35" aria-hidden="true"></div>
+
+  <div class="relative z-10 mx-auto grid max-w-7xl gap-10 px-6 py-14 text-white sm:px-10 lg:grid-cols-[1.25fr_0.8fr_0.8fr] lg:items-center lg:gap-16 lg:px-12 lg:py-16">
+    <a
+      href="/"
+      class="mx-auto block w-fit transition-opacity hover:opacity-80 lg:mx-0"
+      aria-label="Cámara de Comercio, Industria y Turismo de Quepos"
+    >
+      <Image
+        src={logo}
+        alt="Cámara de Comercio, Industria y Turismo de Quepos Costa Rica"
+        class="w-64 sm:w-72"
+        loading="lazy"
+      />
+    </a>
+
+    <nav aria-label="Enlaces del pie de página">
+      <ul class="grid gap-3 text-center text-sm font-bold text-white sm:grid-cols-2 lg:grid-cols-1 lg:text-left">
+        {
+          links.map((link) => (
+            <li>
+              <a href={link.href} class="transition-colors hover:text-white">
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="flex flex-col items-center gap-8 lg:items-end">
+      <div class="flex items-center gap-4">
+        <a
+          href={socialLinks.facebook}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Facebook"
+          class="flex h-11 w-11 items-center justify-center rounded-full bg-black/45 text-white transition-colors hover:bg-black/65"
+        >
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M13.5 22v-8.2h2.8l.5-3.3h-3.3V8.4c0-.9.3-1.6 1.7-1.6h1.7V4a22 22 0 0 0-2.5-.1c-2.5 0-4.2 1.5-4.2 4.3v2.3H7.2v3.3H10V22h3.5Z"></path>
+          </svg>
+        </a>
+        <a
+          href={socialLinks.instagram}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Instagram"
+          class="flex h-11 w-11 items-center justify-center rounded-full bg-black/45 text-white transition-colors hover:bg-black/65"
+        >
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+            <circle cx="12" cy="12" r="4"></circle>
+            <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle>
+          </svg>
+        </a>
+      </div>
+      <a href="#top" aria-label="Volver al inicio" class="text-white transition-colors hover:text-white/75">
+        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m6 15 6-6 6 6"></path>
+        </svg>
+      </a>
+    </div>
+  </div>
+</footer>
