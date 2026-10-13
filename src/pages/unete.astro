@@ -1,10 +1,16 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/home/Navbar.astro";
-import Unete from "../components/unete.astro";
+import Hero from "../components/UneteComponentes/Hero.astro";
+import FormularioUnete from "../components/ReactComponentes/UNETE/FormularioUnete.tsx";
+
+
+//import Unete from "../components/UneteComponentes/Unete.astro";
 ---
 
 <Layout>
   <Navbar />
-  <Unete />
+  <Hero title="Únete" />
+  <FormularioUnete client:load />
+
 </Layout>

@@ -7,7 +7,7 @@ import Navbar from '../components/home/Navbar.astro';
 
 import Hero from '../components/home/Hero.astro';
 
-import ConozcaQuepos from '../components/home/ConozcaQuepos.astro';
+// import ConozcaQuepos from '../components/home/ConozcaQuepos.astro';
 
 import Mision from '../components/home/Mision.astro';
 
@@ -18,7 +18,7 @@ import Checkout from '../components/home/Checkout.astro';
 
 import ObjetivosEspecificos from '../components/home/ObjetivosEspecificos.astro';
 
-import Marquee from '../components/home/Marquee.astro';
+// import Marquee from '../components/home/Marquee.astro';
 
 import Mapa from '../components/home/Mapa.astro';
 
@@ -37,13 +37,15 @@ import PanelesScripts from '../components/Scripts/home/PanelesScripts.astro';
 
 <Navbar />
 
-	<Hero />
-	<ConozcaQuepos />
-	<Mision />
+	<!-- Contenedor que limita el sticky del Hero en móvil -->
+	<div>
+		<Hero />
+		<Mision />
+	</div>
 	<Vision />
 	<ObjetivosEspecificos />
 	<Checkout />
-	<Marquee />
+	
 	
 	<Mapa />
 

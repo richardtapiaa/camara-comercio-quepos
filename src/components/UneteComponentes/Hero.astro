@@ -1,0 +1,48 @@
+---
+import { Image } from "astro:assets";
+import imagenPorDefecto from "../../assets/imagenes/mision-seccion.jpg";
+
+interface Props {
+  title?: string;
+  image?: ImageMetadata;
+  alt?: string;
+}
+
+const {
+  title = "Contacto",
+  image = imagenPorDefecto,
+  alt = "Vista aérea de Quepos, su marina y la costa",
+} = Astro.props;
+---
+
+<section
+  class="relative isolate h-[clamp(26rem,62svh,46rem)] w-full overflow-hidden bg-[#1d2b24] text-white"
+>
+  <Image
+    src={image}
+    alt={alt}
+    width={1600}
+    format="webp"
+    loading="eager"
+    fetchpriority="high"
+    class="absolute inset-0 -z-20 h-full w-full object-cover object-center"
+  />
+
+  
+  <div
+    aria-hidden="true"
+    class="absolute inset-0 -z-10 bg-black/20 bg-gradient-to-b from-black/60 via-transparent via-[35%] to-transparent"
+  >
+  </div>
+
+  <div class="absolute inset-0 flex items-center justify-center px-6 pb-8 pt-28 text-center sm:pt-32">
+    <h1
+      class="m-0 font-serif text-[clamp(2.5rem,8vw,5.5rem)] font-bold uppercase leading-none tracking-[0.06em] [text-shadow:0_2px_24px_rgba(0,0,0,0.45)]"
+    >
+      {title}
+    </h1>
+  </div>
+
+  <!-- Pestaña blanca inferior: la siguiente sección se "monta" sobre la imagen -->
+
+</section>
