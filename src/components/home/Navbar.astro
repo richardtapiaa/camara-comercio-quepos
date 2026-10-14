@@ -3,13 +3,36 @@ import { Image } from "astro:assets";
 import logo from "../../assets/imagenes/logo-camara.webp";
 import NavbarScripts from "../Scripts/home/NavbarScripts.astro";
 
-const links = [
+type Enlace = { label: string; href: string };
+type Desplegable = { label: string; id: string; submenu: Enlace[] };
+
+// Un elemento con "submenu" se muestra como menú desplegable
+const links: Array<Enlace | Desplegable> = [
   { label: "La Cámara", href: "/" },
-  { label: "Quepos", href: "/quepos" },
+  {
+    label: "Quepos",
+    id: "quepos-submenu",
+    submenu: [
+      { label: "Quepos", href: "/quepos" },
+      { label: "Galería", href: "/queposgaleria" },
+    ],
+  },
   { label: "Únete", href: "/unete" },
   { label: "Contacto", href: "/contacto" },
   { label: "Bolsa De Empleo", href: "/bolsa-de-empleo" },
+  {
+    label: "Visitors",
+    id: "visitors-submenu",
+    submenu: [
+      { label: "Visitors", href: "/visitors/" },
+      { label: "Hotels", href: "/hotels/" },
+      { label: "Activities", href: "/activities/" },
+    ],
+  },
 ];
+
+const claseLink =
+  "text-[15px] font-medium text-slate-800 transition-colors hover:text-sky-700 max-md:px-6 max-md:py-4 max-md:uppercase max-md:tracking-[0.12em] max-md:text-white max-md:hover:text-sky-300 md:group-data-[solid=false]/nav:text-white md:group-data-[solid=false]/nav:hover:text-sky-200";
 
 
 const contacto = {
@@ -97,44 +120,45 @@ const contacto = {
 
       <ul class="flex flex-col gap-4 max-md:gap-0 max-md:border-t max-md:border-white/10 md:flex-row md:items-center md:gap-10">
         {
-          links.map((link) => (
-            <li class="max-md:border-b max-md:border-white/10">
-              <a href={link.href} class="text-[15px] font-medium text-slate-800 transition-colors hover:text-sky-700 max-md:block max-md:px-6 max-md:py-4 max-md:uppercase max-md:tracking-[0.12em] max-md:text-white max-md:hover:text-sky-300 md:group-data-[solid=false]/nav:text-white md:group-data-[solid=false]/nav:hover:text-sky-200">
-                {link.label}
-              </a>
-            </li>
-          ))
+          links.map((link) =>
+            "submenu" in link ? (
+              <li class="relative max-md:border-b max-md:border-white/10" data-nav-dropdown>
+                <button
+                  type="button"
+                  data-nav-dropdown-toggle
+                  class={`flex items-center gap-1 max-md:w-full max-md:justify-between ${claseLink}`}
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  aria-controls={link.id}
+                >
+                  {link.label}
+                  <svg class="h-4 w-4 transition-transform duration-200" data-nav-dropdown-icon viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                    <path d="m6 9 6 6 6-6"></path>
+                  </svg>
+                </button>
+                <ul
+                  id={link.id}
+                  data-nav-dropdown-menu
+                  class="absolute left-0 top-full z-10 mt-3 hidden min-w-44 rounded-xl bg-white p-2 text-slate-800 shadow-lg ring-1 ring-black/5 max-md:static max-md:mt-0 max-md:min-w-0 max-md:overflow-hidden max-md:rounded-none max-md:bg-black/20 max-md:px-6 max-md:py-0 max-md:text-white max-md:shadow-none max-md:ring-0"
+                >
+                  {link.submenu.map((sub) => (
+                    <li>
+                      <a href={sub.href} class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[#f4efe9] hover:text-sky-700 max-md:px-0 max-md:py-3 max-md:text-white/80 max-md:hover:bg-transparent max-md:hover:text-sky-300">
+                        {sub.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ) : (
+              <li class="max-md:border-b max-md:border-white/10">
+                <a href={link.href} class={`max-md:block ${claseLink}`}>
+                  {link.label}
+                </a>
+              </li>
+            )
+          )
         }
-        <li class="relative max-md:border-b max-md:border-white/10" data-nav-dropdown>
-          <button
-            type="button"
-            data-nav-dropdown-toggle
-            class="flex items-center gap-1 text-[15px] font-medium text-slate-800 transition-colors hover:text-sky-700 max-md:w-full max-md:justify-between max-md:px-6 max-md:py-4 max-md:uppercase max-md:tracking-[0.12em] max-md:text-white max-md:hover:text-sky-300 md:group-data-[solid=false]/nav:text-white md:group-data-[solid=false]/nav:hover:text-sky-200"
-            aria-expanded="false"
-            aria-haspopup="true"
-            aria-controls="visitors-submenu"
-          >
-            Visitors
-            <svg class="h-4 w-4 transition-transform duration-200" data-nav-dropdown-icon viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-              <path d="m6 9 6 6 6-6"></path>
-            </svg>
-          </button>
-          <ul
-            id="visitors-submenu"
-            data-nav-dropdown-menu
-            class="absolute left-0 top-full z-10 mt-3 hidden min-w-44 rounded-xl bg-white p-2 text-slate-800 shadow-lg ring-1 ring-black/5 max-md:static max-md:mt-0 max-md:min-w-0 max-md:overflow-hidden max-md:rounded-none max-md:bg-black/20 max-md:px-6 max-md:py-0 max-md:text-white max-md:shadow-none max-md:ring-0"
-          >
-            <li>
-              <a href="/visitors/" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[#f4efe9] hover:text-sky-700 max-md:px-0 max-md:py-3 max-md:text-white/80 max-md:hover:bg-transparent max-md:hover:text-sky-300">Visitors</a>
-            </li>
-            <li>
-              <a href="/hotels/" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[#f4efe9] hover:text-sky-700 max-md:px-0 max-md:py-3 max-md:text-white/80 max-md:hover:bg-transparent max-md:hover:text-sky-300">Hotels</a>
-            </li>
-            <li>
-              <a href="/activities/" class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[#f4efe9] hover:text-sky-700 max-md:px-0 max-md:py-3 max-md:text-white/80 max-md:hover:bg-transparent max-md:hover:text-sky-300">Activities</a>
-            </li>
-          </ul>
-        </li>
       </ul>
 
       <!-- Buscar Formulario -->

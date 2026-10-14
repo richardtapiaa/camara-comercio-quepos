@@ -8,7 +8,14 @@ const marco = "relative overflow-hidden";
 const parallax = "absolute inset-x-0 -top-full h-[200%] w-full max-w-none object-cover will-change-transform";
 ---
 
-<section id="vision" data-end-pin="#objetivos" class="panel pinned overflow-x-clip bg-[#E8F4FA] py-16 sm:py-24">
+<!-- Queda fijo (sticky nativo, sin saltos) mientras Objetivos se desliza por encima; si es más alto que la
+     pantalla se fija al verse completo hasta su final. --alto-panel lo actualiza PanelesScripts -->
+<section
+  id="vision"
+  data-panel-sticky
+  class="panel sticky overflow-x-clip bg-[#E8F4FA] py-16 sm:py-24"
+  style="top: min(0px, calc(100svh - var(--alto-panel, 100svh)))"
+>
   <div class="mx-auto grid max-w-6xl items-center gap-10 px-6 md:grid-cols-12 md:gap-y-16">
     <!-- Sale del contenedor hasta el borde izquierdo de la pantalla -->
     <div class={`${marco} -ml-[calc(max(0px,(100vw_-_72rem)/2)+1.5rem)] aspect-[16/9] rounded-r-2xl md:col-span-7 md:aspect-[3/1]`}>

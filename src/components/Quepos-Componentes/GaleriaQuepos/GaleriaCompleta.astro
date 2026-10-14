@@ -19,14 +19,16 @@ const items = [
 ];
 ---
 
-<section id="galeria-completa" class="bg-white px-6 py-16 sm:py-24">
-  <div class="mx-auto max-w-7xl">
-    <h2 class="text-center font-serif text-4xl font-bold uppercase tracking-tight text-slate-900 sm:text-5xl">
-      Galería de Quepos
-    </h2>
-    <p class="mx-auto mt-4 max-w-2xl text-center text-slate-600">
-      Descubre nuestro cantón, su naturaleza y la comunidad que lo hace especial.
-    </p>
-    <GaleriaQuepos client:load items={items} className="mt-10" />
+<section id="galeria-completa" class="w-full self-start bg-white">
+  <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6">
+    <header class="mb-16 space-y-4">
+      <h2 class="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">Galería de Quepos</h2>
+      <p class="max-w-2xl text-lg text-slate-600 sm:text-xl">
+        Descubre nuestro cantón, su naturaleza y la comunidad que lo hace especial. Toca cualquier imagen para
+        ampliarla y arrastra hacia arriba o abajo para cerrarla.
+      </p>
+    </header>
+
+    <GaleriaQuepos client:load items={items} />
   </div>
 </section>

@@ -4,6 +4,14 @@
 
   gsap.registerPlugin(ScrollTrigger);
 
+  // Paneles con sticky nativo: su alto define el "top" con el que se fijan (ver Vision.astro)
+  document.querySelectorAll<HTMLElement>("[data-panel-sticky]").forEach((panel) => {
+    new ResizeObserver(() => {
+      panel.style.setProperty("--alto-panel", panel.offsetHeight + "px");
+      ScrollTrigger.refresh();
+    }).observe(panel);
+  });
+
  
   const sinReducirMovimiento = "(prefers-reduced-motion: no-preference)";
 
