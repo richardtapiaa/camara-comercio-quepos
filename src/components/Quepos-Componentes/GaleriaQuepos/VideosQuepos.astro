@@ -1,0 +1,18 @@
+---
+import { VideoPlayer } from "../../ReactComponentes/QUEPOS/VideosQuepos";
+import videoQuepos from "../../../assets/quepos-videos/video-en.mp4";
+---
+
+<section id="videos-quepos" class="bg-white px-6 py-16 sm:py-24">
+  <div class="mx-auto max-w-7xl">
+    <h2 class="text-center font-serif text-4xl font-bold uppercase tracking-tight text-slate-900 sm:text-5xl">
+      Videos de Quepos
+    </h2>
+    <p class="mx-auto mt-4 max-w-2xl text-center text-slate-600">
+      Conozca Quepos en movimiento: sus paisajes, su gente y su comercio.
+    </p>
+    <div class="mt-10 flex justify-center">
+      <VideoPlayer client:visible src={videoQuepos} size="lg" className="aspect-video rounded-2xl" preload="metadata" playsInline />
+    </div>
+  </div>
+</section>

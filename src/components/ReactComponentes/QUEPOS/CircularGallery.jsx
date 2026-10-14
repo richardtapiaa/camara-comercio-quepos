@@ -16,7 +16,7 @@ const CLASSES = {
   caption: 'pointer-events-none absolute left-1/2 top-0 w-[min(90%,36rem)] text-center opacity-0',
   captionText: 'm-0 leading-[1.5] opacity-65',
   close:
-    'pointer-events-none absolute right-3 top-3 grid h-10 w-10 cursor-pointer place-items-center rounded-full border-0 bg-transparent p-0 text-inherit opacity-0 transition-opacity duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current focus-visible:outline-solid data-[visible]:pointer-events-auto data-[visible]:opacity-80 data-[visible]:hover:opacity-100',
+    'pointer-events-none absolute right-3 top-3 z-10 grid h-11 w-11 cursor-pointer place-items-center rounded-full border-0 bg-black/60 p-0 text-white opacity-0 shadow-lg backdrop-blur-sm transition-opacity duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-700 focus-visible:outline-solid sm:right-5 sm:top-5 data-[visible]:pointer-events-auto data-[visible]:opacity-90 data-[visible]:hover:opacity-100',
   hidden: 'sr-only'
 };
 const STEPS = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
@@ -967,7 +967,10 @@ const CircularGallery = ({
 
     const onAnyPointer = event => {
       typing = false;
-      if (!container.contains(event.target)) wheelActive = false;
+      if (container.contains(event.target)) return;
+      wheelActive = false;
+      // Tocar o hacer clic fuera de la galería cierra la imagen abierta
+      if (state.openTarget > 0) close();
     };
 
     const onFocusOut = event => {
@@ -1080,10 +1083,10 @@ const CircularGallery = ({
         data-gallery-close=""
         data-visible={open ? '' : undefined}
         tabIndex={open ? 0 : -1}
-        aria-label="Close"
+        aria-label="Cerrar imagen"
         onClick={() => engineRef.current?.close()}
       >
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 18 18" fill="none" aria-hidden="true">
           <path d="M4 4l10 10M14 4L4 14" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
         </svg>
       </button>

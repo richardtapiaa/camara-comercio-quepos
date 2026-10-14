@@ -5,25 +5,24 @@
   const hero = document.getElementById("hero");
   const toggle = document.getElementById("nav-toggle");
   const menu = document.getElementById("nav-menu");
-  const dropdown = document.querySelector<HTMLElement>("[data-nav-dropdown]");
-  const dropdownToggle = document.querySelector<HTMLButtonElement>(
-    "[data-nav-dropdown-toggle]"
-  );
-  const dropdownMenu = document.querySelector<HTMLElement>(
-    "[data-nav-dropdown-menu]"
-  );
-  const dropdownIcon = document.querySelector<SVGElement>(
-    "[data-nav-dropdown-icon]"
-  );
+  // Puede haber varios menús desplegables (Quepos, Visitors...)
+  const dropdowns = Array.from(document.querySelectorAll<HTMLElement>("[data-nav-dropdown]")).map((root) => ({
+    root,
+    toggle: root.querySelector<HTMLButtonElement>("[data-nav-dropdown-toggle]"),
+    menu: root.querySelector<HTMLElement>("[data-nav-dropdown-menu]"),
+    icon: root.querySelector<SVGElement>("[data-nav-dropdown-icon]"),
+  }));
+  type Dropdown = (typeof dropdowns)[number];
+  const isOpen = (dropdown: Dropdown) => dropdown.toggle?.getAttribute("aria-expanded") === "true";
 
   const overlay = document.getElementById("nav-overlay");
   const closeBtn = document.getElementById("nav-close");
   const isMobile = () => window.matchMedia("(max-width: 767px)").matches;
 
-  const setDropdownOpen = (open: boolean, immediate = false) => {
+  const setDropdownOpen = (dropdown: Dropdown, open: boolean, immediate = false) => {
+    const { toggle: dropdownToggle, menu: dropdownMenu, icon: dropdownIcon } = dropdown;
     if (!dropdownToggle || !dropdownMenu) return;
-    const wasOpen = dropdownToggle.getAttribute("aria-expanded") === "true";
-    if (!open && !wasOpen) return;
+    if (!open && !isOpen(dropdown)) return;
     dropdownToggle.setAttribute("aria-expanded", String(open));
     dropdownIcon?.classList.toggle("rotate-180", open);
 
@@ -73,7 +72,7 @@
   };
 
   const closeMenu = () => {
-    setDropdownOpen(false, true);
+    dropdowns.forEach((dropdown) => setDropdownOpen(dropdown, false, true));
     menuOpen = false;
     toggle?.setAttribute("aria-expanded", "false");
     toggle?.setAttribute("aria-label", "Abrir menú");
@@ -110,13 +109,17 @@
   });
   overlay?.addEventListener("click", closeMenu);
 
-  dropdownToggle?.addEventListener("click", () => {
-    const open = dropdownToggle.getAttribute("aria-expanded") === "true";
-    setDropdownOpen(!open);
-  });
+  dropdowns.forEach((dropdown) => {
+    dropdown.toggle?.addEventListener("click", () => {
+      const open = !isOpen(dropdown);
+      // Solo uno abierto a la vez
+      if (open) dropdowns.forEach((otro) => otro !== dropdown && setDropdownOpen(otro, false, true));
+      setDropdownOpen(dropdown, open);
+    });
 
-  dropdown?.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", closeMenu);
+    dropdown.root.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", closeMenu);
+    });
   });
 
   menu?.querySelectorAll(":scope > ul > li > a").forEach((link) => {
@@ -124,20 +127,20 @@
   });
 
   document.addEventListener("click", (event) => {
-    if (!isMobile() && dropdown && !event.composedPath().includes(dropdown)) {
-      setDropdownOpen(false);
-    }
+    if (isMobile()) return;
+    dropdowns.forEach((dropdown) => {
+      if (!event.composedPath().includes(dropdown.root)) setDropdownOpen(dropdown, false);
+    });
   });
 
   
   document.addEventListener("keydown", (event) => {
     if (event.key !== "Escape") return;
     const menuOpen = toggle?.getAttribute("aria-expanded") === "true";
-    const dropdownOpen =
-      dropdownToggle?.getAttribute("aria-expanded") === "true";
+    const dropdownOpen = dropdowns.find(isOpen);
     if (!menuOpen && !dropdownOpen) return;
     closeMenu();
-    (menuOpen ? toggle : dropdownToggle)?.focus();
+    (menuOpen ? toggle : dropdownOpen?.toggle)?.focus();
   });
 
 
