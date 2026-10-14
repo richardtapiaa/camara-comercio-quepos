@@ -141,11 +141,6 @@
   });
 
 
-  const HIDE_BUFFER = 300;
-  const DELTA = 6;
-  let lastY = window.scrollY;
-  let hidden = false;
-
   const update = () => {
     if (!header) return;
     const y = window.scrollY;
@@ -163,20 +158,10 @@
 
     if (!pastHero) {
       header.dataset.solid = "false";
-      hidden = false;
     } else {
       header.dataset.solid = "true";
-      const menuOpen = toggle?.getAttribute("aria-expanded") === "true";
-      if (menuOpen || y < heroEnd + HIDE_BUFFER) {
-        hidden = false;
-      } else if (y - lastY > DELTA) {
-        hidden = true;
-      } else if (lastY - y > DELTA) {
-        hidden = false;
-      }
     }
-    header.dataset.hidden = String(hidden);
-    if (Math.abs(y - lastY) > DELTA || !pastHero) lastY = y;
+    header.dataset.hidden = "false";
   };
 
   window.addEventListener("scroll", update, { passive: true });
