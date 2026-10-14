@@ -76,14 +76,15 @@ const FurmulairoContacto = ({ onSubmit }: Props) => {
 
   return (
     <div className="relative grid min-h-[42rem] w-full overflow-hidden bg-white pt-24 lg:pt-28 lg:grid-cols-[0.82fr_1.18fr]">
-      <aside className="relative z-10 order-2 min-h-[42rem] overflow-hidden bg-white text-white lg:order-2">
+      <aside className="relative z-10 order-1 min-h-[42rem] overflow-hidden bg-white text-white lg:order-1">
         <svg
-          className="pointer-events-none absolute -left-px -top-px h-[calc(100%+2px)] w-[calc(100%+2px)]"
+          className="pointer-events-none absolute -left-px -top-px h-[calc(100%+2px)] w-[calc(100%+2px)] origin-left scale-x-[1.2]"
           viewBox="0 0 500 800"
           preserveAspectRatio="none"
           aria-hidden="true"
         >
           <path
+            transform="translate(500 0) scale(-1 1)"
             d="M0 0H500V760C465 736 437 738 405 756C370 776 339 792 306 778C273 765 258 731 226 712C194 693 161 695 136 667C108 636 107 608 81 583C55 558 23 554 10 520C0 494 0 460 0 430V0Z"
             fill="#2780c9"
           />
@@ -113,7 +114,7 @@ const FurmulairoContacto = ({ onSubmit }: Props) => {
         </div>
       </aside>
 
-      <section className="order-1 flex items-center p-4 sm:p-8 lg:order-1 lg:p-10">
+      <section className="order-2 flex items-center p-4 sm:p-8 lg:order-2 lg:p-10">
         <div className="mx-auto w-full max-w-5xl rounded-3xl bg-white p-8 shadow-xl ring-1 ring-slate-200 sm:p-12 lg:p-14">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
             Estamos para ayudarte
