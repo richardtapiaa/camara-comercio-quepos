@@ -1,11 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/home/Navbar.astro";
-
-import Contacto from "../components/ContactoComponentes/contacto.astro";
+import FurmulairoContacto from "../components/ReactComponentes/UNETE/CONTACTO/furmulariocontacto.tsx";
 ---
 
 <Layout>
   <Navbar />
-  <Contacto />
+  <FurmulairoContacto client:load />
 </Layout>
