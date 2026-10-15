@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import checklistImage from "../../../assets/imagenes-svg-formularios/team checklist-amico.svg";
 
 type Datos = {
   nombre: string;
@@ -85,51 +84,6 @@ const FormularioUnete = ({ onSubmit }: Props) => {
   };
 
   return (
-    <div className="relative grid min-h-[42rem] w-full overflow-hidden bg-white pt-24 lg:pt-28 lg:grid-cols-[0.82fr_1.18fr]">
-      <aside className="panel-wave relative z-10 min-h-[42rem] overflow-hidden bg-white text-white">
-          <svg
-            className="pointer-events-none absolute -left-px -top-px h-[calc(100%+2px)] w-[calc(100%+2px)]"
-            viewBox="0 0 500 800"
-            preserveAspectRatio="none"
-            aria-hidden="true"
-          >
-            <path
-              transform="translate(500 0) scale(-1 1)"
-              d="M0 0H500V760C465 736 437 738 405 756C370 776 339 792 306 778C273 765 258 731 226 712C194 693 161 695 136 667C108 636 107 608 81 583C55 558 23 554 10 520C0 494 0 460 0 430V0Z"
-              fill="#2780c9"
-            />
-          </svg>
-          <div className="relative z-10 p-6 pl-12 pt-5 sm:p-10 sm:pl-16 sm:pt-8 lg:p-12 lg:pl-20 lg:pt-10">
-            <img
-              src={checklistImage.src}
-              alt="Personas revisando una lista de tareas"
-              className="mx-auto mb-4 w-full max-w-[17rem] sm:max-w-[19rem]"
-            />
-            <h2 className="text-3xl font-bold uppercase leading-tight sm:text-4xl">
-              Beneficios
-            </h2>
-            <p className="mt-2 text-xl font-semibold">Al ser parte de nosotros</p>
-            <ul className="mt-4 space-y-2 border-t border-white/30 pt-4 text-sm leading-6 text-white/90 sm:text-base">
-              <li className="flex gap-3">
-                <span aria-hidden="true">•</span>
-                <span>Ser parte de un círculo de empresarios exitosos.</span>
-              </li>
-              <li className="flex gap-3">
-                <span aria-hidden="true">•</span>
-                <span>Intermediación en diálogos y posibilidades de tratos comerciales.</span>
-              </li>
-              <li className="flex gap-3">
-                <span aria-hidden="true">•</span>
-                <span>Oportunidades de Negocio</span>
-              </li>
-              <li className="flex gap-3">
-                <span aria-hidden="true">•</span>
-                <span>Beneficios para su empresa</span>
-              </li>
-            </ul>
-          </div>
-      </aside>
-
       <section className="flex items-center p-4 sm:p-8 lg:p-10">
           <div className="mx-auto w-full max-w-5xl rounded-3xl bg-white p-8 shadow-xl ring-1 ring-slate-200 sm:p-12 lg:p-14">
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
@@ -286,7 +240,6 @@ const FormularioUnete = ({ onSubmit }: Props) => {
             </form>
           </div>
       </section>
-    </div>
   );
 };
 

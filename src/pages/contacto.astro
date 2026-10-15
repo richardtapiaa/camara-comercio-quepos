@@ -1,10 +1,12 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/home/Navbar.astro";
-import FurmulairoContacto from "../components/ReactComponentes/UNETE/CONTACTO/furmulariocontacto.tsx";
+
+// Panel de Contáctanos + formulario
+import FormularioContacto from "../components/ContactoComponentes/FormularioContacto.astro";
 ---
 
 <Layout>
   <Navbar />
-  <FurmulairoContacto client:load />
+  <FormularioContacto />
 </Layout>

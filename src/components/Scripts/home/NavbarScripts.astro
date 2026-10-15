@@ -153,9 +153,13 @@
     const heroRef = hero?.parentElement?.classList.contains("pin-spacer")
       ? hero.parentElement
       : hero;
+    // Se saltan <script>/<style>: no ocupan lugar y en desarrollo Astro los deja justo después del Hero
+    let siguiente = heroRef?.nextElementSibling ?? null;
+    while (siguiente && ["SCRIPT", "STYLE", "TEMPLATE", "LINK"].includes(siguiente.tagName)) {
+      siguiente = siguiente.nextElementSibling;
+    }
     const heroEnd = heroRef
-      ? (heroRef.nextElementSibling ?? heroRef).getBoundingClientRect()[heroRef.nextElementSibling ? "top" : "bottom"] +
-        window.scrollY
+      ? (siguiente ?? heroRef).getBoundingClientRect()[siguiente ? "top" : "bottom"] + window.scrollY
       : 0;
     const pastHero = y >= heroEnd - header.offsetHeight;
 

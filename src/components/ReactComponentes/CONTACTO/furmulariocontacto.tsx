@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import contactImage from "../../../../assets/imagenes-svg-formularios/imagen-contacto.svg";
 
 type DatosContacto = {
   nombre: string;
@@ -75,45 +74,6 @@ const FurmulairoContacto = ({ onSubmit }: Props) => {
   };
 
   return (
-    <div className="relative grid min-h-[42rem] w-full overflow-hidden bg-white pt-24 lg:pt-28 lg:grid-cols-[0.82fr_1.18fr]">
-      <aside className="relative z-10 order-1 min-h-[42rem] overflow-hidden bg-white text-white lg:order-1">
-        <svg
-          className="pointer-events-none absolute -left-px -top-px h-[calc(100%+2px)] w-[calc(100%+2px)] origin-left scale-x-[1.2]"
-          viewBox="0 0 500 800"
-          preserveAspectRatio="none"
-          aria-hidden="true"
-        >
-          <path
-            transform="translate(500 0) scale(-1 1)"
-            d="M0 0H500V760C465 736 437 738 405 756C370 776 339 792 306 778C273 765 258 731 226 712C194 693 161 695 136 667C108 636 107 608 81 583C55 558 23 554 10 520C0 494 0 460 0 430V0Z"
-            fill="#2780c9"
-          />
-        </svg>
-        <div className="relative z-10 flex flex-col items-end p-6 pt-5 text-right sm:p-10 sm:pt-8 lg:p-12 lg:pt-10">
-          <img
-            src={contactImage.src}
-            alt="Personas comunicándose con el equipo de atención"
-            className="mb-4 w-full max-w-[24rem] self-start sm:max-w-[28rem] lg:-ml-16"
-          />
-          <h2 className="-mt-36 text-3xl font-bold uppercase leading-tight sm:text-4xl">Contáctanos</h2>
-          <p className="mt-2 text-xl font-semibold">Estamos para ayudarte</p>
-          <ul className="mt-4 w-full space-y-2 border-t border-white/30 pt-4 text-sm leading-6 text-white/90 sm:text-base">
-            <li className="flex justify-end gap-3">
-              <span>Envíanos tus consultas y comentarios.</span>
-              <span aria-hidden="true">•</span>
-            </li>
-            <li className="flex justify-end gap-3">
-              <span>Te responderemos lo antes posible.</span>
-              <span aria-hidden="true">•</span>
-            </li>
-            <li className="flex justify-end gap-3">
-              <span>Estamos disponibles para atenderte.</span>
-              <span aria-hidden="true">•</span>
-            </li>
-          </ul>
-        </div>
-      </aside>
-
       <section className="order-2 flex items-center p-4 sm:p-8 lg:order-2 lg:p-10">
         <div className="mx-auto w-full max-w-5xl rounded-3xl bg-white p-8 shadow-xl ring-1 ring-slate-200 sm:p-12 lg:p-14">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
@@ -217,7 +177,6 @@ const FurmulairoContacto = ({ onSubmit }: Props) => {
           </form>
         </div>
       </section>
-    </div>
   );
 };
 

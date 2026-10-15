@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import imagen from "../../assets/imagenes/vision-seccion.jpg";
+import ilustracion from "../../assets/imagenes-inicio-svg/vision-asosiados.svg";
 import secundaria from "../../assets/imagenes/seccion-ejemplo.jpg";
 import MisionScripts from "../Scripts/home/MisionScripts.astro";
 
@@ -17,9 +17,16 @@ const parallax = "absolute inset-x-0 -top-full h-[200%] w-full max-w-none object
   style="top: min(0px, calc(100svh - var(--alto-panel, 100svh)))"
 >
   <div class="mx-auto grid max-w-6xl items-center gap-10 px-6 md:grid-cols-12 md:gap-y-16">
-    <!-- Sale del contenedor hasta el borde izquierdo de la pantalla -->
-    <div class={`${marco} -ml-[calc(max(0px,(100vw_-_72rem)/2)+1.5rem)] aspect-[16/9] rounded-r-2xl md:col-span-7 md:aspect-[3/1]`}>
-      <Image src={imagen} alt="Visión de la Cámara de Comercio de Quepos" class={parallax} data-parallax-img />
+    <!-- Ilustración completa (sin recorte ni parallax) -->
+    <div class="flex justify-center md:col-span-7">
+      <img
+        src={ilustracion.src}
+        width={ilustracion.width}
+        height={ilustracion.height}
+        alt="Visión de la Cámara de Comercio de Quepos"
+        class="h-auto w-full max-w-sm md:max-w-md"
+        loading="lazy"
+      />
     </div>
 
     <div class="md:col-span-5 md:pl-6">
@@ -36,11 +43,7 @@ const parallax = "absolute inset-x-0 -top-full h-[200%] w-full max-w-none object
       </p>
     </div>
 
-    <div class="md:col-span-3 md:col-start-9">
-      <div class={`${marco} aspect-[10/9] rounded-2xl`}>
-        <Image src={secundaria} alt="Quepos" class={parallax} data-parallax-img />
-      </div>
-    </div>
+   
   </div>
 </section>
 

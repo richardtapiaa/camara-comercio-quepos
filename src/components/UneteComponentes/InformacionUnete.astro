@@ -1,0 +1,43 @@
+---
+import checklistImage from "../../assets/imagenes-svg-formularios/team checklist-amico.svg";
+
+const beneficios = [
+  "Ser parte de un círculo de empresarios exitosos.",
+  "Intermediación en diálogos y posibilidades de tratos comerciales.",
+  "Oportunidades de Negocio",
+  "Beneficios para su empresa",
+];
+---
+
+<aside class="panel-wave relative z-10 min-h-[42rem] overflow-hidden bg-white text-white">
+  <svg
+    class="pointer-events-none absolute -left-px -top-px h-[calc(100%+2px)] w-[calc(100%+2px)]"
+    viewBox="0 0 500 800"
+    preserveAspectRatio="none"
+    aria-hidden="true"
+  >
+    <path
+      transform="translate(500 0) scale(-1 1)"
+      d="M0 0H500V760C465 736 437 738 405 756C370 776 339 792 306 778C273 765 258 731 226 712C194 693 161 695 136 667C108 636 107 608 81 583C55 558 23 554 10 520C0 494 0 460 0 430V0Z"
+      fill="#2780c9"></path>
+  </svg>
+  <div class="relative z-10 p-6 pl-12 pt-5 sm:p-10 sm:pl-16 sm:pt-8 lg:p-12 lg:pl-20 lg:pt-10">
+    <img
+      src={checklistImage.src}
+      alt="Personas revisando una lista de tareas"
+      class="mx-auto mb-4 w-full max-w-[17rem] sm:max-w-[19rem]"
+    />
+    <h2 class="text-3xl font-bold uppercase leading-tight sm:text-4xl">Beneficios</h2>
+    <p class="mt-2 text-xl font-semibold">Al ser parte de nosotros</p>
+    <ul class="mt-4 space-y-2 border-t border-white/30 pt-4 text-sm leading-6 text-white/90 sm:text-base">
+      {
+        beneficios.map((beneficio) => (
+          <li class="flex gap-3">
+            <span aria-hidden="true">•</span>
+            <span>{beneficio}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</aside>
