@@ -20,9 +20,7 @@ const items = await Promise.all(
 ---
 
 <section id="galeria-quepos" class="bg-white py-16 sm:py-24">
-  <h2 class="px-6 text-center font-serif text-4xl font-normal uppercase tracking-[0.12em] text-neutral-700 sm:text-5xl lg:text-6xl">
-    Conozca Quepos
-  </h2>
+  
   <div class="mt-8 h-[420px] w-full sm:h-[520px] lg:h-[600px]">
     <CircularGallery client:visible items={items} showTitles={false} wheelOnClick bend={3} borderRadius={0.05} scrollSpeed={2} scrollEase={0.05} />
   </div>
