@@ -19,13 +19,15 @@ const objetivos = [
   <div class="mx-auto max-w-6xl px-6">
     <header class="mx-auto max-w-2xl text-center">
      
-      <h2 class="mt-3 font-serif text-3xl font-bold uppercase tracking-tight text-neutral-700 sm:text-4xl">Objetivos específicos de la Cámara</h2>
+      <h2 class="mt-3 font-serif text-3xl font-bold uppercase tracking-tight text-neutral-700 sm:text-4xl">Beneficios para el afiliado</h2>
       
     </header>
 
-    <div class="mt-14">
-      <ObjetivosCards client:load objetivos={objetivos} />
-    </div>
+  </div>
+
+  <!-- Ocupa todo el ancho (fuera del max-w) para que se vean las tarjetas de los lados, como en el demo -->
+  <div class="flex h-screen w-full items-center justify-center">
+    <ObjetivosCards client:load objetivos={objetivos} />
   </div>
 
 </section>
