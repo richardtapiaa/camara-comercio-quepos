@@ -1,5 +1,5 @@
 import * as React from "react";
-import { motion, AnimatePresence, type Transition } from "framer-motion";
+import { motion, AnimatePresence, useIsPresent, type Transition } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
@@ -94,15 +94,21 @@ export function Gallery({ children, images = [] }: { children: React.ReactNode; 
     });
   }, [selectedImage, images]);
 
-  // Bloquea el scroll de la página mientras el modal está abierto
+  // Bloquea el scroll de la página mientras el modal está abierto. Se reserva el ancho de la barra de scroll:
+  // si no, al quitarla y volver a ponerla el mosaico se reacomoda y la foto vuelve a un lugar que se movió
+  const abierto = selectedImage !== null;
   React.useEffect(() => {
-    if (!selectedImage) return;
-    const anterior = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    if (!abierto) return;
+    const { body } = document;
+    const anterior = { overflow: body.style.overflow, paddingRight: body.style.paddingRight };
+    const barra = window.innerWidth - document.documentElement.clientWidth;
+    body.style.overflow = "hidden";
+    if (barra > 0) body.style.paddingRight = `${parseFloat(getComputedStyle(body).paddingRight) + barra}px`;
     return () => {
-      document.body.style.overflow = anterior;
+      body.style.overflow = anterior.overflow;
+      body.style.paddingRight = anterior.paddingRight;
     };
-  }, [selectedImage]);
+  }, [abierto]);
 
   return (
     <GalleryContext.Provider
@@ -186,135 +192,150 @@ export function GalleryImage({
 
 function GalleryModal() {
   const context = React.useContext(GalleryContext);
-  // El navegador lanza "click" al soltar aunque se haya arrastrado; así se distingue un toque de un deslizamiento
-  const huboArrastre = React.useRef(false);
   if (!context) return null;
 
-  const { selectedImage, setSelectedImage, images, navegar, direccion, navegado } = context;
-  const posicion = selectedImage ? images.findIndex((img) => img.id === selectedImage.id) : -1;
+  const { selectedImage, direccion, navegado } = context;
+
+  return (
+    <AnimatePresence>
+      {/* Se pasan como props: al cerrar, la vista que sale conserva la última imagen mientras se anima */}
+      {selectedImage && <VistaAmpliada key="vista" imagen={selectedImage} direccion={direccion} navegado={navegado} />}
+    </AnimatePresence>
+  );
+}
+
+function VistaAmpliada({ imagen, direccion, navegado }: { imagen: ImageData; direccion: number; navegado: boolean }) {
+  const { setSelectedImage, images, navegar } = React.useContext(GalleryContext)!;
+  // Mientras se anima el cierre la vista sigue montada; sin esto su capa transparente tapaba la página
+  // y no se podía hacer clic ni scroll hasta que terminaba
+  const presente = useIsPresent();
+  // El navegador lanza "click" al soltar aunque se haya arrastrado; así se distingue un toque de un deslizamiento
+  const huboArrastre = React.useRef(false);
+
+  const posicion = images.findIndex((img) => img.id === imagen.id);
   const conVarias = images.length > 1;
   const botonClase =
     "absolute z-50 p-2.5 bg-white/10 text-white rounded-full backdrop-blur-md hover:bg-white/20 transition-colors";
 
   return (
-    <AnimatePresence>
-      {selectedImage && (
-        // z-[70]: por encima del Navbar (z-50) y su menú móvil (z-[60])
-        <div className="fixed inset-0 z-[70] flex items-center justify-center" role="dialog" aria-modal="true">
-          {/* Fondo de vidrio esmerilado */}
-          <motion.div
+    // z-[70]: por encima del Navbar (z-50) y su menú móvil (z-[60])
+    <div
+      className={cn("fixed inset-0 z-[70] flex items-center justify-center", !presente && "pointer-events-none")}
+      role="dialog"
+      aria-modal="true"
+    >
+      {/* Fondo de vidrio esmerilado */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3 }}
+        className="absolute inset-0 bg-black/80 backdrop-blur-2xl"
+        onClick={() => setSelectedImage(null)}
+      />
+
+      {/* Contenedor del gesto de arrastre: horizontal cambia de imagen, vertical cierra */}
+      <motion.div
+        className="relative z-10 w-full h-full flex items-center justify-center cursor-zoom-out"
+        drag={conVarias ? true : "y"}
+        dragDirectionLock
+        dragConstraints={{ top: 0, bottom: 0, left: 0, right: 0 }}
+        dragElastic={0.8}
+        onPointerDown={() => {
+          huboArrastre.current = false;
+        }}
+        onDragStart={() => {
+          huboArrastre.current = true;
+        }}
+        onDragEnd={(_, info) => {
+          const horizontal = Math.abs(info.offset.x) > Math.abs(info.offset.y);
+          if (horizontal) {
+            if (Math.abs(info.offset.x) > 80 || Math.abs(info.velocity.x) > 400) navegar(info.offset.x < 0 ? 1 : -1);
+          } else if (Math.abs(info.offset.y) > 100 || Math.abs(info.velocity.y) > 300) {
+            // Se cierra si se arrastró lo suficiente o con suficiente velocidad
+            setSelectedImage(null);
+          }
+        }}
+        // Un toque cierra; al terminar de deslizar no, así cambiar de imagen no cierra la vista
+        onClick={() => {
+          if (!huboArrastre.current) setSelectedImage(null);
+        }}
+      >
+        <AnimatePresence initial={false} custom={direccion} mode="popLayout">
+          {/* Al abrir es el elemento compartido con la miniatura; al cambiar de imagen se desliza */}
+          <motion.img
+            key={imagen.id}
+            layoutId={navegado ? undefined : `image-${imagen.id}`}
+            src={imagen.src}
+            alt={imagen.alt || "Imagen ampliada de la galería"}
+            className="w-auto h-auto max-w-[95vw] max-h-[80vh] sm:max-w-[calc(100vw-9rem)] rounded-2xl shadow-2xl object-contain will-change-transform"
+            draggable={false} // Evita el arrastre nativo para que funcione el de framer-motion
+            custom={direccion}
+            variants={deslizar}
+            initial="entrar"
+            animate="centro"
+            exit="salir"
+            transition={navegado ? { x: spring, opacity: { duration: 0.2 } } : spring}
+          />
+        </AnimatePresence>
+      </motion.div>
+
+      {conVarias && (
+        <>
+          {/* Anterior / siguiente */}
+          <motion.button
+            type="button"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="absolute inset-0 bg-black/80 backdrop-blur-2xl"
-            onClick={() => setSelectedImage(null)}
-          />
-
-          {/* Contenedor del gesto de arrastre: horizontal cambia de imagen, vertical cierra */}
-          <motion.div
-            className="relative z-10 w-full h-full flex items-center justify-center cursor-zoom-out"
-            drag={conVarias ? true : "y"}
-            dragDirectionLock
-            dragConstraints={{ top: 0, bottom: 0, left: 0, right: 0 }}
-            dragElastic={0.8}
-            onPointerDown={() => {
-              huboArrastre.current = false;
-            }}
-            onDragStart={() => {
-              huboArrastre.current = true;
-            }}
-            onDragEnd={(_, info) => {
-              const horizontal = Math.abs(info.offset.x) > Math.abs(info.offset.y);
-              if (horizontal) {
-                if (Math.abs(info.offset.x) > 80 || Math.abs(info.velocity.x) > 400) navegar(info.offset.x < 0 ? 1 : -1);
-              } else if (Math.abs(info.offset.y) > 100 || Math.abs(info.velocity.y) > 300) {
-                // Se cierra si se arrastró lo suficiente o con suficiente velocidad
-                setSelectedImage(null);
-              }
-            }}
-            // Un toque cierra; al terminar de deslizar no, así cambiar de imagen no cierra la vista
-            onClick={() => {
-              if (!huboArrastre.current) setSelectedImage(null);
-            }}
+            transition={{ delay: 0.1, duration: 0.2 }}
+            className={cn(botonClase, "left-3 top-1/2 -translate-y-1/2 sm:left-6")}
+            onClick={() => navegar(-1)}
+            aria-label="Imagen anterior"
           >
-            <AnimatePresence initial={false} custom={direccion} mode="popLayout">
-              {/* Al abrir es el elemento compartido con la miniatura; al cambiar de imagen se desliza */}
-              <motion.img
-                key={selectedImage.id}
-                layoutId={navegado ? undefined : `image-${selectedImage.id}`}
-                src={selectedImage.src}
-                alt={selectedImage.alt || "Imagen ampliada de la galería"}
-                className="w-auto h-auto max-w-[95vw] max-h-[80vh] sm:max-w-[calc(100vw-9rem)] rounded-2xl shadow-2xl object-contain will-change-transform"
-                draggable={false} // Evita el arrastre nativo para que funcione el de framer-motion
-                custom={direccion}
-                variants={deslizar}
-                initial="entrar"
-                animate="centro"
-                exit="salir"
-                transition={navegado ? { x: spring, opacity: { duration: 0.2 } } : spring}
-              />
-            </AnimatePresence>
-          </motion.div>
-
-          {conVarias && (
-            <>
-              {/* Anterior / siguiente */}
-              <motion.button
-                type="button"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ delay: 0.1, duration: 0.2 }}
-                className={cn(botonClase, "left-3 top-1/2 -translate-y-1/2 sm:left-6")}
-                onClick={() => navegar(-1)}
-                aria-label="Imagen anterior"
-              >
-                <ChevronLeft className="w-6 h-6" />
-              </motion.button>
-              <motion.button
-                type="button"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ delay: 0.1, duration: 0.2 }}
-                className={cn(botonClase, "right-3 top-1/2 -translate-y-1/2 sm:right-6")}
-                onClick={() => navegar(1)}
-                aria-label="Imagen siguiente"
-              >
-                <ChevronRight className="w-6 h-6" />
-              </motion.button>
-
-              {/* Contador */}
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ delay: 0.1, duration: 0.2 }}
-                className="absolute bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-full bg-white/10 px-3 py-1 text-sm text-white backdrop-blur-md"
-                aria-live="polite"
-              >
-                {posicion + 1} / {images.length}
-              </motion.p>
-            </>
-          )}
-
-          {/* Botón cerrar */}
+            <ChevronLeft className="w-6 h-6" />
+          </motion.button>
           <motion.button
             type="button"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{ delay: 0.1, duration: 0.2 }}
-            className={cn(botonClase, "top-6 right-6")}
-            onClick={() => setSelectedImage(null)}
-            aria-label="Cerrar galería"
+            className={cn(botonClase, "right-3 top-1/2 -translate-y-1/2 sm:right-6")}
+            onClick={() => navegar(1)}
+            aria-label="Imagen siguiente"
           >
-            <X className="w-5 h-5" />
+            <ChevronRight className="w-6 h-6" />
           </motion.button>
-        </div>
+
+          {/* Contador */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ delay: 0.1, duration: 0.2 }}
+            className="absolute bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-full bg-white/10 px-3 py-1 text-sm text-white backdrop-blur-md"
+            aria-live="polite"
+          >
+            {posicion + 1} / {images.length}
+          </motion.p>
+        </>
       )}
-    </AnimatePresence>
+
+      {/* Botón cerrar */}
+      <motion.button
+        type="button"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        transition={{ delay: 0.1, duration: 0.2 }}
+        className={cn(botonClase, "top-6 right-6")}
+        onClick={() => setSelectedImage(null)}
+        aria-label="Cerrar galería"
+      >
+        <X className="w-5 h-5" />
+      </motion.button>
+    </div>
   );
 }
 

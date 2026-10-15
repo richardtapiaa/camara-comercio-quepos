@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import imagen from "../../assets/imagenes/mision-seccion.jpg";
-import panoramica from "../../assets/imagenes/fondo-inicio-queposx.webp";
+import ilustracion from "../../assets/imagenes-inicio-svg/mision-asociados.svg";
 import MisionScripts from "../Scripts/home/MisionScripts.astro";
 
 const marco = "relative overflow-hidden";
@@ -13,9 +13,16 @@ const parallax = "absolute inset-x-0 -top-full h-[200%] w-full max-w-none object
      posiciones de medio pixel se asomaba como una raya entre Misión y Visión -->
 <section id="mision" class="panel relative z-10 flex min-h-svh flex-col justify-center overflow-x-clip rounded-t-[40px] bg-[#E8F4FA] py-16 shadow-[0_-25px_40px_-25px_rgba(0,0,0,0.45),0_1px_0_#E8F4FA] sm:py-24">
   <div class="mx-auto grid w-full max-w-6xl items-center gap-10 px-6 md:grid-cols-12 md:gap-y-16">
-    <!-- Sale del contenedor hasta el borde derecho de la pantalla -->
-    <div class={`${marco} -mr-[calc(max(0px,(100vw_-_72rem)/2)+1.5rem)] aspect-[16/9] rounded-l-2xl md:order-2 md:col-span-7 md:col-start-6 md:aspect-[3/1]`}>
-      <Image src={panoramica} alt="Paisaje de Quepos" class={parallax} data-parallax-img />
+    <!-- Ilustración completa (sin recorte ni parallax) -->
+    <div class="flex justify-center md:order-2 md:col-span-7 md:col-start-6">
+      <img
+        src={ilustracion.src}
+        width={ilustracion.width}
+        height={ilustracion.height}
+        alt="Asociados de la Cámara de Comercio de Quepos trabajando juntos"
+        class="h-auto w-full max-w-sm md:max-w-md"
+        loading="lazy"
+      />
     </div>
 
     <div class="md:order-1 md:col-span-5 md:col-start-1 md:pr-6">

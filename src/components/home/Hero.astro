@@ -3,8 +3,10 @@ import fondo from "../../assets/imagenes/quepos-hero.webp";
 import videoHero from "../../assets/quepos-videos/hero-quepos-inicio.mp4";
 ---
 
-<!-- Queda fijo mientras Misión se desliza por encima: escritorio con ScrollTrigger (PanelesScripts), móvil con sticky nativo (sin saltos) -->
-<section id="hero" data-end-pin="#mision" data-pin-desktop class="panel pinned sticky top-0 isolate md:relative h-svh w-full md:h-auto md:aspect-[1920/1000] overflow-hidden bg-black">
+<!-- Queda fijo mientras Misión se desliza por encima: escritorio con ScrollTrigger (PanelesScripts), móvil con sticky nativo (sin saltos).
+     Mide toda la pantalla en todos los tamaños (antes, desde md, tomaba la proporción 1920/1000 del video y quedaba
+     más bajo que la ventana, así que Misión se asomaba abajo); el video la llena con object-cover -->
+<section id="hero" data-end-pin="#mision" data-pin-desktop class="panel pinned sticky top-0 isolate md:relative h-svh w-full overflow-hidden bg-black">
   <video
     src={videoHero}
     poster={fondo.src}
@@ -17,4 +19,47 @@ import videoHero from "../../assets/quepos-videos/hero-quepos-inicio.mp4";
     aria-hidden="true"
   ></video>
   <div class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-48 bg-gradient-to-b from-black/50 to-transparent"></div>
+  <!-- Se oscurece al hacer scroll, mientras Misión se desliza por encima -->
+  <div class="pointer-events-none absolute inset-0 bg-black opacity-0" data-hero-oscuro aria-hidden="true"></div>
 </section>
+
+<style>
+  /* Lo mueve el navegador junto con el scroll (sin JS): de transparente arriba de todo a casi negro cuando
+     Misión ya cubre la pantalla, es decir, al bajar el alto del Hero (toda la pantalla) */
+  @supports (animation-timeline: scroll()) {
+    [data-hero-oscuro] {
+      animation-name: hero-oscurecer;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100svh;
+    }
+  }
+
+  @keyframes hero-oscurecer {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 0.75;
+    }
+  }
+</style>
+
+<script>
+  // Navegadores sin scroll-driven animations (p. ej. Firefox): mismo efecto con JS
+  if (!CSS.supports("animation-timeline: scroll()")) {
+    const hero = document.getElementById("hero");
+    const capa = document.querySelector<HTMLElement>("[data-hero-oscuro]");
+    if (hero && capa) {
+      let cuadro = 0;
+      const actualizar = () => {
+        cuadro = 0;
+        const progreso = Math.min(1, Math.max(0, window.scrollY / hero.offsetHeight));
+        capa.style.opacity = String(progreso * 0.75);
+      };
+      window.addEventListener("scroll", () => (cuadro ||= requestAnimationFrame(actualizar)), { passive: true });
+      actualizar();
+    }
+  }
+</script>

@@ -1,10 +1,12 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/home/Navbar.astro";
-import Bolsa from "../components/BOLSA_EMPLEO/bolsa.tsx";
+
+// Panel de Bolsa de empleo + formulario
+import FormularioBolsa from "../components/BolsaEmpleoComponentes/FormularioBolsa.astro";
 ---
 
 <Layout>
   <Navbar />
-  <Bolsa client:load />
+  <FormularioBolsa />
 </Layout>

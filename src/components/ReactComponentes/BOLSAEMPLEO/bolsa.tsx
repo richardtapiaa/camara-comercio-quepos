@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import bolsaImage from "../../assets/imagenes-svg-formularios/imagen-bolsaempleo.svg";
 
 type Formulario = {
   nombre: string;
@@ -134,58 +133,6 @@ const Bolsa = () => {
   };
 
   return (
-    <main className="relative grid min-h-screen w-full overflow-hidden bg-white pt-24 text-slate-800 lg:grid-cols-[0.88fr_1.12fr] lg:pt-28">
-      <aside className="relative z-10 min-h-[38rem] self-start overflow-hidden bg-transparent text-white lg:h-[68rem] lg:min-h-0">
-        <svg
-          className="pointer-events-none absolute -left-px -top-px h-[calc(100%+2px)] w-[calc(100%+2px)]"
-          viewBox="0 0 500 800"
-          preserveAspectRatio="none"
-          aria-hidden="true"
-        >
-          <path
-            className="lg:hidden"
-            d="M0 0H500V745C500 775 475 790 440 800H0V0Z"
-            fill="#2780c9"
-          />
-          <path
-            className="hidden lg:block"
-            transform="translate(500 0) scale(-1 1)"
-            d="M0 0H500V760C465 736 437 738 405 756C370 776 339 792 306 778C273 765 258 731 226 712C194 693 161 695 136 667C108 636 107 608 81 583C55 558 23 554 10 520C0 494 0 460 0 430V0Z"
-            fill="#2780c9"
-          />
-        </svg>
-        <div className="relative z-10 p-8 sm:p-12 lg:p-14">
-          <img
-            src={bolsaImage.src}
-            alt="Persona buscando una oportunidad laboral"
-            className="mx-auto mb-8 w-full max-w-[25rem] sm:max-w-[28rem] lg:max-w-[30rem]"
-          />
-          <p className="mt-8 text-xs font-semibold uppercase tracking-[0.3em] text-white/80">
-            Cámara de Comercio de Quepos
-          </p>
-          <h2 className="mt-4 text-3xl font-bold uppercase leading-tight sm:text-4xl">
-            Bolsa de empleo
-          </h2>
-          <p className="mt-4 max-w-sm text-base leading-7 text-white/90">
-            Conectamos a las personas que buscan trabajo con las oportunidades laborales de nuestros asociados.
-          </p>
-          <ul className="mt-8 space-y-3 border-t border-white/30 pt-6 text-sm leading-6 text-white/90 sm:text-base">
-            <li className="flex gap-3">
-              <span aria-hidden="true">•</span>
-              <span>Registra tu información profesional.</span>
-            </li>
-            <li className="flex gap-3">
-              <span aria-hidden="true">•</span>
-              <span>Comparte tu experiencia y estudios.</span>
-            </li>
-            <li className="flex gap-3">
-              <span aria-hidden="true">•</span>
-              <span>Permite que nuestros asociados conozcan tu perfil.</span>
-            </li>
-          </ul>
-        </div>
-      </aside>
-
       <section className="flex items-center bg-white p-4 sm:p-8 lg:p-10">
         <div className="mx-auto w-full max-w-5xl">
           <header className="mb-8">
@@ -318,7 +265,6 @@ const Bolsa = () => {
         </form>
         </div>
       </section>
-    </main>
   );
 };
 

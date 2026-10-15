@@ -1,16 +1,16 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/home/Navbar.astro";
+import TextVelocityUnete from "../components/UneteComponentes/TextVelocityUnete.astro";
 
-import FormularioUnete from "../components/ReactComponentes/UNETE/FormularioUnete.tsx";
 
-
-//import Unete from "../components/UneteComponentes/Unete.astro";
+import FormularioUnete from "../components/UneteComponentes/FormularioUnete.astro";
 ---
 
 <Layout>
   <Navbar />
-  
-  <FormularioUnete client:load />
+  <TextVelocityUnete />
+
+  <FormularioUnete />
 
 </Layout>

@@ -1,0 +1,10 @@
+---
+import InformacionContacto from "./InformacionContacto.astro";
+import FurmulairoContacto from "../ReactComponentes/CONTACTO/furmulariocontacto.tsx";
+---
+
+<!-- Panel de Contáctanos (estático) a la izquierda y formulario a la derecha -->
+<div class="relative grid min-h-[42rem] w-full overflow-hidden bg-white pt-24 lg:pt-28 lg:grid-cols-[0.82fr_1.18fr]">
+  <InformacionContacto />
+  <FurmulairoContacto client:load />
+</div>
