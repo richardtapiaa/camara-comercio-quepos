@@ -5,7 +5,7 @@
   const hero = document.getElementById("hero");
   const toggle = document.getElementById("nav-toggle");
   const menu = document.getElementById("nav-menu");
-  // Puede haber varios menús desplegables (Quepos, Visitors...)
+  // Puede haber varios menús desplegables (Quepos...)
   const dropdowns = Array.from(document.querySelectorAll<HTMLElement>("[data-nav-dropdown]")).map((root) => ({
     root,
     toggle: root.querySelector<HTMLButtonElement>("[data-nav-dropdown-toggle]"),

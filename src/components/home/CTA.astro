@@ -1,0 +1,16 @@
+---
+import { CTAVisitantes } from "../ReactComponentes/INICIO/CTAvisitantes";
+import actividades1 from "../../assets/imagenes visitors/actividades-1.jpg";
+import actividades2 from "../../assets/imagenes visitors/actividades-2.jpg";
+import actividades3 from "../../assets/imagenes visitors/actividades-3.jpg";
+import actividades4 from "../../assets/imagenes visitors/actividades-4.jpg";
+
+const imagenesVisitantes = [
+  { src: actividades3.src, alt: "Visitantes en Quepos" },
+  { src: actividades1.src, alt: "Actividades en Quepos" },
+  { src: actividades4.src, alt: "Turismo en Quepos" },
+  { src: actividades2.src, alt: "Aventura en Quepos" },
+];
+---
+
+<CTAVisitantes client:load imagenes={imagenesVisitantes} />

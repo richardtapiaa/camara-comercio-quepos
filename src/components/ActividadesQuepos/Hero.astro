@@ -1,0 +1,26 @@
+---
+import { getImage } from "astro:assets";
+import { HeroActividades } from "../ReactComponentes/ActividadesQueposR/HeroActividades";
+import actividades1 from "../../assets/imagenes visitors/actividades-1.jpg";
+import actividades2 from "../../assets/imagenes visitors/actividades-2.jpg";
+import actividades3 from "../../assets/imagenes visitors/actividades-3.jpg";
+import actividades4 from "../../assets/imagenes visitors/actividades-4.jpg";
+import actividades5 from "../../assets/imagenes visitors/actividades-5.jpg";
+import actividades6 from "../../assets/imagenes visitors/actividades-6.jpeg";
+import heroVisitanos from "../../assets/imagenes visitors/hero-visitanos.jpg";
+
+const imagenes = [
+  { src: actividades1.src, alt: "Actividad en Quepos" },
+  { src: actividades2.src, alt: "Aventura en Quepos" },
+  { src: actividades3.src, alt: "Naturaleza de Quepos" },
+  { src: actividades4.src, alt: "Turismo en Quepos" },
+  { src: actividades5.src, alt: "Recorrido en Quepos" },
+  { src: actividades6.src, alt: "Experiencia en Quepos" },
+];
+
+// Fondo optimizado (el original pesa ~890 KB)
+const fondoOptimizado = await getImage({ src: heroVisitanos, width: 1920, format: "webp", quality: 75 });
+const fondo = { src: fondoOptimizado.src, alt: "Bahía rodeada de bosque tropical en Quepos" };
+---
+
+<HeroActividades client:load imagenes={imagenes} fondo={fondo} />
