@@ -1,0 +1,95 @@
+---
+import cursos from "../../assets/imagenes-capacitaciones-svg/Cursos.svg";
+import charlas from "../../assets/imagenes-capacitaciones-svg/charlas.svg";
+import servicioCliente from "../../assets/imagenes-capacitaciones-svg/servicio-cliente.svg";
+import talleres from "../../assets/imagenes-capacitaciones-svg/talleres.svg";
+
+const modalidades = [
+  { title: "Cursos", image: cursos, color: "#09a5df" },
+  { title: "Charlas", image: charlas, color: "#f59e0b" },
+  { title: "Servicio al cliente", image: servicioCliente, color: "#22c55e" },
+  { title: "Talleres", image: talleres, color: "#8b5cf6" },
+];
+---
+
+<main>
+  <section class="relative isolate overflow-hidden bg-[#102a43] px-6 pb-20 pt-40 text-white sm:px-10 sm:pb-28 sm:pt-48">
+    <div class="absolute -right-32 -top-32 -z-10 h-96 w-96 rounded-full bg-sky-400/20 blur-3xl"></div>
+    <div class="absolute -bottom-40 -left-20 -z-10 h-80 w-80 rounded-full bg-amber-300/10 blur-3xl"></div>
+    <div class="mx-auto max-w-6xl">
+      <div class="max-w-3xl">
+        <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-sky-200">
+          <span class="h-px w-8 bg-sky-300"></span>
+          Crecimiento empresarial
+        </span>
+        <h1 class="mt-6 max-w-2xl text-4xl font-semibold leading-tight tracking-tight sm:text-6xl">
+          Capacitaciones para fortalecer el talento local
+        </h1>
+        <p class="mt-6 max-w-2xl text-base leading-8 text-slate-200 sm:text-lg">
+          Espacios de aprendizaje que conectan a las empresas de Quepos con instituciones y profesionales de gran experiencia.
+        </p>
+      </div>
+    </div>
+    <div class="pointer-events-none absolute bottom-0 left-0 h-16 w-full bg-gradient-to-t from-[#f8fafc] to-transparent"></div>
+  </section>
+
+  <section class="bg-[#f8fafc] px-6 py-16 sm:px-10 sm:py-24">
+    <div class="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+      <div>
+        <span class="text-xs font-semibold uppercase tracking-[0.25em] text-sky-700">Nuestro compromiso</span>
+        <h2 class="mt-4 text-3xl font-semibold leading-tight tracking-tight text-slate-800 sm:text-4xl">
+          Aprender para avanzar juntos
+        </h2>
+        <div class="mt-6 h-1 w-16 rounded-full bg-amber-400"></div>
+      </div>
+
+      <div class="rounded-3xl border border-slate-200 bg-white p-7 shadow-[0_20px_60px_-35px_rgba(15,42,67,0.45)] sm:p-10">
+        <div class="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-sky-100 text-sky-700">
+          <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"></path>
+            <path d="M8 7h8M8 11h6"></path>
+          </svg>
+        </div>
+        <p class="text-lg leading-8 text-slate-700 sm:text-xl sm:leading-9">
+          La Cámara coordina capacitaciones con diferentes instituciones públicas, entre ellas el
+          <strong class="font-semibold text-slate-900">ICT</strong> y el
+          <strong class="font-semibold text-slate-900">INA</strong>, así como con profesionales del sector privado,
+          dirigidas a los colaboradores de las distintas empresas locales.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white px-6 pb-20 sm:px-10 sm:pb-28">
+    <div class="mx-auto max-w-6xl">
+      <div class="max-w-2xl">
+        <span class="text-xs font-semibold uppercase tracking-[0.25em] text-sky-700">Formación a la medida</span>
+        <h2 class="mt-3 text-3xl font-semibold tracking-tight text-slate-800 sm:text-4xl">Modalidades de aprendizaje</h2>
+      </div>
+
+      <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          modalidades.map((modalidad) => (
+            <article class="group overflow-hidden rounded-3xl p-5 text-center transition-transform duration-300 hover:-translate-y-1">
+              <div class="relative flex h-48 items-end justify-center overflow-hidden rounded-2xl">
+                <div
+                  class="absolute bottom-0 left-1/2 h-48 w-56 -translate-x-1/2 rounded-t-[999px]"
+                  style={`background-color: ${modalidad.color}`}
+                  aria-hidden="true"
+                ></div>
+                <img
+                  src={modalidad.image.src}
+                  alt=""
+                  class="relative z-10 mb-0 h-48 w-48 object-contain transition-transform duration-300 group-hover:scale-105"
+                  loading="lazy"
+                />
+              </div>
+              <h3 class="mt-5 text-lg font-semibold text-slate-800">{modalidad.title}</h3>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</main>
