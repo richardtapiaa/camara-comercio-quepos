@@ -8,7 +8,14 @@ type Desplegable = { label: string; id: string; submenu: Enlace[] };
 
 // Un elemento con "submenu" se muestra como menú desplegable
 const links: Array<Enlace | Desplegable> = [
-  { label: "La Cámara", href: "/" },
+  {
+    label: "La Cámara",
+    id: "camara-submenu",
+    submenu: [
+      { label: "Inicio", href: "/" },
+      { label: "Capacitaciones", href: "/capacitaciones" },
+    ],
+  },
   {
     label: "Quepos",
     id: "quepos-submenu",
