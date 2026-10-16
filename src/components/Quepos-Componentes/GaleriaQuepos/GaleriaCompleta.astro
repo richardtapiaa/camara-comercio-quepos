@@ -1,4 +1,5 @@
 ---
+import { optimizarImagen } from "../../../lib/imagenes";
 import GaleriaQuepos from "../../ReactComponentes/QUEPOS/GaleriaQuepos";
 import beneficios from "../../../assets/imagenes/beneficios-seccion.jpg";
 import checkout from "../../../assets/imagenes/seccion-checkout.jpg";
@@ -9,13 +10,13 @@ import mision from "../../../assets/imagenes/mision-seccion.jpg";
 import vision from "../../../assets/imagenes/vision-seccion.jpg";
 
 const items = [
-  { id: 1, src: hero.src, alt: "Paisaje de Quepos" },
-  { id: 2, src: fondo.src, alt: "Naturaleza de Quepos" },
-  { id: 3, src: mision.src, alt: "Misión de la Cámara" },
-  { id: 4, src: vision.src, alt: "Visión de la Cámara" },
-  { id: 5, src: beneficios.src, alt: "Beneficios para afiliados" },
-  { id: 6, src: checkout.src, alt: "Costa de Quepos" },
-  { id: 7, src: ejemplo.src, alt: "Ejemplo de emprendimiento local" },
+  { id: 1, src: await optimizarImagen(hero, 1600), alt: "Paisaje de Quepos" },
+  { id: 2, src: await optimizarImagen(fondo, 1600), alt: "Naturaleza de Quepos" },
+  { id: 3, src: await optimizarImagen(mision, 1600), alt: "Misión de la Cámara" },
+  { id: 4, src: await optimizarImagen(vision, 1600), alt: "Visión de la Cámara" },
+  { id: 5, src: await optimizarImagen(beneficios, 1600), alt: "Beneficios para afiliados" },
+  { id: 6, src: await optimizarImagen(checkout, 1600), alt: "Costa de Quepos" },
+  { id: 7, src: await optimizarImagen(ejemplo, 1600), alt: "Ejemplo de emprendimiento local" },
 ];
 ---
 

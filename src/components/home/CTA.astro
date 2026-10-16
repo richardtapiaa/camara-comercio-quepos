@@ -1,4 +1,5 @@
 ---
+import { optimizarImagen } from "../../lib/imagenes";
 import { CTAVisitantes } from "../ReactComponentes/INICIO/CTAvisitantes";
 import actividades1 from "../../assets/imagenes visitors/actividades-1.jpg";
 import actividades2 from "../../assets/imagenes visitors/actividades-2.jpg";
@@ -6,10 +7,10 @@ import actividades3 from "../../assets/imagenes visitors/actividades-3.jpg";
 import actividades4 from "../../assets/imagenes visitors/actividades-4.jpg";
 
 const imagenesVisitantes = [
-  { src: actividades3.src, alt: "Visitantes en Quepos" },
-  { src: actividades1.src, alt: "Actividades en Quepos" },
-  { src: actividades4.src, alt: "Turismo en Quepos" },
-  { src: actividades2.src, alt: "Aventura en Quepos" },
+  { src: await optimizarImagen(actividades3, 900), alt: "Visitantes en Quepos" },
+  { src: await optimizarImagen(actividades1, 900), alt: "Actividades en Quepos" },
+  { src: await optimizarImagen(actividades4, 900), alt: "Turismo en Quepos" },
+  { src: await optimizarImagen(actividades2, 900), alt: "Aventura en Quepos" },
 ];
 ---
 
