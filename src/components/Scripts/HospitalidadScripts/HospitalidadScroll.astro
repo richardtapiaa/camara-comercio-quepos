@@ -1,0 +1,94 @@
+<style is:global>
+  /* Quieta (sin animación o con "reducir movimiento"): estacionada frente a los edificios */
+  [data-buseta] {
+    left: var(--buseta-fin);
+  }
+  [data-buseta-scroll] {
+    /* Dónde termina la furgoneta: justo antes de los edificios (ocupan el 55 % derecho en celular y el 42 % en
+       escritorio), dejando un pequeño espacio */
+    --buseta-fin: calc(45cqw - 38cqw - 2cqw);
+  }
+  @media (min-width: 768px) {
+    [data-buseta-scroll] {
+      --buseta-fin: calc(58cqw - 18cqw - 2cqw);
+    }
+  }
+
+  /* Viaje con scroll-driven animations: lo mueve el navegador junto con el scroll, sin esperar a JS (mismo enfoque
+     que LapaScroll.astro). Sin soporte (Firefox, Safari < 26) se usa GSAP abajo */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      [data-buseta-scroll] {
+        view-timeline-name: --buseta-viaje;
+      }
+      [data-buseta] {
+        left: 0;
+        animation-name: buseta-viaje;
+        animation-timing-function: ease-out;
+        animation-fill-mode: both;
+        animation-timeline: --buseta-viaje;
+        /* Arranca cuando el recuadro empieza a entrar y llega cuando está casi entero en pantalla, así se ve
+           estacionada un rato antes de irse con el scroll */
+        animation-range: cover 5% cover 55%;
+      }
+    }
+  }
+
+  /* Entra desde fuera de la pantalla por la izquierda y frena frente a los edificios */
+  @keyframes buseta-viaje {
+    from {
+      translate: -110% 0;
+    }
+    to {
+      translate: var(--buseta-fin) 0;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const conCss = CSS.supports("animation-timeline: view()");
+  const sinMovimiento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (!conCss && !sinMovimiento) {
+    document.querySelectorAll<HTMLElement>("[data-buseta-scroll]").forEach((recuadro) => {
+      const buseta = recuadro.querySelector<HTMLElement>("[data-buseta]");
+      if (!buseta) return;
+
+      // GSAP mueve con transform; se arranca desde el borde izquierdo para que no se sume al "left" de reposo
+      buseta.style.left = "0";
+
+      // Mismo recorrido que el keyframe de CSS: el destino es la variable --buseta-fin, medida en px
+      const fin = () => {
+        const medidor = document.createElement("div");
+        medidor.style.cssText = "position:absolute;visibility:hidden;width:var(--buseta-fin)";
+        recuadro.appendChild(medidor);
+        const ancho = medidor.offsetWidth;
+        medidor.remove();
+        return ancho;
+      };
+
+      gsap.fromTo(
+        buseta,
+        { xPercent: -110, x: 0 },
+        {
+          xPercent: 0,
+          x: fin,
+          ease: "power1.out",
+          scrollTrigger: {
+            trigger: recuadro,
+            // Equivale a "cover 5% cover 55%" del CSS
+            start: "top 95%",
+            end: "center 45%",
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
+        }
+      );
+    });
+  }
+</script>

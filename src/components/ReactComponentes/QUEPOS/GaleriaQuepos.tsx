@@ -137,6 +137,7 @@ export function GalleryImage({
   className,
   loading = "lazy",
   aspect,
+  copia,
 }: {
   src: string;
   alt?: string;
@@ -145,6 +146,8 @@ export function GalleryImage({
   loading?: "lazy" | "eager";
   /** Proporción de la miniatura (p. ej. "aspect-[3/5]"); la imagen se recorta para llenarla */
   aspect?: string;
+  /** Para la misma imagen repetida (carrusel infinito): las copias no comparten la animación con la vista ampliada */
+  copia?: number;
 }) {
   const context = React.useContext(GalleryContext);
   if (!context) throw new Error("GalleryImage must be used within a Gallery");
@@ -163,7 +166,7 @@ export function GalleryImage({
       aria-label={`Ampliar imagen: ${alt || "Galería"}`}
     >
       <motion.img
-        layoutId={`image-${id}`}
+        layoutId={copia ? `image-${id}-copia-${copia}` : `image-${id}`}
         src={src}
         alt={alt || "Imagen de la galería"}
         loading={loading}

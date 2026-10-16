@@ -1,0 +1,37 @@
+---
+import ImagenesHoteles from "../ReactComponentes/HospitalidadComponentes/ImagenesHoteles";
+import hotelHabitacion from "../../assets/imagenes-hospitalidad/hospitalidad-1.webp";
+import hotelPiscina from "../../assets/imagenes-hospitalidad/hotel-piscina.jpg";
+import hotelVillaTeca from "../../assets/imagenes-hospitalidad/hotel-villa-teca.jpg";
+import mercadoMunicipal from "../../assets/imagenes-hospitalidad/mercado-municipal.jpg";
+import centroComercio from "../../assets/imagenes-hospitalidad/centro-comercio.jpg";
+import maleconLetras from "../../assets/imagenes-hospitalidad/malecon-letras.jpg";
+import { optimizarImagen } from "../../lib/imagenes";
+
+// Fotos provisionales de Wikimedia Commons; reemplazar por fotos propias cuando estén disponibles. Sus licencias
+// (CC BY / CC BY-SA) piden dar crédito al autor si se publican:
+//   hotel-piscina.jpg      Andrei Konovalenko, CC BY-SA 4.0 — commons.wikimedia.org/wiki/File:Makanda_by_the_Sea_infinity_pool.jpg
+//   hotel-villa-teca.jpg   Erick Hidalgo, CC BY 3.0 — commons.wikimedia.org/wiki/File:Villa_Teca_Hotel_Manuel_Antonio_Costa_Rica_-_panoramio.jpg
+//   mercado-municipal.jpg  Axxis10, CC BY-SA 4.0 — commons.wikimedia.org/wiki/File:Mercado_municipal_de_Quepos-_Costa_Rica.jpg
+//   centro-comercio.jpg y malecon-letras.jpg  Hanay, CC BY-SA 4.0 — "Quepos City, the head city in Quepos district" (8) y (5)
+const fotos = [
+  { id: "habitacion", imagen: hotelHabitacion, alt: "Habitación de hotel en Quepos" },
+  { id: "piscina", imagen: hotelPiscina, alt: "Piscina infinita del hotel Makanda by the Sea, Manuel Antonio" },
+  { id: "villa-teca", imagen: hotelVillaTeca, alt: "Hotel Villa Teca rodeado de jardines en Manuel Antonio" },
+  { id: "mercado", imagen: mercadoMunicipal, alt: "Mercado municipal de Quepos" },
+  { id: "centro", imagen: centroComercio, alt: "Comercios en el centro de Quepos" },
+  { id: "malecon", imagen: maleconLetras, alt: "Letras de Quepos en el malecón" },
+];
+
+// El visor amplía la foto, así que se pide más ancha que la tarjeta
+const imagenes = await Promise.all(
+  fotos.map(async ({ id, imagen, alt }) => ({ id, alt, src: await optimizarImagen(imagen, 1600) })),
+);
+
+---
+
+<!-- Carrusel de fotos que pasa solo cada pocos segundos (ImagenesHoteles.tsx); al presionar una foto se amplía -->
+<section id="galeria-hospitalidad" class="bg-white pb-4">
+  <ImagenesHoteles client:visible imagenes={imagenes} />
+
+</section>
