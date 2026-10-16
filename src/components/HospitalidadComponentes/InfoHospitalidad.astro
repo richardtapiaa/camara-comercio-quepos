@@ -1,11 +1,10 @@
 ---
 import { Image } from "astro:assets";
 import { Bus, HeartPulse, Landmark, Store } from "lucide-react";
-import imagen from "../../assets/imagenes/seccion-checkout.jpg";
+import imagen from "../../assets/imagenes-hospitalidad/hospitalidad-1.webp";
 import MisionScripts from "../Scripts/home/MisionScripts.astro";
 
-// Servicios que menciona el texto, en tarjetas dentro del panel. Los íconos de Lucide se dibujan en el servidor
-// como SVG (sin client:), así que no suman JavaScript
+
 const servicios = [
   { titulo: "Salud", detalle: "Hospitales y centros médicos.", Icono: HeartPulse },
   { titulo: "Banca", detalle: "Instituciones bancarias.", Icono: Landmark },
@@ -18,7 +17,7 @@ const servicios = [
 <section id="info-hospitalidad" class="overflow-x-clip bg-white py-16 sm:py-24">
   <div class="mx-auto grid max-w-6xl px-6 md:grid-cols-12">
     <!-- Sale del contenedor hasta el borde izquierdo de la pantalla y se monta sobre el panel -->
-    <div class="relative z-10 -ml-[calc(max(0px,(100vw_-_72rem)/2)+1.5rem)] mb-8 aspect-[4/3] overflow-hidden md:col-span-4 md:col-start-1 md:row-start-1 md:mt-24 md:self-start md:aspect-[8/7]">
+    <div class="relative z-10 -ml-[calc(max(0px,(100vw_-_72rem)/2)+1.5rem)] mb-8 aspect-[4/3] overflow-hidden rounded-2xl md:col-span-4 md:col-start-1 md:row-start-1 md:mt-24 md:self-start md:aspect-[8/7]">
       <Image
         src={imagen}
         alt="Costa de Quepos"

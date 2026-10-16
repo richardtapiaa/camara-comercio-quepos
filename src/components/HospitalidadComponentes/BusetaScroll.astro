@@ -1,0 +1,178 @@
+---
+import furgoneta from "../../assets/imagenes-hospitalidad/furgoneta.webp";
+import HospitalidadScroll from "../Scripts/HospitalidadScripts/HospitalidadScroll.astro";
+
+// Edificios a la derecha (viewBox 600 x 360): x, ancho, alto y color de cada uno. Las ventanas se calculan en una
+// cuadrícula dentro de cada edificio
+const edificios = [
+  { x: 0, ancho: 110, alto: 170, color: "#9CC3DC" },
+  { x: 96, ancho: 128, alto: 290, color: "#6FA6CB" },
+  { x: 212, ancho: 118, alto: 220, color: "#A9CBE0" },
+  { x: 318, ancho: 150, alto: 340, color: "#2780C9" },
+  { x: 456, ancho: 144, alto: 200, color: "#7FB0CF" },
+].map((edificio) => {
+  const ventanas = [];
+  const columnas = Math.floor((edificio.ancho - 24) / 28);
+  const filas = Math.floor((edificio.alto - 40) / 34);
+  const margen = (edificio.ancho - columnas * 28 + 10) / 2;
+  for (let fila = 0; fila < filas; fila++) {
+    for (let col = 0; col < columnas; col++) {
+      ventanas.push({ x: edificio.x + margen + col * 28, y: 360 - edificio.alto + 22 + fila * 34 });
+    }
+  }
+  return { ...edificio, ventanas };
+});
+---
+
+<!-- Calle con pasto que llega a unos edificios. La furgoneta entra por la izquierda y avanza por la calle hasta
+     llegar a los edificios mientras se hace scroll (HospitalidadScroll.astro). Las alturas de la calle y del pasto
+     están en variables (--calle, --pasto-*) en el <style> de abajo -->
+<section
+  data-buseta-scroll
+  class="buseta-recuadro relative isolate h-[60svh] overflow-hidden bg-[#E8F4FA] md:h-[75svh]"
+  aria-label="Furgoneta llegando a la ciudad"
+>
+  <!-- Sol: el mismo de LapasJS.astro y KayakScroll.astro -->
+  <svg
+    class="cielo-sol pointer-events-none absolute left-[10%] top-[10%] size-14 md:left-[14%] md:size-24"
+    viewBox="0 0 100 100"
+    aria-hidden="true"
+  >
+    <path class="cielo-sol-rayos" fill="#FBBF24" d="M50.0 13.0Q58.9 10.0 65.6 3.6Q67.8 14.2 68.5 18.0Q77.8 19.8 86.8 17.6Q83.3 27.9 82.0 31.5Q89.1 37.7 98.0 40.3Q89.9 47.5 87.0 50.0Q90.0 58.9 96.4 65.6Q85.8 67.8 82.0 68.5Q80.2 77.8 82.4 86.8Q72.1 83.3 68.5 82.0Q62.3 89.1 59.7 98.0Q52.5 89.9 50.0 87.0Q41.1 90.0 34.4 96.4Q32.2 85.8 31.5 82.0Q22.2 80.2 13.2 82.4Q16.7 72.1 18.0 68.5Q10.9 62.3 2.0 59.7Q10.1 52.5 13.0 50.0Q10.0 41.1 3.6 34.4Q14.2 32.2 18.0 31.5Q19.8 22.2 17.6 13.2Q27.9 16.7 31.5 18.0Q37.7 10.9 40.3 2.0Q47.5 10.1 50.0 13.0Z" />
+    <circle cx="50" cy="50" r="27" fill="#FDE047" />
+  </svg>
+
+  <!-- Edificios parados sobre el pasto de arriba, al fondo a la derecha -->
+  <svg
+    class="buseta-edificios pointer-events-none absolute right-0 w-[55%] max-w-3xl md:w-[42%]"
+    viewBox="0 0 600 360"
+    preserveAspectRatio="xMaxYMax meet"
+    aria-hidden="true"
+  >
+    {
+      edificios.map(({ x, ancho, alto, color, ventanas }) => (
+        <g>
+          <rect x={x} y={360 - alto} width={ancho} height={alto} rx="6" fill={color} />
+          {ventanas.map((v) => (
+            <rect x={v.x} y={v.y} width="14" height="18" rx="2" fill="#F5FAFD" fill-opacity="0.75" />
+          ))}
+        </g>
+      ))
+    }
+  </svg>
+
+  <!-- Pasto de arriba (entre los edificios y la calle), calle y pasto de abajo -->
+  <div class="buseta-pasto buseta-pasto-arriba pointer-events-none absolute inset-x-0" aria-hidden="true"></div>
+  <div class="buseta-calle pointer-events-none absolute inset-x-0" aria-hidden="true"></div>
+  <div class="buseta-pasto buseta-pasto-abajo pointer-events-none absolute inset-x-0 bottom-0" aria-hidden="true"></div>
+
+  <!-- Furgoneta sobre la calle. El div lo mueve el scroll; la imagen de adentro rebota apenas, como al andar -->
+  <div data-buseta class="buseta-auto absolute z-10 w-[38%] max-w-xs md:w-[18%]">
+    <img
+      src={furgoneta.src}
+      width={furgoneta.width}
+      height={furgoneta.height}
+      alt="Furgoneta de transporte llegando a la ciudad"
+      class="buseta-rebote block w-full"
+      loading="lazy"
+      decoding="async"
+      draggable="false"
+    />
+  </div>
+</section>
+
+<HospitalidadScroll />
+
+<style>
+  .buseta-recuadro {
+    /* Alturas desde abajo: pasto de abajo, calle y pasto de arriba (los edificios se paran encima) */
+    --pasto-abajo: 1.75rem;
+    --calle: 4.5rem;
+    --pasto-arriba: 1.25rem;
+    container-type: inline-size;
+  }
+  @media (min-width: 768px) {
+    .buseta-recuadro {
+      --pasto-abajo: 2.5rem;
+      --calle: 6.5rem;
+      --pasto-arriba: 1.75rem;
+    }
+  }
+
+  .buseta-pasto-abajo {
+    height: var(--pasto-abajo);
+  }
+  .buseta-calle {
+    bottom: var(--pasto-abajo);
+    height: var(--calle);
+    /* Asfalto con una línea discontinua blanca en el centro */
+    background:
+      repeating-linear-gradient(90deg, #f8fafc 0 2.5rem, transparent 2.5rem 4.5rem) center / 100% 0.3rem no-repeat,
+      #4b5563;
+    box-shadow:
+      inset 0 0.25rem 0 #374151,
+      inset 0 -0.25rem 0 #374151;
+  }
+  .buseta-pasto-arriba {
+    bottom: calc(var(--pasto-abajo) + var(--calle));
+    height: var(--pasto-arriba);
+  }
+  .buseta-edificios {
+    bottom: calc(var(--pasto-abajo) + var(--calle) + var(--pasto-arriba) - 2px);
+  }
+
+  /* Pasto con un borde de hojitas arriba (mismo dibujo que el suelo de LapasJS.astro) */
+  .buseta-pasto {
+    background-color: #6db471;
+  }
+  .buseta-pasto::before {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    bottom: calc(100% - 1px);
+    height: 10px;
+    background-color: inherit;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 14'%3E%3Cpath fill='black' d='M0 14Q2 8 3 3Q5 9 7 14Q9 7 12 0Q13 8 15 14Q18 9 20 5Q21 10 23 14Q26 6 29 2Q30 9 32 14Q35 8 37 4Q38 10 40 14Q43 7 46 1Q47 8 49 14Q52 9 54 5Q55 10 57 14Z'/%3E%3C/svg%3E")
+      repeat-x left bottom / 60px 10px;
+  }
+  .buseta-pasto-arriba {
+    background-color: #86c08a;
+  }
+
+  /* La furgoneta va por el carril de abajo. La imagen trae ~23 % de borde transparente abajo: se compensa para que
+     las ruedas pisen el asfalto */
+  .buseta-auto {
+    bottom: calc(var(--pasto-abajo) + var(--calle) * 0.12 - 0.2 * 38cqw);
+  }
+  @media (min-width: 768px) {
+    .buseta-auto {
+      bottom: calc(var(--pasto-abajo) + var(--calle) * 0.12 - 0.2 * 18cqw);
+    }
+  }
+
+  .buseta-recuadro .cielo-sol {
+    filter: drop-shadow(0 0 14px rgb(251 191 36 / 0.45));
+  }
+  .cielo-sol-rayos {
+    transform-origin: 50px 50px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .cielo-sol-rayos {
+      animation: sol-girar 60s linear infinite;
+    }
+    .buseta-rebote {
+      animation: buseta-rebotar 0.5s ease-in-out infinite alternate;
+    }
+  }
+  @keyframes sol-girar {
+    to {
+      rotate: 360deg;
+    }
+  }
+  @keyframes buseta-rebotar {
+    to {
+      translate: 0 -2px;
+    }
+  }
+</style>
