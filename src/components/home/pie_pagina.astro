@@ -2,6 +2,10 @@
 import { Image } from "astro:assets";
 import logo from "../../assets/imagenes/logo-camara.webp";
 import footerImage from "../../assets/imagenes/piepagina.jpg";
+import { optimizarImagen } from "../../lib/imagenes";
+
+// El original pesa ~1,1 MB y va en todas las páginas
+const fondoPie = await optimizarImagen(footerImage, 1600, 70);
 
 const links = [
   { label: "La Cámara", href: "/" },
@@ -21,7 +25,9 @@ const socialLinks = {
   class="relative isolate overflow-hidden text-white"
 >
   <img
-    src={footerImage.src}
+    src={fondoPie}
+    loading="lazy"
+    decoding="async"
     alt=""
     aria-hidden="true"
     class="absolute inset-0 z-0 h-full w-full object-cover object-[center_18%]"

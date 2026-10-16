@@ -1,4 +1,5 @@
 ---
+import { optimizarImagen } from "../../lib/imagenes";
 import InformacionActividades from "../ReactComponentes/ActividadesQueposR/InformacionActividades";
 import actividades1 from "../../assets/imagenes visitors/actividades-1.jpg";
 import actividades2 from "../../assets/imagenes visitors/actividades-2.jpg";
@@ -9,12 +10,12 @@ import actividades6 from "../../assets/imagenes visitors/actividades-6.jpeg";
 
 // Mismo orden que los textos de InformacionActividades.tsx
 const imagenes = [
-  { src: actividades1.src, alt: "Perezoso en el Parque Nacional Manuel Antonio" },
-  { src: actividades2.src, alt: "Grupo haciendo rafting en el río" },
-  { src: actividades3.src, alt: "Catamarán navegando al atardecer" },
-  { src: actividades4.src, alt: "Turista haciendo rappel en el bosque" },
-  { src: actividades5.src, alt: "Kayaks entre los manglares" },
-  { src: actividades6.src, alt: "Marlín saltando en el mar" },
+  { src: await optimizarImagen(actividades1, 1000), alt: "Perezoso en el Parque Nacional Manuel Antonio" },
+  { src: await optimizarImagen(actividades2, 1000), alt: "Grupo haciendo rafting en el río" },
+  { src: await optimizarImagen(actividades3, 1000), alt: "Catamarán navegando al atardecer" },
+  { src: await optimizarImagen(actividades4, 1000), alt: "Turista haciendo rappel en el bosque" },
+  { src: await optimizarImagen(actividades5, 1000), alt: "Kayaks entre los manglares" },
+  { src: await optimizarImagen(actividades6, 1000), alt: "Marlín saltando en el mar" },
 ];
 ---
 
