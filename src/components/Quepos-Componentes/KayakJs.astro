@@ -1,0 +1,105 @@
+<style is:global>
+  /* Quieto (sin animación o con "reducir movimiento"): centrado en el recuadro */
+  [data-kayak] {
+    left: 50%;
+    translate: -50% 0;
+  }
+
+  /* Remada con scroll-driven animations, igual que la lapa (LapaScroll.astro): la mueve el navegador junto con el
+     scroll, sin esperar a JS. Sin soporte (Firefox, Safari < 26) se usa GSAP abajo */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      [data-kayak-scroll] {
+        view-timeline-name: --kayak-remada;
+      }
+      [data-kayak] {
+        left: 0;
+        animation-name: kayak-remada;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: --kayak-remada;
+        /* Todo el tiempo que el recuadro está en pantalla, para que avance pausado */
+        animation-range: cover 0% cover 100%;
+      }
+      /* El agua corre hacia la derecha, como la corriente que lleva al kayak. Va en el <g> de cada capa (el <path>
+         de adentro se mece solo) para que las dos animaciones no se pisen */
+      .agua-capa,
+      .cielo-nube {
+        animation-name: agua-scroll;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: --kayak-remada;
+        animation-range: cover 0% cover 100%;
+      }
+    }
+  }
+
+  /* Distancia que se corre cada cosa con el scroll: el agua, cerca, más que las nubes */
+  .agua-capa-frente {
+    --agua-x: 160px;
+  }
+  /* Las nubes, lejos, se corren poco con el scroll */
+  .cielo-nube {
+    --agua-x: 60px;
+  }
+
+  @keyframes agua-scroll {
+    from {
+      translate: calc(var(--agua-x) * -0.5) 0;
+    }
+    to {
+      translate: calc(var(--agua-x) * 0.5) 0;
+    }
+  }
+
+ 
+  @keyframes kayak-remada {
+    from {
+      translate: -100% 0;
+    }
+    to {
+      translate: 100cqw 0;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const conCss = CSS.supports("animation-timeline: view()");
+  const sinMovimiento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (!conCss && !sinMovimiento) {
+    document.querySelectorAll<HTMLElement>("[data-kayak-scroll]").forEach((recuadro) => {
+      const kayak = recuadro.querySelector<HTMLElement>("[data-kayak]");
+      if (!kayak) return;
+
+     
+      kayak.style.left = "0";
+      kayak.style.translate = "none";
+
+      const scrollTrigger = { trigger: recuadro, start: "top bottom", end: "bottom top", scrub: true };
+
+      
+      gsap.fromTo(
+        kayak,
+        { xPercent: -100 },
+        {
+          x: () => recuadro.offsetWidth,
+          xPercent: 0,
+          ease: "none",
+          scrollTrigger: { ...scrollTrigger, invalidateOnRefresh: true },
+        }
+      );
+
+     
+      recuadro.querySelectorAll<Element>(".agua-capa, .cielo-nube").forEach((capa) => {
+        const dx = parseFloat(getComputedStyle(capa).getPropertyValue("--agua-x"));
+        gsap.fromTo(capa, { x: dx * -0.5 }, { x: dx * 0.5, ease: "none", scrollTrigger });
+      });
+    });
+  }
+</script>
