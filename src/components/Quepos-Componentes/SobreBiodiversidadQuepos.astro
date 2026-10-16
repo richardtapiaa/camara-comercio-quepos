@@ -1,0 +1,54 @@
+---
+import { Image } from "astro:assets";
+import imagen from "../../assets/imagenes visitors/actividades-1.jpg";
+import MisionScripts from "../Scripts/home/MisionScripts.astro";
+---
+
+<!-- Mismo diseño que SobreQuepos.astro: foto a la izquierda montada sobre el panel celeste de la derecha -->
+<section id="biodiversidad-quepos" class="overflow-x-clip bg-white py-16 sm:py-24">
+  <div class="mx-auto grid max-w-6xl px-6 md:grid-cols-12">
+    <!-- Sale del contenedor hasta el borde izquierdo de la pantalla y se monta sobre el panel -->
+    <div class="relative z-10 -ml-[calc(max(0px,(100vw_-_72rem)/2)+1.5rem)] mb-8 aspect-[4/3] overflow-hidden md:col-span-4 md:col-start-1 md:row-start-1 md:mt-24 md:self-start md:aspect-[8/7]">
+      <Image
+        src={imagen}
+        alt="Perezoso colgado de una rama en el bosque de Quepos"
+        class="absolute inset-x-0 -top-full h-[200%] w-full max-w-none object-cover will-change-transform"
+        data-parallax-img
+      />
+    </div>
+
+    <!-- Panel que sale del contenedor hasta el borde derecho de la pantalla -->
+    <div
+      class="-mr-[calc(max(0px,(100vw_-_72rem)/2)+1.5rem)] bg-[#E8F4FA] py-12 pl-6 pr-[calc(max(0px,(100vw_-_72rem)/2)+3rem)] md:col-span-9 md:col-start-4 md:row-start-1 md:py-16 md:pl-[calc(100%/9+2rem)]"
+    >
+      <h2 class="text-4xl font-bold uppercase leading-tight tracking-tight text-neutral-700 sm:text-5xl">
+        Biodiversidad
+      </h2>
+
+      <p class="mt-6 max-w-xl text-lg font-medium leading-relaxed text-neutral-800 sm:text-xl">
+        Quepos se distingue por su riqueza natural y la diversidad de especies que habitan sus bosques y ecosistemas marinos.
+      </p>
+
+      <div class="mt-8 grid gap-6 text-sm leading-relaxed text-neutral-700 lg:grid-cols-2">
+        <div class="space-y-4">
+          <p>
+            En la región es posible encontrar animales como monos, lapas, iguanas, venados y dantas. Además, sus aguas ofrecen oportunidades para observar ballenas y delfines en determinadas épocas del año.
+          </p>
+          <p>
+            Esta riqueza natural convierte a Quepos en un destino ideal para quienes disfrutan del ecoturismo, la observación de fauna y las experiencias al aire libre.
+          </p>
+        </div>
+        <div class="space-y-4">
+          <p>
+            A pocos kilómetros del centro se encuentra el Parque Nacional Manuel Antonio, creado en 1972 y uno de los más visitados del país. Aunque es pequeño en extensión, reúne bosque tropical, manglares, arrecifes y playas de arena blanca en un mismo lugar.
+          </p>
+          <p>
+            Sus senderos permiten ver de cerca perezosos, mapaches y tres especies de monos: el cariblanco, el congo y el mono tití, propio del Pacífico Central. Playas como Manuel Antonio y Espadilla Sur, junto con el mirador de Punta Catedral, lo convierten en una visita obligada al llegar a Quepos.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<MisionScripts />

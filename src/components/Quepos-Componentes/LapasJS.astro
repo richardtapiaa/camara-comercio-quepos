@@ -1,12 +1,218 @@
 ---
-import LapasScript from "../Scripts/Quepos/LapasJS.astro";
+import lapa from "../../assets/imagenes/lapa-sin-fondo.webp";
+import arbol from "../../assets/imagenes/arbol-sin-fondo.webp";
+
+// Árboles sobre la selva, de distintos tamaños para dar profundidad. Los que dicen "md" solo van en escritorio
+const arboles = [
+  { clases: "-left-[6%] w-40 md:-left-[2%] md:w-[15vw]" },
+  { clases: "left-[20%] hidden md:block md:w-[10vw]" },
+  { clases: "left-[44%] w-24 md:left-[46%] md:w-[8vw]" },
+  { clases: "right-[22%] hidden md:block md:w-[11vw]" },
+  { clases: "-right-[8%] w-36 md:-right-[3%] md:w-[14vw]" },
+];
+import LapaScroll from "../Scripts/Quepos/LapaScroll.astro";
+import { MagicText } from "../ReactComponentes/QUEPOS/ScrollReveal";
+
+const frase =
+  "“En Quepos las lapas rojas cruzan el cielo entre la selva y el mar: una señal de que aquí la naturaleza sigue viva.”";
 ---
 
+<!-- Recuadro celeste (mismos colores que ScrollRevealConozcaQuepos.astro) con nubes en las esquinas de arriba y una
+     lapa que lo cruza volando al hacer scroll (LapaScroll.astro). Cada nube son capas con el borde de abajo en olas
+     (curvas que bajan en diagonal hacia el centro) que se mecen despacio; el <g> de cada capa lo mueve el scroll.
+     Arriba va la frase que se llena con el scroll (detrás de las nubes) y abajo la selva, de donde sale la lapa -->
 <section
-  class="lapas-band relative h-48 w-full overflow-hidden sm:h-64 lg:h-80"
-  aria-hidden="true"
+  data-lapa-scroll
+  class="lapas-recuadro relative isolate flex min-h-[48svh] flex-col overflow-hidden bg-[#E8F4FA] md:min-h-[70svh]"
+  aria-label="Lapa roja volando sobre Quepos"
 >
-  <canvas class="lapas-canvas pointer-events-none block h-full w-full"></canvas>
+  <!-- Sol: el mismo de KayakScroll.astro (12 rayos curvos que giran despacio y el centro amarillo). Va detrás de la
+       nube de la derecha (z-10), asomándose por debajo de su borde -->
+  <svg
+    class="cielo-sol pointer-events-none absolute right-4 top-28 z-[5] size-14 md:right-[19%] md:top-[14%] md:size-28"
+    viewBox="0 0 100 100"
+    aria-hidden="true"
+  >
+    <path class="cielo-sol-rayos" fill="#FBBF24" d="M50.0 13.0Q58.9 10.0 65.6 3.6Q67.8 14.2 68.5 18.0Q77.8 19.8 86.8 17.6Q83.3 27.9 82.0 31.5Q89.1 37.7 98.0 40.3Q89.9 47.5 87.0 50.0Q90.0 58.9 96.4 65.6Q85.8 67.8 82.0 68.5Q80.2 77.8 82.4 86.8Q72.1 83.3 68.5 82.0Q62.3 89.1 59.7 98.0Q52.5 89.9 50.0 87.0Q41.1 90.0 34.4 96.4Q32.2 85.8 31.5 82.0Q22.2 80.2 13.2 82.4Q16.7 72.1 18.0 68.5Q10.9 62.3 2.0 59.7Q10.1 52.5 13.0 50.0Q10.0 41.1 3.6 34.4Q14.2 32.2 18.0 31.5Q19.8 22.2 17.6 13.2Q27.9 16.7 31.5 18.0Q37.7 10.9 40.3 2.0Q47.5 10.1 50.0 13.0Z" />
+    <circle cx="50" cy="50" r="27" fill="#FDE047" />
+  </svg>
+
+  <!-- Frase en el cielo, detrás de las nubes (z-10) y de la lapa. Arranca más abajo que las nubes para que solo
+       rocen los costados -->
+  <div class="relative z-[1] mx-auto w-full max-w-4xl px-6 pt-40 md:pt-56">
+    <MagicText
+      client:load
+      text={frase}
+      opacidadInicial={0.25}
+      className="text-3xl font-black uppercase leading-[1.08] tracking-tight text-neutral-800 sm:text-4xl md:text-5xl"
+    />
+  </div>
+
+  <!-- Espacio para el vuelo y la selva debajo de la frase -->
+  <div class="h-[34svh] shrink-0 md:h-[44svh]" aria-hidden="true"></div>
+
+  <!-- Encima de la frase, del suelo y de los árboles, y detrás de las nubes: arranca saliendo de entre los árboles -->
+  <img
+    data-lapa
+    src={lapa.src}
+    width={lapa.width}
+    height={lapa.height}
+    alt="Lapa roja en vuelo"
+    class="absolute bottom-[12%] z-[3] w-[50%] max-w-md md:bottom-[14%] md:w-[30%]"
+    loading="lazy"
+    decoding="async"
+    draggable="false"
+  />
+
+  {
+    ["left-0", "right-0 -scale-x-100"].map((lado) => (
+      <svg
+        class={`pointer-events-none absolute top-0 z-10 w-[88%] max-w-xl md:w-[42%] ${lado}`}
+        viewBox="0 0 420 180"
+        preserveAspectRatio="xMinYMin meet"
+        aria-hidden="true"
+      >
+        <g class="nube-capa nube-capa-atras">
+          <path
+            class="nube-ola nube-ola-atras"
+            fill="#ffffff"
+            fill-opacity="0.6"
+            d="M-20 0H430C430 42 392 58 360 46C348 82 298 94 270 74C256 108 206 120 178 98C164 134 114 148 88 126C74 160 24 176 -20 160Z"
+          />
+        </g>
+        <g class="nube-capa nube-capa-medio">
+          <path
+            class="nube-ola nube-ola-medio"
+            fill="#ffffff"
+            fill-opacity="0.85"
+            d="M-20 0H370C370 34 338 48 312 38C300 68 258 78 236 62C222 92 180 100 158 82C144 112 104 122 82 104C68 132 28 144 -20 132Z"
+          />
+        </g>
+        <g class="nube-capa nube-capa-frente">
+          <path
+            class="nube-ola nube-ola-frente"
+            fill="#ffffff"
+            d="M-20 0H300C300 26 276 38 254 30C244 54 210 62 192 50C180 74 146 80 128 66C116 90 82 98 64 84C52 106 18 114 -20 104Z"
+          />
+        </g>
+      </svg>
+    ))
+  }
+
+  <!-- Suelo plano en dos franjas: pasto claro atrás (un poco más alto) y tierra verde oscura adelante, cada una con
+       un borde de hojitas de pasto arriba y la de adelante con piedritas y manchas (clases suelo-* en el <style>). Son más
+       anchas que el recuadro (-inset-x-32) porque el scroll las corre de lado (LapaScroll.astro) y no deben dejar
+       huecos en los bordes -->
+  <div class="selva-capa selva-capa-atras pointer-events-none absolute -inset-x-32 bottom-0 z-[1] h-[4.5rem] suelo-pasto md:h-[max(6rem,7vw)]" aria-hidden="true"></div>
+  <div class="selva-capa selva-capa-frente pointer-events-none absolute -inset-x-32 bottom-0 z-[1] h-14 suelo-tierra md:h-[max(5rem,6vw)]" aria-hidden="true"></div>
+
+  <!-- Árboles parados sobre el pasto, delante del suelo. La imagen trae ~9.5 % de borde transparente abajo: con
+       translate-y-[11%] la base del tronco queda apenas metida en el pasto. Los mueve el scroll (LapaScroll.astro) -->
+  <div class="selva-capa selva-capa-arboles pointer-events-none absolute inset-x-0 bottom-14 z-[2] md:bottom-[max(5rem,6vw)]" aria-hidden="true">
+    {
+      arboles.map(({ clases }) => (
+        <img
+          src={arbol.src}
+          width={arbol.width}
+          height={arbol.height}
+          alt=""
+          class={`absolute bottom-0 translate-y-[11%] ${clases}`}
+          loading="lazy"
+          decoding="async"
+          draggable="false"
+        />
+      ))
+    }
+  </div>
 </section>
 
-<LapasScript />
+<LapaScroll />
+
+<style>
+  /* Sombra celeste suave para que las nubes blancas se despeguen del fondo, que también es claro. En celular,
+     donde las nubes son más chicas, va más marcada para que se lea el borde de las olas */
+  .lapas-recuadro svg {
+    filter: drop-shadow(0 4px 6px rgb(100 155 190 / 0.3));
+  }
+  @media (min-width: 768px) {
+    .lapas-recuadro svg {
+      filter: drop-shadow(0 6px 10px rgb(120 170 200 / 0.18));
+    }
+  }
+
+  /* Las capas se mecen de lado a lado como olas, cada una a su ritmo para que no se muevan en bloque */
+  @media (prefers-reduced-motion: no-preference) {
+    .nube-ola {
+      animation: nube-mecer ease-in-out infinite alternate;
+    }
+    .nube-ola-atras {
+      animation-duration: 9s;
+    }
+    .nube-ola-medio {
+      animation-duration: 7s;
+      animation-delay: -2s;
+    }
+    .nube-ola-frente {
+      animation-duration: 5.5s;
+      animation-delay: -4s;
+    }
+  }
+
+  @keyframes nube-mecer {
+    from {
+      translate: -10px 0;
+    }
+    to {
+      translate: 10px 4px;
+    }
+  }
+
+  /* El sol no lleva la sombra celeste de las nubes sino un brillo amarillo, y sus rayos giran sobre el centro */
+  .lapas-recuadro .cielo-sol {
+    filter: drop-shadow(0 0 14px rgb(251 191 36 / 0.45));
+  }
+  .cielo-sol-rayos {
+    transform-origin: 50px 50px;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .cielo-sol-rayos {
+      animation: sol-girar 60s linear infinite;
+    }
+  }
+  @keyframes sol-girar {
+    to {
+      rotate: 360deg;
+    }
+  }
+
+  /* Suelo. Cada franja lleva arriba (::before) una tira de hojitas de pasto del mismo color que se repite a lo
+     ancho, así el borde no queda como una línea recta */
+  .suelo-pasto,
+  .suelo-tierra {
+    --hojas: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 14'%3E%3Cpath fill='black' d='M0 14Q2 8 3 3Q5 9 7 14Q9 7 12 0Q13 8 15 14Q18 9 20 5Q21 10 23 14Q26 6 29 2Q30 9 32 14Q35 8 37 4Q38 10 40 14Q43 7 46 1Q47 8 49 14Q52 9 54 5Q55 10 57 14Z'/%3E%3C/svg%3E");
+  }
+  .suelo-pasto::before,
+  .suelo-tierra::before {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    bottom: calc(100% - 1px);
+    height: 12px;
+    background-color: inherit;
+    mask: var(--hojas) repeat-x left bottom / 60px 12px;
+  }
+  .suelo-pasto {
+    background-color: #86c08a;
+  }
+  .suelo-tierra {
+    background-color: #3f8a4f;
+    /* Piedritas y manchas de pasto más claro y más oscuro, y la tierra se oscurece hacia abajo */
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='70'%3E%3Cg fill='%23347641'%3E%3Cellipse cx='22' cy='20' rx='7' ry='3'/%3E%3Cellipse cx='118' cy='14' rx='5' ry='2.5'/%3E%3Cellipse cx='75' cy='46' rx='9' ry='3.5'/%3E%3Cellipse cx='160' cy='54' rx='6' ry='2.5'/%3E%3C/g%3E%3Cg fill='%2354A063'%3E%3Cpath d='M58 22l2-6 2 6zM63 22l1.5-4 1.5 4zM140 38l2-6 2 6zM145 38l1.5-4 1.5 4zM28 60l2-5 2 5zM100 30l1.5-4 1.5 4z'/%3E%3Ccircle cx='92' cy='10' r='1.6'/%3E%3Ccircle cx='10' cy='42' r='1.4'/%3E%3Ccircle cx='170' cy='26' r='1.6'/%3E%3C/g%3E%3C/svg%3E"),
+      linear-gradient(to bottom, #3f8a4f, #2f6e3d);
+    background-size:
+      180px 70px,
+      100% 100%;
+    background-position: 0 14px, 0 0;
+  }
+</style>
