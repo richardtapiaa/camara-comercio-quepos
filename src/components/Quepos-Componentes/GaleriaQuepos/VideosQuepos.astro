@@ -1,10 +1,42 @@
 ---
-import { VideoPlayer } from "../../ReactComponentes/QUEPOS/VideosQuepos";
-import videoQuepos from "../../../assets/quepos-videos/video-en.mp4";
+import { Image } from "astro:assets";
+import { VideoQueposIdiomas } from "../../ReactComponentes/QUEPOS/VideosQuepos";
+import videoEs from "../../../assets/quepos-videos/video-es.mp4";
+import videoEn from "../../../assets/quepos-videos/video-en.mp4";
+import palmera from "../../../assets/imagenes-quepos/palmera-sin-fondo.webp";
+
+// Mismas palmeras que GaleriaCompleta.astro: crecen con la pantalla y arriba se difuminan para ocultar el corte de
+// la foto
+const clasesPalmera =
+  "h-auto w-44 select-none sm:w-64 md:w-72 lg:w-80 xl:w-96 2xl:w-[28rem] [mask-image:linear-gradient(to_bottom,transparent,black_30%)]";
 ---
 
-<section id="videos-quepos" class="bg-white px-6 py-16 sm:py-24">
-  <div class="mx-auto max-w-7xl">
+<!-- El título va centrado: en pantallas grandes las palmeras quedan a los lados sin tocarlo; en celular, tablet y
+     pantallas medianas (donde las hojas llegarían al título) el contenido empieza más abajo -->
+<section id="videos-quepos" class="relative overflow-x-clip bg-white px-6 pb-16 pt-32 sm:pb-24 sm:pt-44 md:pt-48 lg:pt-24">
+  <!-- Palmeras colgando de las esquinas de arriba: la de la derecha tal cual y la de la izquierda en espejo. No
+       bloquean los clics -->
+  <Image
+    src={palmera}
+    alt=""
+    width={600}
+    class={`pointer-events-none absolute right-0 top-0 ${clasesPalmera}`}
+    loading="lazy"
+    draggable="false"
+    aria-hidden="true"
+  />
+  <Image
+    src={palmera}
+    alt=""
+    width={600}
+    class={`pointer-events-none absolute left-0 top-0 -scale-x-100 ${clasesPalmera}`}
+    loading="lazy"
+    draggable="false"
+    aria-hidden="true"
+  />
+
+  <!-- "relative" deja el contenido delante de las palmeras -->
+  <div class="relative mx-auto max-w-7xl">
     <h2 class="text-center font-serif text-4xl font-bold uppercase tracking-tight text-slate-900 sm:text-5xl">
       Videos de Quepos
     </h2>
@@ -12,7 +44,16 @@ import videoQuepos from "../../../assets/quepos-videos/video-en.mp4";
       Conozca Quepos en movimiento: sus paisajes, su gente y su comercio.
     </p>
     <div class="mt-10 flex justify-center">
-      <VideoPlayer client:visible src={videoQuepos} size="lg" className="aspect-video rounded-2xl" preload="metadata" playsInline />
+      <!-- Debajo del video, botones para verlo en español o en inglés -->
+      <VideoQueposIdiomas
+        client:visible
+        srcEs={videoEs}
+        srcEn={videoEn}
+        size="lg"
+        className="aspect-video rounded-2xl"
+        preload="metadata"
+        playsInline
+      />
     </div>
   </div>
 </section>

@@ -73,21 +73,78 @@
     }
   }
 
-  /* Sale de entre los árboles por la izquierda y se va por la derecha, subiendo. A mitad de camino da un
-     pequeño bajón, como cuando toma impulso, y se va inclinando hacia arriba. Sube poco (el scroll ya la lleva
-     hacia arriba): si sube mucho más, en pantalla se ve demasiado rápida */
+  /* Sale de entre los árboles por la izquierda y se va por la derecha subiendo y bajando en dos ondas, mientras
+     igual va ganando altura (de 40 % a -90 % de su alto). Se inclina según el tramo: el pico hacia arriba cuando
+     sube y hacia abajo cuando baja. Los puntos salen de y = 40 - 130·t - 35·sen(4π·t) (en % del alto de la lapa),
+     con 17 puntos para que la curva se vea suave; GSAP (abajo) usa los mismos */
   @keyframes lapa-vuelo {
     0% {
       translate: -100% 40%;
-      rotate: 8deg;
+      rotate: -14.2deg;
     }
-    45% {
-      translate: calc(50cqw - 60%) 10%;
-      rotate: 0deg;
+    6.25% {
+      translate: calc(-100% + (100cqw + 100%) * 0.0625) 7.1%;
+      rotate: -11deg;
+    }
+    12.5% {
+      translate: calc(-100% + (100cqw + 100%) * 0.125) -11.2%;
+      rotate: -3.3deg;
+    }
+    18.75% {
+      translate: calc(-100% + (100cqw + 100%) * 0.1875) -9.1%;
+      rotate: 4.5deg;
+    }
+    25% {
+      translate: calc(-100% + (100cqw + 100%) * 0.25) 7.5%;
+      rotate: 7.7deg;
+    }
+    31.25% {
+      translate: calc(-100% + (100cqw + 100%) * 0.3125) 24.1%;
+      rotate: 4.5deg;
+    }
+    37.5% {
+      translate: calc(-100% + (100cqw + 100%) * 0.375) 26.2%;
+      rotate: -3.2deg;
+    }
+    43.75% {
+      translate: calc(-100% + (100cqw + 100%) * 0.4375) 7.9%;
+      rotate: -11deg;
+    }
+    50% {
+      translate: calc(-100% + (100cqw + 100%) * 0.5) -25%;
+      rotate: -14.2deg;
+    }
+    56.25% {
+      translate: calc(-100% + (100cqw + 100%) * 0.5625) -57.9%;
+      rotate: -11deg;
+    }
+    62.5% {
+      translate: calc(-100% + (100cqw + 100%) * 0.625) -76.2%;
+      rotate: -3.3deg;
+    }
+    68.75% {
+      translate: calc(-100% + (100cqw + 100%) * 0.6875) -74.1%;
+      rotate: 4.5deg;
+    }
+    75% {
+      translate: calc(-100% + (100cqw + 100%) * 0.75) -57.5%;
+      rotate: 7.7deg;
+    }
+    81.25% {
+      translate: calc(-100% + (100cqw + 100%) * 0.8125) -40.9%;
+      rotate: 4.5deg;
+    }
+    87.5% {
+      translate: calc(-100% + (100cqw + 100%) * 0.875) -38.8%;
+      rotate: -3.2deg;
+    }
+    93.75% {
+      translate: calc(-100% + (100cqw + 100%) * 0.9375) -57.1%;
+      rotate: -11deg;
     }
     100% {
       translate: 100cqw -90%;
-      rotate: -12deg;
+      rotate: -14.2deg;
     }
   }
 </style>
@@ -110,24 +167,30 @@
       lapa.style.left = "0";
       lapa.style.translate = "none";
 
-      // Mismo recorrido que el keyframe de CSS, con el ancho del recuadro en px
-      gsap
-        .timeline({
-          defaults: { ease: "none" },
-          scrollTrigger: {
-            trigger: recuadro,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
-            invalidateOnRefresh: true,
-          },
-        })
-        .fromTo(
-          lapa,
-          { xPercent: -100, yPercent: 40, rotate: 8 },
-          { x: () => recuadro.offsetWidth / 2, xPercent: -60, yPercent: 10, rotate: 0, duration: 45 }
-        )
-        .to(lapa, { x: () => recuadro.offsetWidth, xPercent: 0, yPercent: -90, rotate: -12, duration: 55 });
+      // Mismo recorrido que el keyframe de CSS (misma fórmula y mismos 17 puntos), con el ancho del recuadro en px
+      const PUNTOS = 16;
+      const punto = (i: number) => {
+        const t = i / PUNTOS;
+        const pendiente = -130 - 35 * 4 * Math.PI * Math.cos(4 * Math.PI * t);
+        return {
+          x: () => recuadro.offsetWidth * t,
+          xPercent: -100 + 100 * t,
+          yPercent: 40 - 130 * t - 35 * Math.sin(4 * Math.PI * t),
+          rotate: Math.max(-16, Math.min(16, pendiente / 40)),
+        };
+      };
+      const vuelo = gsap.timeline({
+        defaults: { ease: "none" },
+        scrollTrigger: {
+          trigger: recuadro,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+          invalidateOnRefresh: true,
+        },
+      });
+      gsap.set(lapa, punto(0));
+      for (let i = 1; i <= PUNTOS; i++) vuelo.to(lapa, { ...punto(i), duration: 1 });
 
       // Nubes y selva: mismo recorrido que el keyframe nube-scroll, con las distancias de cada capa
       recuadro.querySelectorAll<Element>(".nube-capa, .selva-capa").forEach((capa) => {

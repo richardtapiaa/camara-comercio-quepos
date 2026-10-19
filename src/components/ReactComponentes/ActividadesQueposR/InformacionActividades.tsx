@@ -58,7 +58,7 @@ const InformacionActividades = ({ imagenes }: InformacionActividadesProps) => {
     <section id="actividades" className="overflow-clip bg-[#f6f6f7] py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 md:px-8 lg:px-16">
         <div className="mb-12 max-w-2xl space-y-4 md:mb-20">
-         
+
           <div className="space-y-3">
             <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl lg:text-5xl">
               Vive Quepos a tu manera

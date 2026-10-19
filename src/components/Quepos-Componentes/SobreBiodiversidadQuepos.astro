@@ -1,14 +1,27 @@
 ---
 import { Image } from "astro:assets";
 import imagen from "../../assets/imagenes visitors/actividades-1.jpg";
+import perezoso from "../../assets/imagenes-quepos/perezoso-sin-fondo.webp";
 import MisionScripts from "../Scripts/home/MisionScripts.astro";
 ---
 
-<!-- Mismo diseño que SobreQuepos.astro: foto a la izquierda montada sobre el panel celeste de la derecha -->
-<section id="biodiversidad-quepos" class="overflow-x-clip bg-white py-16 sm:py-24">
+<!-- Diseño de SobreQuepos.astro en espejo: foto a la derecha montada sobre el panel celeste de la izquierda -->
+<section id="biodiversidad-quepos" class="relative overflow-x-clip bg-white py-16 sm:py-24">
+  <!-- Perezoso colgado arriba a la izquierda, pegado al borde de la pantalla y en espejo para que mire hacia el
+       contenido (como el mono de SobreQuepos.astro, que va a la derecha). Sus brazos tocan el borde de arriba,
+       como si colgara de la sección anterior. Va delante de la tarjeta -->
+  <Image
+    src={perezoso}
+    alt="Perezoso colgado"
+    width={600}
+    class="pointer-events-none absolute left-0 top-0 z-20 h-auto w-36 -scale-x-100 select-none sm:w-52 md:w-72"
+    loading="lazy"
+    draggable="false"
+  />
+
   <div class="mx-auto grid max-w-6xl px-6 md:grid-cols-12">
-    <!-- Sale del contenedor hasta el borde izquierdo de la pantalla y se monta sobre el panel -->
-    <div class="relative z-10 -ml-[calc(max(0px,(100vw_-_72rem)/2)+1.5rem)] mb-8 aspect-[4/3] overflow-hidden md:col-span-4 md:col-start-1 md:row-start-1 md:mt-24 md:self-start md:aspect-[8/7]">
+    <!-- Sale del contenedor hasta el borde derecho de la pantalla y se monta sobre el panel -->
+    <div class="relative z-10 -mr-[calc(max(0px,(100vw_-_72rem)/2)+1.5rem)] mb-8 aspect-[4/3] overflow-hidden rounded-2xl md:col-span-4 md:col-start-9 md:row-start-1 md:mt-24 md:self-start md:aspect-[8/7]">
       <Image
         src={imagen}
         alt="Perezoso colgado de una rama en el bosque de Quepos"
@@ -17,9 +30,11 @@ import MisionScripts from "../Scripts/home/MisionScripts.astro";
       />
     </div>
 
-    <!-- Panel que sale del contenedor hasta el borde derecho de la pantalla -->
+    <!-- Tarjeta celeste con bordes redondeados y sombra suave (como InfoHospitalidad.astro). Sale del contenedor
+         hacia la izquierda pero deja un margen con el borde de la pantalla, para que se vean las esquinas. A la
+         derecha deja el espacio de la columna donde se monta la foto -->
     <div
-      class="-mr-[calc(max(0px,(100vw_-_72rem)/2)+1.5rem)] bg-[#E8F4FA] py-12 pl-6 pr-[calc(max(0px,(100vw_-_72rem)/2)+3rem)] md:col-span-9 md:col-start-4 md:row-start-1 md:py-16 md:pl-[calc(100%/9+2rem)]"
+      class="-ml-[max(0px,(100vw_-_72rem)/2)] rounded-[2rem] bg-[#E8F4FA] py-12 pl-[calc(max(0px,(100vw_-_72rem)/2)+1.5rem)] pr-6 shadow-[0_12px_40px_rgb(100_155_190/0.25)] md:col-span-9 md:col-start-1 md:row-start-1 md:py-16 md:pr-[calc(100%/9+2rem)]"
     >
       <h2 class="text-4xl font-bold uppercase leading-tight tracking-tight text-neutral-700 sm:text-5xl">
         Biodiversidad

@@ -97,8 +97,8 @@ function useAnimacionTimeline(ref: React.RefObject<HTMLDivElement | null>) {
   }, [ref]);
 }
 
-// Línea de tiempo alternada: en escritorio la línea va al centro; cada actividad es una tarjeta con borde
-// (número, título, texto y foto) a un lado y, al otro lado, su categoría en grande a la altura del marcador.
+// Línea de tiempo alternada: en escritorio la línea va al centro; cada actividad es una tarjeta blanca (foto
+// arriba, título y texto abajo) a un lado y, al otro lado, su categoría en grande a la altura del marcador.
 // Van alternando de lado. En celular la línea va a la izquierda con la categoría encima de cada tarjeta
 export default function Timeline({ items }: { items: TimelineItem[] }) {
   const ref = React.useRef<HTMLDivElement>(null);
@@ -121,7 +121,6 @@ export default function Timeline({ items }: { items: TimelineItem[] }) {
       <ol>
         {items.map((item, i) => {
           const tarjetaIzquierda = i % 2 === 0;
-          const numero = String(i + 1).padStart(2, "0");
 
           return (
             <li
@@ -146,22 +145,24 @@ export default function Timeline({ items }: { items: TimelineItem[] }) {
               </span>
 
               <div className={cn(tarjetaIzquierda ? "md:order-1 md:pr-24" : "md:pl-24")}>
-                <article className="rounded-2xl border border-slate-300 p-6 md:p-8">
-                  <h3 className="flex gap-2 text-xl font-bold tracking-tight text-slate-900 md:text-2xl">
-                    <span className="text-slate-400">{numero}.</span>
-                    {item.title}
-                  </h3>
-                  {/* Texto con sangría, alineado con el título (después del número) */}
-                  <p className="mt-4 text-sm leading-relaxed text-slate-700 md:pl-10 md:text-[15px] md:leading-[1.75]">
-                    {item.description}
-                  </p>
-                  <img
-                    src={item.image}
-                    alt={item.alt ?? item.title}
-                    loading={i === 0 ? "eager" : "lazy"}
-                    className="mt-6 aspect-[16/9] w-full rounded-xl object-cover"
-                    draggable={false}
-                  />
+                {/* Tarjeta blanca con sombra: foto arriba y abajo título y texto */}
+                <article className="overflow-hidden rounded-3xl bg-white shadow-[0_12px_40px_-16px_rgba(16,42,67,0.35)] ring-1 ring-slate-900/5">
+                  <div className="relative aspect-[16/10] overflow-hidden">
+                    <img
+                      src={item.image}
+                      alt={item.alt ?? item.title}
+                      loading={i === 0 ? "eager" : "lazy"}
+                      className="size-full object-cover"
+                      draggable={false}
+                    />
+                  </div>
+
+                  <div className="p-6 md:p-8">
+                    <h3 className="text-xl font-bold tracking-tight text-[#102a43] md:text-2xl">{item.title}</h3>
+                    <p className="mt-4 text-sm leading-relaxed text-slate-600 md:text-[15px] md:leading-[1.75]">
+                      {item.description}
+                    </p>
+                  </div>
                 </article>
               </div>
             </li>

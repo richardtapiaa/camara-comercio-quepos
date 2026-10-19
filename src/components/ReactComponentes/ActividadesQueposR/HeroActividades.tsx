@@ -3,257 +3,126 @@
 import * as React from 'react';
 
 import { cn } from "@/lib/utils";
-import {
-  motion,
-  type HTMLMotionProps,
-  useMotionTemplate,
-  useScroll,
-  useTransform,
-} from 'framer-motion';
+import { motion } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
 
-interface ParallaxItemProps extends HTMLMotionProps<'div'> {
-  start: number;
-  end: number;
-}
+type Imagen = { src: string; alt: string };
 
-export const Parallax = ({ className, ...props }: React.ComponentProps<'div'>) => {
-
-  return (
-    <>
-      <style>{estilosParallax}</style>
-      <div className={cn('relative min-h-dvh w-full', className)} {...props} />
-    </>
-  );
-};
-
-export function ParallaxContainer({
-  className,
-  ...props
-}: React.ComponentProps<'div'>) {
-  return (
-    <div className={cn('min-h-screen', className)} {...props} />
-  );
-}
-// El parallax corre con animaciones CSS ligadas al scroll (animation-timeline: view()): el navegador las
-// mueve en el mismo cuadro que el scroll, sin esperar a JS. Con JS (useScroll) las fotos llegaban un cuadro
-// tarde al scroll táctil y en celular temblaban o se "pegaban". Mismo enfoque que MisionScripts.astro
-const estilosParallax = `
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .parallax-item {
-      animation-name: parallax-item;
-      animation-timing-function: linear;
-      animation-fill-mode: both;
-      animation-timeline: view();
-      /* Mismo rango que el offset de useScroll: desde start px tras entrar hasta end px antes de salir */
-      animation-range: cover var(--parallax-inicio) cover calc(100% + var(--parallax-fin));
-    }
-    /* Celular: el texto ocupa la mitad de arriba de la pantalla, así que las fotos recorren solo la mitad de
-       abajo (si subían hasta arriba se desvanecían encima del título como un fantasma). Para que no pasen
-       de golpe suben a la mitad de la velocidad del scroll: durante 96svh de scroll se desplazan 48svh hacia
-       abajo, así que en pantalla solo suben 48svh (de abajo hasta la mitad) y ahí terminan de desvanecerse */
-    @media (max-width: 767px) {
-      .parallax-item {
-        animation-range: cover 0% cover 96svh;
-        /* !important para ganarle a las variables de escritorio que van en el style de cada foto */
-        --parallax-y0: 0px !important;
-        --parallax-y75: 36svh !important;
-        --parallax-y1: 48svh !important;
-      }
-    }
-  }
-}
-@keyframes parallax-item {
-  0% { translate: 0 var(--parallax-y0); scale: 1; opacity: 1; }
-  75% { translate: 0 var(--parallax-y75); scale: 1; opacity: 1; }
-  100% { translate: 0 var(--parallax-y1); scale: 0.85; opacity: 0; }
-}
-`;
-
-// Navegadores sin animaciones ligadas al scroll (Safari < 26, Firefox) usan la versión con JS, pero solo en
-// escritorio: en celular esa versión tiembla con el scroll táctil, así que ahí las fotos quedan quietas
-type ModoParallax = 'css' | 'js' | 'quieto';
-const consultaEscritorio = '(min-width: 768px)';
-
-const modoParallax = (): ModoParallax => {
-  if (CSS.supports('animation-timeline: view()')) return 'css';
-  return window.matchMedia(consultaEscritorio).matches ? 'js' : 'quieto';
-};
-
-function useModoParallax() {
-  return React.useSyncExternalStore<ModoParallax>(
-    (avisar) => {
-      const mq = window.matchMedia(consultaEscritorio);
-      mq.addEventListener('change', avisar);
-      return () => mq.removeEventListener('change', avisar);
-    },
-    modoParallax,
-    () => 'css'
-  );
-}
-
-export function ParallaxItem({ start, end, className, style, ...props }: ParallaxItemProps) {
-  const modo = useModoParallax();
-
-  if (modo === 'js') {
-    return <ParallaxItemAnimado start={start} end={end} className={className} style={style} {...props} />;
-  }
-  if (modo === 'quieto') {
-    return <motion.div className={className} style={style} {...props} />;
-  }
-
-  const variables = {
-    '--parallax-inicio': `${start}px`,
-    '--parallax-fin': `${end}px`,
-    '--parallax-y0': `${start}px`,
-    '--parallax-y75': `${start + (end - start) * 0.75}px`,
-    '--parallax-y1': `${end}px`,
-  } as React.CSSProperties;
-
-  return (
-    <motion.div
-      className={cn('parallax-item will-change-transform', className)}
-      style={{ ...variables, ...style }}
-      {...props}
-    />
-  );
-}
-
-function ParallaxItemAnimado({
-  start,
-  end,
-  className,
-  style,
-  ...props
-}: ParallaxItemProps) {
-  const ref = React.useRef<HTMLDivElement>(null);
-
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: [`${start}px end`, `end ${end * -1}px`],
-  });
-
-  const opacity = useTransform(scrollYProgress, [0.75, 1], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0.75, 1], [1, 0.85]);
-
-  const y = useTransform(scrollYProgress, [0, 1], [start, end]);
-  const transform = useMotionTemplate`translateY(${y}px) scale(${scale})`;
-
-  return (
-    <motion.div
-      className={cn('will-change-transform', className)}
-      ref={ref}
-      style={{ transform, opacity, ...style }}
-      {...props}
-    />
-  );
-}
-
-// Texto que entra palabra por palabra desde el fondo (eje z): llega grande y desenfocado y se asienta
-export function StaggerText({ text, className }: { text: string; className?: string }) {
-  return (
-    <motion.h1
-      className={cn('flex flex-wrap justify-center gap-x-[0.25em]', className)}
-      initial="oculto"
-      whileInView="visible"
-      viewport={{ once: true }}
-      transition={{ staggerChildren: 0.08 }}
-    >
-      {text.split(' ').map((palabra, i) => (
-        <motion.span
-          key={i}
-          className="inline-block"
-          variants={{
-            oculto: { opacity: 0, scale: 1.8, filter: 'blur(12px)' },
-            visible: { opacity: 1, scale: 1, filter: 'blur(0px)' },
-          }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        >
-          {palabra}
-        </motion.span>
-      ))}
-    </motion.h1>
-  );
-}
-
-// Hero de actividades: texto fijo al centro y las fotos subiendo por encima, cada una a distinta velocidad
 type HeroActividadesProps = {
-  imagenes: { src: string; alt: string }[];
-  /** Foto de fondo, fija detrás del texto mientras dura el hero */
-  fondo?: { src: string; alt: string };
+  /** CAPA 1: la foto completa, tal cual */
+  foto: Imagen & { width: number; height: number };
+  /** CAPA 3: la misma foto, del mismo tamaño, con solo el kayakista visible (canal alfa) */
+  primerPlano: string;
+  /** CAPA 2: título gigante que queda entre la foto y el kayakista */
+  titulo?: string;
+  /** Botón blanco debajo del título */
+  boton?: { texto: string; href: string };
+  className?: string;
 };
 
-// Recorrido (start → end, en px) de cada foto en escritorio: van 3 por fila y ninguna arranca más arriba que
-// la anterior, así no se montan. En celular van una por fila, repartidas a distintos lados y tamaños, todas
-// con el mismo recorrido (definido en estilosParallax)
-const recorridos = [
-  { start: 200, end: -200, movil: 'w-[72%] mr-auto' },
-  { start: 500, end: 20, movil: 'w-[58%] ml-auto' },
-  { start: 800, end: 50, movil: 'w-[80%] mx-auto' },
-  { start: 800, end: 50, movil: 'w-[60%] ml-[4%] mr-auto' },
-  { start: 1100, end: 70, movil: 'w-[66%] ml-auto' },
-  { start: 1100, end: 120, movil: 'w-[76%] mx-auto' },
-];
+// Tipografía del título: sans serif extra bold. Arial Black / Helvetica Neue en Mac y Windows; en Linux y
+// Android, que no las traen, cae en Poppins 900 (ya cargada en Layout.astro)
+const estiloTitulo = { fontFamily: '"Arial Black", "Helvetica Neue", Poppins, Arial, sans-serif', fontWeight: 900 } as const;
 
-export function HeroActividades({ imagenes, fondo }: HeroActividadesProps) {
-  
+// Tamaño del título: 18.8 % del alto de la foto (que es max(100cqh, 47.2cqw), ver el recuadro), así guarda la
+// misma proporción con el kayakista en cualquier pantalla, pero sin pasar del 15 % / 13 % del ancho de la
+// pantalla para que entre. El mismo tamaño se usa para ubicar el botón justo debajo (ver más abajo)
+const clasesTitulo =
+  'select-none whitespace-nowrap text-[min(15cqw,max(8.9cqw,18.8cqh))] uppercase leading-[0.8] tracking-[-0.02em] text-white md:text-[min(13cqw,max(8.9cqw,18.8cqh))]';
+
+const clasesBoton =
+  'items-center gap-2 rounded-full bg-white px-6 py-3 text-xs font-bold uppercase tracking-wide text-[#1e2a5a] shadow-lg transition-colors hover:bg-white/85 md:px-8 md:py-4 md:text-sm';
+
+// En celular la foto no llega hasta arriba: su borde de arriba se funde con el fondo oscuro del hero
+const fundidoArriba = '[mask-image:linear-gradient(to_bottom,transparent,black_16%)] md:[mask-image:none]';
+
+// Entrada suave con la curva que usan los otros textos del sitio
+const entrada = (retraso: number) => ({
+  initial: { opacity: 0, y: 40 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 1, delay: retraso, ease: [0.22, 1, 0.36, 1] as const },
+});
+
+// Hero de actividades: la foto tal cual y un título gigante que pasa por detrás del kayakista. Son tres capas
+// del mismo tamaño apiladas (foto, título y la misma foto recortada al kayakista), así la imagen se ve igual
+// que la original y solo cambia que las letras quedan detrás de la persona
+export function HeroActividades({
+  foto,
+  primerPlano,
+  titulo = "Aventura",
+  boton = { texto: "Descubre las actividades", href: "#actividades" },
+  className,
+}: HeroActividadesProps) {
   return (
-    <Parallax className={cn("overflow-clip bg-white p-6 md:p-12", fondo ? "text-white" : "text-black")}>
-      {/* En celular el texto va arriba (justo debajo de la barra de navegación) para dejar libre la mitad de
-          abajo, por donde suben las fotos; en escritorio va centrado */}
-      <div className="sticky top-0 isolate flex h-svh w-full flex-col items-center justify-start space-y-4 pt-28 text-center md:justify-center md:pt-0">
-        {/* Fondo: va dentro del bloque fijo para quedarse quieto detrás del texto. Se extiende sobre el padding
-            del hero para cubrir todo el ancho, y la capa oscura asegura que el texto blanco se lea.
-            !m-0 anula el margen que le pone space-y-4 del contenedor y que lo dejaba 16px corto abajo */}
-        {fondo && (
-          <div className="absolute -inset-x-6 -top-6 bottom-0 -z-10 !m-0 md:-inset-x-12 md:-top-12" aria-hidden="true">
-            <img src={fondo.src} alt="" className="size-full object-cover" draggable={false} />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/40 to-black/60" />
-          </div>
-        )}
+    <section
+      className={cn('relative isolate h-svh min-h-[560px] w-full overflow-hidden bg-[#0b0f0a] [container-type:size]', className)}
+      aria-label="Aventura en Quepos"
+    >
+      {/* Recuadro con la proporción de la foto que cubre toda la pantalla (como object-cover): las capas van en
+          porcentajes de la foto, así calzan en cualquier pantalla.
+          La foto está ampliada a lo ancho (2.12:1) para que en escritorio se vea completa, con el kayakista
+          entero y no tan grande.
+          --foco-x: punto de la foto que queda al centro. En celular, que recorta los costados, se centra en el
+          kayakista.
+          --foco-y: en pantallas más anchas que la foto sobra alto y se recorta; 0.5 recorta lo mismo arriba y
+          abajo. En celular vale 1: la foto va pegada abajo.
+          --alto-foto: alto mínimo de la foto en proporción a la pantalla. En celular es 0.78: así se achica y se
+          ve más del río, y arriba (detrás de la barra de navegación) se funde con el fondo oscuro.
+          La foto con el kayakista entra igual que el título y el botón (sube y aparece), y antes que ellos */}
+      <motion.div
+        {...entrada(0)}
+        className="absolute left-1/2 [--alto-foto:0.78] [--foco-x:45%] [--foco-y:1] [translate:calc(-1*var(--foco-x))_0] md:[--alto-foto:1] md:[--foco-x:50%] md:[--foco-y:0.5]"
+        style={{
+          width: `max(100cqw, calc(100cqh * var(--alto-foto) * ${foto.width} / ${foto.height}))`,
+          aspectRatio: `${foto.width} / ${foto.height}`,
+          top: `calc((100cqh - max(100cqw * ${foto.height} / ${foto.width}, 100cqh * var(--alto-foto))) * var(--foco-y))`,
+        }}
+      >
+        {/* CAPA 1 — La foto */}
+        <img src={foto.src} alt={foto.alt} className={cn('absolute inset-0 size-full', fundidoArriba)} draggable={false} />
+        {/* Velo muy suave para que el blanco del título resalte */}
+        <div className={cn('absolute inset-0 bg-black/15', fundidoArriba)} aria-hidden="true" />
 
-        <StaggerText
-          className={cn(
-            "mx-auto text-4xl font-bold tracking-tighter min-[380px]:text-5xl md:w-2/3",
-            fondo && "drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)]"
-          )}
-          text="Descubre todo lo que puedes vivir en Quepos"
+        {/* CAPA 2 — Título, centrado en la pantalla. Su borde de abajo queda a la altura de la cara, así el casco
+            le tapa la parte de abajo de las letras. En celular va un poco más arriba, así el casco
+            solo tapa la parte de abajo de las letras y el título se lee */}
+        <div className="absolute bottom-[57%] left-[var(--foco-x)] -translate-x-1/2 md:bottom-[47.3%]">
+          <motion.h1 {...entrada(0.3)} className={clasesTitulo} style={estiloTitulo}>
+            {titulo}
+          </motion.h1>
+        </div>
+
+        {/* CAPA 3 — El kayakista: la misma foto con solo la persona visible, encima del título */}
+        <img
+          src={primerPlano}
+          alt=""
+          className={cn('absolute inset-0 size-full', fundidoArriba)}
+          draggable={false}
+          aria-hidden="true"
         />
 
-        <p className={cn("max-w-prose", fondo && "text-white/90 drop-shadow-[0_1px_8px_rgba(0,0,0,0.5)]")}>
-          Pesca deportiva, rafting, tours en catamarán, manglares, playas y parques nacionales: aventuras para
-          todos los gustos en el corazón del Pacífico Central de Costa Rica.
-        </p>
+        {/* Botón en escritorio: una copia invisible del título en el mismo lugar lo deja justo debajo y alineado
+            a su borde izquierdo, delante de todo */}
+        <div className="absolute left-[var(--foco-x)] top-[calc(52.7%_-_0.8*min(13cqw,max(8.9cqw,18.8cqh)))] hidden -translate-x-1/2 flex-col items-start md:flex">
+          <span className={cn(clasesTitulo, 'invisible')} style={estiloTitulo} aria-hidden="true">
+            {titulo}
+          </span>
+          <motion.a {...entrada(0.7)} href={boton.href} className={cn(clasesBoton, 'mt-8 inline-flex')}>
+            {boton.texto}
+            <ArrowRight className="size-4" strokeWidth={2} aria-hidden="true" />
+          </motion.a>
+        </div>
+      </motion.div>
 
-      </div>
-
-      {/* En celular las fotos suben a media velocidad, así que en pantalla la separación entre ellas se reduce a
-          la mitad: por eso el espacio vertical es tan grande */}
-      <ParallaxContainer className="flex w-full flex-wrap justify-between gap-x-4 gap-y-[17rem] md:gap-y-4">
-        {imagenes.slice(0, recorridos.length).map((imagen, i) => (
-          <ParallaxItem
-            key={imagen.src}
-            className={cn(
-              'aspect-[4/3] overflow-hidden rounded-2xl shadow-xl md:mx-0 md:w-[30%]',
-              recorridos[i].movil
-            )}
-            start={recorridos[i].start}
-            end={recorridos[i].end}
-          >
-            <img
-              className="size-full object-cover object-[50%_50%]"
-              src={imagen.src}
-              alt={imagen.alt}
-              draggable={false}
-            />
-          </ParallaxItem>
-        ))}
-      </ParallaxContainer>
-
-      {/* Espacio para que terminen las animaciones. Es un bloque y no padding: el sticky del texto solo se
-          mantiene dentro del contenido de su contenedor, y con padding se soltaba antes de tiempo */}
-      <div className="h-[50svh] md:h-[1150px]" aria-hidden="true" />
-
-    </Parallax>
+      {/* Botón en celular: abajo al centro, para no taparle la cara al kayakista */}
+      <motion.a
+        {...entrada(0.7)}
+        href={boton.href}
+        className={cn(clasesBoton, 'absolute inset-x-0 bottom-8 z-10 mx-auto flex w-max md:hidden')}
+      >
+        {boton.texto}
+        <ArrowRight className="size-4" strokeWidth={2} aria-hidden="true" />
+      </motion.a>
+    </section>
   );
 }
