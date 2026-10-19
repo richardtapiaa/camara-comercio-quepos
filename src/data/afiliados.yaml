@@ -1,0 +1,228 @@
+# Afiliados de la Cámara de Comercio, Industria y Turismo de Quepos.
+#
+# Para agregar uno: pon su logo en src/assets/logos-afiliados/ y copia un bloque de abajo.
+# - id: único, en minúsculas y con guiones (no se repite)
+# - categoria: una de Hospedaje, Tours y aventura, Transporte, Comercio, Gastronomía, Bienes raíces, Servicios, Otros
+# - descripcion, telefonos, whatsapp, correo, web, facebook e instagram son opcionales: si no se tienen, se borra
+#   la línea
+# - web, facebook e instagram van con https:// adelante (ej. facebook: https://www.facebook.com/nombre)
+
+- id: chasing-adventures-tours
+  nombre: Chasing Adventures
+  categoria: Tours y aventura
+  descripcion: Tours y aventuras
+  logo: ../assets/logos-afiliados/chasing-adventures-tours.webp
+  telefonos: ["+506 6462-2162"]
+  whatsapp: "+506 8753-1528"
+  correo: info@chasingadventurescr.com
+  web: https://chasingadventurescr.com
+
+- id: hotel-costa-verde
+  nombre: Hotel Costa Verde
+  categoria: Hospedaje
+  descripcion: Hotel en Manuel Antonio
+  logo: ../assets/logos-afiliados/hotel-costa-verde.webp
+  telefonos: ["+506 2777-0584", "+506 2777-0187"]
+  correo: info@costaverde.com
+  web: https://costaverde.com
+
+- id: iguana-tours
+  nombre: Iguana Tours
+  categoria: Tours y aventura
+  descripcion: Agencia de tours
+  logo: ../assets/logos-afiliados/iguana-tours.webp
+  telefonos: ["+506 2777-2052", "+506 2777-1262"]
+  whatsapp: "+506 8997-1969"
+  correo: info@iguanatours.com
+  web: https://iguanatours.com
+
+- id: hotel-karahe
+  nombre: Hotel Karahé
+  categoria: Hospedaje
+  descripcion: Hotel de playa
+  logo: ../assets/logos-afiliados/hotel-karahe.webp
+  telefonos: ["+506 2777-0170"]
+
+- id: issimo-suites
+  nombre: Issimo Suites
+  categoria: Hospedaje
+  descripcion: Hotel boutique y spa
+  logo: ../assets/logos-afiliados/issimo-suites.webp
+  telefonos: ["+506 2777-4410"]
+
+- id: los-altos-resort
+  nombre: Los Altos Resort
+  categoria: Hospedaje
+  descripcion: Resort de lujo
+  logo: ../assets/logos-afiliados/los-altos-resort.webp
+  telefonos: ["+506 2777-8888"]
+  correo: reservations@losaltosresort.com
+  web: https://losaltosresort.com
+
+- id: best-western-kamuk
+  nombre: Best Western Hotel & Casino Kamuk
+  categoria: Hospedaje
+  descripcion: Hotel en Quepos
+  logo: ../assets/logos-afiliados/best-western-kamuk.webp
+  telefonos: ["+506 2777-0811"]
+  whatsapp: "+506 8787-1600"
+  correo: info@kamuk.co.cr
+  web: https://kamuk.co.cr
+
+- id: parador-nature-resort
+  nombre: Parador Nature Resort & Spa
+  categoria: Hospedaje
+  descripcion: Resort y spa
+  logo: ../assets/logos-afiliados/parador-nature-resort.webp
+  telefonos: ["+506 2777-1414"]
+
+- id: mini-price-store
+  nombre: Mini Price Store
+  categoria: Comercio
+  descripcion: Supermercado y comercio local
+  logo: ../assets/logos-afiliados/mini-price-store.webp
+  telefonos: ["+506 8576-4242"]
+  correo: info@miniprice.cr
+  web: https://miniprice.cr
+
+- id: si-como-no-resort
+  nombre: Sí Como No Resort
+  categoria: Hospedaje
+  descripcion: Hotel y refugio de vida silvestre
+  logo: ../assets/logos-afiliados/si-como-no-resort.webp
+  telefonos: ["+506 2777-0300", "+506 4001-8754"]
+  whatsapp: "+506 8337-7337"
+  correo: reservations@sicomono.com
+  web: https://sicomono.com
+
+- id: the-falls-resort
+  nombre: The Falls at Manuel Antonio
+  categoria: Hospedaje
+  descripcion: Hotel boutique
+  logo: ../assets/logos-afiliados/the-falls-resort.webp
+  telefonos: ["+506 2777-1332", "+506 8767-6011"]
+  correo: info@fallsresortcr.com
+  web: https://fallsresortcr.com
+
+- id: sea-quest-catamaran
+  nombre: Sea Quest Catamaran
+  categoria: Tours y aventura
+  descripcion: Excursiones en catamarán
+  logo: ../assets/logos-afiliados/sea-quest-catamaran.webp
+  telefonos: ["+506 8504-5880"]
+  whatsapp: "+506 8504-5880"
+  correo: reserve@manuelantonioactivitiescr.com
+  web: https://catamarancruisemanuelantonio.com
+
+- id: roots2river
+  nombre: Roots2River
+  categoria: Tours y aventura
+  descripcion: Rafting y actividades de aventura
+  logo: ../assets/logos-afiliados/roots2river.webp
+  telefonos: ["+506 8670-6740"]
+  correo: info@roots2river.com
+  web: https://roots2river.com
+
+- id: tracopa
+  nombre: Tracopa
+  categoria: Transporte
+  descripcion: Transporte de autobuses
+  logo: ../assets/logos-afiliados/tracopa.webp
+  telefonos: ["+506 2221-4214"]
+  correo: info@tracopacr.com
+  web: https://tracopacr.com
+
+- id: quatro-legal
+  nombre: Quatro Legal
+  categoria: Servicios
+  descripcion: Firma de asesoría legal
+  logo: ../assets/logos-afiliados/quatro-legal.webp
+  telefonos: ["+506 2103-7294"]
+  correo: info@quatro.legal
+  web: https://quatro.legal
+
+# --- Sin datos de contacto todavía (completar cuando se tengan) ---
+
+- id: 2-costa-rica-real-estate
+  nombre: 2 Costa Rica Real Estate
+  categoria: Bienes raíces
+  logo: ../assets/logos-afiliados/2-costa-rica-real-estate.webp
+
+- id: asoproquepos
+  nombre: Asoproquepos
+  categoria: Servicios
+  logo: ../assets/logos-afiliados/asoproquepos.webp
+
+# Categoría por confirmar
+- id: blue-horizon
+  nombre: Blue Horizon
+  categoria: Otros
+  logo: ../assets/logos-afiliados/blue-horizon.webp
+
+- id: costa-rica-green-airways
+  nombre: Costa Rica Green Airways
+  categoria: Transporte
+  logo: ../assets/logos-afiliados/costa-rica-green-airways.webp
+
+# Categoría por confirmar
+- id: aguas-azules-costa-rica
+  nombre: Aguas Azules Costa Rica
+  categoria: Otros
+  logo: ../assets/logos-afiliados/aguas-azules-costa-rica.webp
+
+- id: dantes-watersports-tours
+  nombre: Dante's Watersports & Tours
+  categoria: Tours y aventura
+  logo: ../assets/logos-afiliados/dantes-watersports-tours.webp
+
+- id: safari-adventure-park
+  nombre: Safari Adventure Park
+  categoria: Tours y aventura
+  logo: ../assets/logos-afiliados/safari-adventure-park.webp
+
+- id: diario-mirador
+  nombre: Diario Mirador
+  categoria: Servicios
+  logo: ../assets/logos-afiliados/diario-mirador.webp
+
+- id: planet-dolphin
+  nombre: Planet Dolphin
+  categoria: Tours y aventura
+  logo: ../assets/logos-afiliados/planet-dolphin.webp
+
+- id: sabromar
+  nombre: Sabromar
+  categoria: Gastronomía
+  logo: ../assets/logos-afiliados/sabromar.webp
+
+# Categoría por confirmar
+- id: villa-costa-vida
+  nombre: Villa Costa Vida
+  categoria: Hospedaje
+  logo: ../assets/logos-afiliados/villa-costa-vida.webp
+
+- id: ferreteria-costanera-sur
+  nombre: Ferretería Costanera Sur
+  categoria: Comercio
+  logo: ../assets/logos-afiliados/ferreteria-costanera-sur.webp
+
+# Categoría por confirmar
+- id: portasol
+  nombre: Portasol
+  categoria: Bienes raíces
+  logo: ../assets/logos-afiliados/portasol.webp
+
+- id: manuel-antonio-estates
+  nombre: Manuel Antonio Estates
+  categoria: Bienes raíces
+  logo: ../assets/logos-afiliados/manuel-antonio-estates.webp
+
+- id: marina-pez-vela
+  nombre: Marina Pez Vela
+  categoria: Servicios
+  logo: ../assets/logos-afiliados/marina-pez-vela.webp
+
+- id: tucanes-tours
+  nombre: Tucanes Tours
+  categoria: Tours y aventura
+  logo: ../assets/logos-afiliados/tucanes-tours.webp
