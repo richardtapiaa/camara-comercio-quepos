@@ -112,9 +112,10 @@ export default function ImagenesHoteles({ imagenes }: Props) {
         >
           {Array.from({ length: COPIAS }, (_, copia) =>
             imagenes.map((foto) => (
+              // En celular la tarjeta es cuadrada (85 % del ancho de la pantalla); desde tablet vuelve a ser alta
               <div
                 key={`${copia}-${foto.id}`}
-                className="h-[min(70vh,640px)] min-w-[70vw] snap-center overflow-hidden rounded-xl shadow-xl md:min-w-[38vw] xl:min-w-[30vw]"
+                className="aspect-square min-w-[85vw] snap-center overflow-hidden rounded-xl shadow-xl md:aspect-auto md:h-[min(70vh,640px)] md:min-w-[38vw] xl:min-w-[30vw]"
               >
                 {/* aspect="h-full" hace que la foto llene la tarjeta; mb-0 quita el margen pensado para el mosaico */}
                 <GalleryImage

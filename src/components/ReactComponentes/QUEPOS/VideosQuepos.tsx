@@ -458,4 +458,59 @@ const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
 
 VideoPlayer.displayName = "VideoPlayer";
 
-export { VideoPlayer, videoPlayerVariants };
+type Idioma = "es" | "en";
+
+export interface VideoQueposIdiomasProps extends Omit<VideoPlayerProps, "src"> {
+  srcEs: string;
+  srcEn: string;
+}
+
+const idiomas: { valor: Idioma; texto: string }[] = [
+  { valor: "es", texto: "Ver en español" },
+  { valor: "en", texto: "Ver en inglés" },
+];
+
+// El reproductor con dos botones debajo para elegir el video en español o en inglés. Arranca en español; al
+// cambiar, el reproductor se vuelve a montar (key) con el otro video desde el principio y empieza a reproducirse,
+// porque la persona acaba de tocar el botón
+function VideoQueposIdiomas({ srcEs, srcEn, autoPlay, ...props }: VideoQueposIdiomasProps) {
+  const [idioma, setIdioma] = React.useState<Idioma>("es");
+  const [cambiado, setCambiado] = React.useState(false);
+
+  const elegir = (nuevo: Idioma) => {
+    if (nuevo === idioma) return;
+    setIdioma(nuevo);
+    setCambiado(true);
+  };
+
+  return (
+    <div className="flex w-full flex-col items-center gap-6">
+      <VideoPlayer
+        key={idioma}
+        src={idioma === "es" ? srcEs : srcEn}
+        autoPlay={cambiado || autoPlay}
+        lang={idioma}
+        {...props}
+      />
+
+      <div role="group" aria-label="Idioma del video" className="inline-flex rounded-full bg-slate-100 p-1">
+        {idiomas.map(({ valor, texto }) => (
+          <button
+            key={valor}
+            type="button"
+            onClick={() => elegir(valor)}
+            aria-pressed={idioma === valor}
+            className={cn(
+              "rounded-full px-5 py-2.5 text-sm font-semibold transition-colors sm:px-6",
+              idioma === valor ? "bg-[#2780c9] text-white shadow" : "text-slate-600 hover:text-slate-900",
+            )}
+          >
+            {texto}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export { VideoPlayer, VideoQueposIdiomas, videoPlayerVariants };

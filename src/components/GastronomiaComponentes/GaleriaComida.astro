@@ -1,0 +1,47 @@
+---
+import { Image } from "astro:assets";
+import comida1 from "../../assets/imagenes-hospitalidad/comida-1.jpg";
+import comida2 from "../../assets/imagenes-hospitalidad/comida-2.jpg";
+import comida3 from "../../assets/imagenes-hospitalidad/comida-3.jpg";
+import comida4 from "../../assets/imagenes-hospitalidad/comida-4.jpg";
+import comida5 from "../../assets/imagenes-hospitalidad/comida-5.jpg";
+
+// Las de lugar impar (1.ª, 3.ª y 5.ª) son altas y las pares más bajas, así la fila sube y baja
+const fotos = [
+  { src: comida1, alt: "Plato servido en un restaurante de Quepos, con copas de vino en una mesa a la luz de las velas" },
+  { src: comida2, alt: "Plato de mariscos con puré y flores comestibles sobre una mesa de madera" },
+  { src: comida3, alt: "Plato de mariscos y una copa de vino blanco en un restaurante al aire libre de noche" },
+  { src: comida4, alt: "Casado costarricense con arroz, frijoles, pico de gallo y tortillas" },
+  { src: comida5, alt: "Pulpo a la parrilla con ensalada fresca" },
+];
+---
+
+<!-- Fila de fotos de comida con bordes muy redondeados: las altas y las bajas van alternadas y centradas a la misma
+     altura. En escritorio entran las 5 a lo ancho; en celular la fila se desliza de lado -->
+<section class="bg-white py-12 md:py-20" aria-label="Galería de gastronomía de Quepos">
+  <ul
+    class="flex snap-x snap-mandatory items-center gap-4 overflow-x-auto px-4 [scrollbar-width:none] md:grid md:grid-cols-5 md:overflow-visible md:px-4 [&::-webkit-scrollbar]:hidden"
+  >
+    {
+      fotos.map(({ src, alt }, i) => (
+        <li
+          class:list={[
+            "w-[70vw] shrink-0 snap-center overflow-hidden rounded-[2rem] md:w-auto",
+            i % 2 === 0 ? "aspect-[12/13]" : "aspect-[8/7]",
+          ]}
+        >
+          <Image
+            src={src}
+            alt={alt}
+            width={960}
+            widths={[480, 720, 960]}
+            sizes="(min-width: 768px) 20vw, 70vw"
+            quality={75}
+            class="size-full object-cover"
+            loading="lazy"
+          />
+        </li>
+      ))
+    }
+  </ul>
+</section>

@@ -1,0 +1,170 @@
+---
+import { Image } from "astro:assets";
+import mariposa from "../../../assets/imagenes-quepos/mariposa-sin-fondo.webp";
+import MariposaJS from "../../Scripts/Quepos/MariposaJS.astro";
+import { MagicText } from "../../ReactComponentes/QUEPOS/ScrollReveal";
+
+const frase =
+  "“Entre flores y selva, las mariposas morfo pintan de azul el bosque tropical de Quepos.”";
+
+// Flores del pasto: posición (en % del ancho), tamaño y color de los pétalos
+const flores = [
+  { x: 4, tam: "size-5 md:size-7", color: "#f472b6" },
+  { x: 11, tam: "size-4 md:size-5", color: "#facc15" },
+  { x: 19, tam: "size-6 md:size-8", color: "#c084fc" },
+  { x: 33, tam: "size-4 md:size-6", color: "#f472b6" },
+  { x: 48, tam: "size-5 md:size-7", color: "#facc15" },
+  { x: 62, tam: "size-4 md:size-5", color: "#c084fc" },
+  { x: 76, tam: "size-6 md:size-8", color: "#f472b6" },
+  { x: 90, tam: "size-4 md:size-6", color: "#facc15" },
+];
+---
+
+<!-- Mismo recuadro celeste que LapasJS.astro: sol, nubes que se mecen, frase que se llena con el scroll y pasto
+     con flores abajo. Una mariposa morfo sale de las flores y cruza volando, subiendo y bajando, con un rastro de
+     puntitos detrás (MariposaJS.astro) -->
+<section
+  data-mariposa-scroll
+  class="mariposa-recuadro relative isolate flex min-h-[48svh] flex-col overflow-hidden bg-[#E8F4FA] md:min-h-[70svh]"
+  aria-label="Mariposa morfo volando sobre Quepos"
+>
+  <!-- Sol: el mismo de LapasJS.astro, arriba a la izquierda -->
+  <svg
+    class="mariposa-sol pointer-events-none absolute left-6 top-24 z-0 size-14 md:left-[12%] md:top-[12%] md:size-24"
+    viewBox="0 0 100 100"
+    aria-hidden="true"
+  >
+    <path class="mariposa-sol-rayos" fill="#FBBF24" d="M50.0 13.0Q58.9 10.0 65.6 3.6Q67.8 14.2 68.5 18.0Q77.8 19.8 86.8 17.6Q83.3 27.9 82.0 31.5Q89.1 37.7 98.0 40.3Q89.9 47.5 87.0 50.0Q90.0 58.9 96.4 65.6Q85.8 67.8 82.0 68.5Q80.2 77.8 82.4 86.8Q72.1 83.3 68.5 82.0Q62.3 89.1 59.7 98.0Q52.5 89.9 50.0 87.0Q41.1 90.0 34.4 96.4Q32.2 85.8 31.5 82.0Q22.2 80.2 13.2 82.4Q16.7 72.1 18.0 68.5Q10.9 62.3 2.0 59.7Q10.1 52.5 13.0 50.0Q10.0 41.1 3.6 34.4Q14.2 32.2 18.0 31.5Q19.8 22.2 17.6 13.2Q27.9 16.7 31.5 18.0Q37.7 10.9 40.3 2.0Q47.5 10.1 50.0 13.0Z" />
+    <circle cx="50" cy="50" r="27" fill="#FDE047" />
+  </svg>
+
+  <!-- Nubes suaves que se mecen solas -->
+  {
+    [
+      { lugar: "right-[6%] top-[6%] w-28 md:right-[10%] md:top-[10%] md:w-48", clase: "mariposa-nube-lenta opacity-90" },
+      { lugar: "left-[38%] top-[3%] w-20 md:top-[6%] md:w-32", clase: "mariposa-nube-rapida opacity-70" },
+    ].map((nube) => (
+      <svg class={`pointer-events-none absolute z-0 ${nube.lugar} ${nube.clase}`} viewBox="0 0 200 80" aria-hidden="true">
+        <g fill="#ffffff">
+          <rect x="20" y="40" width="160" height="34" rx="17" />
+          <circle cx="62" cy="44" r="26" />
+          <circle cx="106" cy="34" r="32" />
+          <circle cx="148" cy="48" r="22" />
+        </g>
+      </svg>
+    ))
+  }
+
+  <!-- Frase en el cielo, detrás del rastro y de la mariposa -->
+  <div class="relative z-[1] mx-auto w-full max-w-4xl px-6 pt-36 md:pt-40">
+    <MagicText
+      client:load
+      text={frase}
+      opacidadInicial={0.25}
+      className="text-3xl font-black uppercase leading-[1.08] tracking-tight text-neutral-800 sm:text-4xl md:text-5xl"
+    />
+  </div>
+
+  <!-- Espacio para el vuelo y el pasto debajo de la frase -->
+  <div class="h-[34svh] shrink-0 md:h-[44svh]" aria-hidden="true"></div>
+
+  <!-- Pasto con borde de hojitas y flores -->
+  <div class="mariposa-pasto pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-14 md:h-20" aria-hidden="true">
+    {
+      flores.map(({ x, tam, color }) => (
+        <svg class={`absolute -top-3 ${tam}`} style={{ left: `${x}%` }} viewBox="0 0 20 20">
+          <g fill={color}>
+            <circle cx="10" cy="4.5" r="4" />
+            <circle cx="15.5" cy="10" r="4" />
+            <circle cx="10" cy="15.5" r="4" />
+            <circle cx="4.5" cy="10" r="4" />
+          </g>
+          <circle cx="10" cy="10" r="3" fill="#fde68a" />
+        </svg>
+      ))
+    }
+  </div>
+
+  <!-- Rastro: camino de puntitos que se va dibujando detrás de la mariposa (lo arma MariposaJS.astro) -->
+  <svg data-mariposa-rastro class="pointer-events-none absolute inset-0 z-[2] size-full" aria-hidden="true">
+    <defs>
+      <mask id="mariposa-rastro-mascara" maskUnits="userSpaceOnUse">
+        <path data-mariposa-mascara fill="none" stroke="white" stroke-width="24" stroke-linecap="round" />
+      </mask>
+    </defs>
+    <path
+      data-mariposa-camino
+      fill="none"
+      stroke="#2780c9"
+      stroke-opacity="0.55"
+      stroke-width="4"
+      stroke-linecap="round"
+      stroke-dasharray="0.1 14"
+      mask="url(#mariposa-rastro-mascara)"
+    />
+  </svg>
+
+  <!-- La mariposa: el div lo mueve el scroll y la imagen aletea. La foto trae abajo el tallito donde estaba posada:
+       se oculta recortando el 14 % de abajo -->
+  <div data-mariposa class="pointer-events-none absolute z-[3] w-20 md:w-32">
+    <Image
+      src={mariposa}
+      alt="Mariposa morfo azul volando"
+      width={300}
+      class="mariposa-aletea block h-auto w-full select-none [clip-path:inset(0_0_14%_0)]"
+      loading="lazy"
+      draggable="false"
+    />
+  </div>
+</section>
+
+<MariposaJS />
+
+<style>
+  /* Pasto con una tira de hojitas arriba (mismo dibujo que el suelo de LapasJS.astro) */
+  .mariposa-pasto {
+    background-color: #86c08a;
+  }
+  .mariposa-pasto::before {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    bottom: calc(100% - 1px);
+    height: 12px;
+    background-color: inherit;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 14'%3E%3Cpath fill='black' d='M0 14Q2 8 3 3Q5 9 7 14Q9 7 12 0Q13 8 15 14Q18 9 20 5Q21 10 23 14Q26 6 29 2Q30 9 32 14Q35 8 37 4Q38 10 40 14Q43 7 46 1Q47 8 49 14Q52 9 54 5Q55 10 57 14Z'/%3E%3C/svg%3E")
+      repeat-x left bottom / 60px 12px;
+  }
+
+  /* El sol brilla y sus rayos giran; las nubes se mecen de lado a lado */
+  .mariposa-sol {
+    filter: drop-shadow(0 0 14px rgb(251 191 36 / 0.45));
+  }
+  .mariposa-sol-rayos {
+    transform-origin: 50px 50px;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .mariposa-sol-rayos {
+      animation: mariposa-sol-girar 60s linear infinite;
+    }
+    .mariposa-nube-lenta {
+      animation: mariposa-nube-mecer 9s ease-in-out infinite alternate;
+    }
+    .mariposa-nube-rapida {
+      animation: mariposa-nube-mecer 6s ease-in-out -2s infinite alternate;
+    }
+  }
+  @keyframes mariposa-sol-girar {
+    to {
+      rotate: 360deg;
+    }
+  }
+  @keyframes mariposa-nube-mecer {
+    from {
+      translate: -14px 0;
+    }
+    to {
+      translate: 14px 3px;
+    }
+  }
+</style>

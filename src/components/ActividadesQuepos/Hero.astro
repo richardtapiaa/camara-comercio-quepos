@@ -1,27 +1,24 @@
 ---
-import { optimizarImagen } from "../../lib/imagenes";
 import { getImage } from "astro:assets";
 import { HeroActividades } from "../ReactComponentes/ActividadesQueposR/HeroActividades";
-import actividades1 from "../../assets/imagenes visitors/actividades-1.jpg";
-import actividades2 from "../../assets/imagenes visitors/actividades-2.jpg";
-import actividades3 from "../../assets/imagenes visitors/actividades-3.jpg";
-import actividades4 from "../../assets/imagenes visitors/actividades-4.jpg";
-import actividades5 from "../../assets/imagenes visitors/actividades-5.jpg";
-import actividades6 from "../../assets/imagenes visitors/actividades-6.jpeg";
-import heroVisitanos from "../../assets/imagenes visitors/hero-visitanos.jpg";
+import foto from "../../assets/imagen-prueba/kayak-rio-ampliada.jpg";
+import primerPlano from "../../assets/imagen-prueba/kayakista-primer-plano-ampliada.webp";
 
-const imagenes = [
-  { src: await optimizarImagen(actividades1, 1000), alt: "Actividad en Quepos" },
-  { src: await optimizarImagen(actividades2, 1000), alt: "Aventura en Quepos" },
-  { src: await optimizarImagen(actividades3, 1000), alt: "Naturaleza de Quepos" },
-  { src: await optimizarImagen(actividades4, 1000), alt: "Turismo en Quepos" },
-  { src: await optimizarImagen(actividades5, 1000), alt: "Recorrido en Quepos" },
-  { src: await optimizarImagen(actividades6, 1000), alt: "Experiencia en Quepos" },
-];
-
-// Fondo optimizado (el original pesa ~890 KB)
-const fondoOptimizado = await getImage({ src: heroVisitanos, width: 1920, format: "webp", quality: 75 });
-const fondo = { src: fondoOptimizado.src, alt: "Bahía rodeada de bosque tropical en Quepos" };
+// CAPA 1: la foto ampliada a lo ancho (a la derecha se agregó agua y rocas de la misma escena),
+// para que en escritorio se vea completa. CAPA 3: la misma foto, del mismo tamaño, con solo el kayakista visible (WebP con
+// canal alfa), para que quede encima del título. Las dos se exportan al mismo ancho para que calcen
+const fotoOptimizada = await getImage({ src: foto, width: Math.min(foto.width, 2250), format: "webp", quality: 80 });
+const primerPlanoOptimizado = await getImage({ src: primerPlano, width: primerPlano.width, format: "webp", quality: 90 });
 ---
 
-<HeroActividades client:load imagenes={imagenes} fondo={fondo} />
+<HeroActividades
+  client:load
+  foto={{
+    src: fotoOptimizada.src,
+    alt: "Kayakistas recorriendo un río entre selva y rocas en Quepos",
+    width: foto.width,
+    height: foto.height,
+  }}
+  primerPlano={primerPlanoOptimizado.src}
+  titulo="Aventura"
+/>
