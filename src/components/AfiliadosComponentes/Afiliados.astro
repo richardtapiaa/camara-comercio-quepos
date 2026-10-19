@@ -1,0 +1,209 @@
+---
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import { Globe, Mail, MessageCircle, Phone, Search } from "lucide-react";
+import { categoriasAfiliados } from "../../content.config";
+import logo from "../../assets/imagenes/logo-camara.webp";
+
+// La lista sale de src/data/afiliados.yaml (colección "afiliados" en src/content.config.ts), por orden alfabético
+const afiliados = (await getCollection("afiliados")).sort((a, b) =>
+  a.data.nombre.localeCompare(b.data.nombre, "es"),
+);
+
+// Solo se muestran como filtro las categorías que tienen al menos un afiliado
+const categorias = categoriasAfiliados.filter((c) => afiliados.some((a) => a.data.categoria === c));
+
+// Para buscar sin importar mayúsculas ni tildes ("cafe" encuentra "Café")
+const normalizar = (texto: string) =>
+  texto.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+
+const soloDigitos = (telefono: string) => telefono.replace(/[^\d+]/g, "");
+
+const claseFiltro =
+  "rounded-full border px-4 py-2 text-sm font-medium transition-colors border-slate-300 text-slate-700 hover:border-[#2780c9] hover:text-[#2780c9] aria-pressed:border-[#2780c9] aria-pressed:bg-[#2780c9] aria-pressed:text-white";
+// Cada dato de contacto: ícono a la izquierda y el texto al lado (se puede tocar para llamar, escribir o abrir)
+const claseDato = "flex items-start gap-3 transition-colors hover:text-[#2780c9]";
+const claseIcono = "mt-0.5 size-4 shrink-0 text-[#2780c9]";
+
+// Muestra las direcciones web sin "https://", "www." ni la barra final: "https://www.costaverde.com/" → "costaverde.com"
+const sinProtocolo = (url: string) => url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "");
+---
+
+<!-- Afiliados: buscador, filtros por categoría y una cuadrícula de tarjetas (logo en círculo, nombre, descripción y
+     cada dato de contacto con su ícono).
+     Todo se arma solo con la lista de src/data/afiliados.yaml: para agregar un afiliado no hay que tocar este archivo -->
+<!-- scroll-mt: al llegar con el botón "volver" (VolverArriba.astro) el título queda visible bajo la barra de navegación -->
+<section id="afiliados" data-afiliados class="scroll-mt-12 bg-white px-4 py-16 sm:px-6 sm:py-24">
+  <div class="mx-auto max-w-7xl">
+    <div class="mx-auto max-w-3xl text-center">
+      <h2 class="text-4xl font-bold uppercase leading-tight tracking-tight text-neutral-700 sm:text-5xl">
+        Nuestros afiliados
+      </h2>
+      <p class="mt-4 text-lg text-slate-600">
+        Empresas y organizaciones de Quepos que forman parte de la Cámara de Comercio, Industria y Turismo.
+      </p>
+    </div>
+
+    <!-- Buscador y filtros -->
+    <div class="mt-10 flex flex-col items-center gap-5">
+      <label class="relative w-full max-w-md">
+        <span class="sr-only">Buscar afiliado por nombre</span>
+        <Search className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-slate-400" aria-hidden="true" />
+        <input
+          data-afiliados-buscar
+          type="search"
+          placeholder="Buscar afiliado…"
+          class="w-full rounded-full border border-slate-300 py-3 pl-12 pr-4 text-slate-800 outline-none transition focus:border-[#2780c9] focus:ring-2 focus:ring-[#2780c9]/20"
+        />
+      </label>
+
+      <div class="flex flex-wrap justify-center gap-2" role="group" aria-label="Filtrar por categoría">
+        <button type="button" data-afiliados-filtro="" aria-pressed="true" class={claseFiltro}>Todos</button>
+        {
+          categorias.map((categoria) => (
+            <button type="button" data-afiliados-filtro={categoria} aria-pressed="false" class={claseFiltro}>
+              {categoria}
+            </button>
+          ))
+        }
+      </div>
+
+      <p data-afiliados-cuenta class="text-sm text-slate-500" aria-live="polite">
+        {afiliados.length} afiliados
+      </p>
+    </div>
+
+    <!-- Tarjetas: fondo gris claro con esquinas muy redondeadas y el logo en un círculo blanco que sobresale arriba;
+         debajo el nombre, la descripción y cada dato de contacto en su línea, con ícono. El espacio de arriba de cada
+         tarjeta (pt) deja lugar al círculo -->
+    <ul class="mt-12 grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:gap-x-10 lg:gap-y-14 lg:grid-cols-3 xl:grid-cols-4">
+      {
+        afiliados.map(({ data }) => (
+          <li data-afiliado data-categoria={data.categoria} data-nombre={normalizar(data.nombre)} class="pt-20">
+            <article class="flex h-full flex-col rounded-[2.5rem] bg-[#f3f4f6] px-6 pb-8 text-center">
+              <div class="mx-auto -mt-20 flex size-40 items-center justify-center overflow-hidden rounded-full bg-white p-6 shadow-[0_12px_30px_-10px_rgba(16,42,67,0.35)] ring-4 ring-white">
+                <Image
+                  src={data.logo}
+                  alt={`Logo de ${data.nombre}`}
+                  width={320}
+                  class="max-h-full w-auto max-w-full object-contain"
+                  loading="lazy"
+                />
+              </div>
+
+              <h3 class="mt-6 text-xl font-bold leading-snug text-[#2780c9]">{data.nombre}</h3>
+              <p class="mt-1 text-sm text-slate-500">{data.descripcion ?? data.categoria}</p>
+
+              {(data.telefonos || data.whatsapp || data.correo || data.web || data.facebook || data.instagram) && (
+                <ul class="mx-auto mt-5 flex w-full max-w-xs flex-col gap-2.5 text-left text-sm text-slate-700">
+                  {data.telefonos?.map((telefono) => (
+                    <li>
+                      <a href={`tel:${soloDigitos(telefono)}`} class={claseDato}>
+                        <Phone className={claseIcono} aria-hidden="true" />
+                        {telefono}
+                      </a>
+                    </li>
+                  ))}
+                  {data.whatsapp && (
+                    <li>
+                      <a href={`https://wa.me/${soloDigitos(data.whatsapp).replace("+", "")}`} target="_blank" rel="noopener noreferrer" class={claseDato}>
+                        <MessageCircle className={claseIcono} aria-hidden="true" />
+                        <span><span class="sr-only">WhatsApp: </span>{data.whatsapp}</span>
+                      </a>
+                    </li>
+                  )}
+                  {data.correo && (
+                    <li>
+                      <a href={`mailto:${data.correo}`} class={claseDato}>
+                        <Mail className={claseIcono} aria-hidden="true" />
+                        <span class="break-all">{data.correo}</span>
+                      </a>
+                    </li>
+                  )}
+                  {data.web && (
+                    <li>
+                      <a href={data.web} target="_blank" rel="noopener noreferrer" class={claseDato}>
+                        <Globe className={claseIcono} aria-hidden="true" />
+                        <span class="break-all">{sinProtocolo(data.web)}</span>
+                      </a>
+                    </li>
+                  )}
+                  {data.facebook && (
+                    <li>
+                      <a href={data.facebook} target="_blank" rel="noopener noreferrer" class={claseDato}>
+                        <svg class={claseIcono} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                          <path d="M13.5 22v-8.2h2.8l.5-3.3h-3.3V8.4c0-.9.3-1.6 1.7-1.6h1.7V4a22 22 0 0 0-2.5-.1c-2.5 0-4.2 1.5-4.2 4.3v2.3H7.2v3.3H10V22h3.5Z" />
+                        </svg>
+                        <span class="break-all">{sinProtocolo(data.facebook)}</span>
+                      </a>
+                    </li>
+                  )}
+                  {data.instagram && (
+                    <li>
+                      <a href={data.instagram} target="_blank" rel="noopener noreferrer" class={claseDato}>
+                        <svg class={claseIcono} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <rect x="3" y="3" width="18" height="18" rx="5" />
+                          <circle cx="12" cy="12" r="4" />
+                          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+                        </svg>
+                        <span class="break-all">{sinProtocolo(data.instagram)}</span>
+                      </a>
+                    </li>
+                  )}
+                </ul>
+              )}
+            </article>
+          </li>
+        ))
+      }
+    </ul>
+
+    <!-- Sin resultados: el mensaje y, debajo, el logo de la Cámara -->
+    <div data-afiliados-vacio hidden class="mt-10 text-center">
+      <p class="text-slate-500">No encontramos afiliados con esa búsqueda.</p>
+      <Image
+        src={logo}
+        alt="Cámara de Comercio, Industria y Turismo de Quepos"
+        class="mx-auto mt-8 h-20 w-auto md:h-24"
+        loading="lazy"
+      />
+    </div>
+  </div>
+</section>
+
+<script>
+  // Filtra las tarjetas por categoría y por nombre (sin importar mayúsculas ni tildes)
+  const normalizar = (texto: string) =>
+    texto.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
+
+  document.querySelectorAll<HTMLElement>("[data-afiliados]").forEach((seccion) => {
+    const buscador = seccion.querySelector<HTMLInputElement>("[data-afiliados-buscar]");
+    const filtros = Array.from(seccion.querySelectorAll<HTMLButtonElement>("[data-afiliados-filtro]"));
+    const tarjetas = Array.from(seccion.querySelectorAll<HTMLElement>("[data-afiliado]"));
+    const cuenta = seccion.querySelector<HTMLElement>("[data-afiliados-cuenta]");
+    const vacio = seccion.querySelector<HTMLElement>("[data-afiliados-vacio]");
+    let categoria = "";
+
+    const actualizar = () => {
+      const texto = normalizar(buscador?.value ?? "");
+      let visibles = 0;
+      tarjetas.forEach((tarjeta) => {
+        const ver =
+          (!categoria || tarjeta.dataset.categoria === categoria) && (tarjeta.dataset.nombre ?? "").includes(texto);
+        tarjeta.hidden = !ver;
+        if (ver) visibles++;
+      });
+      if (cuenta) cuenta.textContent = `${visibles} ${visibles === 1 ? "afiliado" : "afiliados"}`;
+      if (vacio) vacio.hidden = visibles > 0;
+    };
+
+    filtros.forEach((boton) =>
+      boton.addEventListener("click", () => {
+        categoria = boton.dataset.afiliadosFiltro ?? "";
+        filtros.forEach((otro) => otro.setAttribute("aria-pressed", String(otro === boton)));
+        actualizar();
+      }),
+    );
+    buscador?.addEventListener("input", actualizar);
+  });
+</script>

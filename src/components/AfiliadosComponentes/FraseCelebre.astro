@@ -1,0 +1,94 @@
+---
+import { Image } from "astro:assets";
+import FraseScroll from "../Scripts/AfiliadosScripts/FraseScroll.astro";
+import manoFoco from "../../assets/logos-afiliados/frase-afiliados.webp";
+
+const frase =
+  "“No somos solo empresarios, somos una comunidad de puertas abiertas, donde las conexiones se convierten en oportunidades y juntos crecemos.”";
+
+// Cada palabra va en su <span> para que FraseScroll.astro las encienda una por una con el scroll
+const palabras = frase.split(" ");
+---
+
+<!-- Frase célebre sobre fondo azul: a la izquierda la mano con el foco, saliendo desde el borde de abajo, y a la
+     derecha la frase en negro. Las palabras se encienden con el scroll (FraseScroll.astro). En celular la frase va
+     arriba y la mano abajo, para que siga saliendo del borde -->
+<section data-frase-celebre class="overflow-hidden rounded-t-[11rem] bg-[#2780c9] md:rounded-t-[38rem]" aria-label="Frase de la Cámara">
+  <div class="mx-auto grid min-h-[60svh] max-w-7xl items-center gap-10 px-6 pb-16 pt-32 md:min-h-[70svh] md:grid-cols-2 md:py-24">
+    <!-- Mano con el foco: el brazo viene cortado abajo, así que va pegada al borde de abajo de la sección (el margen
+         negativo anula el padding) -->
+    <div class="order-2 -mb-16 flex justify-center self-end md:order-1 md:-mb-24">
+      <!-- El foco se prende y se apaga: un halo amarillo detrás (la luz que irradia al fondo) y un tinte amarillo
+           sobre el vidrio (multiply: tiñe el blanco del vidrio sin aclarar nada). Las dos capas se centran en el
+           vidrio, que en la foto está al 52 % del ancho y al 17 % del alto y mide el 65 % del ancho -->
+      <div class="relative">
+        <span class="foco-halo pointer-events-none absolute left-[52%] top-[17%] aspect-square w-[230%] -translate-x-1/2 -translate-y-1/2 rounded-full" aria-hidden="true"></span>
+        <Image
+          src={manoFoco}
+          alt="Mano sosteniendo un foco, símbolo de nuevas ideas"
+          class="relative z-10 h-auto w-36 select-none sm:w-44 md:w-52 lg:w-56"
+          loading="lazy"
+          draggable="false"
+        />
+        <span class="foco-luz pointer-events-none absolute left-[52%] top-[17%] z-20 aspect-square w-[62%] -translate-x-1/2 -translate-y-1/2 rounded-full" aria-hidden="true"></span>
+      </div>
+    </div>
+
+    <blockquote class="order-1 text-center md:order-2 md:text-left">
+      <p class="text-3xl font-black uppercase leading-[1.08] tracking-tight text-black sm:text-4xl md:text-5xl">
+        {palabras.map((palabra) => <span data-frase-palabra class="inline-block">{palabra}&nbsp;</span>)}
+      </p>
+    </blockquote>
+  </div>
+</section>
+
+<FraseScroll />
+
+<style>
+  /* Halo de luz cálida y casi blanca que irradia hacia el fondo azul (un amarillo puro sobre azul se veía verdoso) */
+  .foco-halo {
+    background: radial-gradient(closest-side, rgb(255 246 200 / 0.95) 0%, rgb(255 236 160 / 0.45) 35%, transparent 100%);
+    filter: blur(6px);
+  }
+  /* Tinte amarillo sobre el vidrio: con multiply el blanco se vuelve amarillo. Mide un poco menos que el vidrio y se
+     desvanece justo en su borde, para no teñir el fondo azul de alrededor (amarillo sobre azul se ve verde) */
+  .foco-luz {
+    background: radial-gradient(closest-side, #fde68a 0%, #fde047 55%, transparent 100%);
+    mix-blend-mode: multiply;
+  }
+
+  /* Se prende y se apaga en ciclos de 6 s: apagado, un par de parpadeos al arrancar, encendido un rato y se apaga.
+     Con "reducir movimiento" queda encendido fijo, sin parpadeos */
+  @media (prefers-reduced-motion: no-preference) {
+    .foco-halo,
+    .foco-luz {
+      animation: foco-prender 6s linear infinite;
+    }
+  }
+  @keyframes foco-prender {
+    0%,
+    30% {
+      opacity: 0;
+    }
+    32% {
+      opacity: 1;
+    }
+    34% {
+      opacity: 0.1;
+    }
+    37% {
+      opacity: 1;
+    }
+    39% {
+      opacity: 0.3;
+    }
+    42%,
+    88% {
+      opacity: 1;
+    }
+    92%,
+    100% {
+      opacity: 0;
+    }
+  }
+</style>

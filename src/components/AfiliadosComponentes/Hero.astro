@@ -1,0 +1,66 @@
+---
+import { getImage, Image } from "astro:assets";
+import logo from "../../assets/imagenes/logo-camara.webp";
+import video from "../../assets/logos-afiliados/hero-afiliados.mp4";
+import poster from "../../assets/logos-afiliados/hero-afiliados-poster.jpg";
+import Parallax from "../Scripts/AfiliadosScripts/Parallax.astro";
+
+// El video se importa desde src/assets: Vite le pone un nombre con hash para que el navegador lo guarde en caché.
+// El poster (primer cuadro del video) se optimiza con getImage y se ve al instante, antes de que cargue el video
+const posterOptimizado = await getImage({ src: poster, width: 1920, format: "webp", quality: 70 });
+---
+
+<!-- Hero de afiliados: video de fondo a pantalla completa con un overlay oscuro encima. No lleva id="hero" para
+     que la barra de navegación se vea normal (blanca y sin la franja de contacto), no transparente sobre el video.
+     Lo que se ponga dentro de <Hero> va centrado encima del video -->
+<section data-parallax-afiliados class="relative isolate flex h-svh min-h-[560px] w-full items-center justify-center overflow-hidden bg-black">
+  <video
+    data-hero-afiliados-video
+    data-parallax-fondo
+    src={video}
+    poster={posterOptimizado.src}
+    class="absolute inset-0 -z-20 size-full object-cover"
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="auto"
+    aria-hidden="true"
+  ></video>
+
+  <!-- Overlay oscuro: parejo sobre todo el video y un poco más fuerte arriba y abajo -->
+  <div class="pointer-events-none absolute inset-0 -z-10 bg-black/35" aria-hidden="true"></div>
+  <div
+    class="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-black/30 via-transparent to-black/25"
+    aria-hidden="true"
+  ></div>
+  <!-- Se oscurece al hacer scroll (Parallax.astro) -->
+  <div data-parallax-oscuro class="pointer-events-none absolute inset-0 -z-10 bg-black opacity-0" aria-hidden="true"></div>
+
+  <!-- Título y logo: suben y se desvanecen al hacer scroll (Parallax.astro) -->
+  <div data-parallax-contenido class="px-6 text-center text-white">
+    <h1 class="text-5xl font-bold uppercase tracking-tight drop-shadow-[0_4px_24px_rgba(0,0,0,0.45)] sm:text-6xl md:text-8xl">
+      Afiliados
+    </h1>
+    <!-- Logo de la Cámara debajo del título, directo sobre el video -->
+    <Image
+      src={logo}
+      alt="Cámara de Comercio, Industria y Turismo de Quepos"
+      class="mx-auto mt-8 h-36 w-auto drop-shadow-[0_4px_24px_rgba(0,0,0,0.45)] sm:h-40 md:mt-10 md:h-48"
+      loading="eager"
+    />
+    <slot />
+  </div>
+</section>
+
+<Parallax />
+
+<script>
+  // Con "reducir movimiento" el video se queda quieto en su primer cuadro (se ve el poster)
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.querySelectorAll<HTMLVideoElement>("[data-hero-afiliados-video]").forEach((video) => {
+      video.removeAttribute("autoplay");
+      video.pause();
+    });
+  }
+</script>
