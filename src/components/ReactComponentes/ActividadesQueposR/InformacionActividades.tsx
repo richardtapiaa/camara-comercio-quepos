@@ -45,9 +45,15 @@ const actividades = [
 
 type InformacionActividadesProps = {
   imagenes: { src: string; alt: string }[];
+  /** Perezoso que baja colgado de la línea entre la primera y la segunda actividad */
+  perezoso?: string;
+  /** Kayak que baja por el río entre la segunda y la tercera actividad */
+  kayak?: string;
+  /** Persona en la tirolesa entre la cuarta y la quinta actividad */
+  canopy?: string;
 };
 
-const InformacionActividades = ({ imagenes }: InformacionActividadesProps) => {
+const InformacionActividades = ({ imagenes, perezoso, kayak, canopy }: InformacionActividadesProps) => {
   const timelineData = actividades.slice(0, imagenes.length).map((actividad, i) => ({
     ...actividad,
     image: imagenes[i].src,
@@ -69,7 +75,7 @@ const InformacionActividades = ({ imagenes }: InformacionActividadesProps) => {
             </p>
           </div>
         </div>
-        <Timeline items={timelineData} />
+        <Timeline items={timelineData} perezoso={perezoso} kayak={kayak} canopy={canopy} />
       </div>
     </section>
   );

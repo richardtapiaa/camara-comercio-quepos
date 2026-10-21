@@ -1,7 +1,25 @@
 ---
 import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
-import { Globe, Mail, MessageCircle, Phone, Search } from "lucide-react";
+import {
+  BedDouble,
+  Bus,
+  Check,
+  ChevronDown,
+  Globe,
+  House,
+  LayoutGrid,
+  Mail,
+  MessageCircle,
+  Mountain,
+  Phone,
+  Search,
+  Shapes,
+  ShoppingBag,
+  UtensilsCrossed,
+  Wrench,
+} from "lucide-react";
+import FondoAfiliacion from "./FondoAfiliacion.astro";
 import { categoriasAfiliados } from "../../content.config";
 import logo from "../../assets/imagenes/logo-camara.webp";
 
@@ -13,14 +31,28 @@ const afiliados = (await getCollection("afiliados")).sort((a, b) =>
 // Solo se muestran como filtro las categorías que tienen al menos un afiliado
 const categorias = categoriasAfiliados.filter((c) => afiliados.some((a) => a.data.categoria === c));
 
+// Ícono de cada categoría en el desplegable del filtro ("Todas" va primero)
+const iconosCategoria: Record<string, typeof LayoutGrid> = {
+  Hospedaje: BedDouble,
+  "Tours y aventura": Mountain,
+  Transporte: Bus,
+  Comercio: ShoppingBag,
+  Gastronomía: UtensilsCrossed,
+  "Bienes raíces": House,
+  Servicios: Wrench,
+  Otros: Shapes,
+};
+const opcionesCategoria = [
+  { valor: "", nombre: "Todas", Icono: LayoutGrid },
+  ...categorias.map((categoria) => ({ valor: categoria, nombre: categoria, Icono: iconosCategoria[categoria] ?? Shapes })),
+];
+
 // Para buscar sin importar mayúsculas ni tildes ("cafe" encuentra "Café")
 const normalizar = (texto: string) =>
   texto.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 
 const soloDigitos = (telefono: string) => telefono.replace(/[^\d+]/g, "");
 
-const claseFiltro =
-  "rounded-full border px-4 py-2 text-sm font-medium transition-colors border-slate-300 text-slate-700 hover:border-[#2780c9] hover:text-[#2780c9] aria-pressed:border-[#2780c9] aria-pressed:bg-[#2780c9] aria-pressed:text-white";
 // Cada dato de contacto: ícono a la izquierda y el texto al lado (se puede tocar para llamar, escribir o abrir)
 const claseDato = "flex items-start gap-3 transition-colors hover:text-[#2780c9]";
 const claseIcono = "mt-0.5 size-4 shrink-0 text-[#2780c9]";
@@ -29,11 +61,14 @@ const claseIcono = "mt-0.5 size-4 shrink-0 text-[#2780c9]";
 const sinProtocolo = (url: string) => url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "");
 ---
 
-<!-- Afiliados: buscador, filtros por categoría y una cuadrícula de tarjetas (logo en círculo, nombre, descripción y
+<!-- Afiliados: buscador con desplegable de categoría y una cuadrícula de tarjetas (logo en círculo, nombre, descripción y
      cada dato de contacto con su ícono).
      Todo se arma solo con la lista de src/data/afiliados.yaml: para agregar un afiliado no hay que tocar este archivo -->
 <!-- scroll-mt: al llegar con el botón "volver" (VolverArriba.astro) el título queda visible bajo la barra de navegación -->
-<section id="afiliados" data-afiliados class="scroll-mt-12 bg-white px-4 py-16 sm:px-6 sm:py-24">
+<section id="afiliados" data-afiliados class="relative isolate scroll-mt-12 overflow-hidden bg-[#E8F4FA] px-4 py-16 sm:px-6 sm:py-24">
+  <!-- Fondo: mosaico de íconos de afiliación (FondoAfiliacion.astro), azul suave sobre el celeste -->
+  <FondoAfiliacion id="afiliados-fondo" color="#2780c9" opacidad={0.16} />
+
   <div class="mx-auto max-w-7xl">
     <div class="mx-auto max-w-3xl text-center">
       <h2 class="text-4xl font-bold uppercase leading-tight tracking-tight text-neutral-700 sm:text-5xl">
@@ -44,28 +79,67 @@ const sinProtocolo = (url: string) => url.replace(/^https?:\/\/(www\.)?/, "").re
       </p>
     </div>
 
-    <!-- Buscador y filtros -->
-    <div class="mt-10 flex flex-col items-center gap-5">
-      <label class="relative w-full max-w-md">
-        <span class="sr-only">Buscar afiliado por nombre</span>
-        <Search className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-slate-400" aria-hidden="true" />
-        <input
-          data-afiliados-buscar
-          type="search"
-          placeholder="Buscar afiliado…"
-          class="w-full rounded-full border border-slate-300 py-3 pl-12 pr-4 text-slate-800 outline-none transition focus:border-[#2780c9] focus:ring-2 focus:ring-[#2780c9]/20"
-        />
-      </label>
+    <!-- Buscador y filtro: una sola barra blanca flotante (como las tarjetas) con el buscador a la izquierda y, a la
+         derecha, un desplegable de categoría con un ícono por categoría. Debajo el contador -->
+    <div class="mt-10 flex flex-col items-center gap-3">
+      <div class="relative z-20 flex w-full max-w-2xl items-stretch rounded-full bg-white shadow-[0_18px_40px_-18px_rgba(16,42,67,0.3),0_4px_10px_-4px_rgba(16,42,67,0.1)] ring-1 ring-slate-900/5 transition focus-within:ring-2 focus-within:ring-[#2780c9]/40">
+        <label class="relative min-w-0 flex-1">
+          <span class="sr-only">Buscar afiliado por nombre</span>
+          <Search className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-slate-400 sm:left-5" aria-hidden="true" />
+          <input
+            data-afiliados-buscar
+            type="search"
+            placeholder="Buscar afiliado…"
+            class="w-full rounded-l-full bg-transparent py-3.5 pl-11 pr-3 text-sm text-slate-800 outline-none placeholder:text-slate-400 sm:py-4 sm:pl-13 sm:text-base"
+          />
+        </label>
 
-      <div class="flex flex-wrap justify-center gap-2" role="group" aria-label="Filtrar por categoría">
-        <button type="button" data-afiliados-filtro="" aria-pressed="true" class={claseFiltro}>Todos</button>
-        {
-          categorias.map((categoria) => (
-            <button type="button" data-afiliados-filtro={categoria} aria-pressed="false" class={claseFiltro}>
-              {categoria}
-            </button>
-          ))
-        }
+        <span class="my-2.5 w-px shrink-0 bg-slate-200" aria-hidden="true"></span>
+
+        <!-- Desplegable propio (un <select> no puede mostrar íconos en su lista): botón con el ícono y el nombre de la
+             categoría elegida, y una lista con el ícono de cada una. Se maneja con mouse, toque o teclado (flechas,
+             Enter, Escape) y se cierra al tocar fuera; ver el script de abajo -->
+        <div data-afiliados-categoria class="relative flex shrink-0">
+          <button
+            type="button"
+            data-cat-boton
+            aria-haspopup="listbox"
+            aria-expanded="false"
+            aria-label="Filtrar por categoría: Todas"
+            class="flex w-40 items-center gap-2 rounded-r-full py-3.5 pl-3.5 pr-3.5 text-left text-sm font-semibold text-slate-700 outline-none sm:w-52 sm:gap-2.5 sm:pl-4 sm:pr-5 sm:text-base"
+          >
+            <span data-cat-icono class="flex shrink-0 text-[#2780c9]"><LayoutGrid className="size-4 sm:size-[1.1rem]" aria-hidden="true" /></span>
+            <span data-cat-texto class="min-w-0 flex-1 truncate">Todas</span>
+            <ChevronDown data-cat-flecha className="size-4 shrink-0 text-slate-500 transition-transform duration-200" aria-hidden="true" />
+          </button>
+
+          <ul
+            data-cat-lista
+            role="listbox"
+            aria-label="Categorías"
+            data-abierto="false"
+            class="cat-lista absolute right-0 top-[calc(100%+0.6rem)] z-30 w-60 rounded-2xl bg-white p-1.5 shadow-[0_24px_50px_-16px_rgba(16,42,67,0.35),0_6px_14px_-6px_rgba(16,42,67,0.15)] ring-1 ring-slate-900/5"
+          >
+            {
+              opcionesCategoria.map(({ valor, nombre, Icono }, i) => (
+                <li
+                  style={`--i: ${i}`}
+                  role="option"
+                  data-valor={valor}
+                  aria-selected={i === 0 ? "true" : "false"}
+                  tabindex="-1"
+                  class="group flex cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-700 outline-none transition-colors hover:bg-[#E8F4FA] focus:bg-[#E8F4FA] aria-selected:text-[#2780c9]"
+                >
+                  <span data-cat-icono-opcion class="flex size-5 shrink-0 items-center justify-center text-[#2780c9]">
+                    <Icono className="size-4" aria-hidden="true" />
+                  </span>
+                  <span class="flex-1">{nombre}</span>
+                  <Check className="size-4 opacity-0 group-aria-selected:opacity-100" aria-hidden="true" />
+                </li>
+              ))
+            }
+          </ul>
+        </div>
       </div>
 
       <p data-afiliados-cuenta class="text-sm text-slate-500" aria-live="polite">
@@ -73,14 +147,14 @@ const sinProtocolo = (url: string) => url.replace(/^https?:\/\/(www\.)?/, "").re
       </p>
     </div>
 
-    <!-- Tarjetas: fondo gris claro con esquinas muy redondeadas y el logo en un círculo blanco que sobresale arriba;
+    <!-- Tarjetas: blancas, flotando sobre el fondo celeste (sombra suave y amplia que se acentúa al pasar el mouse), con esquinas muy redondeadas y el logo en un círculo blanco que sobresale arriba;
          debajo el nombre, la descripción y cada dato de contacto en su línea, con ícono. El espacio de arriba de cada
          tarjeta (pt) deja lugar al círculo -->
     <ul class="mt-12 grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:gap-x-10 lg:gap-y-14 lg:grid-cols-3 xl:grid-cols-4">
       {
         afiliados.map(({ data }) => (
           <li data-afiliado data-categoria={data.categoria} data-nombre={normalizar(data.nombre)} class="pt-20">
-            <article class="flex h-full flex-col rounded-[2.5rem] bg-[#f3f4f6] px-6 pb-8 text-center">
+            <article class="flex h-full flex-col rounded-[2.5rem] bg-white px-6 pb-8 text-center shadow-[0_24px_50px_-18px_rgba(16,42,67,0.28),0_6px_14px_-6px_rgba(16,42,67,0.12)] ring-1 ring-slate-900/5 transition duration-300 hover:-translate-y-1.5 hover:shadow-[0_32px_60px_-18px_rgba(16,42,67,0.34),0_8px_18px_-6px_rgba(16,42,67,0.14)]">
               <div class="mx-auto -mt-20 flex size-40 items-center justify-center overflow-hidden rounded-full bg-white p-6 shadow-[0_12px_30px_-10px_rgba(16,42,67,0.35)] ring-4 ring-white">
                 <Image
                   src={data.logo}
@@ -178,7 +252,7 @@ const sinProtocolo = (url: string) => url.replace(/^https?:\/\/(www\.)?/, "").re
 
   document.querySelectorAll<HTMLElement>("[data-afiliados]").forEach((seccion) => {
     const buscador = seccion.querySelector<HTMLInputElement>("[data-afiliados-buscar]");
-    const filtros = Array.from(seccion.querySelectorAll<HTMLButtonElement>("[data-afiliados-filtro]"));
+    const desplegable = seccion.querySelector<HTMLElement>("[data-afiliados-categoria]");
     const tarjetas = Array.from(seccion.querySelectorAll<HTMLElement>("[data-afiliado]"));
     const cuenta = seccion.querySelector<HTMLElement>("[data-afiliados-cuenta]");
     const vacio = seccion.querySelector<HTMLElement>("[data-afiliados-vacio]");
@@ -197,13 +271,112 @@ const sinProtocolo = (url: string) => url.replace(/^https?:\/\/(www\.)?/, "").re
       if (vacio) vacio.hidden = visibles > 0;
     };
 
-    filtros.forEach((boton) =>
-      boton.addEventListener("click", () => {
-        categoria = boton.dataset.afiliadosFiltro ?? "";
-        filtros.forEach((otro) => otro.setAttribute("aria-pressed", String(otro === boton)));
+    // Desplegable de categoría con íconos
+    if (desplegable) {
+      const boton = desplegable.querySelector<HTMLButtonElement>("[data-cat-boton]")!;
+      const lista = desplegable.querySelector<HTMLUListElement>("[data-cat-lista]")!;
+      const opciones = Array.from(lista.querySelectorAll<HTMLLIElement>("[role=option]"));
+      const iconoBoton = boton.querySelector<HTMLElement>("[data-cat-icono]")!;
+      const textoBoton = boton.querySelector<HTMLElement>("[data-cat-texto]")!;
+      const flecha = boton.querySelector<SVGElement>("[data-cat-flecha]");
+
+      const abierta = () => lista.dataset.abierto === "true";
+      const abrir = (enfocar = true) => {
+        lista.dataset.abierto = "true";
+        boton.setAttribute("aria-expanded", "true");
+        flecha?.classList.add("rotate-180");
+        if (enfocar) (opciones.find((o) => o.getAttribute("aria-selected") === "true") ?? opciones[0]).focus();
+      };
+      const cerrar = (devolverFoco = false) => {
+        lista.dataset.abierto = "false";
+        boton.setAttribute("aria-expanded", "false");
+        flecha?.classList.remove("rotate-180");
+        if (devolverFoco) boton.focus();
+      };
+      const elegir = (opcion: HTMLLIElement) => {
+        opciones.forEach((o) => o.setAttribute("aria-selected", String(o === opcion)));
+        categoria = opcion.dataset.valor ?? "";
+        const nombre = opcion.textContent?.trim() ?? "";
+        textoBoton.textContent = nombre;
+        iconoBoton.innerHTML = opcion.querySelector("[data-cat-icono-opcion]")?.innerHTML ?? "";
+        boton.setAttribute("aria-label", `Filtrar por categoría: ${nombre}`);
+        cerrar(true);
         actualizar();
-      }),
-    );
+      };
+
+      boton.addEventListener("click", () => (abierta() ? cerrar() : abrir()));
+      boton.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+          e.preventDefault();
+          abrir();
+        }
+      });
+      opciones.forEach((opcion, i) => {
+        opcion.addEventListener("click", () => elegir(opcion));
+        opcion.addEventListener("keydown", (e) => {
+          if (e.key === "ArrowDown") opciones[(i + 1) % opciones.length].focus();
+          else if (e.key === "ArrowUp") opciones[(i - 1 + opciones.length) % opciones.length].focus();
+          else if (e.key === "Home") opciones[0].focus();
+          else if (e.key === "End") opciones[opciones.length - 1].focus();
+          else if (e.key === "Enter" || e.key === " ") elegir(opcion);
+          else if (e.key === "Escape") cerrar(true);
+          else if (e.key === "Tab") cerrar();
+          else return;
+          e.preventDefault();
+        });
+      });
+      // Se cierra al tocar o hacer clic fuera
+      document.addEventListener("pointerdown", (e) => {
+        if (abierta() && !desplegable.contains(e.target as Node)) cerrar();
+      });
+    }
     buscador?.addEventListener("input", actualizar);
   });
 </script>
+
+<style>
+  /* Apertura del desplegable de categorías: la lista aparece bajando un poco y creciendo desde arriba a la derecha
+     (de donde está el botón), y las opciones entran una tras otra. Al cerrar se desvanece. visibility (y no hidden)
+     para que la transición también se vea al cerrar; cerrada, no se puede tocar ni la lee el lector de pantalla */
+  .cat-lista {
+    transform-origin: top right;
+    transition:
+      opacity 0.18s ease,
+      transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0s linear 0.22s;
+  }
+  .cat-lista[data-abierto="false"] {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .cat-lista[data-abierto="true"] {
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+    transition:
+      opacity 0.2s ease,
+      transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0s;
+  }
+  .cat-lista[data-abierto="true"] > li {
+    animation: cat-opcion 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: calc(var(--i) * 25ms);
+  }
+  @keyframes cat-opcion {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cat-lista,
+    .cat-lista[data-abierto="true"] {
+      transition: none;
+    }
+    .cat-lista[data-abierto="true"] > li {
+      animation: none;
+    }
+  }
+</style>

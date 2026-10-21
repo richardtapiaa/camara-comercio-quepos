@@ -1,6 +1,9 @@
 ---
 import { optimizarImagen } from "../../lib/imagenes";
 import InformacionActividades from "../ReactComponentes/ActividadesQueposR/InformacionActividades";
+import perezosoLinea from "../../assets/imagenes-quepos/perezoso-linea.webp";
+import kayakLinea from "../../assets/imagenes/kayak-linea.webp";
+import canopyLinea from "../../assets/imagenes/canopy-linea.webp";
 import actividades1 from "../../assets/imagenes visitors/actividades-1.jpg";
 import actividades2 from "../../assets/imagenes visitors/actividades-2.jpg";
 import actividades3 from "../../assets/imagenes visitors/actividades-3.jpg";
@@ -19,4 +22,11 @@ const imagenes = [
 ];
 ---
 
-<InformacionActividades client:visible imagenes={imagenes} />
+<!-- El perezoso, el kayak y la persona del canopy se ven de 128, 80 y 96 px de ancho como mucho: se piden al doble (alta densidad) -->
+<InformacionActividades
+  client:visible
+  imagenes={imagenes}
+  perezoso={await optimizarImagen(perezosoLinea, 256, 80)}
+  kayak={await optimizarImagen(kayakLinea, 160, 80)}
+  canopy={await optimizarImagen(canopyLinea, 192, 85)}
+/>

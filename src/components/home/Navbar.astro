@@ -85,7 +85,17 @@ const contacto = {
 
   <nav class="mx-auto flex h-24 max-w-7xl items-center gap-6 px-6" aria-label="Principal">
     <a href="/" class="shrink-0" aria-label="Cámara de Comercio, Industria y Turismo de Quepos">
-      <Image src={logo} alt="Cámara de Comercio, Industria y Turismo - Quepos Costa Rica" class="h-23 w-auto" loading="eager" />
+      <!-- Es el LCP de muchas páginas: prioridad alta y el tamaño justo (se ve de 92 px de alto ≈ 194 px de ancho; 400 w
+           para pantallas de alta densidad) -->
+      <Image
+        src={logo}
+        alt="Cámara de Comercio, Industria y Turismo - Quepos Costa Rica"
+        widths={[200, 400]}
+        sizes="194px"
+        class="h-23 w-auto"
+        loading="eager"
+        fetchpriority="high"
+      />
     </a>
 
     <button
@@ -110,7 +120,7 @@ const contacto = {
       <!-- Solo móvil: logo + cerrar -->
       <div class="flex items-center justify-between px-6 pb-5 pt-6 md:hidden">
         <a href="/" class="rounded-2xl bg-white px-3 py-1.5" aria-label="Cámara de Comercio, Industria y Turismo de Quepos">
-          <Image src={logo} alt="Cámara de Comercio, Industria y Turismo - Quepos Costa Rica" class="h-14 w-auto" loading="lazy" />
+          <Image src={logo} alt="Cámara de Comercio, Industria y Turismo - Quepos Costa Rica" widths={[200, 400]} sizes="118px" class="h-14 w-auto" loading="lazy" />
         </a>
         <button id="nav-close" type="button" aria-label="Cerrar menú" class="rounded-full p-2 text-white/70 transition-colors hover:text-white">
           <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">

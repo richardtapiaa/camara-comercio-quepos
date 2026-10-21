@@ -43,15 +43,20 @@ import logo from "../../assets/imagenes/logo-camara.webp";
 </style>
 
 <script>
-  import L from "leaflet";
-  import "leaflet/dist/leaflet.css";
-  import markerIcon from "leaflet/dist/images/marker-icon.png";
-  import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
-  import markerShadow from "leaflet/dist/images/marker-shadow.png";
-
   const el = document.getElementById("mapa-quepos");
 
-  const init = (el: HTMLElement) => {
+  // Leaflet (JS, CSS e íconos del marcador) se descarga recién aquí, cuando el mapa está por verse: antes iba en el
+  // bundle de todas las páginas (unos 150 KB de JS y su CSS bloqueaba el primer dibujo) aunque el mapa está al final
+  const init = async (el: HTMLElement) => {
+    const [{ default: L }, { default: markerIcon }, { default: markerIcon2x }, { default: markerShadow }] =
+      await Promise.all([
+        import("leaflet"),
+        import("leaflet/dist/images/marker-icon.png"),
+        import("leaflet/dist/images/marker-icon-2x.png"),
+        import("leaflet/dist/images/marker-shadow.png"),
+        import("leaflet/dist/leaflet.css"),
+      ]);
+
     const lat = Number(el.dataset.lat);
     const lng = Number(el.dataset.lng);
 
@@ -98,7 +103,7 @@ import logo from "../../assets/imagenes/logo-camara.webp";
     L.marker([lat, lng], { icon, title: el.dataset.title }).addTo(map).bindPopup(content, { autoClose: false, closeOnClick: false }).openPopup();
   };
 
-  // Carga diferida: solo se inicia cuando el mapa está cerca de verse
+  // Carga diferida: solo se descarga e inicia cuando el mapa está cerca de verse
   if (el) {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -106,7 +111,7 @@ import logo from "../../assets/imagenes/logo-camara.webp";
         observer.disconnect();
         init(el);
       },
-      { rootMargin: "200px" },
+      { rootMargin: "600px" },
     );
     observer.observe(el);
   }

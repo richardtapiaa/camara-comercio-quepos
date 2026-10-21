@@ -4,8 +4,12 @@ import { Gallery, GalleryImage } from "../QUEPOS/GaleriaQuepos";
 
 export interface ImagenHotel {
   id: string;
+  /** Versión grande, para la foto ampliada */
   src: string;
   alt: string;
+  /** Miniatura para la tarjeta y sus anchos ("url 360w, …"): la tarjeta no baja la versión grande */
+  miniatura?: string;
+  srcSet?: string;
 }
 
 interface Props {
@@ -17,6 +21,10 @@ interface Props {
 
 
 const COPIAS = 3;
+
+// Ancho con que se ve cada tarjeta, para elegir del srcset. En el mostrador: 4/3 del alto clamp(170px, 24vw, 300px)
+const TAMANOS_MOSTRADOR = "(min-width: 1250px) 400px, (max-width: 708px) 227px, 32vw";
+const TAMANOS_NORMAL = "(min-width: 1280px) 30vw, (min-width: 768px) 38vw, 85vw";
 
 
 export default function ImagenesHoteles({ imagenes, enMostrador = false }: Props) {
@@ -109,6 +117,9 @@ export default function ImagenesHoteles({ imagenes, enMostrador = false }: Props
                   id={foto.id}
                   src={foto.src}
                   alt={foto.alt}
+                  miniatura={foto.miniatura}
+                  srcSet={foto.srcSet}
+                  sizes={enMostrador ? TAMANOS_MOSTRADOR : TAMANOS_NORMAL}
                   aspect="h-full"
                   // En el mostrador: mismo redondeo que la foto (rounded-2xl) y sin el fondo gris claro de la tarjeta,
                   // que asomaba en las esquinas como un marco blanco sobre el frente oscuro
