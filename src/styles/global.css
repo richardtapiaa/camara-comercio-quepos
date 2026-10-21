@@ -9,3 +9,14 @@
 body {
   font-family: var(--font-sans);
 }
+
+/* Alfa Slab One (letrero "QUEPOS" del hero de Quepos), alojada en el sitio (public/fonts, licencia OFL) y precargada
+   en Layout.astro. font-display: block: mientras carga, el título espera invisible en vez de mostrarse con la letra
+   de respaldo (en celulares sin Arial Black caía en Poppins fina y se veía mal) */
+@font-face {
+  font-family: "Alfa Slab One";
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url("/fonts/alfa-slab-one-latin.woff2") format("woff2");
+}

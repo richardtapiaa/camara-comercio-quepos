@@ -3,12 +3,21 @@ import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/home/Navbar.astro";
 import HeroCapacitaciones from "../components/Capacitaciones-camara/hero-capacitaciones.astro";
 import InformacionCapacitacion from "../components/Capacitaciones-camara/informacion-capacitacion.astro";
-import PiePagina from "../components/home/pie_pagina.astro";
+import ModalidadesAprendizaje from "../components/Capacitaciones-camara/ModalidadesAprendizaje.astro";
+import GaleriaCapacitaciones from "../components/Capacitaciones-camara/GaleriaCapacitaciones.astro";
+import FraseCelebre from "../components/AfiliadosComponentes/FraseCelebre.astro";
+import Mapa from "../components/home/Mapa.astro";
 ---
 
 <Layout>
   <Navbar />
   <HeroCapacitaciones />
-  <InformacionCapacitacion />
-  <PiePagina />
+  <main>
+    <InformacionCapacitacion />
+    <ModalidadesAprendizaje />
+    <GaleriaCapacitaciones />
+    <FraseCelebre />
+    <Mapa />
+    
+  </main>
 </Layout>

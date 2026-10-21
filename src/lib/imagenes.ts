@@ -12,3 +12,19 @@ export async function optimizarImagen(imagen: ImageMetadata, ancho: number, cali
   });
   return optimizada.src;
 }
+
+// Para la galería: una versión grande (para verla ampliada) y miniaturas en varios anchos (srcset) para el mosaico,
+// más el ancho y alto originales para reservar el espacio con su proporción real. Ninguna se agranda
+export async function variantesGaleria(imagen: ImageMetadata) {
+  const anchosMiniatura = [360, 600, 900].filter((ancho) => ancho < imagen.width);
+  const miniaturas = await Promise.all(
+    anchosMiniatura.map(async (ancho) => ({ ancho, src: await optimizarImagen(imagen, ancho, 70) })),
+  );
+  return {
+    src: await optimizarImagen(imagen, 1600),
+    miniatura: miniaturas.at(-1)?.src ?? (await optimizarImagen(imagen, imagen.width, 70)),
+    srcSet: miniaturas.map(({ ancho, src }) => `${src} ${ancho}w`).join(", "),
+    ancho: imagen.width,
+    alto: imagen.height,
+  };
+}

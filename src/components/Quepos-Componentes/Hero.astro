@@ -7,13 +7,34 @@ import primerPlano from "../../assets/imagenes-quepos/isla-quepos-primer-plano.w
 // canal alfa), para que queden delante del título. Las dos se exportan al mismo ancho para que calcen
 const fotoOptimizada = await getImage({ src: foto, width: foto.width, format: "webp", quality: 80 });
 const primerPlanoOptimizado = await getImage({ src: primerPlano, width: primerPlano.width, format: "webp", quality: 90 });
+
+// "QUEPOS" como el letrero de la foto quepos-foto.webp: cada letra rellena con el mural de su letra (recortes de esa
+// foto en letras-quepos/, con el cielo de los huecos rellenado con el color de la letra), su borde de color y el
+// canto (la cara de lado, más oscura) para el volumen 3D
+const letrasArchivos = import.meta.glob<{ default: ImageMetadata }>("../../assets/imagenes-quepos/letras-quepos/*.webp", {
+  eager: true,
+});
+const textura = (letra: string) => letrasArchivos[`../../assets/imagenes-quepos/letras-quepos/${letra}.webp`].default;
+const letras = await Promise.all(
+  [
+    { letra: "Q", borde: "#e5322b", canto: "#9e1b17" },
+    { letra: "U", borde: "#2459c9", canto: "#173b8a" },
+    { letra: "E", borde: "#7a2fb0", canto: "#4b1a70" },
+    { letra: "P", borde: "#6b3f17", canto: "#3a220b" },
+    { letra: "O", borde: "#dba820", canto: "#8c6510" },
+    { letra: "S", borde: "#f26a1f", canto: "#a8420f" },
+  ].map(async (l) => ({
+    ...l,
+    src: (await getImage({ src: textura(l.letra.toLowerCase()), width: 500, format: "webp", quality: 85 })).src,
+  })),
+);
 ---
 
 <!-- Hero de Quepos en tres capas del mismo tamaño apiladas (mismo enfoque que HeroActividades.tsx): la foto, el
-     título "Bienvenido a Quepos" y encima la isla con el mar, así las letras quedan en el cielo, detrás de la isla.
+     título "QUEPOS" y encima la isla con el mar, así las letras quedan en el cielo, detrás de la isla.
      El recuadro tiene la proporción de la foto y cubre todo el hero (como object-cover): todo va en porcentajes de
      la foto, así calza en cualquier pantalla -->
-<section class="hero-isla relative isolate h-svh min-h-[560px] w-full overflow-hidden bg-[#cfe3f1]" aria-label="Bienvenido a Quepos">
+<section class="hero-isla relative isolate h-svh min-h-[560px] w-full overflow-hidden bg-[#cfe3f1]" aria-label="Quepos">
   <div
     class="hero-isla-recuadro absolute left-1/2"
     style={{
@@ -40,8 +61,18 @@ const primerPlanoOptimizado = await getImage({ src: primerPlano, width: primerPl
       class="hero-isla-titulo absolute bottom-[49%] left-[var(--foco-x)] -translate-x-1/2 md:bottom-[46%]"
     >
       <h1 class="hero-isla-entrada text-center text-[#102a43]">
-        <span class="hero-isla-saludo block font-bold uppercase">Bienvenido a</span>
-        <span class="hero-isla-quepos block uppercase">Quepos</span>
+        <span class="hero-isla-quepos block uppercase">
+          {
+            letras.map((l) => (
+              <span
+                class="hero-isla-letra"
+                style={`--textura: url("${l.src}"); --borde: ${l.borde}; --canto: ${l.canto}`}
+              >
+                {l.letra}
+              </span>
+            ))
+          }
+        </span>
       </h1>
     </div>
 
@@ -74,24 +105,35 @@ const primerPlanoOptimizado = await getImage({ src: primerPlano, width: primerPl
   }
 
   /* Tamaño del título: 15 % del ancho de la foto (que es max(100cqw, 150cqh)), sin pasar del 22 % del ancho de la
-     pantalla (en celular "QUEPOS" ocupa así casi todo el ancho). "Bienvenido a" va en proporción, con un mínimo
-     para que se lea */
+     pantalla (en celular "QUEPOS" ocupa así casi todo el ancho). */
   .hero-isla-titulo {
     font-size: min(22cqw, max(15cqw, 22.5cqh));
     white-space: nowrap;
   }
-  .hero-isla-saludo {
-    font-size: max(1rem, 0.16em);
-    letter-spacing: 0.3em;
-    margin-bottom: 0.15em;
-  }
   .hero-isla-quepos {
-    font-family: "Arial Black", "Helvetica Neue", Poppins, Arial, sans-serif;
-    font-weight: 900;
-    line-height: 0.8;
-    letter-spacing: -0.02em;
-    /* Sombra suave del mismo azul: le da profundidad sobre las nubes */
-    text-shadow: 0 0.04em 0.12em rgb(16 42 67 / 0.3);
+    /* Letra gruesa con remates, como la del letrero */
+    font-family: "Alfa Slab One", "Arial Black", Poppins, serif;
+    font-weight: 400;
+    line-height: 0.85;
+    letter-spacing: 0.04em;
+    /* Esta letra es más ancha que Arial Black: en pantallas angostas se limita a 18,5 % del ancho del hero para que
+       "QUEPOS" quepa entero (en escritorio queda igual, 1em) */
+    font-size: min(1em, 18.5cqw);
+  }
+  /* Cada letra: el mural recortado por la forma de la letra (background-clip: text), un borde de su color y el
+     volumen con sombras escalonadas del color del canto hacia abajo a la derecha, más una sombra suave final.
+     Las sombras van en filter (drop-shadow), no en text-shadow, porque text-shadow se pinta encima del mural */
+  .hero-isla-letra {
+    display: inline-block;
+    background-image: var(--textura);
+    background-size: cover;
+    background-position: center;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-stroke: 0.022em var(--borde);
+    filter: drop-shadow(0.012em 0.012em 0 var(--canto)) drop-shadow(0.012em 0.012em 0 var(--canto))
+      drop-shadow(0.012em 0.012em 0 var(--canto)) drop-shadow(0 0.04em 0.06em rgb(16 42 67 / 0.35));
   }
 
   /* Entrada: la foto aparece y luego el título sube y aparece */
@@ -127,12 +169,22 @@ const primerPlanoOptimizado = await getImage({ src: primerPlano, width: primerPl
       --bajada: 145%;
     }
   }
+  /* No se anima transform directamente: Chrome mandaría esa animación a la GPU, con el título en su propia capa, y
+     al hacer scroll rápido el título se alcanzaba a ver un instante POR DELANTE de la isla (las capas se reacomodan
+     tarde). Se anima un número (--hero-isla-progreso, de 0 a 1) y el transform se calcula con él: así el título se
+     dibuja junto con la foto y la isla siempre queda encima */
+  @property --hero-isla-progreso {
+    syntax: "<number>";
+    inherits: false;
+    initial-value: 0;
+  }
   @supports (animation-timeline: view()) {
     @media (prefers-reduced-motion: no-preference) {
       .hero-isla {
         view-timeline-name: --hero-isla;
       }
       .hero-isla-titulo {
+        transform: translateY(calc(var(--hero-isla-progreso) * var(--bajada)));
         animation: hero-isla-esconde linear both;
         animation-timeline: --hero-isla;
         /* El hero arranca ocupando la pantalla: termina de esconderse cuando se ha hecho scroll del 85 % de su
@@ -143,7 +195,7 @@ const primerPlanoOptimizado = await getImage({ src: primerPlano, width: primerPl
   }
   @keyframes hero-isla-esconde {
     to {
-      transform: translateY(var(--bajada));
+      --hero-isla-progreso: 1;
     }
   }
 </style>
