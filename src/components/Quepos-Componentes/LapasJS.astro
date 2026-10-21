@@ -1,15 +1,6 @@
 ---
 import lapa from "../../assets/imagenes/lapa-sin-fondo.webp";
-import arbol from "../../assets/imagenes/arbol-sin-fondo.webp";
 
-// Árboles sobre la selva, de distintos tamaños para dar profundidad. Los que dicen "md" solo van en escritorio
-const arboles = [
-  { clases: "-left-[6%] w-40 md:-left-[2%] md:w-[15vw]" },
-  { clases: "left-[20%] hidden md:block md:w-[10vw]" },
-  { clases: "left-[44%] w-24 md:left-[46%] md:w-[8vw]" },
-  { clases: "right-[22%] hidden md:block md:w-[11vw]" },
-  { clases: "-right-[8%] w-36 md:-right-[3%] md:w-[14vw]" },
-];
 import LapaScroll from "../Scripts/Quepos/LapaScroll.astro";
 import { MagicText } from "../ReactComponentes/QUEPOS/ScrollReveal";
 
@@ -51,7 +42,7 @@ const frase =
   <!-- Espacio para el vuelo y la selva debajo de la frase -->
   <div class="h-[34svh] shrink-0 md:h-[44svh]" aria-hidden="true"></div>
 
-  <!-- Encima de la frase, del suelo y de los árboles, y detrás de las nubes: arranca saliendo de entre los árboles -->
+  <!-- Encima de la frase y del suelo, y detrás de las nubes: arranca desde abajo, junto al pasto -->
   <img
     data-lapa
     src={lapa.src}
@@ -67,7 +58,7 @@ const frase =
   {
     ["left-0", "right-0 -scale-x-100"].map((lado) => (
       <svg
-        class={`pointer-events-none absolute top-0 z-10 w-[88%] max-w-xl md:w-[42%] ${lado}`}
+        class={`nube-svg pointer-events-none absolute top-0 z-10 w-[88%] max-w-xl md:w-[42%] ${lado}`}
         viewBox="0 0 420 180"
         preserveAspectRatio="xMinYMin meet"
         aria-hidden="true"
@@ -105,25 +96,6 @@ const frase =
        huecos en los bordes -->
   <div class="selva-capa selva-capa-atras pointer-events-none absolute -inset-x-32 bottom-0 z-[1] h-[4.5rem] suelo-pasto md:h-[max(6rem,7vw)]" aria-hidden="true"></div>
   <div class="selva-capa selva-capa-frente pointer-events-none absolute -inset-x-32 bottom-0 z-[1] h-14 suelo-tierra md:h-[max(5rem,6vw)]" aria-hidden="true"></div>
-
-  <!-- Árboles parados sobre el pasto, delante del suelo. La imagen trae ~9.5 % de borde transparente abajo: con
-       translate-y-[11%] la base del tronco queda apenas metida en el pasto. Los mueve el scroll (LapaScroll.astro) -->
-  <div class="selva-capa selva-capa-arboles pointer-events-none absolute inset-x-0 bottom-14 z-[2] md:bottom-[max(5rem,6vw)]" aria-hidden="true">
-    {
-      arboles.map(({ clases }) => (
-        <img
-          src={arbol.src}
-          width={arbol.width}
-          height={arbol.height}
-          alt=""
-          class={`absolute bottom-0 translate-y-[11%] ${clases}`}
-          loading="lazy"
-          decoding="async"
-          draggable="false"
-        />
-      ))
-    }
-  </div>
 </section>
 
 <LapaScroll />

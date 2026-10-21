@@ -1,0 +1,81 @@
+---
+import { Image } from "astro:assets";
+import imagen1 from "../../assets/imagenes-capacitaciones-svg/imagen-1.webp";
+import imagen2 from "../../assets/imagenes-capacitaciones-svg/imagen-2.webp";
+import imagen3 from "../../assets/imagenes-capacitaciones-svg/imagen-3.webp";
+import imagen4 from "../../assets/imagenes-capacitaciones-svg/imagen-4.webp";
+
+import GaleriaParallax from "../Scripts/CapacitacionesScript/GaleriaParallax.astro";
+
+// Collage: desde md cada foto va en posición absoluta (en % del contenedor, así escala con el ancho) y se enciman unas
+// con otras. "velocidad" es cuánto se mueve al hacer scroll (parallax): positiva baja más lento que la página y
+// negativa sube más rápido. En reposo quedan separadas y al hacer scroll se van cruzando. En celulares se apilan en una columna, alternando lados
+const fotos = [
+  {
+    src: imagen1,
+    alt: "Capacitación de la Cámara de Comercio de Quepos",
+    clase: "md:left-[32%] md:top-[3%] md:z-10 md:w-[34%]",
+    velocidad: 0.05,
+  },
+  {
+    src: imagen2,
+    alt: "Participantes en una capacitación",
+    clase: "md:left-[2%] md:top-[36%] md:z-20 md:w-[29%]",
+    velocidad: 0.25,
+  },
+  {
+    src: imagen3,
+    alt: "Charla de capacitación para empresas de Quepos",
+    clase: "md:left-[68%] md:top-0 md:z-0 md:w-[31%]",
+    velocidad: -0.2,
+  },
+  {
+    src: imagen4,
+    alt: "Taller de formación de la Cámara",
+    clase: "md:left-[48%] md:top-[55%] md:z-30 md:w-[33%]",
+    velocidad: 0.4,
+  },
+];
+---
+
+<section id="galeria-capacitaciones" class="overflow-x-clip bg-white px-6 pb-24 sm:px-10 sm:pb-32">
+  <div class="mx-auto max-w-7xl">
+    <div class="max-w-2xl">
+      <h2 class="mt-3 text-4xl font-bold uppercase leading-tight tracking-tight text-neutral-700 sm:text-5xl">Galería de capacitaciones</h2>
+    </div>
+
+    <!-- En celulares: columna con las fotos al 85 % del ancho, alternando izquierda y derecha y un poco encimadas.
+         Desde md: contenedor con proporción fija y las fotos en posición absoluta -->
+    <div
+      data-galeria-capacitaciones
+      class="mt-12 flex flex-col md:relative md:mt-16 md:block md:aspect-[16/11]"
+    >
+      {
+        fotos.map((foto, i) => (
+          <figure
+            data-galeria-foto
+            data-velocidad={foto.velocidad}
+            class:list={[
+              "group relative w-[85%] md:absolute md:mt-0",
+              i % 2 === 0 ? "self-start" : "self-end",
+              i > 0 && "-mt-8",
+              foto.clase,
+            ]}
+          >
+            <Image
+              src={foto.src}
+              alt={foto.alt}
+              widths={[480, 800, 1200]}
+              sizes="(min-width: 768px) 32vw, 85vw"
+              class="aspect-[4/3] w-full rounded-xl object-cover shadow-[0_24px_50px_-20px_rgba(15,42,67,0.5)] transition-transform duration-500 group-hover:scale-[1.03]"
+              loading="lazy"
+            />
+          </figure>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<GaleriaParallax /> 
+

@@ -1,0 +1,169 @@
+---
+import { getImage } from "astro:assets";
+// Foto: vista a las islas de Manuel Antonio desde la terraza de un hotel. Dominio público, de Wikimedia Commons:
+// https://commons.wikimedia.org/wiki/File:Manuel-antonio-islands-costa-rica.jpg (reducida a 2560 px de ancho)
+import foto from "../../assets/imagenes-hospitalidad/vista-hotel-manuel-antonio.jpg";
+import primerPlano from "../../assets/imagenes-hospitalidad/vista-hotel-primer-plano.webp";
+
+// CAPA 1: la foto tal cual. CAPA 3: la misma foto, del mismo tamaño, con solo el primer plano visible (troncos,
+// ramas, el techo de arriba a la derecha y la selva de abajo; WebP con canal alfa): el cielo, el mar y las islas
+// quedan transparentes. Las dos se exportan al mismo ancho para que calcen
+const fotoOptimizada = await getImage({ src: foto, width: foto.width, format: "webp", quality: 80 });
+const primerPlanoOptimizado = await getImage({ src: primerPlano, width: primerPlano.width, format: "webp", quality: 90 });
+---
+
+<!-- Hero de Hospitalidad, mismo enfoque que el hero de Quepos (Quepos-Componentes/Hero.astro): tres capas del mismo
+     tamaño apiladas, la foto de la vista desde el hotel, el título "HOSPITALIDAD" y encima el primer plano, así las
+     letras quedan sobre el mar, detrás de los troncos, y la selva de abajo les tapa la base, como vistas desde la
+     terraza. El recuadro tiene la
+     proporción de la foto y cubre todo el hero (como object-cover): todo va en porcentajes de la foto -->
+<section class="hero-vista relative isolate h-svh min-h-[560px] w-full overflow-hidden bg-[#cfdde6]" aria-label="Hospitalidad">
+  <div
+    class="hero-vista-recuadro absolute left-1/2"
+    style={{
+      width: `max(100cqw, calc(100cqh * ${foto.width} / ${foto.height}))`,
+      aspectRatio: `${foto.width} / ${foto.height}`,
+      top: `calc((100cqh - max(100cqw * ${foto.height} / ${foto.width}, 100cqh)) * 0.5)`,
+    }}
+  >
+    <!-- CAPA 1 — La foto -->
+    <img
+      src={fotoOptimizada.src}
+      alt="Vista al mar y a las islas de Manuel Antonio desde la terraza de un hotel, entre árboles"
+      class="hero-vista-foto absolute inset-0 size-full"
+      draggable="false"
+      fetchpriority="high"
+    />
+
+    <!-- CAPA 2 — Título en el cielo, justo sobre el horizonte (que está al 43 % desde abajo de la foto): las ramas
+         del árbol de la derecha le pasan por delante. Al hacer scroll baja por delante del mar y las islas y se
+         hunde entero detrás de la selva; la entrada va en el h1 para que no choquen -->
+    <div
+      data-hero-vista-titulo
+      class="hero-vista-titulo absolute bottom-[45%] left-[var(--foco-x)] -translate-x-1/2"
+    >
+      <h1 class="hero-vista-entrada text-center font-black uppercase text-[#102a43]">Hospitalidad</h1>
+    </div>
+
+    <!-- CAPA 3 — Troncos, ramas, techo y selva, encima del título -->
+    <img
+      src={primerPlanoOptimizado.src}
+      alt=""
+      class="hero-vista-foto absolute inset-0 size-full"
+      draggable="false"
+      aria-hidden="true"
+    />
+  </div>
+</section>
+
+<style>
+  .hero-vista {
+    /* Para medir el recuadro y el título en % del hero (cqw / cqh) */
+    container-type: size;
+  }
+
+  /* --foco-x: punto de la foto que queda al centro: el claro entre los dos árboles, donde se ve el mar */
+  .hero-vista-recuadro {
+    --foco-x: 50%;
+    translate: calc(-1 * var(--foco-x)) 0;
+  }
+
+  /* Tamaño del título: 6,1 % del ancho de la foto (que es max(100cqw, 133,33cqh)), así "HOSPITALIDAD" ocupa más o
+     menos el claro entre los dos árboles; sin pasar del 11 % del ancho de la pantalla, para que en celular quepa
+     entero */
+  .hero-vista-titulo {
+    font-size: min(11cqw, max(6.1cqw, 8.13cqh));
+    white-space: nowrap;
+  }
+  .hero-vista-titulo h1 {
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    /* Sombra suave del mismo azul, como en el hero de Quepos: le da profundidad sobre el mar y las nubes */
+    text-shadow: 0 0.04em 0.12em rgb(16 42 67 / 0.3);
+  }
+
+  /* Entrada: la foto aparece y luego el título sube y aparece */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-vista-foto {
+      animation: hero-vista-aparece 1s ease-out both;
+    }
+    .hero-vista-entrada {
+      animation: hero-vista-sube 1s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+    }
+  }
+  @keyframes hero-vista-aparece {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes hero-vista-sube {
+    from {
+      opacity: 0;
+      translate: 0 40px;
+    }
+  }
+
+  /* Al hacer scroll el título baja hasta quedar entero detrás de la selva. --bajada es cuánto baja: del 45 % al 26 %
+     desde abajo de la foto (donde empieza la selva), o sea el 19 % de su alto (la foto mide max(75cqw, 100cqh) de
+     alto), más el 110 % del alto del título para que se esconda entero. Como en el hero de Quepos, no se anima transform directo (Chrome lo pasaría a la GPU y al
+     hacer scroll rápido el título se veía un instante por delante): se anima un número de 0 a 1 y el transform se
+     calcula con él. Sin scroll-driven animations (Firefox, Safari < 26) se usa GSAP abajo */
+  .hero-vista-titulo {
+    --bajada: calc(max(14.25cqw, 19cqh) + 110%);
+  }
+  @property --hero-vista-progreso {
+    syntax: "<number>";
+    inherits: false;
+    initial-value: 0;
+  }
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .hero-vista {
+        view-timeline-name: --hero-vista;
+      }
+      .hero-vista-titulo {
+        transform: translateY(calc(var(--hero-vista-progreso) * var(--bajada)));
+        animation: hero-vista-esconde linear both;
+        animation-timeline: --hero-vista;
+        /* Termina de esconderse cuando se ha hecho scroll del 85 % del alto del hero, así baja despacio */
+        animation-range: exit 0% exit 85%;
+      }
+    }
+  }
+  @keyframes hero-vista-esconde {
+    to {
+      --hero-vista-progreso: 1;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const conCss = CSS.supports("animation-timeline: view()");
+  const sinMovimiento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Mismo recorrido que el keyframe hero-vista-esconde, para navegadores sin scroll-driven animations
+  if (!conCss && !sinMovimiento) {
+    document.querySelectorAll<HTMLElement>("[data-hero-vista-titulo]").forEach((titulo) => {
+      const hero = titulo.closest<HTMLElement>(".hero-vista");
+      if (!hero) return;
+      gsap.to(titulo, {
+        // Igual que --bajada: el 19 % del alto de la foto más el 110 % del alto del título
+        y: () => (hero.querySelector<HTMLElement>(".hero-vista-recuadro")?.offsetHeight ?? 0) * 0.19 + titulo.offsetHeight * 1.1,
+        ease: "none",
+        scrollTrigger: {
+          trigger: hero,
+          start: "top top",
+          // Equivale a "exit 85%" del CSS
+          end: () => `+=${hero.offsetHeight * 0.85}`,
+          scrub: true,
+          invalidateOnRefresh: true,
+        },
+      });
+    });
+  }
+</script>

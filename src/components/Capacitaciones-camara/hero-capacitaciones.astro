@@ -1,28 +1,66 @@
 ---
-import heroImage from "../../assets/imagenes-capacitaciones-svg/hero-capacitaciones.jpg";
+import { getImage, Image } from "astro:assets";
+import logo from "../../assets/imagenes/logo-camara.webp";
+import video from "../../assets/imagenes-capacitaciones-svg/hero-capacitaciones.mp4";
+import poster from "../../assets/imagenes-capacitaciones-svg/hero-capacitaciones.jpg";
+
+// Igual que el hero de afiliados: el video se importa desde src/assets (nombre con hash, queda en caché) y la foto
+// se optimiza con getImage y se usa de poster, así se ve al instante antes de que cargue el video
+// (la foto mide 600 × 400, se deja en su tamaño original)
+const posterOptimizado = await getImage({ src: poster, format: "webp", quality: 70 });
 ---
 
-<section class="relative isolate min-h-screen overflow-hidden text-white">
-  <img
-    src={heroImage.src}
-    alt="Personas participando en una capacitación"
-    class="absolute inset-0 -z-20 h-full w-full object-cover object-center"
-  />
-  <div class="absolute inset-y-0 left-0 -z-10 w-full bg-gradient-to-r from-[#173f98]/95 via-[#173f98]/70 via-45% to-transparent"></div>
+<section class="relative isolate min-h-svh overflow-hidden text-white">
+  <video
+    data-hero-capacitaciones-video
+    src={video}
+    poster={posterOptimizado.src}
+    class="absolute inset-0 -z-20 size-full object-cover object-center"
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="auto"
+    aria-hidden="true"
+  ></video>
+  <!-- Overlay oscuro, el mismo del hero de afiliados: parejo sobre todo el video y un poco más fuerte arriba y abajo -->
+  <div class="pointer-events-none absolute inset-0 -z-10 bg-black/35" aria-hidden="true"></div>
+  <div
+    class="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-black/30 via-transparent to-black/25"
+    aria-hidden="true"
+  ></div>
 
-  <div class="mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-6 py-20 sm:px-10 lg:px-16">
+  <!-- min-h-svh: en celulares cuenta la pantalla sin las barras del navegador. El padding de arriba (pt) deja libre el
+       alto de la barra de navegación, que va encima del hero; así el título no queda tapado en pantallas bajas (celular
+       acostado, laptops pequeñas) -->
+  <div class="mx-auto flex min-h-svh max-w-7xl flex-col justify-center px-6 pb-16 pt-36 sm:px-10 sm:pb-20 lg:px-16">
     <div class="max-w-3xl">
-      <div class="mb-8 h-px w-full max-w-3xl bg-white/80"></div>
-      <span class="text-sm font-semibold uppercase tracking-[0.3em] text-white/90">
-        Crecimiento empresarial
-      </span>
-      <h1 class="mt-5 text-5xl font-semibold leading-[1.05] tracking-tight sm:text-7xl">
+      <!-- Tamaño fluido: crece con el ancho de la pantalla (10.5vw) entre 2rem y 5rem, así "Capacitaciones" nunca se
+           corta en celulares angostos y no se pasa del ancho del bloque en pantallas grandes -->
+      <h1 class="text-[clamp(2rem,10.5vw,5rem)] font-bold leading-[1.05] tracking-tight">
         Capacitaciones
         <span class="block font-normal">para crecer juntos</span>
       </h1>
-      <p class="mt-7 max-w-xl text-base leading-7 text-white/90 sm:text-lg">
+      <p class="mt-5 max-w-xl text-base font-medium leading-relaxed text-white/90 sm:mt-7 sm:text-lg">
         Espacios de aprendizaje para fortalecer el talento y las empresas de Quepos.
       </p>
+      <!-- Logo de la Cámara debajo del texto, directo sobre el video (mismo tamaño y sombra que en el hero de afiliados) -->
+      <Image
+        src={logo}
+        alt="Cámara de Comercio, Industria y Turismo de Quepos"
+        class="mt-6 h-36 w-auto drop-shadow-[0_4px_24px_rgba(0,0,0,0.45)] sm:mt-8 sm:h-40 lg:mt-10 lg:h-48"
+        loading="eager"
+      />
     </div>
   </div>
 </section>
+
+<script>
+  // Con "reducir movimiento" el video se queda quieto en su primer cuadro (se ve el poster)
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.querySelectorAll<HTMLVideoElement>("[data-hero-capacitaciones-video]").forEach((video) => {
+      video.removeAttribute("autoplay");
+      video.pause();
+    });
+  }
+</script>

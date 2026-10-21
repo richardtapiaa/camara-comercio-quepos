@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import { optimizarImagen } from "../../../lib/imagenes";
+import { variantesGaleria } from "../../../lib/imagenes";
 import GaleriaQuepos from "../../ReactComponentes/QUEPOS/GaleriaQuepos";
 import beneficios from "../../../assets/imagenes/beneficios-seccion.jpg";
 import checkout from "../../../assets/imagenes/seccion-checkout.jpg";
@@ -30,28 +30,29 @@ import habitacion from "../../../assets/imagenes-hospitalidad/hospitalidad-1.web
 const clasesPalmera =
   "h-auto w-44 select-none sm:w-64 md:w-72 lg:w-80 xl:w-96 2xl:w-[28rem] [mask-image:linear-gradient(to_bottom,transparent,black_30%)]";
 
+// Cada foto lleva su versión grande (para verla ampliada), miniaturas en varios anchos y su proporción real
 const items = [
-  { id: 1, src: await optimizarImagen(hero, 1600), alt: "Paisaje de Quepos" },
-  { id: 2, src: await optimizarImagen(fondo, 1600), alt: "Naturaleza de Quepos" },
-  { id: 3, src: await optimizarImagen(mision, 1600), alt: "Misión de la Cámara" },
-  { id: 4, src: await optimizarImagen(vision, 1600), alt: "Visión de la Cámara" },
-  { id: 5, src: await optimizarImagen(beneficios, 1600), alt: "Beneficios para afiliados" },
-  { id: 6, src: await optimizarImagen(checkout, 1600), alt: "Costa de Quepos" },
-  { id: 7, src: await optimizarImagen(ejemplo, 1600), alt: "Ejemplo de emprendimiento local" },
-  { id: 8, src: await optimizarImagen(isla, 1600), alt: "Isla frente a la playa de Manuel Antonio, con surfistas en el mar" },
-  { id: 9, src: await optimizarImagen(perezoso, 1600), alt: "Perezoso colgado de una rama en el bosque" },
-  { id: 10, src: await optimizarImagen(bahia, 1600), alt: "Bahía rodeada de bosque tropical vista desde lo alto" },
-  { id: 11, src: await optimizarImagen(rafting, 1600), alt: "Grupo haciendo rafting en el río" },
-  { id: 12, src: await optimizarImagen(malecon, 1600), alt: "Letras de colores de Quepos en el malecón" },
-  { id: 13, src: await optimizarImagen(catamaran, 1600), alt: "Catamarán navegando al atardecer" },
-  { id: 14, src: await optimizarImagen(manglares, 1600), alt: "Kayaks entre los manglares" },
-  { id: 15, src: await optimizarImagen(mercado, 1600), alt: "Jardines frente al mercado municipal de Quepos" },
-  { id: 16, src: await optimizarImagen(rappel, 1600), alt: "Turista haciendo rappel en el bosque" },
-  { id: 17, src: await optimizarImagen(hotelPiscina, 1600), alt: "Piscina de un hotel con hamacas y vista al bosque" },
-  { id: 18, src: await optimizarImagen(pesca, 1600), alt: "Marlín saltando en el mar" },
-  { id: 19, src: await optimizarImagen(hotelVillaTeca, 1600), alt: "Cabañas de un hotel entre jardines tropicales" },
-  { id: 20, src: await optimizarImagen(centro, 1600), alt: "Calle del centro de Quepos" },
-  { id: 21, src: await optimizarImagen(habitacion, 1600), alt: "Habitación de hotel en Quepos" },
+  { id: 1, ...(await variantesGaleria(hero)), alt: "Paisaje de Quepos" },
+  { id: 2, ...(await variantesGaleria(fondo)), alt: "Naturaleza de Quepos" },
+  { id: 3, ...(await variantesGaleria(mision)), alt: "Misión de la Cámara" },
+  { id: 4, ...(await variantesGaleria(vision)), alt: "Visión de la Cámara" },
+  { id: 5, ...(await variantesGaleria(beneficios)), alt: "Beneficios para afiliados" },
+  { id: 6, ...(await variantesGaleria(checkout)), alt: "Costa de Quepos" },
+  { id: 7, ...(await variantesGaleria(ejemplo)), alt: "Ejemplo de emprendimiento local" },
+  { id: 8, ...(await variantesGaleria(isla)), alt: "Isla frente a la playa de Manuel Antonio, con surfistas en el mar" },
+  { id: 9, ...(await variantesGaleria(perezoso)), alt: "Perezoso colgado de una rama en el bosque" },
+  { id: 10, ...(await variantesGaleria(bahia)), alt: "Bahía rodeada de bosque tropical vista desde lo alto" },
+  { id: 11, ...(await variantesGaleria(rafting)), alt: "Grupo haciendo rafting en el río" },
+  { id: 12, ...(await variantesGaleria(malecon)), alt: "Letras de colores de Quepos en el malecón" },
+  { id: 13, ...(await variantesGaleria(catamaran)), alt: "Catamarán navegando al atardecer" },
+  { id: 14, ...(await variantesGaleria(manglares)), alt: "Kayaks entre los manglares" },
+  { id: 15, ...(await variantesGaleria(mercado)), alt: "Jardines frente al mercado municipal de Quepos" },
+  { id: 16, ...(await variantesGaleria(rappel)), alt: "Turista haciendo rappel en el bosque" },
+  { id: 17, ...(await variantesGaleria(hotelPiscina)), alt: "Piscina de un hotel con hamacas y vista al bosque" },
+  { id: 18, ...(await variantesGaleria(pesca)), alt: "Marlín saltando en el mar" },
+  { id: 19, ...(await variantesGaleria(hotelVillaTeca)), alt: "Cabañas de un hotel entre jardines tropicales" },
+  { id: 20, ...(await variantesGaleria(centro)), alt: "Calle del centro de Quepos" },
+  { id: 21, ...(await variantesGaleria(habitacion)), alt: "Habitación de hotel en Quepos" },
 ];
 ---
 
@@ -83,10 +84,8 @@ const items = [
   <!-- El espacio de arriba crece con las palmeras (que miden 2/3 de su ancho de alto), así el texto empieza debajo
        de las hojas y nunca queda cruzado por ellas -->
   <div class="relative mx-auto max-w-7xl px-4 pb-24 pt-32 sm:px-6 sm:pt-44 md:pt-48 lg:pt-52 xl:pt-60 2xl:pt-72">
-    <header class="mb-16 space-y-4">
-     
-    </header>
-
-    <GaleriaQuepos client:load items={items} />
+    <!-- client:visible: el HTML del mosaico ya viene listo desde el servidor (las fotos se ven igual); React y
+         framer-motion se cargan recién cuando la galería entra en pantalla, para poder ampliar las fotos -->
+    <GaleriaQuepos client:visible items={items} />
   </div>
 </section>

@@ -43,6 +43,54 @@ const items = await Promise.all(
     aria-hidden="true"
   />
 
+  <!-- Arena de playa en el suelo de la sección: borde de arriba ondulado (máscara). El relieve de dunas sale de ruido
+       SVG iluminado de lado (luces y sombras), encima van granos finos y piedritas. El SVG no tiene viewBox, así que
+       la textura no se estira con el ancho de la pantalla. Va detrás de todo y no bloquea el arrastre de la galería -->
+  <div class="arena pointer-events-none absolute inset-x-0 bottom-0 z-0 h-40 select-none sm:h-56 lg:h-64" aria-hidden="true">
+    <svg class="h-full w-full" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="arena-textura" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+          <!-- Dunas: ruido más estirado a lo ancho que a lo alto, como las ondas que deja el viento -->
+          <feTurbulence type="fractalNoise" baseFrequency="0.006 0.018" numOctaves="3" seed="4" result="ondas" />
+          <feDiffuseLighting in="ondas" surfaceScale="11" diffuseConstant="1" lighting-color="#ffffff" result="luz">
+            <feDistantLight azimuth="235" elevation="40" />
+          </feDiffuseLighting>
+          <!-- Lo plano queda del color de la arena y las caras en sombra bajan a un café cálido (nunca a negro) -->
+          <feComponentTransfer in="luz" result="luz">
+            <feFuncR type="linear" slope="0.6" intercept="0.64" />
+            <feFuncG type="linear" slope="0.65" intercept="0.56" />
+            <feFuncB type="linear" slope="0.7" intercept="0.44" />
+          </feComponentTransfer>
+          <feFlood flood-color="#e9cf93" result="base" />
+          <feBlend in="base" in2="luz" mode="multiply" result="dunas" />
+
+          <!-- Granos finos oscuros -->
+          <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="11" result="ruidoFino" />
+          <feColorMatrix in="ruidoFino" values="0 0 0 0 0.42  0 0 0 0 0.3  0 0 0 0 0.15  0 0 0 2.2 -1.25" result="granos" />
+          <feComposite in="granos" in2="dunas" operator="over" result="conGranos" />
+
+          <!-- Granos claros que brillan -->
+          <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="1" seed="23" result="ruidoClaro" />
+          <feColorMatrix in="ruidoClaro" values="0 0 0 0 1  0 0 0 0 0.97  0 0 0 0 0.88  0 0 0 2.4 -1.45" result="brillos" />
+          <feComposite in="brillos" in2="conGranos" operator="over" result="conBrillos" />
+
+          <!-- Piedritas sueltas: pocas manchas oscuras más grandes -->
+          <feTurbulence type="fractalNoise" baseFrequency="0.35" numOctaves="1" seed="7" result="ruidoPiedras" />
+          <feColorMatrix in="ruidoPiedras" values="0 0 0 0 0.3  0 0 0 0 0.22  0 0 0 0 0.12  0 0 0 14 -9.6" result="piedras" />
+          <feComposite in="piedras" in2="conBrillos" operator="over" />
+        </filter>
+        <!-- Sombra suave hacia abajo para dar profundidad -->
+        <linearGradient id="arena-profundidad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#fff6dc" stop-opacity="0.35" />
+          <stop offset="0.5" stop-color="#000" stop-opacity="0" />
+          <stop offset="1" stop-color="#7a5a26" stop-opacity="0.25" />
+        </linearGradient>
+      </defs>
+      <rect width="100%" height="100%" filter="url(#arena-textura)" />
+      <rect width="100%" height="100%" fill="url(#arena-profundidad)" />
+    </svg>
+  </div>
+
   <!-- Encabezado con las mismas letras que SobreQuepos.astro -->
   <!-- Título, galería y botón van delante de las palmeras (relative z-[5]) -->
   <div class="relative z-[5] mx-auto max-w-3xl px-6 text-center">
@@ -59,7 +107,7 @@ const items = await Promise.all(
 
   <div class="relative z-[5] mt-2 flex flex-col items-center gap-5 px-6 text-center">
     <!-- La galería se mueve arrastrando o con la rueda, y no es evidente a simple vista -->
-    <p class="flex items-center gap-3 text-sm font-medium text-neutral-500">
+    <p class="flex items-center gap-3 text-sm font-medium text-neutral-600">
       <span aria-hidden="true">←</span>
       Arrastra para explorar
       <span aria-hidden="true">→</span>
@@ -73,3 +121,14 @@ const items = await Promise.all(
   </div>
 </section>
     
+<style>
+  .arena {
+    
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320' preserveAspectRatio='none'%3E%3Cpath d='M0 70C240 20 480 110 720 70S1200 30 1440 60V320H0Z'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320' preserveAspectRatio='none'%3E%3Cpath d='M0 70C240 20 480 110 720 70S1200 30 1440 60V320H0Z'/%3E%3C/svg%3E");
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+  }
+</style>

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence, useIsPresent, type Transition } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
@@ -6,8 +7,16 @@ import { ChevronLeft, ChevronRight, X } from "lucide-react";
 // --- Tipos ---
 export interface GaleriaItem {
   id: number;
+  /** Versión grande, para la vista ampliada */
   src: string;
   alt: string;
+  /** Miniatura para el mosaico (si no viene se usa src) */
+  miniatura?: string;
+  /** Miniaturas en varios anchos ("url 360w, url 600w, …") */
+  srcSet?: string;
+  /** Ancho y alto originales: la miniatura usa su proporción real, sin recortar la foto */
+  ancho?: number;
+  alto?: number;
 }
 
 interface ImageData {
@@ -138,6 +147,11 @@ export function GalleryImage({
   loading = "lazy",
   aspect,
   copia,
+  miniatura,
+  srcSet,
+  sizes,
+  ancho,
+  alto,
 }: {
   src: string;
   alt?: string;
@@ -148,6 +162,13 @@ export function GalleryImage({
   aspect?: string;
   /** Para la misma imagen repetida (carrusel infinito): las copias no comparten la animación con la vista ampliada */
   copia?: number;
+  /** Imagen liviana para el mosaico; src (la grande) queda para la vista ampliada */
+  miniatura?: string;
+  srcSet?: string;
+  sizes?: string;
+  /** Ancho y alto originales: reservan el espacio con la proporción real (sin saltos mientras carga) */
+  ancho?: number;
+  alto?: number;
 }) {
   const context = React.useContext(GalleryContext);
   if (!context) throw new Error("GalleryImage must be used within a Gallery");
@@ -162,15 +183,24 @@ export function GalleryImage({
         aspect,
         className,
       )}
+      style={!aspect && ancho && alto ? { aspectRatio: `${ancho} / ${alto}` } : undefined}
       onClick={() => context.setSelectedImage({ id, src, alt })}
+      // Al acercar el cursor o enfocar se empieza a bajar la versión grande, así al ampliar ya está lista
+      onPointerEnter={miniatura ? () => (new Image().src = src) : undefined}
+      onFocus={miniatura ? () => (new Image().src = src) : undefined}
       aria-label={`Ampliar imagen: ${alt || "Galería"}`}
     >
       <motion.img
         layoutId={copia ? `image-${id}-copia-${copia}` : `image-${id}`}
-        src={src}
+        src={miniatura ?? src}
+        srcSet={srcSet || undefined}
+        sizes={srcSet ? sizes : undefined}
+        width={ancho}
+        height={alto}
+        decoding="async"
         alt={alt || "Imagen de la galería"}
         loading={loading}
-        className={cn("w-full object-cover rounded-2xl", aspect ? "h-full" : "h-auto")}
+        className={cn("w-full object-cover rounded-2xl", aspect || (ancho && alto) ? "h-full" : "h-auto")}
         variants={{
           hover: { scale: 0.98 },
           tap: { scale: 0.95 },
@@ -199,11 +229,16 @@ function GalleryModal() {
 
   const { selectedImage, direccion, navegado } = context;
 
-  return (
+  // Se dibuja directo en el <body> (portal): si la galería está dentro de una sección con su propio contexto de
+  // apilamiento (isolate, transform, z-index…), el visor quedaba atrapado ahí y la barra de navegación le pasaba por
+  // encima. Desde el body, su z-[70] sí queda sobre la barra (z-50) y cubre toda la pantalla
+  if (typeof document === "undefined") return null;
+  return createPortal(
     <AnimatePresence>
       {/* Se pasan como props: al cerrar, la vista que sale conserva la última imagen mientras se anima */}
       {selectedImage && <VistaAmpliada key="vista" imagen={selectedImage} direccion={direccion} navegado={navegado} />}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }
 
@@ -345,6 +380,9 @@ function VistaAmpliada({ imagen, direccion, navegado }: { imagen: ImageData; dir
 // Proporciones variadas (verticales y horizontales) para el mosaico estilo masonry
 const PROPORCIONES = ["aspect-[3/5]", "aspect-[16/10]", "aspect-[2/3]", "aspect-[4/5]", "aspect-[16/10]", "aspect-[3/4]", "aspect-[3/5]"];
 
+// Ancho con que se muestra cada miniatura según las columnas del mosaico (2 / 3 / 4), para elegir del srcset
+const TAMANOS_MINIATURA = "(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw";
+
 const GaleriaQuepos = ({ items, className }: { items: GaleriaItem[]; className?: string }) => (
   <Gallery images={items.map((item) => ({ id: String(item.id), src: item.src, alt: item.alt }))}>
     <GalleryGrid className={className}>
@@ -354,8 +392,16 @@ const GaleriaQuepos = ({ items, className }: { items: GaleriaItem[]; className?:
           id={String(item.id)}
           src={item.src}
           alt={item.alt}
-          loading={index < 4 ? "eager" : "lazy"}
-          aspect={PROPORCIONES[index % PROPORCIONES.length]}
+          miniatura={item.miniatura}
+          srcSet={item.srcSet}
+          sizes={TAMANOS_MINIATURA}
+          ancho={item.ancho}
+          alto={item.alto}
+          // Todas diferidas: el mosaico va por columnas (las primeras de la lista son la 1.ª columna, no la fila de
+          // arriba) y el navegador igual baja enseguida las que ya están en pantalla
+          loading="lazy"
+          // Con su proporción real (si viene) la foto se ve entera; si no, una proporción variada del mosaico
+          aspect={item.ancho && item.alto ? undefined : PROPORCIONES[index % PROPORCIONES.length]}
         />
       ))}
     </GalleryGrid>
