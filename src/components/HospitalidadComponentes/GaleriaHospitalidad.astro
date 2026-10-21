@@ -6,7 +6,7 @@ import hotelVillaTeca from "../../assets/imagenes-hospitalidad/hotel-villa-teca.
 import mercadoMunicipal from "../../assets/imagenes-hospitalidad/mercado-municipal.jpg";
 import centroComercio from "../../assets/imagenes-hospitalidad/centro-comercio.jpg";
 import maleconLetras from "../../assets/imagenes-hospitalidad/malecon-letras.jpg";
-import { optimizarImagen } from "../../lib/imagenes";
+import { variantesGaleria } from "../../lib/imagenes";
 
 // Fotos provisionales de Wikimedia Commons; reemplazar por fotos propias cuando estén disponibles. Sus licencias
 // (CC BY / CC BY-SA) piden dar crédito al autor si se publican:
@@ -23,29 +23,22 @@ const fotos = [
   { id: "malecon", imagen: maleconLetras, alt: "Letras de Quepos en el malecón" },
 ];
 
-// El visor amplía la foto, así que se pide más ancha que la tarjeta
+// El visor amplía la foto, así que se pide más ancha que la tarjeta; las tarjetas usan miniaturas
 const imagenes = await Promise.all(
-  fotos.map(async ({ id, imagen, alt }) => ({ id, alt, src: await optimizarImagen(imagen, 1600) })),
+  fotos.map(async ({ id, imagen, alt }) => {
+    // Versión grande (1600 px) para ampliar y miniaturas de 360/600/900 px para las tarjetas
+    const { src, miniatura, srcSet } = await variantesGaleria(imagen);
+    return { id, alt, src, miniatura, srcSet };
+  }),
 );
 
 ---
 
-<!-- Recepción de hotel (inspirada en un lobby con pared de madera cobriza y candelabro de anillos), toda hecha con
-     CSS/SVG, sin imágenes:
-     - de fondo la pared cobriza con veta vertical, paredes laterales de piedra y techo de listones de madera,
-     - al centro un candelabro de tres anillos dorados encendidos colgando del techo, con la luz que tiñe la pared,
-     - un florero con flores rosadas y dos monitores (vistos desde atrás) sobre el mostrador,
-     - el mostrador oscuro: por su frente pasan las fotos del carrusel (ImagenesHoteles.tsx, versión enMostrador),
-       que se pasa con las flechas o deslizando (sin giro automático); al presionar una foto se amplía,
-     - el piso de piedra clara con el reflejo del mostrador.
-     El alto de la pared crece con el ancho de la pantalla, así el candelabro siempre entra entero. Ocupa toda la
-     sección, de borde a borde -->
+
 <section id="galeria-hospitalidad">
   <div class="recepcion relative isolate w-full overflow-hidden">
-    <!-- Pared cobriza, paredes laterales y techo -->
+    <!-- Pared cobriza (de borde a borde) y techo -->
     <div class="recepcion-pared absolute inset-0 -z-20" aria-hidden="true"></div>
-    <div class="recepcion-lateral absolute inset-y-0 left-0 -z-10 w-[9%]" aria-hidden="true"></div>
-    <div class="recepcion-lateral absolute inset-y-0 right-0 -z-10 w-[9%] -scale-x-100" aria-hidden="true"></div>
     <div class="recepcion-techo absolute inset-x-0 top-0 -z-10 h-[clamp(28px,4vw,48px)]" aria-hidden="true"></div>
     <!-- Luz cálida del candelabro sobre la pared -->
     <div class="pointer-events-none absolute left-1/2 top-0 -z-10 h-[70%] w-[90%] -translate-x-1/2 bg-[radial-gradient(ellipse_at_50%_25%,rgb(255_214_150/0.45),transparent_65%)]" aria-hidden="true"></div>
@@ -159,13 +152,6 @@ const imagenes = await Promise.all(
         rgb(60 25 5 / 0.1) 17px 19px
       ),
       linear-gradient(90deg, #6e3418, #9a5028 20%, #823f1e 45%, #a35a2e 70%, #73361a);
-  }
-  /* Paredes de los costados: piedra gris con un poco de sombra hacia el centro */
-  .recepcion-lateral {
-    background:
-      linear-gradient(90deg, transparent 70%, rgb(0 0 0 / 0.25)),
-      repeating-linear-gradient(0deg, transparent 0 38px, rgb(0 0 0 / 0.08) 38px 39px),
-      linear-gradient(180deg, #8d8a84, #6f6c66);
   }
   /* Techo de listones de madera oscura */
   .recepcion-techo {

@@ -1,0 +1,111 @@
+---
+import {
+  Award,
+  BadgePercent,
+  Briefcase,
+  Building2,
+  CalendarCheck,
+  ChartColumnIncreasing,
+  ChartPie,
+  Factory,
+  Gift,
+  HandCoins,
+  Handshake,
+  IdCard,
+  Landmark,
+  Lightbulb,
+  Megaphone,
+  Network,
+  PiggyBank,
+  Rocket,
+  ShieldCheck,
+  Star,
+  Store,
+  Target,
+  TrendingUp,
+  Trophy,
+  Users,
+} from "lucide-react";
+
+interface Props {
+  /** id del <pattern>: único por página (si hay dos fondos en la misma página no deben repetirse) */
+  id: string;
+  /** Color de los íconos y puntitos */
+  color: string;
+  /** Opacidad de los íconos (los puntitos van un poco más suaves) */
+  opacidad: number;
+}
+
+const { id, color, opacidad } = Astro.props;
+
+// Fondo de mosaico de íconos en línea fina (como un fondo de chat), con temas de
+// afiliación: alianzas, empresas, comercios, crecimiento, beneficios y premios. Es una celda de 480 × 480 px que se
+// repite; cada ícono va con su giro y tamaño (fijos, para que el dibujo no cambie entre builds) y entre ellos puntitos
+// de relleno. Los íconos del borde derecho se repiten a la izquierda (x − 480) para que el mosaico empalme sin cortes
+const iconosFondo = [
+  { Icono: Handshake, x: 14, y: 8, giro: 16, tam: 30 },
+  { Icono: Briefcase, x: 102, y: 21, giro: -16, tam: 38 },
+  { Icono: Building2, x: 214, y: 5, giro: -6, tam: 30 },
+  { Icono: Store, x: 294, y: 17, giro: 16, tam: 30 },
+  { Icono: TrendingUp, x: 395, y: 6, giro: 16, tam: 30 },
+  { Icono: Award, x: 70, y: 103, giro: -6, tam: 30 },
+  { Icono: Users, x: 166, y: 118, giro: 16, tam: 30 },
+  { Icono: BadgePercent, x: 251, y: 101, giro: -10, tam: 38 },
+  { Icono: Gift, x: 353, y: 104, giro: -16, tam: 38 },
+  { Icono: Megaphone, x: 453, y: 105, giro: -16, tam: 34 },
+  { Icono: Network, x: 15, y: 199, giro: -16, tam: 30 },
+  { Icono: PiggyBank, x: 119, y: 202, giro: 24, tam: 42 },
+  { Icono: ChartPie, x: 206, y: 210, giro: 24, tam: 38 },
+  { Icono: Landmark, x: 301, y: 203, giro: -10, tam: 34 },
+  { Icono: Lightbulb, x: 390, y: 214, giro: 6, tam: 42 },
+  { Icono: Rocket, x: 62, y: 306, giro: 6, tam: 30 },
+  { Icono: Target, x: 151, y: 308, giro: 16, tam: 34 },
+  { Icono: ShieldCheck, x: 254, y: 296, giro: 24, tam: 42 },
+  { Icono: IdCard, x: 341, y: 294, giro: 10, tam: 38 },
+  { Icono: Trophy, x: 447, y: 311, giro: 24, tam: 42 },
+  { Icono: HandCoins, x: 6, y: 390, giro: 6, tam: 42 },
+  { Icono: Factory, x: 102, y: 389, giro: 6, tam: 42 },
+  { Icono: ChartColumnIncreasing, x: 205, y: 400, giro: 10, tam: 30 },
+  { Icono: CalendarCheck, x: 306, y: 399, giro: -10, tam: 30 },
+  { Icono: Star, x: 403, y: 389, giro: -6, tam: 38 },
+];
+const puntosFondo = [
+  { x: 66, y: 378, r: 2 },
+  { x: 203, y: 200, r: 2.5 },
+  { x: 41, y: 85, r: 2.5 },
+  { x: 205, y: 281, r: 2.5 },
+  { x: 452, y: 70, r: 2.5 },
+  { x: 442, y: 281, r: 2.5 },
+  { x: 361, y: 212, r: 2.5 },
+  { x: 349, y: 452, r: 2.5 },
+  { x: 118, y: 77, r: 2 },
+  { x: 90, y: 77, r: 2 },
+  { x: 337, y: 119, r: 2 },
+  { x: 248, y: 425, r: 3 },
+  { x: 93, y: 134, r: 2.5 },
+  { x: 2, y: 74, r: 2.5 },
+  { x: 273, y: 189, r: 3 },
+  { x: 289, y: 163, r: 2 },
+  { x: 353, y: 439, r: 3 },
+  { x: 316, y: 335, r: 3 },
+];
+---
+
+<!-- Va detrás del contenido (-z-10) y no bloquea clics: la sección que lo usa necesita "relative isolate" -->
+<svg class="pointer-events-none absolute inset-0 -z-10 size-full" aria-hidden="true">
+  <defs>
+    <pattern id={id} width="480" height="480" patternUnits="userSpaceOnUse">
+      {
+        iconosFondo.flatMap(({ Icono, x, y, giro, tam }) =>
+          [x, x - 480].map((px) => (
+            <g transform={`translate(${px} ${y}) rotate(${giro} ${tam / 2} ${tam / 2})`}>
+              <Icono width={tam} height={tam} strokeWidth={1.4} color={color} opacity={opacidad} />
+            </g>
+          )),
+        )
+      }
+      {puntosFondo.map(({ x, y, r }) => <circle cx={x} cy={y} r={r} fill={color} opacity={opacidad * 0.75} />)}
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill={`url(#${id})`} />
+</svg>

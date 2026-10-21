@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import FraseScroll from "../Scripts/AfiliadosScripts/FraseScroll.astro";
+import FondoAfiliacion from "./FondoAfiliacion.astro";
 import manoFoco from "../../assets/logos-afiliados/frase-afiliados.webp";
 
 const frase =
@@ -13,7 +14,11 @@ const palabras = frase.split(" ");
 <!-- Frase célebre sobre fondo azul: a la izquierda la mano con el foco, saliendo desde el borde de abajo, y a la
      derecha la frase en negro. Las palabras se encienden con el scroll (FraseScroll.astro). En celular la frase va
      arriba y la mano abajo, para que siga saliendo del borde -->
-<section data-frase-celebre class="overflow-hidden rounded-t-[11rem] bg-[#2780c9] md:rounded-t-[38rem]" aria-label="Frase de la Cámara">
+<!-- Detrás de la sección azul: el celeste con el mosaico de íconos de afiliación (el mismo fondo de la sección de
+     afiliados), así las esquinas que deja la curva de arriba no quedan en blanco -->
+<div class="relative isolate bg-[#E8F4FA]">
+  <FondoAfiliacion id="frase-fondo" color="#2780c9" opacidad={0.16} />
+<section data-frase-celebre class="relative overflow-hidden rounded-t-[11rem] bg-[#2780c9] md:rounded-t-[38rem]" aria-label="Frase de la Cámara">
   <div class="mx-auto grid min-h-[60svh] max-w-7xl items-center gap-10 px-6 pb-16 pt-32 md:min-h-[70svh] md:grid-cols-2 md:py-24">
     <!-- Mano con el foco: el brazo viene cortado abajo, así que va pegada al borde de abajo de la sección (el margen
          negativo anula el padding) -->
@@ -41,6 +46,7 @@ const palabras = frase.split(" ");
     </blockquote>
   </div>
 </section>
+</div>
 
 <FraseScroll />
 

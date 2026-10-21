@@ -28,3 +28,27 @@ export async function variantesGaleria(imagen: ImageMetadata) {
     alto: imagen.height,
   };
 }
+
+// Para los heros en capas (foto + recorte del primer plano encima): la misma imagen en varios anchos (srcset), así el
+// celular baja una versión chica y no la de 2560 px. Las dos capas usan los mismos anchos y el mismo `sizes`, por eso
+// el navegador elige el mismo tamaño para las dos y siguen calzando. Ninguna se agranda
+export async function variantesCapa(imagen: ImageMetadata, anchos: number[], calidad: number) {
+  const validos = [...new Set(anchos.map((ancho) => Math.min(ancho, imagen.width)))];
+  const versiones = await Promise.all(
+    validos.map(async (ancho) => ({ ancho, src: await optimizarImagen(imagen, ancho, calidad) })),
+  );
+  return {
+    src: versiones.at(-1)!.src,
+    srcSet: versiones.map(({ ancho, src }) => `${src} ${ancho}w`).join(", "),
+  };
+}
+
+// `sizes` de una foto que cubre toda la pantalla como object-cover: si la pantalla es más ancha (en proporción) que la
+// foto, la foto mide el ancho de la pantalla; si no, se agranda hasta cubrir el alto (alto × proporción de la foto).
+// En celular (pantalla angosta) la foto cubre el alto y queda mucho más ancha que la pantalla (los costados se
+// recortan), y con la densidad de 3x el navegador pediría la versión más grande: ahí se declara la mitad, así baja
+// una versión de ~1,5x, suficiente para un fondo
+export const sizesCubrePantalla = (imagen: ImageMetadata) => {
+  const proporcion = (imagen.width / imagen.height).toFixed(4);
+  return `(max-width: 767px) calc(50vh * ${proporcion}), (min-aspect-ratio: ${imagen.width}/${imagen.height}) 100vw, calc(100vh * ${proporcion})`;
+};

@@ -1,12 +1,15 @@
 ---
 import { getImage } from "astro:assets";
+import { sizesCubrePantalla, variantesCapa } from "../../lib/imagenes";
 import foto from "../../assets/imagenes-quepos/isla-quepos.jpg";
 import primerPlano from "../../assets/imagenes-quepos/isla-quepos-primer-plano.webp";
 
 // CAPA 1: la foto tal cual. CAPA 3: la misma foto, del mismo tamaño, con solo la isla y el mar visibles (WebP con
-// canal alfa), para que queden delante del título. Las dos se exportan al mismo ancho para que calcen
-const fotoOptimizada = await getImage({ src: foto, width: foto.width, format: "webp", quality: 80 });
-const primerPlanoOptimizado = await getImage({ src: primerPlano, width: primerPlano.width, format: "webp", quality: 90 });
+// canal alfa), para que queden delante del título. Las dos se exportan en
+// los mismos anchos (srcset) para que calcen; en celular baja una versión chica en vez de la de ancho completo
+const fotoOptimizada = await variantesCapa(foto, [800, 1200, 1600], 80);
+const sizes = sizesCubrePantalla(foto);
+const primerPlanoOptimizado = await variantesCapa(primerPlano, [800, 1200, 1600], 85);
 
 // "QUEPOS" como el letrero de la foto quepos-foto.webp: cada letra rellena con el mural de su letra (recortes de esa
 // foto en letras-quepos/, con el cielo de los huecos rellenado con el color de la letra), su borde de color y el
@@ -46,6 +49,8 @@ const letras = await Promise.all(
     <!-- CAPA 1 — La foto -->
     <img
       src={fotoOptimizada.src}
+      srcset={fotoOptimizada.srcSet}
+      sizes={sizes}
       alt="Isla frente a la playa de Manuel Antonio, en Quepos, con surfistas en el mar"
       class="hero-isla-foto absolute inset-0 size-full"
       draggable="false"
@@ -79,6 +84,8 @@ const letras = await Promise.all(
     <!-- CAPA 3 — La isla y el mar, encima del título -->
     <img
       src={primerPlanoOptimizado.src}
+      srcset={primerPlanoOptimizado.srcSet}
+      sizes={sizes}
       alt=""
       class="hero-isla-foto absolute inset-0 size-full"
       draggable="false"
