@@ -1,27 +1,29 @@
 ---
 import { Image } from "astro:assets";
-import comida1 from "../../assets/imagenes-hospitalidad/comida-1.jpg";
-import comida2 from "../../assets/imagenes-hospitalidad/comida-2.jpg";
-import comida3 from "../../assets/imagenes-hospitalidad/comida-3.jpg";
-import comida4 from "../../assets/imagenes-hospitalidad/comida-4.jpg";
-import comida5 from "../../assets/imagenes-hospitalidad/comida-5.jpg";
+import arrozCamarones from "../../assets/comidas-recortadas/arroz-con-camaroes.webp";
+import casado from "../../assets/comidas-recortadas/casado.webp";
+import filetePescado from "../../assets/comidas-recortadas/filt-pescado.webp";
+import galloPinto from "../../assets/comidas-recortadas/gallo-pinto.webp";
+import picadillo from "../../assets/comidas-recortadas/picadillos-tortilla.webp";
 
-// Todas son horizontales (3:2) y se muestran así, sin recortar, para que los platos se vean enteros
-const fotos = [
-  { src: comida1, alt: "Plato servido en un restaurante de Quepos, con copas de vino en una mesa a la luz de las velas" },
-  { src: comida2, alt: "Plato de mariscos con puré y flores comestibles sobre una mesa de madera" },
-  { src: comida3, alt: "Plato de mariscos y una copa de vino blanco en un restaurante al aire libre de noche" },
-  { src: comida4, alt: "Casado costarricense con arroz, frijoles, pico de gallo y tortillas" },
-  { src: comida5, alt: "Pulpo a la parrilla con ensalada fresca" },
+// Comidas recortadas de sus fotos (óvalo con borde difuminado y fondo transparente), servidas en un plato dibujado.
+// "redondo": la comida es redonda (plato redondo en el centro del recuadro); "ovalado": ocupa todo el recuadro.
+// En el borde de abajo del plato va una etiqueta de papel con el nombre en letras azules
+const platos = [
+  { src: casado, forma: "ovalado", nombre: "Casado", alt: "Casado costarricense con pollo, arroz, frijoles, plátano maduro y ensalada" },
+  { src: arrozCamarones, forma: "ovalado", nombre: "Arroz", alt: "Arroz con camarones" },
+  { src: galloPinto, forma: "redondo", nombre: "Gallo pinto", alt: "Gallo pinto con culantro" },
+  { src: filetePescado, forma: "redondo", nombre: "Filet de pescado", alt: "Filete de pescado con arroz, aguacate y ensalada" },
+  { src: picadillo, forma: "ovalado", nombre: "Picadillos", alt: "Picadillo sobre tortillas" },
 ];
 ---
 
-<!-- Cada foto va servida: abajo un plato ovalado (porcelana blanca con borde), encima un pañuelo de cuadros celeste
-     (el mismo del mantel de InfoGastronomia) un poco ladeado y encima la foto, en su proporción original (3:2) para
-     que no se corte ningún plato. Plato y pañuelo van en % del recuadro, así se ven igual en cualquier tamaño.
-     Mosaico en las dos medidas, con las 5 fotos a la vista:
-     - Celular (2 columnas): la 1.ª grande a todo el ancho y debajo dos filas de dos.
-     - Escritorio (6 columnas): 3 fotos arriba (2 columnas cada una) y 2 más grandes abajo (3 columnas cada una) -->
+<!-- Cada comida va servida en un plato de porcelana que se ve en 3D: sombra en la mesa, el canto del plato debajo,
+     el ala con brillo, el hueco del centro con su sombra y la comida encima (con multiply, así lo blanco de su foto
+     toma el color y las sombras del plato). Al pasar el mouse el plato se inclina hacia el puntero.
+     Mosaico en las dos medidas, con los 5 platos a la vista:
+     - Celular (1 columna): un plato por fila, a todo el ancho, y cada uno aparece al llegar a él con el scroll.
+     - Escritorio (6 columnas): 3 platos arriba (2 columnas cada uno) y 2 más grandes abajo (3 columnas cada uno) -->
 <section class="relative isolate overflow-hidden bg-white px-4 py-12 md:px-6 md:py-20" aria-label="Galería de gastronomía de Quepos">
   <!-- Manta de cuadros celeste (el mismo color del mantel y los pañuelos) que sube desde abajo, arrugada, y sobre la
        que quedan apoyados los platos. Es un SVG sin viewBox (medidas en px, así los cuadros no se estiran):
@@ -66,35 +68,50 @@ const fotos = [
     </defs>
   </svg>
 
-  <ul class="mx-auto grid max-w-7xl grid-cols-2 gap-4 md:grid-cols-6 md:gap-8">
+  <ul class="mx-auto grid max-w-7xl grid-cols-1 gap-8 md:grid-cols-6">
     {
-      fotos.map(({ src, alt }, i) => (
+      platos.map(({ src, forma, nombre, alt }, i) => (
         <li
           class:list={[
-            "relative aspect-[3/2]",
-            i === 0 && "col-span-2",
+            "relative aspect-[3/2] [perspective:900px]",
             i < 3 ? "md:col-span-2" : "md:col-span-3",
           ]}
-          style={`--giro: ${i % 2 === 0 ? -7 : 6}deg`}
+          data-plato
         >
-          <!-- Plato, pañuelo y foto -->
-          <div class="absolute inset-0">
-            <!-- Plato -->
-            <div class="plato absolute inset-0 rounded-[50%]" aria-hidden="true"></div>
-            <!-- Pañuelo, ladeado (alterna el lado en cada foto) -->
-            <div class="panuelo absolute inset-[9%] rounded-[4px]" aria-hidden="true"></div>
-            <!-- Foto encima del pañuelo -->
-            <div class="absolute inset-[12%] overflow-hidden rounded-xl shadow-[0_6px_14px_-6px_rgb(16_42_67/0.45)] md:rounded-2xl">
+          <div
+            class:list={[
+              "plato-escena absolute inset-y-0 [container-type:inline-size]",
+              forma === "redondo" ? "left-1/2 aspect-square -translate-x-1/2" : "inset-x-0",
+            ]}
+          >
+            <div class="plato-sombra absolute inset-x-[3%] bottom-[-5%] top-[12%] rounded-[50%]" aria-hidden="true"></div>
+            <div class="plato-canto absolute inset-0 translate-y-[3.5%] rounded-[50%]" aria-hidden="true"></div>
+            <div class="plato-superficie absolute inset-0 rounded-[50%]" aria-hidden="true"></div>
+            <!-- Comida dentro del hueco del plato, con un poco de plato blanco alrededor y más arriba que la etiqueta,
+                 así no queda tapada -->
+            <div class="plato-comida absolute inset-x-[14%] bottom-[18%] top-[10%]">
               <Image
                 src={src}
                 alt={alt}
-                width={1200}
-                widths={[480, 640, 960, 1200]}
-                sizes={i < 3 ? `(min-width: 768px) 26vw, ${i === 0 ? "70vw" : "35vw"}` : "(min-width: 768px) 38vw, 35vw"}
-                quality={80}
-                class="size-full object-cover"
+                widths={[320, 480, 640, 900]}
+                sizes={i < 3 ? "(min-width: 768px) 26vw, 70vw" : "(min-width: 768px) 38vw, 70vw"}
+                quality={85}
+                class="size-full object-contain"
                 loading="lazy"
               />
+            </div>
+            <div class="plato-brillo pointer-events-none absolute inset-0 rounded-[50%]" aria-hidden="true"></div>
+            <!-- Etiqueta con el nombre, pegada sobre el ala de abajo del plato (deja ver la comida): papel arrugado y
+                 rasgado arriba y abajo, pegado con dos cintas, ladeado (alterna el lado en cada plato) -->
+            <div
+              class="etiqueta absolute bottom-[2%] left-1/2 w-[56%] -translate-x-1/2 translate-y-1/3"
+              style={`--giro-etiqueta: ${i % 2 === 0 ? -4 : 3}deg`}
+            >
+              <div class="etiqueta-papel px-[14%] py-[5%] text-center">
+                <p class="etiqueta-nombre">{nombre}</p>
+              </div>
+              <span class="etiqueta-cinta -left-[7%] rotate-[5deg]" aria-hidden="true"></span>
+              <span class="etiqueta-cinta -right-[7%] -rotate-[6deg]" aria-hidden="true"></span>
             </div>
           </div>
         </li>
@@ -103,34 +120,150 @@ const fotos = [
   </ul>
 </section>
 
+<script>
+  // Inclina el plato hacia el puntero (hasta 10°) y mueve un poco la comida, como si estuviera más cerca; al salir
+  // vuelve a quedar plano. Solo con mouse y si no se pidió reducir el movimiento
+  if (window.matchMedia("(hover: hover) and (prefers-reduced-motion: no-preference)").matches) {
+    document.querySelectorAll<HTMLElement>("[data-plato]").forEach((plato) => {
+      plato.addEventListener("pointermove", (e) => {
+        const caja = plato.getBoundingClientRect();
+        const x = (e.clientX - caja.left) / caja.width - 0.5;
+        const y = (e.clientY - caja.top) / caja.height - 0.5;
+        plato.style.setProperty("--giro-x", `${-y * 20}deg`);
+        plato.style.setProperty("--giro-y", `${x * 20}deg`);
+        plato.style.setProperty("--mover-x", `${x * 6}px`);
+        plato.style.setProperty("--mover-y", `${y * 6}px`);
+      });
+      plato.addEventListener("pointerleave", () => {
+        ["--giro-x", "--giro-y", "--mover-x", "--mover-y"].forEach((v) => plato.style.removeProperty(v));
+      });
+    });
+  }
+</script>
+
 <style>
-  /* Plato ovalado de porcelana visto desde arriba: blanco, con el borde (ala) un poco más gris, una línea donde el
-     ala baja al fondo del plato y sombra en la mesa */
-  .plato {
-    background: radial-gradient(
-      ellipse at 50% 45%,
-      #ffffff 0%,
-      #fbfbfa 58%,
-      #e9e9e6 62.5%,
-      #f7f7f5 64%,
-      #ffffff 72%,
-      #ecebe7 100%
-    );
-    box-shadow:
-      0 14px 28px -12px rgb(16 42 67 / 0.35),
-      0 2px 4px rgb(16 42 67 / 0.12),
-      inset 0 -3px 6px rgb(0 0 0 / 0.06);
+  /* Celular: cada plato aparece (sube y crece un poco) a medida que entra en la pantalla con el scroll y termina
+     justo cuando ya entró entero (así el último, que queda al final de la página, no se queda a medio aparecer).
+     Lo mueve el navegador con la línea de tiempo del scroll; sin soporte los platos simplemente se ven */
+  @supports (animation-timeline: view()) {
+    @media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+      [data-plato] {
+        animation: plato-entrar linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 100%;
+      }
+    }
+  }
+  @keyframes plato-entrar {
+    from {
+      opacity: 0;
+      translate: 0 3rem;
+      scale: 0.85;
+    }
   }
 
-  /* Pañuelo de tela de cuadros celeste con un dobladillo blanco y sombra suave sobre el plato */
-  .panuelo {
-    rotate: var(--giro);
-    background-color: #f4f9fd;
-    background-image:
-      repeating-linear-gradient(90deg, rgb(39 128 201 / 0.16) 0 6px, transparent 6px 12px),
-      repeating-linear-gradient(0deg, rgb(39 128 201 / 0.16) 0 6px, transparent 6px 12px);
+  /* Todo el plato gira junto; la transición suaviza el movimiento y la vuelta a plano */
+  .plato-escena {
+    transform: rotateX(var(--giro-x, 0deg)) rotateY(var(--giro-y, 0deg));
+    transition: transform 0.35s ease-out;
+  }
+
+  /* Sombra del plato en la mesa: más abajo que el plato y difuminada */
+  .plato-sombra {
+    background: rgb(16 42 67 / 0.4);
+    filter: blur(14px);
+  }
+
+  /* Canto del plato: la porcelana que se ve por debajo del ala, más gris por estar a la sombra */
+  .plato-canto {
+    background: linear-gradient(to bottom, #e4e3de, #b9b8b1);
+  }
+
+  /* Cara de arriba: hueco blanco en el centro, una línea donde el ala baja al hueco, el ala y su borde un poco más
+     gris. closest-side hace que los anillos sigan la forma del plato (óvalo o círculo) */
+  .plato-superficie {
+    background: radial-gradient(
+      closest-side,
+      #ffffff 0%,
+      #fafaf8 74%,
+      #e3e2dd 77.5%,
+      #f4f4f1 80%,
+      #ffffff 88%,
+      #efeeea 96%,
+      #d6d5cf 100%
+    );
+    box-shadow: inset 0 -3px 5px rgb(0 0 0 / 0.08);
+  }
+  /* Profundidad del hueco: sombra en la pared de arriba, donde el ala lo tapa de la luz */
+  .plato-superficie::after {
+    content: "";
+    position: absolute;
+    inset: 11.5%;
+    border-radius: 50%;
     box-shadow:
-      inset 0 0 0 3px rgb(255 255 255 / 0.85),
-      0 4px 10px -4px rgb(16 42 67 / 0.35);
+      inset 0 7px 10px -5px rgb(60 50 30 / 0.22),
+      inset 0 -2px 3px rgb(255 255 255 / 0.9);
+  }
+
+  /* Comida: multiply la funde con el plato (lo blanco de la foto desaparece) y una sombra corta la apoya en el hueco.
+     Se mueve un poco con el puntero, como si estuviera más cerca que el plato */
+  .plato-comida {
+    mix-blend-mode: multiply;
+    filter: drop-shadow(0 4px 4px rgb(60 40 20 / 0.28)) saturate(1.08);
+    translate: var(--mover-x, 0) var(--mover-y, 0);
+    transition: translate 0.35s ease-out;
+  }
+
+  /* Anton (letra gruesa y angosta) para el nombre; alojada en el sitio (public/fonts, licencia OFL) */
+  @font-face {
+    font-family: "Anton";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("/fonts/anton-latin.woff2") format("woff2");
+  }
+
+  /* Etiqueta: un poco ladeada y con una sombra que sigue la forma rasgada del papel. Las medidas de letra van en cqw
+     (ancho del plato), así se ven igual en cualquier tamaño */
+  .etiqueta {
+    rotate: var(--giro-etiqueta);
+    filter: drop-shadow(0 5px 6px rgb(40 25 10 / 0.35));
+  }
+  /* Papel color crema arrugado (relieve hecho con ruido iluminado de lado), con los bordes tostados y rasgado arriba y
+     abajo (clip-path con puntos irregulares) */
+  .etiqueta-papel {
+    background-color: #f1dcbc;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='140'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.03' numOctaves='3' seed='4'/%3E%3CfeDiffuseLighting lighting-color='%23fff' surfaceScale='2.5'%3E%3CfeDistantLight azimuth='45' elevation='55'/%3E%3C/feDiffuseLighting%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23a)'/%3E%3C/svg%3E"),
+      radial-gradient(ellipse at center, transparent 50%, rgb(160 100 40 / 0.4) 100%);
+    background-size: cover;
+    background-blend-mode: multiply;
+    clip-path: polygon(0% 2.3%, 5% 1.1%, 10% 4.6%, 15% 0.5%, 20% 3.8%, 25% 2.6%, 30% 0.4%, 35% 3.6%, 40% 0.3%, 45% 3.0%, 50% 0.5%, 55% 0.6%, 60% 3.0%, 65% 5.8%, 70% 0.9%, 75% 1.6%, 80% 4.4%, 85% 6.6%, 90% 4.0%, 95% 2.8%, 100% 6.8%, 100% 99.7%, 95% 94.0%, 90% 98.0%, 85% 99.0%, 80% 99.2%, 75% 97.8%, 70% 94.3%, 65% 98.7%, 60% 95.9%, 55% 95.5%, 50% 97.4%, 45% 96.2%, 40% 99.6%, 35% 99.6%, 30% 98.6%, 25% 95.2%, 20% 97.0%, 15% 97.8%, 10% 95.9%, 5% 96.8%, 0% 97.9%);
+  }
+  /* Nombre: letras grandes azules gastadas (la máscara de motas les quita puntitos, como tinta vieja) */
+  .etiqueta-nombre {
+    font-family: "Anton", "Impact", "Arial Narrow", sans-serif;
+    font-size: 7cqw;
+    line-height: 1;
+    text-transform: uppercase;
+    text-wrap: balance;
+    color: #3a2fc0;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='1' seed='9'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='0 0 0 1 1 1 1 1 1 1 1 1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E") 0 0 / 9cqw;
+  }
+  /* Cinta adhesiva semitransparente en cada punta */
+  .etiqueta-cinta {
+    position: absolute;
+    top: 50%;
+    width: 17%;
+    height: 62%;
+    translate: 0 -50%;
+    background: linear-gradient(100deg, rgb(255 255 255 / 0.8), rgb(240 238 230 / 0.6) 60%, rgb(255 255 255 / 0.75));
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.15);
+  }
+
+  /* Brillo de la porcelana: solo sobre el ala (la máscara deja fuera el centro), arriba a la izquierda */
+  .plato-brillo {
+    background: radial-gradient(ellipse 45% 30% at 28% 14%, rgb(255 255 255 / 0.95), transparent 70%);
+    mask: radial-gradient(closest-side, transparent 80%, #000 83%);
   }
 </style>

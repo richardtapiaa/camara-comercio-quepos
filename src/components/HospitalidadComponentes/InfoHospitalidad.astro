@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import { BedDouble, Bus, HeartPulse, KeyRound, Landmark, Luggage, Palmtree, Store } from "lucide-react";
+import { Bus, HeartPulse, KeyRound, Landmark, Palmtree, Store } from "lucide-react";
 import imagen from "../../assets/imagenes-hospitalidad/hospitalidad-1.webp";
 import MisionScripts from "../Scripts/home/MisionScripts.astro";
 
@@ -12,46 +12,67 @@ const servicios = [
   { titulo: "Comercio", detalle: "Establecimientos que brindan comodidad durante la visita.", Icono: Store },
 ];
 
-// Dibujos de hotel (línea fina, muy suaves) en los espacios libres del panel: arriba a la derecha y en una franja
-// abajo (el panel tiene más espacio abajo para ellos). En escritorio la parte izquierda del panel queda bajo la foto,
-// por eso desde md van del lado derecho; los que tienen "hidden" solo aparecen en escritorio
+// Dibujos de hotel (línea fina, muy suaves) en el espacio libre de arriba a la derecha del panel (abajo va el
+// mostrador). El que tiene "hidden" solo aparece en escritorio
 const dibujos = [
   { Icono: KeyRound, clases: "right-5 top-5 size-10 rotate-12 sm:size-12 md:right-10 md:top-8 md:size-16" },
   { Icono: Palmtree, clases: "hidden size-14 -rotate-6 lg:right-36 lg:top-10 lg:block" },
-  { Icono: Luggage, clases: "bottom-5 left-6 size-11 -rotate-6 md:bottom-6 md:left-[calc(100%/9+2rem)] md:size-14" },
-  { Icono: BedDouble, clases: "bottom-5 left-1/2 size-11 -translate-x-1/2 md:bottom-6 md:left-[58%] md:size-14" },
-  { Icono: Palmtree, clases: "bottom-5 right-6 size-11 rotate-6 md:hidden" },
 ];
+
 ---
 
 <!-- Mismo diseño que SobreQuepos.astro: imagen con parallax a la izquierda montada sobre el panel celeste -->
 <section id="info-hospitalidad" class="overflow-x-clip bg-white py-16 sm:py-24">
   <div class="mx-auto grid max-w-6xl px-6 md:grid-cols-12">
-    <!-- Sale del contenedor hasta el borde izquierdo de la pantalla y se monta sobre el panel -->
-    <div class="relative z-10 -ml-[calc(max(0px,(100vw_-_72rem)/2)+1.5rem)] mb-8 md:col-span-4 md:col-start-1 md:row-start-1 md:mt-24 md:self-start">
-      <div class="relative aspect-[4/3] overflow-hidden rounded-2xl md:aspect-[8/7]">
-        <Image
-          src={imagen}
-          alt="Costa de Quepos"
-          widths={[640, 960, 1280]}
-          sizes="(min-width: 768px) 45vw, 100vw"
-          quality={75}
-          class="absolute inset-x-0 -top-full h-[200%] w-full max-w-none object-cover will-change-transform"
-          data-parallax-img
-        />
+    <!-- Foto como una piscina vista desde arriba (la foto es el fondo bajo el agua): borde de piedra clara, franja de
+         mosaico azul en la línea del agua, reflejo del cielo en el agua, una escalera que entra al agua y un salvavidas
+         flotando. Sale del contenedor hacia la izquierda pero deja un margen con el borde de la pantalla, para que el
+         borde de la piscina se vea entero, y se monta sobre el panel -->
+    <div class="relative z-10 -ml-[max(0px,(100vw_-_72rem)/2)] mb-8 md:col-span-4 md:col-start-1 md:row-start-1 md:mt-24 md:self-start">
+      <div class="piscina-borde rounded-2xl p-3 md:p-4">
+        <div class="piscina-mosaico rounded-xl p-1.5">
+          <div class="piscina-agua relative aspect-[4/3] overflow-hidden rounded-lg md:aspect-[8/7]">
+            <Image
+              src={imagen}
+              alt="Costa de Quepos"
+              widths={[640, 960, 1280]}
+              sizes="(min-width: 768px) 45vw, 100vw"
+              quality={75}
+              class="absolute inset-x-0 -top-full h-[200%] w-full max-w-none object-cover will-change-transform"
+              data-parallax-img
+            />
+            <!-- Reflejo del cielo en la superficie -->
+            <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(115deg,rgb(255_255_255/0.3),transparent_35%)]" aria-hidden="true"></div>
+            <!-- Salvavidas flotando, con su sombra en el fondo -->
+            <div class="absolute bottom-4 left-4 drop-shadow-[6px_8px_3px_rgb(5_50_75/0.4)] md:bottom-5 md:left-5" aria-hidden="true">
+              <div class="piscina-salvavidas size-12 md:size-14"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Escalera vista desde arriba: dos pasamanos que se apoyan en el borde y entran al agua, y los peldaños bajo
+           el agua, cada vez menos visibles por la profundidad -->
+      <div class="pointer-events-none absolute right-[16%] top-0.5 h-20 w-10 md:h-24 md:w-12" aria-hidden="true">
+        <span class="piscina-pasamanos absolute inset-y-0 left-0"></span>
+        <span class="piscina-pasamanos absolute inset-y-0 right-0"></span>
+        <span class="absolute inset-x-0.5 top-[42%] h-1 rounded-full bg-white/50"></span>
+        <span class="absolute inset-x-0.5 top-[62%] h-1 rounded-full bg-white/30"></span>
+        <span class="absolute inset-x-0.5 top-[82%] h-1 rounded-full bg-white/15"></span>
       </div>
     </div>
 
-    <!-- Tarjeta celeste con bordes redondeados y sombra suave. Sale del contenedor hacia la derecha pero deja un
-         margen con el borde de la pantalla, para que se vean las esquinas redondeadas -->
+    <!-- Tarjeta celeste (la pared de la recepción) con sombra suave; abajo, el mostrador de la recepción. En celular
+         ocupa todo el ancho de la pantalla (sin esquinas redondeadas); desde md tiene bordes redondeados y sale del
+         contenedor hacia la derecha pero deja un margen con el borde de la pantalla, para que se vean las esquinas -->
     <div
-      class="relative isolate -mr-[max(0px,(100vw_-_72rem)/2)] overflow-hidden rounded-[2rem] bg-[#E8F4FA] pb-24 pt-12 pl-6 pr-[calc(max(0px,(100vw_-_72rem)/2)+1.5rem)] shadow-[0_12px_40px_rgb(100_155_190/0.25)] md:col-span-9 md:col-start-4 md:row-start-1 md:pb-28 md:pt-16 md:pl-[calc(100%/9+2rem)]"
+      class="relative isolate -mx-6 overflow-hidden bg-[#E8F4FA] md:mx-0 md:-mr-[max(0px,(100vw_-_72rem)/2)] md:rounded-[2rem] pb-32 pt-12 pl-6 pr-[calc(max(0px,(100vw_-_72rem)/2)+1.5rem)] shadow-[0_12px_40px_rgb(100_155_190/0.25)] md:col-span-9 md:col-start-4 md:row-start-1 md:pb-36 md:pt-16 md:pl-[calc(100%/9+2rem)]"
     >
       <!-- Decoración de hotel (detrás del texto, -z-10): papel tapiz de rayas suaves, borde punteado por dentro y
            dibujos de hotel en línea fina -->
       <div class="papel-tapiz pointer-events-none absolute inset-0 -z-10" aria-hidden="true"></div>
       <div
-        class="pointer-events-none absolute inset-3 -z-10 rounded-[1.6rem] border-2 border-dashed border-[#2780c9]/20 md:inset-4"
+        class="pointer-events-none absolute inset-3 -z-10 rounded-xl border-2 border-dashed border-[#2780c9]/20 md:inset-4 md:rounded-[1.6rem]"
         aria-hidden="true"
       ></div>
       {
@@ -63,6 +84,12 @@ const dibujos = [
           />
         ))
       }
+
+      <!-- Mostrador de recepción: cubierta de mármol y frente de madera en paneles -->
+      <div class="pointer-events-none absolute inset-x-0 bottom-0 h-24 md:h-28" aria-hidden="true">
+        <div class="mostrador-cubierta relative z-10 h-3.5"></div>
+        <div class="mostrador-frente h-full"></div>
+      </div>
 
       <!-- whitespace-nowrap y tamaño fluido: "HOSPITALIDAD" entra entera en una línea en cualquier celular -->
       <h2 class="whitespace-nowrap text-[clamp(1.5rem,7.6vw,3rem)] font-bold uppercase leading-tight tracking-tight text-neutral-700">
@@ -111,5 +138,93 @@ const dibujos = [
         rgb(39 128 201 / 0.06) 19px 37px,
         transparent 37px 56px
       );
+  }
+
+  /* Madera del frente del mostrador: tonos café con vetas finas y un brillo suave arriba */
+  .mostrador-frente {
+    background-color: #8a5a32;
+    background-image:
+      linear-gradient(to bottom, rgb(255 255 255 / 0.12), transparent 40%, rgb(0 0 0 / 0.15)),
+      repeating-linear-gradient(
+        92deg,
+        rgb(60 35 15 / 0) 0 6px,
+        rgb(60 35 15 / 0.18) 6px 7px,
+        rgb(60 35 15 / 0) 7px 15px,
+        rgb(255 230 190 / 0.08) 15px 17px
+      ),
+      linear-gradient(90deg, #7a4b26, #9a6a3c 30%, #845530 60%, #a0703f);
+  }
+  /* Mostrador: cubierta de mármol claro con vetas suaves, que sobresale un poco, y frente de madera en paneles */
+  .mostrador-cubierta {
+    background:
+      linear-gradient(100deg, transparent 20%, rgb(150 150 160 / 0.25) 22%, transparent 26%, transparent 60%, rgb(150 150 160 / 0.2) 63%, transparent 66%),
+      linear-gradient(to bottom, #fbfbfa, #dcdcd8);
+    box-shadow: 0 4px 6px rgb(40 25 10 / 0.35);
+  }
+  .mostrador-frente {
+    position: relative;
+  }
+  .mostrador-frente::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(90deg, transparent 0 118px, rgb(40 25 10 / 0.35) 118px 120px, rgb(255 230 190 / 0.12) 120px 122px);
+  }
+
+
+  /* Borde de la piscina: piedra clara en baldosas cuadradas, con sombra hacia el panel */
+  .piscina-borde {
+    background-color: #f1ebe0;
+    background-image:
+      repeating-linear-gradient(90deg, transparent 0 27px, rgb(150 135 110 / 0.35) 27px 28px),
+      repeating-linear-gradient(0deg, transparent 0 27px, rgb(150 135 110 / 0.35) 27px 28px);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.7),
+      0 14px 30px -12px rgb(16 42 67 / 0.4);
+  }
+  /* Línea del agua: mosaico de azulejos pequeños en dos tonos de azul */
+  .piscina-mosaico {
+    background: repeating-conic-gradient(#1f8fc4 0 25%, #4fb6dd 0 50%) 0 0 / 8px 8px;
+  }
+  /* Profundidad: sombra de las paredes de la piscina sobre el agua */
+  .piscina-agua::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    box-shadow: inset 0 0 22px 4px rgb(5 70 100 / 0.45);
+  }
+
+  /* Pasamanos de metal: brillantes sobre el borde y cada vez más transparentes dentro del agua */
+  .piscina-pasamanos {
+    width: 5px;
+    border-radius: 9999px;
+    background: linear-gradient(
+      to bottom,
+      #e9eef2 0 22%,
+      rgb(233 238 242 / 0.55) 40%,
+      rgb(233 238 242 / 0.1)
+    );
+    box-shadow: 1px 1px 0 rgb(40 60 75 / 0.35);
+  }
+
+  /* Salvavidas: anillo rojo y blanco a franjas (su sombra va en el contenedor, la máscara la recortaría) */
+  .piscina-salvavidas {
+    border-radius: 9999px;
+    background: conic-gradient(#e2412f 0 12.5%, #fff 0 25%, #e2412f 0 37.5%, #fff 0 50%, #e2412f 0 62.5%, #fff 0 75%, #e2412f 0 87.5%, #fff 0);
+    mask: radial-gradient(closest-side, transparent 50%, #000 52%);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .piscina-salvavidas {
+      animation: piscina-flotar 5s ease-in-out infinite alternate;
+    }
+  }
+  @keyframes piscina-flotar {
+    to {
+      translate: 4px 3px;
+      rotate: 12deg;
+    }
   }
 </style>
