@@ -1,0 +1,44 @@
+/* Apertura del desplegable de categorías: la lista aparece bajando un poco y creciendo desde arriba a la derecha
+   (de donde está el botón), y las opciones entran una tras otra. Al cerrar se desvanece. visibility (y no hidden)
+   para que la transición también se vea al cerrar; cerrada, no se puede tocar ni la lee el lector de pantalla */
+.cat-lista {
+  transform-origin: top right;
+  transition:
+    opacity 0.18s ease,
+    transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 0.22s;
+}
+.cat-lista[data-abierto="false"] {
+  opacity: 0;
+  transform: translateY(-8px) scale(0.96);
+  visibility: hidden;
+  pointer-events: none;
+}
+.cat-lista[data-abierto="true"] {
+  opacity: 1;
+  transform: none;
+  visibility: visible;
+  transition:
+    opacity 0.2s ease,
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s;
+}
+.cat-lista[data-abierto="true"] > li {
+  animation: cat-opcion 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i) * 25ms);
+}
+@keyframes cat-opcion {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cat-lista,
+  .cat-lista[data-abierto="true"] {
+    transition: none;
+  }
+  .cat-lista[data-abierto="true"] > li {
+    animation: none;
+  }
+}

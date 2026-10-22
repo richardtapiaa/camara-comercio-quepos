@@ -1,7 +1,6 @@
 ---
 import { Image } from "astro:assets";
 import logo from "../../assets/imagenes/logo-camara.webp";
-import NavbarScripts from "../Scripts/home/NavbarScripts.astro";
 
 type Enlace = { label: string; href: string };
 type Desplegable = { label: string; id: string; submenu: Enlace[] };
@@ -195,5 +194,4 @@ const contacto = {
   </nav>
 </header>
 
-
-<NavbarScripts />
+<script src="../../scripts/home/navbar.ts"></script>

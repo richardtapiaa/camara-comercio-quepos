@@ -1,0 +1,29 @@
+/* Parallax con scroll-driven animations: lo mueve el navegador junto con el scroll, sin esperar a JS
+   (con GSAP las imágenes llegaban un cuadro tarde y temblaban en móvil). Sin soporte se usa GSAP abajo */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    :has(> [data-parallax-img]) {
+      view-timeline-name: --parallax-marco;
+    }
+    [data-parallax-img] {
+      animation-name: parallax-marco;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: --parallax-marco;
+      animation-range-start: cover 0%;
+      /* En un panel sticky termina (y se congela) donde el panel queda fijo; lo calcula el script */
+      animation-range-end: var(--parallax-rango-fin, cover 100%);
+    }
+  }
+}
+
+/* La imagen mide el doble que su marco y empieza una altura por encima; al bajar 50% de su alto
+   (= 100% del marco) el marco queda siempre cubierto */
+@keyframes parallax-marco {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 0 var(--parallax-y-fin, 50%);
+  }
+}

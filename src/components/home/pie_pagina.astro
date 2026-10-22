@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import logo from "../../assets/imagenes/logo-camara.webp";
 import footerImage from "../../assets/imagenes/pie_pagina.webp";
+import "../../styles/home/pie-pagina.css";
 
 const links = [
   { label: "Inicio", href: "/" },
@@ -15,26 +16,49 @@ const socialLinks = {
 };
 ---
 
-<footer class="relative isolate overflow-hidden bg-[#e8f8fa] text-[#087b8d]">
+<footer class="relative isolate overflow-hidden bg-[#e5f8fc] text-[#087b8d]">
+  <!-- La imagen es clara (celeste con dibujos en línea a los lados) y deja el centro libre para el texto; el fondo del
+       footer es su mismo celeste. Desde sm cubre todo el footer, con los dibujos a los lados del texto -->
   <Image
     src={footerImage}
     alt=""
     aria-hidden="true"
-    class="absolute inset-0 z-0 h-full w-full object-cover object-center"
+    class="absolute inset-0 z-0 hidden h-full w-full object-cover object-center sm:block"
     loading="lazy"
   />
-  <div class="absolute inset-0 z-0 bg-[#032a36]/35" aria-hidden="true"></div>
+  <!-- Celular: los dos grupos de dibujos no caben al lado del texto, así que la misma imagen va dos veces, mucho más
+       grande: una pegada arriba a la izquierda (se ve el grupo de la izquierda: guacamaya y mujer) y otra abajo a la
+       derecha (el grupo de la derecha: guacamaya, café y la persona con sombrero); el resto queda fuera del footer -->
+  <Image
+    src={footerImage}
+    alt=""
+    aria-hidden="true"
+    class="pie-dibujo absolute left-0 top-0 z-0 w-[220vw] max-w-none sm:hidden"
+    loading="lazy"
+  />
+  <Image
+    src={footerImage}
+    alt=""
+    aria-hidden="true"
+    class="pie-dibujo absolute bottom-0 right-0 z-0 w-[220vw] max-w-none sm:hidden"
+    loading="lazy"
+  />
+  <!-- Aclarado suave detrás del texto, para separarlo de los dibujos en pantallas medianas -->
+  <div
+    class="absolute inset-0 z-0 hidden bg-[radial-gradient(ellipse_34%_62%_at_center,rgb(229_248_252/0.85)_40%,rgb(229_248_252/0)_100%)] sm:block"
+    aria-hidden="true"
+  ></div>
 
-  <div class="relative z-10 mx-auto flex min-h-[34rem] max-w-7xl flex-col items-center justify-center px-5 py-10 text-center sm:min-h-[30rem] sm:px-10 sm:py-20">
+  <div class="pie-contenido relative z-10 mx-auto flex min-h-[175vw] max-w-7xl flex-col items-center justify-center px-5 py-14 text-center sm:min-h-[30rem] sm:px-10 sm:py-20">
     <Image
       src={logo}
       alt="Cámara de Comercio, Industria y Turismo de Quepos"
-      class="mb-6 h-16 w-auto opacity-90 sm:mb-8 sm:h-24"
+      class="pie-logo mb-6 h-28 w-auto sm:mb-8 sm:h-24"
       loading="lazy"
     />
-    <p class="footer-kicker mb-2 text-[11px] font-bold uppercase tracking-[0.3em] text-[#07566b] sm:text-sm sm:tracking-[0.38em]">Cámara de Comercio de Quepos</p>
+    <p class="footer-kicker mb-2 text-[11px] font-bold uppercase tracking-[0.3em] text-[#05485a] sm:text-sm sm:tracking-[0.38em]">Cámara de Comercio de Quepos</p>
     <h2 class="footer-display text-[clamp(2.15rem,10vw,3.8rem)] font-black uppercase leading-[0.98] tracking-[-0.04em] text-[#07566b] sm:text-5xl md:text-6xl">Mantente en contacto</h2>
-    <p class="footer-description mt-4 max-w-[20rem] text-base font-semibold leading-relaxed text-[#07566b] sm:max-w-lg sm:text-lg">
+    <p class="footer-description mt-4 max-w-[20rem] text-base font-semibold leading-relaxed text-[#05485a] sm:max-w-lg sm:text-lg">
       Recibe noticias, oportunidades y experiencias de nuestro destino.
     </p>
 
@@ -50,44 +74,6 @@ const socialLinks = {
     <nav class="mt-9 flex max-w-[19rem] flex-wrap justify-center gap-x-7 gap-y-3 text-xs font-bold uppercase tracking-[0.2em] sm:mt-10 sm:max-w-none sm:gap-x-10 sm:text-sm" aria-label="Enlaces secundarios">
       {links.map((link) => <a href={link.href} class="footer-link">{link.label}</a>)}
     </nav>
-    <p class="footer-copyright mt-8 max-w-[18rem] text-[10px] leading-relaxed tracking-wide text-[#07566b] sm:max-w-none sm:text-xs">© {new Date().getFullYear()} Cámara de Comercio, Industria y Turismo de Quepos</p>
+    <p class="footer-copyright mt-8 max-w-[18rem] text-xs leading-relaxed tracking-wide text-[#05485a] sm:max-w-none sm:text-sm">© {new Date().getFullYear()} Cámara de Comercio, Industria y Turismo de Quepos</p>
   </div>
 </footer>
-
-<style>
-  .footer-social {
-    display: flex;
-    width: 2.5rem;
-    height: 2.5rem;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid rgb(8 123 141 / 0.7);
-    border-radius: 9999px;
-    transition: background-color 180ms, color 180ms;
-  }
-  .footer-social:hover { background: #087b8d; color: white; }
-  .footer-social svg { width: 1.1rem; height: 1.1rem; }
-  .footer-kicker,
-  .footer-link {
-    font-weight: 800;
-  }
-  .footer-display {
-    font-weight: 900;
-  }
-  .footer-description {
-    font-weight: 700;
-  }
-  .footer-copyright {
-    font-weight: 700;
-  }
-  .footer-link { transition: color 180ms; }
-  .footer-link:hover { color: #07566b; }
-  @media (max-width: 640px) {
-    footer > img {
-      object-fit: cover;
-      object-position: left center;
-    }
-    footer .footer-link { font-weight: 600; }
-    .footer-social { width: 2.25rem; height: 2.25rem; }
-  }
-</style>

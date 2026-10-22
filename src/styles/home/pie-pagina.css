@@ -1,0 +1,53 @@
+.footer-social {
+  display: flex;
+  width: 2.5rem;
+  height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(8 123 141 / 0.7);
+  border-radius: 9999px;
+  transition: background-color 180ms, color 180ms;
+}
+.footer-social:hover { background: #087b8d; color: white; }
+.footer-social svg { width: 1.1rem; height: 1.1rem; }
+.footer-kicker,
+.footer-link {
+  font-weight: 800;
+}
+.footer-display {
+  font-weight: 900;
+}
+.footer-description {
+  font-weight: 700;
+}
+.footer-copyright {
+  font-weight: 700;
+}
+.footer-link { transition: color 180ms; }
+.footer-link:hover { color: #07566b; }
+/* Dibujos del celular: darken deja el más oscuro de los dos colores, así donde las dos imágenes se cruzan el celeste
+   de una (el mismo del footer) no tapa los dibujos de la otra. Un poco más suaves, para que el texto encima destaque */
+.pie-dibujo {
+  mix-blend-mode: darken;
+  opacity: 0.75;
+}
+@media (max-width: 640px) {
+  /* Más oscuros que en escritorio: van encima de las líneas del dibujo, que son del mismo verde azulado */
+  .footer-link { font-weight: 700; color: #05485a; }
+  .footer-social { width: 2.25rem; height: 2.25rem; background-color: rgb(229 248 252 / 0.9); }
+  /* En celular el texto va encima de los dibujos: un halo celeste alrededor de las letras las separa de las líneas
+     sin esconder el dibujo */
+  .pie-contenido {
+    text-shadow:
+      0 0 3px #e5f8fc,
+      0 0 8px #e5f8fc,
+      0 0 14px #e5f8fc;
+  }
+  /* Logo grande y sobre una placa celeste con los bordes difuminados, así sus letras chicas se leen sobre el dibujo */
+  .pie-logo {
+    padding: 0.6rem 1rem;
+    border-radius: 1.25rem;
+    background-color: rgb(229 248 252 / 0.92);
+    box-shadow: 0 0 18px 10px rgb(229 248 252 / 0.92);
+  }
+}

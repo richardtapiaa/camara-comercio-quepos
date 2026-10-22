@@ -1,0 +1,74 @@
+
+.kayak-recuadro {
+  container-type: inline-size;
+}
+
+.kayak-flotando {
+  bottom: calc(19% - 0.43 * 60cqw);
+}
+@media (min-width: 768px) {
+  .kayak-flotando {
+    bottom: calc(19% - 0.43 * 32cqw);
+  }
+}
+.kayak-balanceo {
+  clip-path: inset(0 0 43% 0);
+}
+
+/* Nubes con un borde celeste muy suave para que no se pierdan en el cielo claro */
+.cielo-nube svg {
+  filter: drop-shadow(0 4px 6px rgb(110 170 205 / 0.18));
+}
+
+/* El agua se mece de lado a lado y el kayak sube, baja y se inclina un poco con ella */
+@media (prefers-reduced-motion: no-preference) {
+  .agua-ola {
+    animation: agua-mecer ease-in-out infinite alternate;
+  }
+  .agua-ola-frente {
+    animation-duration: 4.5s;
+    animation-delay: -3s;
+  }
+  .kayak-balanceo {
+    animation: kayak-balanceo 3.2s ease-in-out infinite alternate;
+  }
+  /* Las nubes van a la deriva, cada una a su ritmo */
+  .cielo-deriva-lenta {
+    animation: cielo-deriva 16s ease-in-out infinite alternate;
+  }
+  .cielo-deriva-media {
+    animation: cielo-deriva 12s ease-in-out -4s infinite alternate;
+  }
+  .cielo-deriva-rapida {
+    animation: cielo-deriva 10s ease-in-out -7s infinite alternate;
+  }
+}
+
+
+
+@keyframes cielo-deriva {
+  from {
+    translate: -14px 0;
+  }
+  to {
+    translate: 14px -3px;
+  }
+}
+
+@keyframes agua-mecer {
+  from {
+    translate: -40px 0;
+  }
+  to {
+    translate: 40px 6px;
+  }
+}
+
+@keyframes kayak-balanceo {
+  from {
+    transform: translateY(-4px) rotate(-1.5deg);
+  }
+  to {
+    transform: translateY(4px) rotate(1.5deg);
+  }
+}

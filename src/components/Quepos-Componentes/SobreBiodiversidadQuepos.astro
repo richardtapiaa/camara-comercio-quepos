@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 import imagen from "../../assets/imagenes visitors/actividades-1.jpg";
 import perezoso from "../../assets/imagenes-quepos/perezoso-sin-fondo.webp";
-import MisionScripts from "../Scripts/home/MisionScripts.astro";
+import "../../styles/home/parallax-imagenes.css";
 ---
 
 <!-- Diseño de SobreQuepos.astro en espejo: foto a la derecha montada sobre el panel celeste de la izquierda -->
@@ -66,4 +66,4 @@ import MisionScripts from "../Scripts/home/MisionScripts.astro";
   </div>
 </section>
 
-<MisionScripts />
+<script src="../../scripts/home/parallax-imagenes.ts"></script>

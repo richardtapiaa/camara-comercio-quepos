@@ -1,0 +1,69 @@
+/* Sombra celeste suave para que las nubes blancas se despeguen del fondo, que también es claro (el sol no: lleva su
+   brillo amarillo, de compartido/cielo-sol.css). En celular, donde las nubes son más chicas, va más marcada para que
+   se lea el borde de las olas */
+.lapas-recuadro svg:not(.cielo-sol) {
+  filter: drop-shadow(0 4px 6px rgb(100 155 190 / 0.3));
+}
+@media (min-width: 768px) {
+  .lapas-recuadro svg:not(.cielo-sol) {
+    filter: drop-shadow(0 6px 10px rgb(120 170 200 / 0.18));
+  }
+}
+
+/* Las capas se mecen de lado a lado como olas, cada una a su ritmo para que no se muevan en bloque */
+@media (prefers-reduced-motion: no-preference) {
+  .nube-ola {
+    animation: nube-mecer ease-in-out infinite alternate;
+  }
+  .nube-ola-atras {
+    animation-duration: 9s;
+  }
+  .nube-ola-medio {
+    animation-duration: 7s;
+    animation-delay: -2s;
+  }
+  .nube-ola-frente {
+    animation-duration: 5.5s;
+    animation-delay: -4s;
+  }
+}
+
+@keyframes nube-mecer {
+  from {
+    translate: -10px 0;
+  }
+  to {
+    translate: 10px 4px;
+  }
+}
+
+/* Suelo. Cada franja lleva arriba (::before) una tira de hojitas de pasto del mismo color que se repite a lo
+   ancho, así el borde no queda como una línea recta */
+.suelo-pasto,
+.suelo-tierra {
+  --hojas: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 14'%3E%3Cpath fill='black' d='M0 14Q2 8 3 3Q5 9 7 14Q9 7 12 0Q13 8 15 14Q18 9 20 5Q21 10 23 14Q26 6 29 2Q30 9 32 14Q35 8 37 4Q38 10 40 14Q43 7 46 1Q47 8 49 14Q52 9 54 5Q55 10 57 14Z'/%3E%3C/svg%3E");
+}
+.suelo-pasto::before,
+.suelo-tierra::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: calc(100% - 1px);
+  height: 12px;
+  background-color: inherit;
+  mask: var(--hojas) repeat-x left bottom / 60px 12px;
+}
+.suelo-pasto {
+  background-color: #86c08a;
+}
+.suelo-tierra {
+  background-color: #3f8a4f;
+  /* Piedritas y manchas de pasto más claro y más oscuro, y la tierra se oscurece hacia abajo */
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='70'%3E%3Cg fill='%23347641'%3E%3Cellipse cx='22' cy='20' rx='7' ry='3'/%3E%3Cellipse cx='118' cy='14' rx='5' ry='2.5'/%3E%3Cellipse cx='75' cy='46' rx='9' ry='3.5'/%3E%3Cellipse cx='160' cy='54' rx='6' ry='2.5'/%3E%3C/g%3E%3Cg fill='%2354A063'%3E%3Cpath d='M58 22l2-6 2 6zM63 22l1.5-4 1.5 4zM140 38l2-6 2 6zM145 38l1.5-4 1.5 4zM28 60l2-5 2 5zM100 30l1.5-4 1.5 4z'/%3E%3Ccircle cx='92' cy='10' r='1.6'/%3E%3Ccircle cx='10' cy='42' r='1.4'/%3E%3Ccircle cx='170' cy='26' r='1.6'/%3E%3C/g%3E%3C/svg%3E"),
+    linear-gradient(to bottom, #3f8a4f, #2f6e3d);
+  background-size:
+    180px 70px,
+    100% 100%;
+  background-position: 0 14px, 0 0;
+}

@@ -3,7 +3,6 @@ import { getImage, Image } from "astro:assets";
 import logo from "../../assets/imagenes/logo-camara.webp";
 import video from "../../assets/logos-afiliados/hero-afiliados.mp4";
 import poster from "../../assets/logos-afiliados/hero-afiliados-poster.jpg";
-import Parallax from "../Scripts/AfiliadosScripts/Parallax.astro";
 
 // El video se importa desde src/assets: Vite le pone un nombre con hash para que el navegador lo guarde en caché.
 // El poster (primer cuadro del video) se optimiza con getImage y se ve al instante, antes de que cargue el video
@@ -34,10 +33,10 @@ const posterOptimizado = await getImage({ src: poster, width: 1920, format: "web
     class="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-black/30 via-transparent to-black/25"
     aria-hidden="true"
   ></div>
-  <!-- Se oscurece al hacer scroll (Parallax.astro) -->
+  <!-- Se oscurece al hacer scroll (scripts/afiliados/parallax.ts) -->
   <div data-parallax-oscuro class="pointer-events-none absolute inset-0 -z-10 bg-black opacity-0" aria-hidden="true"></div>
 
-  <!-- Título y logo: suben y se desvanecen al hacer scroll (Parallax.astro) -->
+  <!-- Título y logo: suben y se desvanecen al hacer scroll (scripts/afiliados/parallax.ts) -->
   <div data-parallax-contenido class="px-6 text-center text-white">
     <h1 class="text-5xl font-bold uppercase tracking-tight drop-shadow-[0_4px_24px_rgba(0,0,0,0.45)] sm:text-6xl md:text-8xl">
       Afiliados
@@ -53,14 +52,6 @@ const posterOptimizado = await getImage({ src: poster, width: 1920, format: "web
   </div>
 </section>
 
-<Parallax />
+<script src="../../scripts/afiliados/parallax.ts"></script>
 
-<script>
-  // Con "reducir movimiento" el video se queda quieto en su primer cuadro (se ve el poster)
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    document.querySelectorAll<HTMLVideoElement>("[data-hero-afiliados-video]").forEach((video) => {
-      video.removeAttribute("autoplay");
-      video.pause();
-    });
-  }
-</script>
+<script src="../../scripts/afiliados/hero.ts"></script>

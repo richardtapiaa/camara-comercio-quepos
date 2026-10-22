@@ -1,0 +1,193 @@
+/* Quieto (sin animación o con "reducir movimiento"): centrado en el recuadro */
+[data-kayak] {
+  left: 50%;
+  translate: -50% 0;
+}
+
+/* Remada con scroll-driven animations, igual que la lapa (scripts/quepos/lapa-scroll.ts): la mueve el navegador junto con el
+   scroll, sin esperar a JS. Sin soporte (Firefox, Safari < 26) se usa GSAP abajo */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    [data-kayak-scroll] {
+      view-timeline-name: --kayak-remada;
+    }
+    [data-kayak] {
+      left: 0;
+      animation-name: kayak-remada;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: --kayak-remada;
+      /* Todo el tiempo que el recuadro está en pantalla, para que avance pausado */
+      animation-range: cover 0% cover 100%;
+    }
+    /* El agua corre hacia la derecha, como la corriente que lleva al kayak. Va en el <g> de cada capa (el <path>
+       de adentro se mece solo) para que las dos animaciones no se pisen */
+    .agua-capa,
+    .cielo-nube {
+      animation-name: agua-scroll;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: --kayak-remada;
+      animation-range: cover 0% cover 100%;
+    }
+  }
+}
+
+/* Distancia que se corre cada cosa con el scroll: el agua, cerca, más que las nubes */
+.agua-capa-frente {
+  --agua-x: 160px;
+}
+/* Las nubes, lejos, se corren poco con el scroll */
+.cielo-nube {
+  --agua-x: 60px;
+}
+
+@keyframes agua-scroll {
+  from {
+    translate: calc(var(--agua-x) * -0.5) 0;
+  }
+  to {
+    translate: calc(var(--agua-x) * 0.5) 0;
+  }
+}
+
+
+
+/* Cruza de izquierda a derecha y, al pasar por las olas, sube y baja 4 veces (las que caben en el ancho del agua),
+   inclinándose con la pendiente: la punta hacia arriba al subir una ola y hacia abajo al bajarla. Las olas del
+   dibujo son bajitas, así que el movimiento va un poco exagerado (14 px y 4°) para que se note. Los puntos salen
+   de y = -14·sen(8π·t) px y giro = -4·cos(8π·t)°, con 33 puntos para que se vea suave; GSAP (abajo) usa los mismos */
+@keyframes kayak-remada {
+  0% {
+    translate: -100% 0px;
+    rotate: -4deg;
+  }
+  3.125% {
+    translate: calc(-100% + (100cqw + 100%) * 0.03125) -9.9px;
+    rotate: -2.8deg;
+  }
+  6.25% {
+    translate: calc(-100% + (100cqw + 100%) * 0.0625) -14px;
+    rotate: 0deg;
+  }
+  9.375% {
+    translate: calc(-100% + (100cqw + 100%) * 0.09375) -9.9px;
+    rotate: 2.8deg;
+  }
+  12.5% {
+    translate: calc(-100% + (100cqw + 100%) * 0.125) 0px;
+    rotate: 4deg;
+  }
+  15.625% {
+    translate: calc(-100% + (100cqw + 100%) * 0.15625) 9.9px;
+    rotate: 2.8deg;
+  }
+  18.75% {
+    translate: calc(-100% + (100cqw + 100%) * 0.1875) 14px;
+    rotate: 0deg;
+  }
+  21.875% {
+    translate: calc(-100% + (100cqw + 100%) * 0.21875) 9.9px;
+    rotate: -2.8deg;
+  }
+  25% {
+    translate: calc(-100% + (100cqw + 100%) * 0.25) 0px;
+    rotate: -4deg;
+  }
+  28.125% {
+    translate: calc(-100% + (100cqw + 100%) * 0.28125) -9.9px;
+    rotate: -2.8deg;
+  }
+  31.25% {
+    translate: calc(-100% + (100cqw + 100%) * 0.3125) -14px;
+    rotate: 0deg;
+  }
+  34.375% {
+    translate: calc(-100% + (100cqw + 100%) * 0.34375) -9.9px;
+    rotate: 2.8deg;
+  }
+  37.5% {
+    translate: calc(-100% + (100cqw + 100%) * 0.375) 0px;
+    rotate: 4deg;
+  }
+  40.625% {
+    translate: calc(-100% + (100cqw + 100%) * 0.40625) 9.9px;
+    rotate: 2.8deg;
+  }
+  43.75% {
+    translate: calc(-100% + (100cqw + 100%) * 0.4375) 14px;
+    rotate: 0deg;
+  }
+  46.875% {
+    translate: calc(-100% + (100cqw + 100%) * 0.46875) 9.9px;
+    rotate: -2.8deg;
+  }
+  50% {
+    translate: calc(-100% + (100cqw + 100%) * 0.5) 0px;
+    rotate: -4deg;
+  }
+  53.125% {
+    translate: calc(-100% + (100cqw + 100%) * 0.53125) -9.9px;
+    rotate: -2.8deg;
+  }
+  56.25% {
+    translate: calc(-100% + (100cqw + 100%) * 0.5625) -14px;
+    rotate: 0deg;
+  }
+  59.375% {
+    translate: calc(-100% + (100cqw + 100%) * 0.59375) -9.9px;
+    rotate: 2.8deg;
+  }
+  62.5% {
+    translate: calc(-100% + (100cqw + 100%) * 0.625) 0px;
+    rotate: 4deg;
+  }
+  65.625% {
+    translate: calc(-100% + (100cqw + 100%) * 0.65625) 9.9px;
+    rotate: 2.8deg;
+  }
+  68.75% {
+    translate: calc(-100% + (100cqw + 100%) * 0.6875) 14px;
+    rotate: 0deg;
+  }
+  71.875% {
+    translate: calc(-100% + (100cqw + 100%) * 0.71875) 9.9px;
+    rotate: -2.8deg;
+  }
+  75% {
+    translate: calc(-100% + (100cqw + 100%) * 0.75) 0px;
+    rotate: -4deg;
+  }
+  78.125% {
+    translate: calc(-100% + (100cqw + 100%) * 0.78125) -9.9px;
+    rotate: -2.8deg;
+  }
+  81.25% {
+    translate: calc(-100% + (100cqw + 100%) * 0.8125) -14px;
+    rotate: 0deg;
+  }
+  84.375% {
+    translate: calc(-100% + (100cqw + 100%) * 0.84375) -9.9px;
+    rotate: 2.8deg;
+  }
+  87.5% {
+    translate: calc(-100% + (100cqw + 100%) * 0.875) 0px;
+    rotate: 4deg;
+  }
+  90.625% {
+    translate: calc(-100% + (100cqw + 100%) * 0.90625) 9.9px;
+    rotate: 2.8deg;
+  }
+  93.75% {
+    translate: calc(-100% + (100cqw + 100%) * 0.9375) 14px;
+    rotate: 0deg;
+  }
+  96.875% {
+    translate: calc(-100% + (100cqw + 100%) * 0.96875) 9.9px;
+    rotate: -2.8deg;
+  }
+  100% {
+    translate: 100cqw 0px;
+    rotate: -4deg;
+  }
+}

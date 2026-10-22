@@ -1,0 +1,99 @@
+/* Papel tapiz de hotel: rayas verticales anchas muy suaves con una línea fina en medio de cada una */
+.papel-tapiz {
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      rgb(39 128 201 / 0.06) 0 18px,
+      rgb(39 128 201 / 0.12) 18px 19px,
+      rgb(39 128 201 / 0.06) 19px 37px,
+      transparent 37px 56px
+    );
+}
+
+/* Madera del frente del mostrador: tonos café con vetas finas y un brillo suave arriba */
+.mostrador-frente {
+  background-color: #8a5a32;
+  background-image:
+    linear-gradient(to bottom, rgb(255 255 255 / 0.12), transparent 40%, rgb(0 0 0 / 0.15)),
+    repeating-linear-gradient(
+      92deg,
+      rgb(60 35 15 / 0) 0 6px,
+      rgb(60 35 15 / 0.18) 6px 7px,
+      rgb(60 35 15 / 0) 7px 15px,
+      rgb(255 230 190 / 0.08) 15px 17px
+    ),
+    linear-gradient(90deg, #7a4b26, #9a6a3c 30%, #845530 60%, #a0703f);
+}
+/* Mostrador: cubierta de mármol claro con vetas suaves, que sobresale un poco, y frente de madera en paneles */
+.mostrador-cubierta {
+  background:
+    linear-gradient(100deg, transparent 20%, rgb(150 150 160 / 0.25) 22%, transparent 26%, transparent 60%, rgb(150 150 160 / 0.2) 63%, transparent 66%),
+    linear-gradient(to bottom, #fbfbfa, #dcdcd8);
+  box-shadow: 0 4px 6px rgb(40 25 10 / 0.35);
+}
+.mostrador-frente {
+  position: relative;
+}
+.mostrador-frente::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(90deg, transparent 0 118px, rgb(40 25 10 / 0.35) 118px 120px, rgb(255 230 190 / 0.12) 120px 122px);
+}
+
+
+/* Borde de la piscina: piedra clara en baldosas cuadradas, con sombra hacia el panel */
+.piscina-borde {
+  background-color: #f1ebe0;
+  background-image:
+    repeating-linear-gradient(90deg, transparent 0 27px, rgb(150 135 110 / 0.35) 27px 28px),
+    repeating-linear-gradient(0deg, transparent 0 27px, rgb(150 135 110 / 0.35) 27px 28px);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.7),
+    0 14px 30px -12px rgb(16 42 67 / 0.4);
+}
+/* Línea del agua: mosaico de azulejos pequeños en dos tonos de azul */
+.piscina-mosaico {
+  background: repeating-conic-gradient(#1f8fc4 0 25%, #4fb6dd 0 50%) 0 0 / 8px 8px;
+}
+/* Profundidad: sombra de las paredes de la piscina sobre el agua */
+.piscina-agua::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  box-shadow: inset 0 0 22px 4px rgb(5 70 100 / 0.45);
+}
+
+/* Pasamanos de metal: brillantes sobre el borde y cada vez más transparentes dentro del agua */
+.piscina-pasamanos {
+  width: 5px;
+  border-radius: 9999px;
+  background: linear-gradient(
+    to bottom,
+    #e9eef2 0 22%,
+    rgb(233 238 242 / 0.55) 40%,
+    rgb(233 238 242 / 0.1)
+  );
+  box-shadow: 1px 1px 0 rgb(40 60 75 / 0.35);
+}
+
+/* Salvavidas: anillo rojo y blanco a franjas (su sombra va en el contenedor, la máscara la recortaría) */
+.piscina-salvavidas {
+  border-radius: 9999px;
+  background: conic-gradient(#e2412f 0 12.5%, #fff 0 25%, #e2412f 0 37.5%, #fff 0 50%, #e2412f 0 62.5%, #fff 0 75%, #e2412f 0 87.5%, #fff 0);
+  mask: radial-gradient(closest-side, transparent 50%, #000 52%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .piscina-salvavidas {
+    animation: piscina-flotar 5s ease-in-out infinite alternate;
+  }
+}
+@keyframes piscina-flotar {
+  to {
+    translate: 4px 3px;
+    rotate: 12deg;
+  }
+}
