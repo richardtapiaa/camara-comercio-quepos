@@ -3,7 +3,9 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 
 
-export default function FAQs() {
+// fondoAnimales: fondo crema con dibujos de animales (clase de styles/quepos/fondo-animales.css), en la página de
+// Quepos; sin él, blanco (Visítenos)
+export default function FAQs({ fondoAnimales = false }: { fondoAnimales?: boolean }) {
   const faqItems = [
     {
       id: 'item-1',
@@ -44,7 +46,7 @@ export default function FAQs() {
 
 
   return (
-    <section className="bg-white py-16 md:py-24">
+    <section className={`${fondoAnimales ? "fondo-animales" : "bg-white"} py-16 md:py-24`}>
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid gap-10 md:grid-cols-2 md:gap-16">
           <div>

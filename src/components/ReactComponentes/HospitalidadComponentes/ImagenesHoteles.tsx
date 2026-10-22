@@ -95,10 +95,13 @@ export default function ImagenesHoteles({ imagenes, enMostrador = false }: Props
           style={{ background: `linear-gradient(270deg, ${fondo} ${enMostrador ? "10%" : "35%"}, transparent)` }}
         />
 
+        {/* Las tarjetas se imantan por su borde izquierdo, respetando el margen de la fila (snap-start + scroll-px-8):
+            así la posición con que llega el HTML y la de la copia del medio (a donde salta al arrancar) son la misma
+            y el salto no se nota. Imantadas al centro, el navegador re-acomodaba la fila al saltar y se veía un tirón */}
         <div
           ref={filaRef}
           onScroll={alDesplazar}
-          className={`flex snap-x snap-mandatory gap-8 overflow-x-auto px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${enMostrador ? "pb-2" : "pb-6"}`}
+          className={`flex snap-x snap-mandatory scroll-px-8 gap-8 overflow-x-auto px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${enMostrador ? "pb-2" : "pb-6"}`}
         >
           {Array.from({ length: COPIAS }, (_, copia) =>
             imagenes.map((foto) => (
@@ -108,8 +111,8 @@ export default function ImagenesHoteles({ imagenes, enMostrador = false }: Props
                 className={
                   enMostrador
                     ? // En el mostrador: fotos 4:3 de alto fijo (según el ancho de pantalla), como cuadros iluminados
-                      "aspect-[4/3] h-[clamp(170px,24vw,300px)] shrink-0 snap-center overflow-hidden rounded-2xl shadow-[0_10px_24px_rgb(0_0_0/0.6)]"
-                    : "aspect-square min-w-[85vw] snap-center overflow-hidden rounded-xl shadow-xl md:aspect-auto md:h-[min(70vh,640px)] md:min-w-[38vw] xl:min-w-[30vw]"
+                      "aspect-[4/3] h-[clamp(170px,24vw,300px)] shrink-0 snap-start overflow-hidden rounded-2xl shadow-[0_10px_24px_rgb(0_0_0/0.6)]"
+                    : "aspect-square min-w-[85vw] snap-start overflow-hidden rounded-xl shadow-xl md:aspect-auto md:h-[min(70vh,640px)] md:min-w-[38vw] xl:min-w-[30vw]"
                 }
               >
                 {/* aspect="h-full" hace que la foto llene la tarjeta; mb-0 quita el margen pensado para el mosaico */}

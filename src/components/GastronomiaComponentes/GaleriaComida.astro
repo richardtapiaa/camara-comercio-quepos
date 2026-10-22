@@ -12,7 +12,7 @@ import "../../styles/gastronomia/galeria-comida.css";
 // En el borde de abajo del plato va una etiqueta de papel con el nombre en letras azules
 const platos = [
   { src: casado, forma: "ovalado", nombre: "Casado", alt: "Casado costarricense con pollo, arroz, frijoles, plátano maduro y ensalada" },
-  { src: arrozCamarones, forma: "ovalado", nombre: "Arroz", alt: "Arroz con camarones" },
+  { src: arrozCamarones, forma: "ovalado", nombre: "Arroz con camarones", alt: "Arroz con camarones" },
   { src: galloPinto, forma: "redondo", nombre: "Gallo pinto", alt: "Gallo pinto con culantro" },
   { src: filetePescado, forma: "redondo", nombre: "Filet de pescado", alt: "Filete de pescado con arroz, aguacate y ensalada" },
   { src: picadillo, forma: "ovalado", nombre: "Picadillos", alt: "Picadillo sobre tortillas" },
@@ -25,7 +25,10 @@ const platos = [
      Mosaico en las dos medidas, con los 5 platos a la vista:
      - Celular (1 columna): un plato por fila, a todo el ancho, y cada uno aparece al llegar a él con el scroll.
      - Escritorio (6 columnas): 3 platos arriba (2 columnas cada uno) y 2 más grandes abajo (3 columnas cada uno) -->
-<section class="relative isolate overflow-hidden bg-white px-4 py-12 md:px-6 md:py-20" aria-label="Galería de gastronomía de Quepos">
+<!-- overflow-clip y no overflow-hidden: recorta igual, pero hidden convierte la sección en un contenedor de scroll y la
+     aparición de los platos (animation-timeline: view()) seguía el scroll de la sección (que no se mueve) en vez del
+     de la página -->
+<section class="relative isolate overflow-clip bg-white px-4 py-12 md:px-6 md:py-20" aria-label="Galería de gastronomía de Quepos">
   <!-- Manta de cuadros celeste (el mismo color del mantel y los pañuelos) que sube desde abajo, arrugada, y sobre la
        que quedan apoyados los platos. Es un SVG sin viewBox (medidas en px, así los cuadros no se estiran):
        - el patrón de cuadros se ondula con ruido (feDisplacementMap), como tela con pliegues,
@@ -122,3 +125,4 @@ const platos = [
 </section>
 
 <script src="../../scripts/gastronomia/galeria-comida.ts"></script>
+ 

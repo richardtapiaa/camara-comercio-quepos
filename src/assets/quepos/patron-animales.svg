@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="560" viewBox="0 0 560 560" fill="none" stroke="#a9cbe6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Patrón que se repite: animales de Quepos en línea fina (guacamaya, mono, tucán, mariposas), hojas y puntitos.
+       Ningún dibujo toca los bordes del recuadro, así las copias encajan sin cortes -->
+
+  <!-- Guacamaya posada en una rama -->
+  <g transform="translate(110 70)">
+    <path d="M-60 92C-20 96 30 88 70 94" />
+    <path d="M-40 92C-34 86 -26 86 -22 92M60 92C54 86 46 86 42 93" />
+    <circle cx="0" cy="0" r="15" />
+    <path d="M11 -6C25 -8 28 9 16 14C14 8 13 3 11 1" />
+    <path d="M14 4C18 5 19 8 17 10" />
+    <circle cx="3" cy="-3" r="2.5" />
+    <path d="M-3 -9C3 -12 9 -9 11 -4" />
+    <path d="M-11 10C-24 34 -20 64 -6 86C8 68 14 38 11 14" />
+    <path d="M-14 26C-8 42 -6 58 -9 74M-6 30C-1 44 0 58 -2 70" />
+    <path d="M-10 36L-4 40M-11 48L-4 52M-10 60L-5 63" />
+    <path d="M-7 86L-16 150M-2 86L-3 154M-11 84L-27 142M3 85L9 146" />
+    <path d="M-12 108L-8 112M-14 124L-9 128M-3 112L1 115M-3 128L1 131" />
+  </g>
+
+  <!-- Mono sentado, con la cola enrollada -->
+  <g transform="translate(400 96)">
+    <circle cx="0" cy="0" r="21" />
+    <circle cx="-23" cy="2" r="7" />
+    <circle cx="23" cy="2" r="7" />
+    <path d="M-12 -1C-14 -12 -4 -13 0 -6C4 -13 14 -12 12 -1C12 12 6 18 0 18C-6 18 -12 12 -12 -1Z" />
+    <circle cx="-5" cy="-3" r="1.8" fill="#a9cbe6" />
+    <circle cx="5" cy="-3" r="1.8" fill="#a9cbe6" />
+    <path d="M-2 5L0 7L2 5M-4 11Q0 14 4 11" />
+    <path d="M-13 19C-22 42 -16 62 0 64C16 62 22 42 13 19" />
+    <path d="M-15 28C-28 38 -26 52 -12 55M15 28C28 38 26 52 12 55" />
+    <path d="M-8 64L-12 72M8 64L12 72" />
+    <path d="M12 60C40 66 48 42 36 32C28 26 20 34 26 40C30 44 34 40 32 36" />
+  </g>
+
+  <!-- Tucán en una rama -->
+  <g transform="translate(250 330)">
+    <path d="M-50 74C-14 78 26 70 56 76" />
+    <path d="M0 0C-15 1 -19 22 -15 48C-11 70 4 72 8 50C11 30 11 10 0 0Z" />
+    <path d="M4 4C30 -3 64 7 70 18C52 23 25 21 7 16" />
+    <path d="M10 10C30 8 52 11 66 16" />
+    <circle cx="-3" cy="9" r="3" />
+    <path d="M-12 30C-6 34 0 34 5 30" />
+    <path d="M-12 60L-16 88M-4 66L-6 92" />
+    <path d="M-2 72C-5 68 -8 68 -10 73M6 70C4 66 1 66 0 71" />
+  </g>
+
+  <!-- Mariposa grande -->
+  <g transform="translate(470 330) rotate(18)">
+    <path d="M0 -18L0 22" />
+    <path d="M0 -18C-4 -28 -10 -32 -15 -30M0 -18C4 -28 10 -32 15 -30" />
+    <path d="M0 -10C-20 -36 -48 -30 -42 -6C-38 6 -15 6 0 0" />
+    <path d="M0 -10C20 -36 48 -30 42 -6C38 6 15 6 0 0" />
+    <path d="M0 2C-18 4 -33 18 -25 31C-17 39 -4 25 0 10" />
+    <path d="M0 2C18 4 33 18 25 31C17 39 4 25 0 10" />
+    <circle cx="-24" cy="-12" r="4" />
+    <circle cx="24" cy="-12" r="4" />
+  </g>
+
+  <!-- Mariposa chica -->
+  <g transform="translate(70 420) rotate(-24) scale(0.7)">
+    <path d="M0 -18L0 22" />
+    <path d="M0 -18C-4 -28 -10 -32 -15 -30M0 -18C4 -28 10 -32 15 -30" />
+    <path d="M0 -10C-20 -36 -48 -30 -42 -6C-38 6 -15 6 0 0" />
+    <path d="M0 -10C20 -36 48 -30 42 -6C38 6 15 6 0 0" />
+    <path d="M0 2C-18 4 -33 18 -25 31C-17 39 -4 25 0 10" />
+    <path d="M0 2C18 4 33 18 25 31C17 39 4 25 0 10" />
+  </g>
+
+  <!-- Hojas con nervaduras -->
+  <g transform="translate(250 150) rotate(-35)">
+    <path d="M0 0C22 -30 64 -30 88 0C64 30 22 30 0 0Z" />
+    <path d="M0 0L88 0M20 0L30 -12M20 0L30 12M40 0L50 -14M40 0L50 14M60 0L68 -10M60 0L68 10" />
+  </g>
+  <g transform="translate(430 480) rotate(150)">
+    <path d="M0 0C22 -30 64 -30 88 0C64 30 22 30 0 0Z" />
+    <path d="M0 0L88 0M20 0L30 -12M20 0L30 12M40 0L50 -14M40 0L50 14M60 0L68 -10M60 0L68 10" />
+  </g>
+  <g transform="translate(150 260) rotate(70) scale(0.75)">
+    <path d="M0 0C22 -30 64 -30 88 0C64 30 22 30 0 0Z" />
+    <path d="M0 0L88 0M20 0L30 -12M20 0L30 12M40 0L50 -14M40 0L50 14M60 0L68 -10M60 0L68 10" />
+  </g>
+  <!-- Rama de hojitas -->
+  <g transform="translate(20 230) rotate(-10)">
+    <path d="M0 0C30 -6 60 -4 90 -16" />
+    <path d="M18 -3C14 -18 24 -24 28 -12M38 -4C36 -20 48 -24 50 -10M60 -7C60 -22 72 -24 72 -12M28 -1C24 12 34 16 38 4M50 -3C50 10 60 12 62 0" />
+  </g>
+
+  <!-- Puntitos sueltos -->
+  <g fill="#a9cbe6" stroke="none" opacity="0.8">
+    <circle cx="200" cy="40" r="1.6" /><circle cx="330" cy="200" r="1.3" /><circle cx="520" cy="60" r="1.8" />
+    <circle cx="40" cy="160" r="1.4" /><circle cx="360" cy="420" r="1.6" /><circle cx="520" cy="210" r="1.2" />
+    <circle cx="160" cy="500" r="1.8" /><circle cx="280" cy="530" r="1.3" /><circle cx="20" cy="530" r="1.5" />
+    <circle cx="470" cy="160" r="1.4" /><circle cx="100" cy="320" r="1.2" /><circle cx="330" cy="290" r="1.7" />
+  </g>
+  <g stroke="#a9cbe6" stroke-width="1.4" opacity="0.8">
+    <path d="M300 60l4 3M190 420l3 4M540 400l4 2M60 60l3 4M380 520l4 2M230 230l2 4" />
+  </g>
+</svg>

@@ -2,7 +2,20 @@
 import { Image } from "astro:assets";
 import logo from "../../assets/compartido/logo-camara.webp";
 import footerImage from "../../assets/compartido/pie-pagina.webp";
+import { variantesCapa } from "../../lib/imagenes";
 import "../../styles/home/pie-pagina.css";
+
+// Dibujo del footer en AVIF (pesa la mitad que el WebP con la misma calidad) y WebP de respaldo, siempre al ancho
+// completo: las versiones más chicas aclaraban las líneas finas del dibujo (el navegador las conserva mejor al
+// achicar la grande). Las tres copias usan la misma imagen; cambia solo el ancho con que se muestran (sizes)
+const anchosDibujo = [footerImage.width];
+const dibujoAvif = await variantesCapa(footerImage, anchosDibujo, 55, "avif");
+const dibujoWebp = await variantesCapa(footerImage, anchosDibujo, 80);
+const dibujos = [
+  { clases: "absolute inset-0 z-0 hidden h-full w-full object-cover object-center sm:block", sizes: "100vw" },
+  { clases: "pie-dibujo absolute left-0 top-0 z-0 w-[220vw] max-w-none sm:hidden", sizes: "220vw" },
+  { clases: "pie-dibujo absolute bottom-0 right-0 z-0 w-[220vw] max-w-none sm:hidden", sizes: "220vw" },
+];
 
 const links = [
   { label: "Inicio", href: "/" },
@@ -19,30 +32,21 @@ const socialLinks = {
 <footer class="relative isolate overflow-hidden bg-[#e5f8fc] text-[#087b8d]">
   <!-- La imagen es clara (celeste con dibujos en línea a los lados) y deja el centro libre para el texto; el fondo del
        footer es su mismo celeste. Desde sm cubre todo el footer, con los dibujos a los lados del texto -->
-  <Image
-    src={footerImage}
-    alt=""
-    aria-hidden="true"
-    class="absolute inset-0 z-0 hidden h-full w-full object-cover object-center sm:block"
-    loading="lazy"
-  />
+  <picture>
+    <source type="image/avif" srcset={dibujoAvif.srcSet} sizes={dibujos[0].sizes} />
+    <img src={dibujoWebp.src} srcset={dibujoWebp.srcSet} sizes={dibujos[0].sizes} alt="" aria-hidden="true" class={dibujos[0].clases} loading="lazy" decoding="async" width={footerImage.width} height={footerImage.height} />
+  </picture>
   <!-- Celular: los dos grupos de dibujos no caben al lado del texto, así que la misma imagen va dos veces, mucho más
        grande: una pegada arriba a la izquierda (se ve el grupo de la izquierda: guacamaya y mujer) y otra abajo a la
        derecha (el grupo de la derecha: guacamaya, café y la persona con sombrero); el resto queda fuera del footer -->
-  <Image
-    src={footerImage}
-    alt=""
-    aria-hidden="true"
-    class="pie-dibujo absolute left-0 top-0 z-0 w-[220vw] max-w-none sm:hidden"
-    loading="lazy"
-  />
-  <Image
-    src={footerImage}
-    alt=""
-    aria-hidden="true"
-    class="pie-dibujo absolute bottom-0 right-0 z-0 w-[220vw] max-w-none sm:hidden"
-    loading="lazy"
-  />
+  {
+    dibujos.slice(1).map(({ clases, sizes }) => (
+      <picture>
+        <source type="image/avif" srcset={dibujoAvif.srcSet} sizes={sizes} />
+        <img src={dibujoWebp.src} srcset={dibujoWebp.srcSet} sizes={sizes} alt="" aria-hidden="true" class={clases} loading="lazy" decoding="async" width={footerImage.width} height={footerImage.height} />
+      </picture>
+    ))
+  }
   <!-- Aclarado suave detrás del texto, para separarlo de los dibujos en pantallas medianas -->
   <div
     class="absolute inset-0 z-0 hidden bg-[radial-gradient(ellipse_34%_62%_at_center,rgb(229_248_252/0.85)_40%,rgb(229_248_252/0)_100%)] sm:block"

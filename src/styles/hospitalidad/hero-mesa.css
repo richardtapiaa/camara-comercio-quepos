@@ -1,0 +1,164 @@
+/* Portada de Hospitalidad y Gastronomía (HeroMesa.astro). Las medidas van en cqw / cqh (ancho y alto de la portada),
+   así la escena guarda sus proporciones en cualquier pantalla */
+.hero-mesa {
+  container-type: size;
+}
+
+/* Encuadre: la piscina y el horizonte quedan sobre la mesa, centrados */
+.hero-mesa-foto {
+  object-position: 50% 55%;
+}
+
+/* Atardecer: luz cálida que baja desde arriba y una sombra suave donde empieza la mesa */
+.hero-mesa-luz {
+  background:
+    linear-gradient(to bottom, rgb(255 176 120 / 0.38), rgb(255 200 150 / 0.12) 45%, transparent 60%),
+    linear-gradient(to top, rgb(16 42 67 / 0.35), transparent 40%);
+}
+
+/* Pizarra: verde oscuro casi negro con manchas de tiza borrada, marco de madera y letra de tiza (como el letrero
+   "Pura Vida!" de InfoGastronomia) */
+.hero-mesa-tiza {
+  font-family: "Caveat", "Comic Sans MS", cursive;
+  font-weight: 700;
+  color: rgb(255 255 255 / 0.94);
+  text-shadow: 0 0 1px rgb(255 255 255 / 0.6);
+  background-color: #24312b;
+  background-image:
+    radial-gradient(ellipse at 30% 40%, rgb(255 255 255 / 0.08), transparent 60%),
+    radial-gradient(ellipse at 75% 70%, rgb(255 255 255 / 0.05), transparent 55%);
+  border: 6px solid #8a5a32;
+  box-shadow:
+    inset 0 0 0 2px rgb(0 0 0 / 0.25),
+    0 18px 30px -12px rgb(0 0 0 / 0.55);
+}
+.hero-mesa-pizarra {
+  /* Tamaño de la letra: crece con la pantalla sin pasarse en celular ni en pantallas bajas */
+  font-size: min(9.5cqw, 9cqh, 5.2rem);
+  transform-origin: top center;
+}
+.hero-mesa-titulo {
+  font-size: 1em;
+  line-height: 0.95;
+}
+.hero-mesa-amp {
+  color: #ffd34d;
+}
+.hero-mesa-kicker {
+  margin-bottom: 0.15em;
+  font-size: 0.32em;
+  letter-spacing: 0.08em;
+  color: rgb(255 255 255 / 0.7);
+}
+/* Cordeles: suben desde las esquinas de arriba de la pizarra hasta fuera de la pantalla */
+.hero-mesa-cordel {
+  position: absolute;
+  bottom: calc(100% - 0.15em);
+  width: 2px;
+  height: 40cqh;
+  background: #6b4a2b;
+  transform-origin: bottom center;
+}
+
+/* Mantel de cuadros celeste visto un poco desde arriba: se inclina hacia atrás desde su borde de abajo; arriba un
+   dobladillo blanco y la sombra del borde de la mesa */
+.hero-mesa-mantel {
+  background-color: #f4f9fd;
+  background-image:
+    repeating-linear-gradient(90deg, rgb(39 128 201 / 0.3) 0 22px, transparent 22px 44px),
+    repeating-linear-gradient(0deg, rgb(39 128 201 / 0.3) 0 22px, transparent 22px 44px);
+  box-shadow:
+    inset 0 6px 0 rgb(255 255 255 / 0.9),
+    inset 0 -40px 60px -30px rgb(16 42 67 / 0.35),
+    0 -8px 18px rgb(16 42 67 / 0.25);
+  transform: perspective(70cqh) rotateX(38deg);
+  transform-origin: bottom center;
+}
+
+/* Tamaño de lo servido, en proporción a la portada */
+.hero-mesa-pipa {
+  width: min(16cqw, 19cqh);
+}
+.hero-mesa-copa {
+  width: min(10cqw, 12cqh);
+}
+.hero-mesa-llave {
+  width: min(30cqw, 26cqh);
+}
+.hero-mesa-objeto {
+  filter: drop-shadow(0 6px 6px rgb(16 42 67 / 0.25));
+}
+/* En celular (pantalla angosta y alta) se miden con el ancho, más grandes, para que se reconozcan */
+@media (max-width: 640px) {
+  .hero-mesa-pipa {
+    width: 27cqw;
+  }
+  .hero-mesa-copa {
+    width: 17cqw;
+  }
+  .hero-mesa-llave {
+    width: 52cqw;
+  }
+}
+
+/* Movimiento: la pizarra baja al entrar y queda meciéndose colgada de sus cordeles; lo de la mesa sube apenas. Al
+   hacer scroll la foto se mueve más lenta que la página. Sin movimiento si la persona lo pidió */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-mesa-pizarra {
+    animation:
+      hero-mesa-caer 0.9s cubic-bezier(0.22, 1, 0.36, 1) both,
+      hero-mesa-mecer 3.6s ease-in-out 0.9s infinite alternate;
+  }
+  .hero-mesa-objeto {
+    animation: hero-mesa-servir 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
+  }
+  /* La llave va centrada con translate: su entrada parte de ese mismo centrado */
+  .hero-mesa-llave {
+    animation-name: hero-mesa-servir-centro;
+    animation-delay: 0.5s;
+  }
+  /* Propiedades sueltas y no el atajo "animation": al publicar, el minificador junta el atajo con
+     animation-timeline en una sola línea que el navegador descarta por inválida */
+  @supports (animation-timeline: scroll()) {
+    .hero-mesa-foto {
+      animation-name: hero-mesa-parallax;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100svh;
+    }
+  }
+}
+@keyframes hero-mesa-caer {
+  from {
+    translate: -50% -60cqh;
+  }
+  to {
+    translate: -50% 0;
+  }
+}
+@keyframes hero-mesa-mecer {
+  from {
+    rotate: -2.5deg;
+  }
+  to {
+    rotate: 2deg;
+  }
+}
+@keyframes hero-mesa-servir {
+  from {
+    opacity: 0;
+    translate: 0 1.5rem;
+  }
+}
+@keyframes hero-mesa-servir-centro {
+  from {
+    opacity: 0;
+    translate: -50% 1.5rem;
+  }
+}
+@keyframes hero-mesa-parallax {
+  to {
+    translate: 0 25%;
+  }
+}

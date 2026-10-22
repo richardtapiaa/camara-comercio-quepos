@@ -3,7 +3,12 @@ import { Image } from "astro:assets";
 import { VideoQueposIdiomas } from "../../ReactComponentes/QUEPOS/VideosQuepos";
 import videoEs from "../../../assets/quepos/videos/video-es.mp4";
 import videoEn from "../../../assets/quepos/videos/video-en.mp4";
+import videoEsWebm from "../../../assets/quepos/videos/video-es.webm";
+import videoEnWebm from "../../../assets/quepos/videos/video-en.webm";
 import palmera from "../../../assets/quepos/palmera-sin-fondo.webp";
+
+// WebM AV1 (más liviano) con MP4 de respaldo; el códec en type hace que los navegadores sin AV1 usen el MP4
+const webmAv1 = 'video/webm; codecs="av01.0.08M.08, opus"';
 
 // Mismas palmeras que GaleriaCompleta.astro: crecen con la pantalla y arriba se difuminan para ocultar el corte de
 // la foto
@@ -22,6 +27,7 @@ const clasesPalmera =
     width={600}
     class={`pointer-events-none absolute right-0 top-0 ${clasesPalmera}`}
     loading="lazy"
+    fetchpriority="low"
     draggable="false"
     aria-hidden="true"
   />
@@ -31,6 +37,7 @@ const clasesPalmera =
     width={600}
     class={`pointer-events-none absolute left-0 top-0 -scale-x-100 ${clasesPalmera}`}
     loading="lazy"
+    fetchpriority="low"
     draggable="false"
     aria-hidden="true"
   />
@@ -47,8 +54,8 @@ const clasesPalmera =
       <!-- Debajo del video, botones para verlo en español o en inglés -->
       <VideoQueposIdiomas
         client:visible
-        srcEs={videoEs}
-        srcEn={videoEn}
+        fuentesEs={[{ src: videoEsWebm, type: webmAv1 }, { src: videoEs, type: "video/mp4" }]}
+        fuentesEn={[{ src: videoEnWebm, type: webmAv1 }, { src: videoEn, type: "video/mp4" }]}
         size="lg"
         className="aspect-video rounded-2xl"
         preload="metadata"

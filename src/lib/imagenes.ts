@@ -1,13 +1,13 @@
 import { getImage } from "astro:assets";
 import type { ImageMetadata } from "astro";
 
-// Devuelve la URL de una versión WebP más liviana de la imagen, para los componentes que reciben solo la URL
-// (componentes de React, <img> de fondo). No la agranda si el original es más angosto que `ancho`
-export async function optimizarImagen(imagen: ImageMetadata, ancho: number, calidad = 75) {
+// Devuelve la URL de una versión más liviana de la imagen (WebP, o AVIF si se pide), para los componentes que reciben
+// solo la URL (componentes de React, <img> de fondo). No la agranda si el original es más angosto que `ancho`
+export async function optimizarImagen(imagen: ImageMetadata, ancho: number, calidad = 75, formato: "webp" | "avif" = "webp") {
   const optimizada = await getImage({
     src: imagen,
     width: Math.min(ancho, imagen.width),
-    format: "webp",
+    format: formato,
     quality: calidad,
   });
   return optimizada.src;
@@ -32,10 +32,10 @@ export async function variantesGaleria(imagen: ImageMetadata) {
 // Para los heros en capas (foto + recorte del primer plano encima): la misma imagen en varios anchos (srcset), así el
 // celular baja una versión chica y no la de 2560 px. Las dos capas usan los mismos anchos y el mismo `sizes`, por eso
 // el navegador elige el mismo tamaño para las dos y siguen calzando. Ninguna se agranda
-export async function variantesCapa(imagen: ImageMetadata, anchos: number[], calidad: number) {
+export async function variantesCapa(imagen: ImageMetadata, anchos: number[], calidad: number, formato: "webp" | "avif" = "webp") {
   const validos = [...new Set(anchos.map((ancho) => Math.min(ancho, imagen.width)))];
   const versiones = await Promise.all(
-    validos.map(async (ancho) => ({ ancho, src: await optimizarImagen(imagen, ancho, calidad) })),
+    validos.map(async (ancho) => ({ ancho, src: await optimizarImagen(imagen, ancho, calidad, formato) })),
   );
   return {
     src: versiones.at(-1)!.src,

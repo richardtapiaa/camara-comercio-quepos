@@ -1,0 +1,137 @@
+---
+import { sizesCubrePantalla, variantesCapa } from "../../lib/imagenes";
+// TEMPORAL: foto de internet hasta tener una propia (de un hotel o restaurante afiliado). "Infinity View Playa Santa
+// Teresa", de Vixitaly, licencia CC BY 3.0: https://commons.wikimedia.org/wiki/File:Infinity_View_Playa_Santa_Teresa_-_panoramio.jpg
+// La licencia pide dar crédito al autor: va abajo a la derecha de la portada (quitarlo junto con la foto)
+import foto from "../../assets/hospitalidad/temporal-piscina-santa-teresa.jpg";
+import "../../styles/hospitalidad/hero-mesa.css";
+
+// Fondo: una piscina infinita frente al mar al atardecer, en AVIF y WebP de respaldo, en el ancho que necesita cada pantalla
+const anchos = [800, 1280, 1600, 2048];
+const fotoWebp = await variantesCapa(foto, anchos, 75);
+const fotoAvif = await variantesCapa(foto, anchos, 55, "avif");
+const sizes = sizesCubrePantalla(foto);
+---
+
+<!-- Portada de Hospitalidad y Gastronomía: una mesa en la terraza de un hotel, frente a la piscina infinita y el
+     mar al atardecer. Encima del mantel de
+     cuadros celeste (el mismo de la página) hay una pipa, una copa de fresco y la llave del hotel con su llavero, y
+     colgada de dos cordeles se mece la pizarra con el título. Todo lo de la mesa son SVG y CSS (casi no pesa); la
+     única imagen es la foto del fondo -->
+<section class="hero-mesa relative isolate h-svh min-h-[560px] w-full overflow-hidden bg-[#9cc3d6]" aria-label="Hospitalidad y Gastronomía">
+  <picture>
+    <source type="image/avif" srcset={fotoAvif.srcSet} sizes={sizes} />
+    <img
+      src={fotoWebp.src}
+      srcset={fotoWebp.srcSet}
+      sizes={sizes}
+      alt="Piscina infinita frente al mar del Pacífico al atardecer, en Costa Rica"
+      class="hero-mesa-foto absolute inset-0 -z-20 size-full object-cover"
+      fetchpriority="high"
+      draggable="false"
+    />
+  </picture>
+  <!-- Luz cálida de atardecer arriba y un poco de sombra abajo, donde empieza la mesa -->
+  <div class="hero-mesa-luz pointer-events-none absolute inset-0 -z-10" aria-hidden="true"></div>
+
+  <!-- Pizarra con el título, colgada de dos cordeles que suben fuera de la pantalla -->
+  <div class="hero-mesa-pizarra absolute left-1/2 top-[15%] z-10 -translate-x-1/2">
+    <span class="hero-mesa-cordel left-[16%] rotate-[8deg]" aria-hidden="true"></span>
+    <span class="hero-mesa-cordel right-[16%] -rotate-[8deg]" aria-hidden="true"></span>
+    <div class="hero-mesa-tiza rounded-lg px-[1.1em] pb-[0.45em] pt-[0.35em] text-center">
+      <p class="hero-mesa-kicker">Quepos · Costa Rica</p>
+      <h1 class="hero-mesa-titulo">
+        Hospitalidad<br /><span class="hero-mesa-amp">&amp;</span> Gastronomía
+      </h1>
+    </div>
+  </div>
+
+  <!-- La mesa: el mantel visto un poco desde arriba (inclinado en 3D) y, encima, lo que hay servido -->
+  <div class="hero-mesa-mesa absolute inset-x-0 bottom-0 h-[34%]" aria-hidden="true">
+    <div class="hero-mesa-mantel absolute -inset-x-[15%] inset-y-0"></div>
+
+    <!-- Pipa: coco verde abierto arriba, con pajilla de rayas y una flor de amapola -->
+    <svg class="hero-mesa-objeto hero-mesa-pipa absolute bottom-[34%] left-[14%] sm:left-[22%]" viewBox="0 0 130 160">
+      <defs>
+        <radialGradient id="pipa-cascara" cx="35%" cy="40%" r="75%">
+          <stop offset="0" stop-color="#8fca4c" />
+          <stop offset="0.55" stop-color="#4f9426" />
+          <stop offset="1" stop-color="#2a5d12" />
+        </radialGradient>
+      </defs>
+      <ellipse cx="65" cy="150" rx="46" ry="7" fill="#000" fill-opacity="0.22" />
+      <path d="M20 72C18 118 40 148 65 148C90 148 112 118 110 72C109 62 92 58 65 58C38 58 21 62 20 72Z" fill="url(#pipa-cascara)" />
+      <ellipse cx="65" cy="66" rx="42" ry="10" fill="#3d7a1c" />
+      <ellipse cx="65" cy="66" rx="36" ry="7.5" fill="#f6f1df" />
+      <ellipse cx="65" cy="67" rx="28" ry="5" fill="#e7dfc4" />
+      <!-- Pajilla doblada, roja con rayas blancas -->
+      <path d="M74 64L88 14L106 6" fill="none" stroke="#e2412f" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M74 64L88 14L106 6" fill="none" stroke="#fff" stroke-width="6" stroke-dasharray="5 7" stroke-linecap="butt" stroke-linejoin="round" />
+      <!-- Flor en el borde -->
+      <g transform="translate(36 60)">
+        <circle cx="0" cy="-7" r="6" fill="#ff5a7a" />
+        <circle cx="7" cy="-1" r="6" fill="#ff5a7a" />
+        <circle cx="4" cy="7" r="6" fill="#ff5a7a" />
+        <circle cx="-5" cy="6" r="6" fill="#ff5a7a" />
+        <circle cx="-7" cy="-2" r="6" fill="#ff5a7a" />
+        <circle cx="0" cy="0" r="3" fill="#ffd34d" />
+      </g>
+      <!-- Brillo de la cáscara -->
+      <path d="M34 86C36 104 44 118 54 126" fill="none" stroke="#fff" stroke-opacity="0.35" stroke-width="5" stroke-linecap="round" />
+    </svg>
+
+    <!-- Copa de fresco de sandía, con una tajada en el borde -->
+    <svg class="hero-mesa-objeto hero-mesa-copa absolute bottom-[34%] right-[16%] sm:right-[24%]" viewBox="0 0 90 170">
+      <defs>
+        <linearGradient id="copa-fresco" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ff8a80" />
+          <stop offset="1" stop-color="#e8434f" />
+        </linearGradient>
+      </defs>
+      <ellipse cx="45" cy="162" rx="30" ry="6" fill="#000" fill-opacity="0.22" />
+      <!-- Tajada de sandía en el borde -->
+      <path d="M58 30L86 30A14 14 0 0 1 58 30Z" fill="#ff5a5f" />
+      <path d="M58 30L86 30" stroke="#3b8a2c" stroke-width="3" />
+      <circle cx="68" cy="35" r="1.4" fill="#2b1d1d" /><circle cx="75" cy="36" r="1.4" fill="#2b1d1d" />
+      <!-- Fresco dentro de la copa -->
+      <path d="M16 46L74 46C73 72 61 90 45 92C29 90 17 72 16 46Z" fill="url(#copa-fresco)" />
+      <ellipse cx="45" cy="46" rx="29" ry="4" fill="#ffb3ad" />
+      <!-- Vidrio: copa, tallo y base -->
+      <path d="M12 26L78 26C78 70 64 94 45 96C26 94 12 70 12 26Z" fill="#fff" fill-opacity="0.18" stroke="#fff" stroke-opacity="0.85" stroke-width="2.5" />
+      <path d="M20 34C20 58 26 76 36 86" fill="none" stroke="#fff" stroke-opacity="0.6" stroke-width="3" stroke-linecap="round" />
+      <rect x="42.5" y="95" width="5" height="56" rx="2" fill="#fff" fill-opacity="0.75" />
+      <ellipse cx="45" cy="154" rx="24" ry="5.5" fill="#fff" fill-opacity="0.7" stroke="#fff" stroke-opacity="0.9" stroke-width="1.5" />
+    </svg>
+
+    <!-- Llave del hotel con su llavero de madera (habitación 101), acostada sobre el mantel -->
+    <svg class="hero-mesa-objeto hero-mesa-llave absolute bottom-[10%] left-1/2 -translate-x-1/2" viewBox="0 0 240 80">
+      <defs>
+        <linearGradient id="llave-bronce" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#f3d88a" />
+          <stop offset="1" stop-color="#b8892c" />
+        </linearGradient>
+      </defs>
+      <ellipse cx="124" cy="62" rx="112" ry="9" fill="#000" fill-opacity="0.2" />
+      <!-- Llavero de madera con el número -->
+      <rect x="6" y="18" width="74" height="44" rx="12" fill="#9a6a3c" />
+      <rect x="6" y="18" width="74" height="44" rx="12" fill="none" stroke="#6b4423" stroke-width="2" />
+      <circle cx="68" cy="40" r="5" fill="#4a2e15" />
+      <text x="36" y="48" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="800" font-size="20" fill="#f3e2c0">101</text>
+      <!-- Argolla y llave -->
+      <circle cx="86" cy="40" r="11" fill="none" stroke="#c7ccd1" stroke-width="3" />
+      <circle cx="114" cy="40" r="17" fill="none" stroke="url(#llave-bronce)" stroke-width="8" />
+      <rect x="129" y="35.5" width="92" height="9" rx="3" fill="url(#llave-bronce)" />
+      <path d="M196 44H221V56H214V50H206V56H196Z" fill="url(#llave-bronce)" />
+    </svg>
+  </div>
+
+  <!-- Crédito de la foto (lo pide su licencia CC BY 3.0) -->
+  <a
+    href="https://commons.wikimedia.org/wiki/File:Infinity_View_Playa_Santa_Teresa_-_panoramio.jpg"
+    class="absolute bottom-1.5 right-2 z-10 text-[10px] text-white/70 underline-offset-2 hover:text-white hover:underline"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    Foto: Vixitaly, CC BY 3.0
+  </a>
+</section>

@@ -64,7 +64,11 @@
     }
     .hero-vista-titulo {
       transform: translateY(calc(var(--hero-vista-progreso) * var(--bajada)));
-      animation: hero-vista-esconde linear both;
+      /* Propiedades sueltas y no el atajo "animation": al publicar, el minificador junta el atajo con animation-timeline
+         en una sola línea que el navegador descarta por inválida, y la animación de scroll no funcionaba */
+      animation-name: hero-vista-esconde;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
       animation-timeline: --hero-vista;
       /* Termina de esconderse cuando se ha hecho scroll del 85 % del alto del hero, así baja despacio */
       animation-range: exit 0% exit 85%;

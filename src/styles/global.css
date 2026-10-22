@@ -3,7 +3,7 @@
 @theme {
   --font-sans: "Poppins", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
   --font-serif: var(--font-sans);
-  --font-mono: "Space Mono", ui-monospace, monospace;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
 html,
@@ -17,8 +17,61 @@ body {
   font-family: var(--font-sans);
 }
 
+/* Poppins, la letra del sitio, alojada en el sitio (public/fonts, licencia OFL) en vez de pedirla a Google Fonts: así
+   no hay que esperar a otro servidor para dibujar la página. Solo los grosores que se usan (400 a 900) y la itálica
+   normal, con los caracteres latinos (incluye tildes, ñ, ¿ y ¡) */
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/poppins-400-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/poppins-500-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/poppins-600-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/poppins-700-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("/fonts/poppins-800-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("/fonts/poppins-900-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/poppins-400-italic-latin.woff2") format("woff2");
+}
+
 /* Alfa Slab One (letrero "QUEPOS" del hero de Quepos), alojada en el sitio (public/fonts, licencia OFL) y precargada
-   en Layout.astro. font-display: block: mientras carga, el título espera invisible en vez de mostrarse con la letra
+   en pages/quepos.astro. font-display: block: mientras carga, el título espera invisible en vez de mostrarse con la letra
    de respaldo (en celulares sin Arial Black caía en Poppins fina y se veía mal) */
 @font-face {
   font-family: "Alfa Slab One";
@@ -26,4 +79,14 @@ body {
   font-weight: 400;
   font-display: block;
   src: url("/fonts/alfa-slab-one-latin.woff2") format("woff2");
+}
+
+/* Caveat (letra a mano) para las pizarras de tiza (portada de Hospitalidad y letrero de
+   InfoGastronomia); alojada en el sitio (public/fonts, licencia OFL) */
+@font-face {
+  font-family: "Caveat";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/caveat-bold-latin.woff2") format("woff2");
 }
