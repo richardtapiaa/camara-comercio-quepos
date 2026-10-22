@@ -10,6 +10,7 @@ import hero from "../../assets/quepos/quepos-foto.webp";
 import fondo from "../../assets/quepos/fondo-inicio-queposx.webp";
 import palmera from "../../assets/quepos/palmera-sin-fondo.webp";
 import "../../styles/quepos/galeria-quepos.css";
+import "../../styles/quepos/fondo-animales.css";
 
 // Se reutilizan imágenes existentes; reemplazar por fotos de Quepos cuando estén disponibles
 const fuentes = [hero, beneficios, mision, ejemplo, vision, checkout, fondo, hero, beneficios, mision, ejemplo, vision];
@@ -21,7 +22,7 @@ const items = await Promise.all(
 );
 ---
 
-<section id="galeria-quepos" class="relative overflow-x-clip bg-white py-16 sm:py-24">
+<section id="galeria-quepos" class="fondo-animales relative overflow-x-clip py-16 sm:py-24">
   <!-- Palmeras colgando de las esquinas de arriba: la foto trae el tronco cortado arriba a la derecha, así que la de
        la derecha va tal cual y la de la izquierda en espejo; las dos salen del borde de la pantalla. Van detrás del
        título y la galería, y no bloquean el arrastre de la galería -->
@@ -31,6 +32,7 @@ const items = await Promise.all(
     width={600}
     class="pointer-events-none absolute right-0 top-0 h-auto w-40 select-none sm:w-72 md:w-[32rem]"
     loading="lazy"
+    fetchpriority="low"
     draggable="false"
     aria-hidden="true"
   />
@@ -40,6 +42,7 @@ const items = await Promise.all(
     width={600}
     class="pointer-events-none absolute left-0 top-0 h-auto w-40 -scale-x-100 select-none sm:w-72 md:w-[32rem]"
     loading="lazy"
+    fetchpriority="low"
     draggable="false"
     aria-hidden="true"
   />

@@ -2,6 +2,7 @@
 import { getImage, Image } from "astro:assets";
 import logo from "../../assets/compartido/logo-camara.webp";
 import video from "../../assets/capacitaciones/hero-capacitaciones.mp4";
+import videoWebm from "../../assets/capacitaciones/hero-capacitaciones.webm";
 import poster from "../../assets/capacitaciones/hero-capacitaciones.jpg";
 
 // Igual que el hero de afiliados: el video se importa desde src/assets (nombre con hash, queda en caché) y la foto
@@ -13,7 +14,6 @@ const posterOptimizado = await getImage({ src: poster, format: "webp", quality: 
 <section class="relative isolate min-h-svh overflow-hidden text-white">
   <video
     data-hero-capacitaciones-video
-    src={video}
     poster={posterOptimizado.src}
     class="absolute inset-0 -z-20 size-full object-cover object-center"
     autoplay
@@ -22,7 +22,12 @@ const posterOptimizado = await getImage({ src: poster, format: "webp", quality: 
     playsinline
     preload="auto"
     aria-hidden="true"
-  ></video>
+  >
+    <!-- WebM AV1 (mucho más liviano) y MP4 de respaldo: el navegador usa el primero que puede reproducir (el códec
+         en type hace que los que no tienen AV1 pasen directo al MP4) -->
+    <source src={videoWebm} type='video/webm; codecs="av01.0.09M.08"' />
+    <source src={video} type="video/mp4" />
+  </video>
   <!-- Overlay oscuro, el mismo del hero de afiliados: parejo sobre todo el video y un poco más fuerte arriba y abajo -->
   <div class="pointer-events-none absolute inset-0 -z-10 bg-black/35" aria-hidden="true"></div>
   <div

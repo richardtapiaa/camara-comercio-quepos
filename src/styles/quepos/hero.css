@@ -95,7 +95,11 @@
     }
     .hero-isla-titulo {
       transform: translateY(calc(var(--hero-isla-progreso) * var(--bajada)));
-      animation: hero-isla-esconde linear both;
+      /* Propiedades sueltas y no el atajo "animation": al publicar, el minificador junta el atajo con animation-timeline
+         en una sola línea que el navegador descarta por inválida, y la animación de scroll no funcionaba */
+      animation-name: hero-isla-esconde;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
       animation-timeline: --hero-isla;
       /* El hero arranca ocupando la pantalla: termina de esconderse cuando se ha hecho scroll del 85 % de su
          alto, así baja despacio */

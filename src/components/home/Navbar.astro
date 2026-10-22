@@ -21,7 +21,7 @@ const links: Array<Enlace | Desplegable> = [
     id: "quepos-submenu",
     submenu: [
       { label: "Quepos", href: "/quepos" },
-      { label: "Hospitalidad", href: "/hospitalidad" },
+      { label: "Hospitalidad & Gastronomía", href: "/hospitalidad" },
       { label: "Visítenos", href: "/visitenos" },
       { label: "Galería", href: "/queposgaleria" },
     ],
@@ -153,7 +153,7 @@ const contacto = {
                 >
                   {link.submenu.map((sub) => (
                     <li>
-                      <a href={sub.href} class="block rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[#f4efe9] hover:text-sky-700 max-md:px-0 max-md:py-3 max-md:text-white/80 max-md:hover:bg-transparent max-md:hover:text-sky-300">
+                      <a href={sub.href} class="block whitespace-nowrap rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[#f4efe9] hover:text-sky-700 max-md:px-0 max-md:py-3 max-md:text-white/80 max-md:hover:bg-transparent max-md:hover:text-sky-300">
                         {sub.label}
                       </a>
                     </li>

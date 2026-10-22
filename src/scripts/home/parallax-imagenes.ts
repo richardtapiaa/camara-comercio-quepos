@@ -6,6 +6,10 @@ gsap.registerPlugin(ScrollTrigger);
 const imagenes = document.querySelectorAll<HTMLElement>("[data-parallax-img]");
 const conCss = CSS.supports("animation-timeline: view()");
 
+// Cuánto baja la imagen, en % de su propio alto: 50 si mide el doble que su marco (lo normal). Una imagen más baja
+// lo indica con data-parallax-recorrido (y el mismo valor en --parallax-y-fin para la versión con CSS)
+const recorrido = (img: HTMLElement) => Number(img.dataset.parallaxRecorrido ?? 50);
+
 // Panel con sticky nativo: es el primer hijo de un contenedor que no es sticky,
 // así que ese contenedor da su posición natural aunque el panel esté fijo
 const baseSticky = (panel: HTMLElement) => panel.parentElement!.getBoundingClientRect().top + window.scrollY;
@@ -43,7 +47,7 @@ function congelarEnPanelesSticky() {
           const largo = alto + marco.offsetHeight;
           const hastaFijo = gsap.utils.clamp(0.001, largo, fijo - (topMarco - alto));
           img.style.setProperty("--parallax-rango-fin", `cover ${(hastaFijo / (largo + recorridoSticky)) * 100}%`);
-          img.style.setProperty("--parallax-y-fin", `${(hastaFijo / largo) * 50}%`);
+          img.style.setProperty("--parallax-y-fin", `${(hastaFijo / largo) * recorrido(img)}%`);
         });
       });
     };
@@ -55,7 +59,7 @@ function congelarEnPanelesSticky() {
 
 function parallaxConGsap() {
   imagenes.forEach((img) => {
-    const animacion = gsap.to(img, { yPercent: 50, ease: "none", paused: true });
+    const animacion = gsap.to(img, { yPercent: recorrido(img), ease: "none", paused: true });
     const marcoImg = img.parentElement!;
     const panelFijo = img.closest<HTMLElement>(".panel.pinned");
     const panelSticky = img.closest<HTMLElement>("[data-panel-sticky]");

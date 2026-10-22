@@ -31,10 +31,17 @@ const videoPlayerVariants = cva(
   },
 );
 
+// Un formato del mismo video (ej. WebM y MP4): el navegador usa el primero que puede reproducir
+export interface FuenteVideo {
+  src: string;
+  type: string;
+}
+
 export interface VideoPlayerProps
   extends React.VideoHTMLAttributes<HTMLVideoElement>,
     VariantProps<typeof videoPlayerVariants> {
-  src: string;
+  src?: string;
+  fuentes?: FuenteVideo[];
   poster?: string;
   showControls?: boolean;
   autoHide?: boolean;
@@ -47,6 +54,7 @@ const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
       className,
       size,
       src,
+      fuentes,
       poster,
       showControls = true,
       autoHide = true,
@@ -276,12 +284,14 @@ const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
         {" "}
         <video
           ref={videoRef}
-          src={src}
+          src={fuentes ? undefined : src}
           poster={poster}
           className="w-full h-full object-cover"
           onClick={togglePlay}
           {...props}
-        />
+        >
+          {fuentes?.map((fuente) => <source key={fuente.src} src={fuente.src} type={fuente.type} />)}
+        </video>
         {showControls && (
           <>
             {/* Play/Pause Overlay - Only visible when not playing or on hover */}
@@ -460,9 +470,9 @@ VideoPlayer.displayName = "VideoPlayer";
 
 type Idioma = "es" | "en";
 
-export interface VideoQueposIdiomasProps extends Omit<VideoPlayerProps, "src"> {
-  srcEs: string;
-  srcEn: string;
+export interface VideoQueposIdiomasProps extends Omit<VideoPlayerProps, "src" | "fuentes"> {
+  fuentesEs: FuenteVideo[];
+  fuentesEn: FuenteVideo[];
 }
 
 const idiomas: { valor: Idioma; texto: string }[] = [
@@ -473,7 +483,7 @@ const idiomas: { valor: Idioma; texto: string }[] = [
 // El reproductor con dos botones debajo para elegir el video en español o en inglés. Arranca en español; al
 // cambiar, el reproductor se vuelve a montar (key) con el otro video desde el principio y empieza a reproducirse,
 // porque la persona acaba de tocar el botón
-function VideoQueposIdiomas({ srcEs, srcEn, autoPlay, ...props }: VideoQueposIdiomasProps) {
+function VideoQueposIdiomas({ fuentesEs, fuentesEn, autoPlay, ...props }: VideoQueposIdiomasProps) {
   const [idioma, setIdioma] = React.useState<Idioma>("es");
   const [cambiado, setCambiado] = React.useState(false);
 
@@ -487,7 +497,7 @@ function VideoQueposIdiomas({ srcEs, srcEn, autoPlay, ...props }: VideoQueposIdi
     <div className="flex w-full flex-col items-center gap-6">
       <VideoPlayer
         key={idioma}
-        src={idioma === "es" ? srcEs : srcEn}
+        fuentes={idioma === "es" ? fuentesEs : fuentesEn}
         autoPlay={cambiado || autoPlay}
         lang={idioma}
         {...props}

@@ -19,15 +19,6 @@
   font-weight: 700;
 }
 
-/* Caveat (letra a mano) para el letrero de tiza; alojada en el sitio (public/fonts, licencia OFL) */
-@font-face {
-  font-family: "Caveat";
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url("/fonts/caveat-bold-latin.woff2") format("woff2");
-}
-
 /* Madera: tonos café con vetas finas a lo largo y un brillo suave arriba */
 .marco-madera {
   background-color: #8a5a32;

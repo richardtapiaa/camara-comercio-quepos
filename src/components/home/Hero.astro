@@ -1,6 +1,9 @@
 ---
 import fondo from "../../assets/quepos/quepos-foto.webp";
 import videoHero from "../../assets/inicio/hero-quepos-inicio.mp4";
+import videoHeroMovil from "../../assets/inicio/hero-quepos-inicio-movil.mp4";
+import videoHeroWebm from "../../assets/inicio/hero-quepos-inicio.webm";
+import videoHeroMovilWebm from "../../assets/inicio/hero-quepos-inicio-movil.webm";
 import "../../styles/home/hero.css";
 ---
 
@@ -8,8 +11,10 @@ import "../../styles/home/hero.css";
      Mide toda la pantalla en todos los tamaños (antes, desde md, tomaba la proporción 1920/1000 del video y quedaba
      más bajo que la ventana, así que Misión se asomaba abajo); el video la llena con object-cover -->
 <section id="hero" data-end-pin="#mision" data-pin-desktop class="panel pinned sticky top-0 isolate md:relative h-svh w-full overflow-hidden bg-black">
+  <!-- El navegador usa la primera <source> que calce con la pantalla (media) y que pueda reproducir (type): en celular
+       la versión de 1280 px y en el resto la de 1920 px, cada una en WebM AV1 (pesa la mitad) y en MP4 de respaldo; el
+       códec en type hace que los navegadores sin AV1 (ej. iPhone anteriores al 15 Pro) pasen directo al MP4 -->
   <video
-    src={videoHero}
     poster={fondo.src}
     class="absolute inset-0 -z-20 h-full w-full object-cover object-left-bottom"
     autoplay
@@ -18,8 +23,14 @@ import "../../styles/home/hero.css";
     playsinline
     preload="auto"
     aria-hidden="true"
-  ></video>
+  >
+    <source src={videoHeroMovilWebm} type='video/webm; codecs="av01.0.05M.08"' media="(max-width: 767px)" />
+    <source src={videoHeroMovil} type="video/mp4" media="(max-width: 767px)" />
+    <source src={videoHeroWebm} type='video/webm; codecs="av01.0.08M.08"' />
+    <source src={videoHero} type="video/mp4" />
+  </video>
   <div class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-48 bg-gradient-to-b from-black/50 to-transparent"></div>
+
   <!-- Se oscurece al hacer scroll, mientras Misión se desliza por encima -->
   <div class="pointer-events-none absolute inset-0 bg-black opacity-0" data-hero-oscuro aria-hidden="true"></div>
 </section>

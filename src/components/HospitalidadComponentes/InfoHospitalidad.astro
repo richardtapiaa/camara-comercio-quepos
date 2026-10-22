@@ -21,25 +21,33 @@ const dibujos = [
 
 ---
 
-<!-- Mismo diseño que SobreQuepos.astro: imagen con parallax a la izquierda montada sobre el panel celeste -->
+<!-- Dos columnas desde lg: la imagen con parallax ocupa toda la mitad izquierda (con el mismo alto que el panel) y
+     la información va en el panel celeste de la derecha. Más angosto (celular y tablet), la imagen arriba y el panel
+     debajo: a dos columnas la foto quedaría como una tira alta y angosta -->
 <section id="info-hospitalidad" class="overflow-x-clip bg-white py-16 sm:py-24">
-  <div class="mx-auto grid max-w-6xl px-6 md:grid-cols-12">
+  <div class="mx-auto grid max-w-6xl px-6 lg:grid-cols-2 lg:gap-8">
     <!-- Foto como una piscina vista desde arriba (la foto es el fondo bajo el agua): borde de piedra clara, franja de
          mosaico azul en la línea del agua, reflejo del cielo en el agua, una escalera que entra al agua y un salvavidas
          flotando. Sale del contenedor hacia la izquierda pero deja un margen con el borde de la pantalla, para que el
-         borde de la piscina se vea entero, y se monta sobre el panel -->
-    <div class="relative z-10 -ml-[max(0px,(100vw_-_72rem)/2)] mb-8 md:col-span-4 md:col-start-1 md:row-start-1 md:mt-24 md:self-start">
-      <div class="piscina-borde rounded-2xl p-3 md:p-4">
-        <div class="piscina-mosaico rounded-xl p-1.5">
-          <div class="piscina-agua relative aspect-[4/3] overflow-hidden rounded-lg md:aspect-[8/7]">
+         borde de la piscina se vea entero. Desde lg se estira al alto del panel (h-full en cada capa) -->
+    <div class="relative z-10 -ml-[max(0px,(100vw_-_72rem)/2)] mb-8 lg:mb-0">
+      <div class="piscina-borde rounded-2xl p-3 md:p-4 lg:h-full">
+        <div class="piscina-mosaico rounded-xl p-1.5 lg:h-full">
+          <div class="piscina-agua relative aspect-[4/3] overflow-hidden rounded-lg lg:aspect-auto lg:h-full lg:min-h-[28rem]">
+            <!-- Parallax más corto que el normal: la imagen mide 120 % del marco (no el doble) y baja el 20 % del marco,
+                 o sea 16,667 % de su alto. Así la foto (horizontal) no se amplía tanto en el marco alto y se ve más de
+                 la habitación; se centra hacia la cama y la lámpara. El ancho con que se ve depende del alto del
+                 marco (la foto lo cubre de alto): en escritorio unos 1700 px -->
             <Image
               src={imagen}
-              alt="Costa de Quepos"
-              widths={[640, 960, 1280]}
-              sizes="(min-width: 768px) 45vw, 100vw"
+              alt="Habitación de hotel en Quepos"
+              widths={[640, 960, 1280, 1920, 2560]}
+              sizes="(min-width: 1024px) 1700px, 100vw"
               quality={75}
-              class="absolute inset-x-0 -top-full h-[200%] w-full max-w-none object-cover will-change-transform"
+              class="absolute inset-x-0 -top-[20%] h-[120%] w-full max-w-none object-cover object-[70%_center] will-change-transform"
+              style="--parallax-y-fin: 16.667%"
               data-parallax-img
+              data-parallax-recorrido="16.667"
             />
             <!-- Reflejo del cielo en la superficie -->
             <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(115deg,rgb(255_255_255/0.3),transparent_35%)]" aria-hidden="true"></div>
@@ -63,10 +71,11 @@ const dibujos = [
     </div>
 
     <!-- Tarjeta celeste (la pared de la recepción) con sombra suave; abajo, el mostrador de la recepción. En celular
-         ocupa todo el ancho de la pantalla (sin esquinas redondeadas); desde md tiene bordes redondeados y sale del
-         contenedor hacia la derecha pero deja un margen con el borde de la pantalla, para que se vean las esquinas -->
+         ocupa todo el ancho de la pantalla (sin esquinas redondeadas); desde md tiene bordes redondeados y desde lg es
+         la columna derecha. Sale del contenedor hacia la derecha pero deja un margen con el borde de la pantalla, para que
+         se vean las esquinas -->
     <div
-      class="relative isolate -mx-6 overflow-hidden bg-[#E8F4FA] md:mx-0 md:-mr-[max(0px,(100vw_-_72rem)/2)] md:rounded-[2rem] pb-32 pt-12 pl-6 pr-[calc(max(0px,(100vw_-_72rem)/2)+1.5rem)] shadow-[0_12px_40px_rgb(100_155_190/0.25)] md:col-span-9 md:col-start-4 md:row-start-1 md:pb-36 md:pt-16 md:pl-[calc(100%/9+2rem)]"
+      class="relative isolate -mx-6 overflow-hidden bg-[#E8F4FA] md:mx-0 md:-mr-[max(0px,(100vw_-_72rem)/2)] md:rounded-[2rem] pb-32 pt-12 pl-6 pr-[calc(max(0px,(100vw_-_72rem)/2)+1.5rem)] shadow-[0_12px_40px_rgb(100_155_190/0.25)] md:pb-36 md:pt-16 md:pl-10"
     >
       <!-- Decoración de hotel (detrás del texto, -z-10): papel tapiz de rayas suaves, borde punteado por dentro y
            dibujos de hotel en línea fina -->

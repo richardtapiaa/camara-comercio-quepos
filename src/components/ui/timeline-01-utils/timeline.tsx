@@ -341,7 +341,7 @@ export default function Timeline({
                     <img
                       src={item.image}
                       alt={item.alt ?? item.title}
-                      loading={i === 0 ? "eager" : "lazy"}
+                      loading="lazy"
                       decoding="async"
                       className="size-full object-cover"
                       draggable={false}

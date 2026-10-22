@@ -11,9 +11,14 @@ import "../../styles/hospitalidad/hero.css";
 // quedan transparentes. Las dos se exportan en
 // los mismos anchos (srcset) para que calcen; en celular baja una versión chica en vez de la de ancho completo
 // Calidad un poco más baja que lo normal: es una foto de fondo y la capa de follaje con transparencia pesa mucho
-const fotoOptimizada = await variantesCapa(foto, [800, 1280, 1920, 2560], 72);
+const anchos = [800, 1280, 1920, 2560];
+const fotoOptimizada = await variantesCapa(foto, anchos, 72);
 const sizes = sizesCubrePantalla(foto);
-const primerPlanoOptimizado = await variantesCapa(primerPlano, [800, 1280, 1920, 2560], 68);
+const primerPlanoOptimizado = await variantesCapa(primerPlano, anchos, 68);
+// Las mismas capas en AVIF, que pesa entre 33 % y 46 % menos con igual o mejor calidad (sobre todo el primer plano,
+// por la transparencia); el WebP de arriba queda de respaldo para los navegadores sin AVIF
+const fotoAvif = await variantesCapa(foto, anchos, 50, "avif");
+const primerPlanoAvif = await variantesCapa(primerPlano, anchos, 50, "avif");
 ---
 
 <!-- Hero de Hospitalidad, mismo enfoque que el hero de Quepos (Quepos-Componentes/Hero.astro): tres capas del mismo
@@ -31,15 +36,18 @@ const primerPlanoOptimizado = await variantesCapa(primerPlano, [800, 1280, 1920,
     }}
   >
     <!-- CAPA 1 — La foto -->
-    <img
-      src={fotoOptimizada.src}
-      srcset={fotoOptimizada.srcSet}
-      sizes={sizes}
-      alt="Vista al mar y a las islas de Manuel Antonio desde la terraza de un hotel, entre árboles"
-      class="hero-vista-foto absolute inset-0 size-full"
-      draggable="false"
-      fetchpriority="high"
-    />
+    <picture>
+      <source type="image/avif" srcset={fotoAvif.srcSet} sizes={sizes} />
+      <img
+        src={fotoOptimizada.src}
+        srcset={fotoOptimizada.srcSet}
+        sizes={sizes}
+        alt="Vista al mar y a las islas de Manuel Antonio desde la terraza de un hotel, entre árboles"
+        class="hero-vista-foto absolute inset-0 size-full"
+        draggable="false"
+        fetchpriority="high"
+      />
+    </picture>
 
     <!-- CAPA 2 — Título en el cielo, justo sobre el horizonte (que está al 43 % desde abajo de la foto): las ramas
          del árbol de la derecha le pasan por delante. Al hacer scroll baja por delante del mar y las islas y se
@@ -51,16 +59,21 @@ const primerPlanoOptimizado = await variantesCapa(primerPlano, [800, 1280, 1920,
       <h1 class="hero-vista-entrada text-center font-black uppercase text-[#102a43]">Hospitalidad</h1>
     </div>
 
-    <!-- CAPA 3 — Troncos, ramas, techo y selva, encima del título -->
-    <img
-      src={primerPlanoOptimizado.src}
-      srcset={primerPlanoOptimizado.srcSet}
-      sizes={sizes}
-      alt=""
-      class="hero-vista-foto absolute inset-0 size-full"
-      draggable="false"
-      aria-hidden="true"
-    />
+    <!-- CAPA 3 — Troncos, ramas, techo y selva, encima del título. También con prioridad alta: sin esta capa la
+         portada se ve incompleta -->
+    <picture>
+      <source type="image/avif" srcset={primerPlanoAvif.srcSet} sizes={sizes} />
+      <img
+        src={primerPlanoOptimizado.src}
+        srcset={primerPlanoOptimizado.srcSet}
+        sizes={sizes}
+        alt=""
+        class="hero-vista-foto absolute inset-0 size-full"
+        draggable="false"
+        fetchpriority="high"
+        aria-hidden="true"
+      />
+    </picture>
   </div>
 </section>
 

@@ -1,0 +1,14 @@
+/* Fondo de las secciones claras de la página de Quepos: blanco apenas celeste (más claro que las tarjetas #E8F4FA, para
+   que se sigan distinguiendo) con animales de la zona en línea fina celeste (guacamaya, mono, tucán, mariposas), hojas
+   y puntitos, muy suaves para no competir con el texto. El dibujo es un SVG que se
+   repite (assets/quepos/patron-animales.svg) */
+.fondo-animales {
+  background-color: #f8fbfe;
+  background-image: url("../../assets/quepos/patron-animales.svg");
+  background-size: 560px 560px;
+}
+@media (max-width: 640px) {
+  .fondo-animales {
+    background-size: 420px 420px;
+  }
+}

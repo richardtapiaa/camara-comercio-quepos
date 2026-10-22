@@ -31,6 +31,8 @@ import SobreBiodiversidadQuepos from '../components/Quepos-Componentes/SobreBiod
 ---
 
 <Layout>
+<!-- Alfa Slab (letrero "QUEPOS" de la portada) se precarga solo en esta página, la única que la usa -->
+<link slot="head" rel="preload" href="/fonts/alfa-slab-one-latin.woff2" as="font" type="font/woff2" crossorigin />
 
 <Navbar/>    
 <Hero/>
@@ -56,6 +58,6 @@ import SobreBiodiversidadQuepos from '../components/Quepos-Componentes/SobreBiod
 
 
 
-<FAQ/>
+<FAQ fondoAnimales />
 
 </Layout>

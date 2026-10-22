@@ -13,6 +13,9 @@ type HeroActividadesProps = {
   foto: Imagen & { width: number; height: number };
   /** CAPA 3: la misma foto, del mismo tamaño, con solo el kayakista visible (canal alfa) */
   primerPlano: string;
+  /** Las mismas dos capas en AVIF (más livianas); si faltan se usan solo las de arriba */
+  fotoAvif?: string;
+  primerPlanoAvif?: string;
   /** CAPA 2: título gigante que queda entre la foto y el kayakista */
   titulo?: string;
   /** Botón blanco debajo del título */
@@ -49,6 +52,8 @@ const entrada = (retraso: number) => ({
 export function HeroActividades({
   foto,
   primerPlano,
+  fotoAvif,
+  primerPlanoAvif,
   titulo = "Aventura",
   boton = { texto: "Descubre las actividades", href: "#actividades" },
   className,
@@ -79,7 +84,16 @@ export function HeroActividades({
         }}
       >
         {/* CAPA 1 — La foto */}
-        <img src={foto.src} alt={foto.alt} className={cn('absolute inset-0 size-full', fundidoArriba)} draggable={false} />
+        <picture>
+          {fotoAvif && <source type="image/avif" srcSet={fotoAvif} />}
+          <img
+            src={foto.src}
+            alt={foto.alt}
+            className={cn('absolute inset-0 size-full', fundidoArriba)}
+            draggable={false}
+            fetchPriority="high"
+          />
+        </picture>
         {/* Velo muy suave para que el blanco del título resalte */}
         <div className={cn('absolute inset-0 bg-black/15', fundidoArriba)} aria-hidden="true" />
 
@@ -93,13 +107,17 @@ export function HeroActividades({
         </div>
 
         {/* CAPA 3 — El kayakista: la misma foto con solo la persona visible, encima del título */}
-        <img
-          src={primerPlano}
-          alt=""
-          className={cn('absolute inset-0 size-full', fundidoArriba)}
-          draggable={false}
-          aria-hidden="true"
-        />
+        <picture>
+          {primerPlanoAvif && <source type="image/avif" srcSet={primerPlanoAvif} />}
+          <img
+            src={primerPlano}
+            alt=""
+            className={cn('absolute inset-0 size-full', fundidoArriba)}
+            draggable={false}
+            fetchPriority="high"
+            aria-hidden="true"
+          />
+        </picture>
 
         {/* Botón en escritorio: una copia invisible del título en el mismo lugar lo deja justo debajo y alineado
             a su borde izquierdo, delante de todo */}

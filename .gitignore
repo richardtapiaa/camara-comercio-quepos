@@ -23,4 +23,3 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 src/assets/quepos/videos/*.mp4
-src/assets/inicio/*.mp4
