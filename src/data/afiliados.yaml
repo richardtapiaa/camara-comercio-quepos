@@ -37,18 +37,27 @@
   web: https://iguanatours.com
 
 - id: hotel-karahe
-  nombre: Hotel Karahé
+  nombre: Karahe Hotel
   categoria: Hospedaje
   descripcion: Hotel de playa
   logo: ../assets/afiliados/logos/hotel-karahe.webp
   telefonos: ["+506 2777-0170"]
+  whatsapp: "+506 8754-7250"
+  correo: reservations@karahe.com
+  web: https://www.karahe.com/
+  facebook: https://www.facebook.com/HotelKarahe/
+  instagram: https://www.instagram.com/hotel_karahe/
 
 - id: issimo-suites
-  nombre: Issimo Suites
+  nombre: Issimo Suites Boutique Hotel, Restaurant & Spa
   categoria: Hospedaje
   descripcion: Hotel boutique y spa
   logo: ../assets/afiliados/logos/issimo-suites.webp
   telefonos: ["+506 2777-4410"]
+  correos: ["reservations@issimosuites.com", "info@issimosuitescr.com"]
+  web: https://es.issimosuitescr.com/
+  facebook: https://www.facebook.com/issimosuites
+  instagram: https://www.instagram.com/issimosuites/
 
 - id: los-altos-resort
   nombre: Los Altos Resort
@@ -75,6 +84,11 @@
   descripcion: Resort y spa
   logo: ../assets/afiliados/logos/parador-nature-resort.webp
   telefonos: ["+506 2777-1414"]
+  whatsapp: "+506 8645-1414"
+  correo: info@hotelparador.com
+  web: https://hotelparador.com/es/
+  facebook: https://www.facebook.com/HotelParadorManuelAntonio
+  instagram: https://www.instagram.com/hotelparador/
 
 - id: mini-price-store
   nombre: Mini Price Store
@@ -147,82 +161,159 @@
   nombre: 2 Costa Rica Real Estate
   categoria: Bienes raíces
   logo: ../assets/afiliados/logos/2-costa-rica-real-estate.webp
+  telefonos: ["+506 2519-9413"]
+  correo: info@2costaricarealestate.com
+  web: https://www.2costaricarealestate.com/
+  facebook: https://www.facebook.com/2costaricarealestate
+  instagram: https://www.instagram.com/2costaricarealestate/
 
 - id: asoproquepos
   nombre: Asoproquepos
   categoria: Servicios
   logo: ../assets/afiliados/logos/asoproquepos.webp
+  telefonos: ["+506 8356-6551", "+506 2777-0342"]
+  correo: asoproquepos@racsa.co.cr
+  facebook: https://www.facebook.com/tiendapescaasoproquepos/?locale=es_LA
+  instagram: https://www.instagram.com/asoproquepos/
 
 # Categoría por confirmar
 - id: blue-horizon
   nombre: Blue Horizon
   categoria: Otros
   logo: ../assets/afiliados/logos/blue-horizon.webp
+  telefonos: ["+506 8994-1424"]
+  correo: reservations@bluehorizoncostarica.com
+  web: https://www.bluehorizoncostarica.com/
+  facebook: https://www.facebook.com/bluehorizoncostarica
+  instagram: https://www.instagram.com/bluehorizoncostarica/
 
 - id: costa-rica-green-airways
   nombre: Costa Rica Green Airways
   categoria: Transporte
   logo: ../assets/afiliados/logos/costa-rica-green-airways.webp
+  telefonos: ["+506 4070-0771", "+506 8583-1741"]
+  correo: customercare@costaricagreenair.com
+  web: https://costaricagreenair.com/en/
+  facebook: https://www.facebook.com/crgreenairways/
+  instagram: https://www.instagram.com/costaricagreenairways/
 
 # Categoría por confirmar
 - id: aguas-azules-costa-rica
-  nombre: Aguas Azules Costa Rica
+  nombre: Aguas Azules Parasailing
   categoria: Otros
   logo: ../assets/afiliados/logos/aguas-azules-costa-rica.webp
+  telefonos: ["+506 8366-0227", "+506 8701-4126", "+506 2519-9320"]
+  correo: info@costaricaparasailing.com
+  web: https://www.costaricaparasailing.com/
+  facebook: https://www.facebook.com/costaricaparasailing/
+  instagram: https://www.instagram.com/parasailing_aguasazules_cr/
 
 - id: dantes-watersports-tours
-  nombre: Dante's Watersports & Tours
+  nombre: Dante's Water Sports y Tours
   categoria: Tours y aventura
   logo: ../assets/afiliados/logos/dantes-watersports-tours.webp
+  telefonos: ["+506 2777-4000"]
+  correo: danteswatersports@gmail.com
+  web: https://www.danteswatersports.com/
+  facebook: https://www.facebook.com/danteswatersportsMA?locale=es_LA
+  instagram: https://www.instagram.com/danteswatersports/
 
 - id: safari-adventure-park
-  nombre: Safari Adventure Park
+  nombre: Safari Adventure
   categoria: Tours y aventura
   logo: ../assets/afiliados/logos/safari-adventure-park.webp
+  telefonos: ["+506 8989-7888", "+506 2777-7111"]
+  correo: info@safariventurescr.com
+  web: https://safariadventurecr.com/
+  facebook: https://www.facebook.com/SafariAdventuresCR/
+  instagram: https://www.instagram.com/safariadvcr/
 
 - id: diario-mirador
   nombre: Diario Mirador
   categoria: Servicios
   logo: ../assets/afiliados/logos/diario-mirador.webp
+  telefonos: ["+506 8831-2358"]
+  correo: diariomiradorcr@gmail.com
+  web: https://www.diariomirador.com/
+  facebook: https://www.facebook.com/DiarioMiradorCR
+  instagram: https://www.instagram.com/diariomiradorcr/
 
 - id: planet-dolphin
   nombre: Planet Dolphin
   categoria: Tours y aventura
   logo: ../assets/afiliados/logos/planet-dolphin.webp
+  telefonos: ["+506 2777-1647"]
+  correo: info@planetdolphin.com
+  web: https://planetdolphin.com/
+  facebook: https://www.facebook.com/PlanetDolphinCruises/
+  instagram: https://www.instagram.com/planetdolphin/
 
 - id: sabromar
-  nombre: Sabromar
+  nombre: Marisquería Sabromar
   categoria: Gastronomía
   logo: ../assets/afiliados/logos/sabromar.webp
+  telefonos: ["+506 2777-7767"]
+  facebook: https://www.facebook.com/marisqueriasabromar/
+  instagram: https://www.instagram.com/marisqueriasabromar/
 
 # Categoría por confirmar
 - id: villa-costa-vida
   nombre: Villa Costa Vida
   categoria: Hospedaje
   logo: ../assets/afiliados/logos/villa-costa-vida.webp
+  telefonos: ["+506 8915-8547", "+1 757-339-6489"]
+  correo: info@villacostavida.com
+  web: https://villacostavida.com/
+  facebook: https://www.facebook.com/villacostavida/?locale=es_LA
+  instagram: https://www.instagram.com/villa_costa_vida/
 
 - id: ferreteria-costanera-sur
   nombre: Ferretería Costanera Sur
   categoria: Comercio
   logo: ../assets/afiliados/logos/ferreteria-costanera-sur.webp
+  telefonos: ["+506 2777-0158"]
+  whatsapp: "+506 8301-3200"
+  correo: ventas@costanerasur.com
+  facebook: https://www.facebook.com/FerreteriaCostaneraSur/
+  instagram: https://www.instagram.com/ferreteriacostanerasurquepos/
 
 # Categoría por confirmar
 - id: portasol
   nombre: Portasol
   categoria: Bienes raíces
   logo: ../assets/afiliados/logos/portasol.webp
+  telefonos: ["+506 8507-9393"]
+  correo: reservaciones@portasol.cr
+  web: https://www.portasol.cr/
+  facebook: https://www.facebook.com/portasol/?locale=es_LA
+  instagram: https://www.instagram.com/portasol_living/
 
 - id: manuel-antonio-estates
   nombre: Manuel Antonio Estates
   categoria: Bienes raíces
   logo: ../assets/afiliados/logos/manuel-antonio-estates.webp
+  telefonos: ["+506 2777-3339", "+1 800-680-1518"]
+  correo: info@manuelantonioestates.com
+  web: https://manuelantonioestates.com/?lang=es
+  facebook: https://www.facebook.com/ManuelAntonioEstates/
+  instagram: https://www.instagram.com/manuelantonioestates/
 
 - id: marina-pez-vela
   nombre: Marina Pez Vela
   categoria: Servicios
   logo: ../assets/afiliados/logos/marina-pez-vela.webp
+  telefonos: ["+506 2774-9000", "+1 866-739-8352"]
+  correo: info@marinapezvela.com
+  web: https://marinapezvela.com
+  facebook: https://www.facebook.com/marina.pez.vela
+  instagram: https://www.instagram.com/marinapezvela_cr/
 
 - id: tucanes-tours
   nombre: Tucanes Tours
   categoria: Tours y aventura
   logo: ../assets/afiliados/logos/tucanes-tours.webp
+  telefonos: ["+506 2777-0775", "+1 800-213-5730"]
+  correo: info@tucanestours.com
+  web: https://tucanestours.com/es/
+  facebook: https://www.facebook.com/TucanesToursCR/
+  instagram: https://www.instagram.com/tucanestours/

@@ -27,6 +27,7 @@ const afiliados = defineCollection({
       telefonos: z.array(z.string()).optional(),
       whatsapp: z.string().optional(),
       correo: z.string().email().optional(),
+      correos: z.array(z.string().email()).optional(),
       web: z.string().url().optional(),
       facebook: z.string().url().optional(),
       instagram: z.string().url().optional(),
