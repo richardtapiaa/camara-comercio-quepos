@@ -58,8 +58,8 @@ const soloDigitos = (telefono: string) => telefono.replace(/[^\d+]/g, "");
 const claseDato = "flex items-start gap-3 transition-colors hover:text-[#2780c9]";
 const claseIcono = "mt-0.5 size-4 shrink-0 text-[#2780c9]";
 
-// Muestra las direcciones web sin "https://", "www." ni la barra final: "https://www.costaverde.com/" → "costaverde.com"
-const sinProtocolo = (url: string) => url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "");
+// Muestra solo el dominio para evitar que las rutas largas desborden la card.
+const dominio = (url: string) => new URL(url).hostname.replace(/^www\./, "");
 ---
 
 <!-- Afiliados: buscador con desplegable de categoría y una cuadrícula de tarjetas (logo en círculo, nombre, descripción y
@@ -169,7 +169,7 @@ const sinProtocolo = (url: string) => url.replace(/^https?:\/\/(www\.)?/, "").re
               <h3 class="mt-6 text-xl font-bold leading-snug text-[#2780c9]">{data.nombre}</h3>
               <p class="mt-1 text-sm text-slate-500">{data.descripcion ?? data.categoria}</p>
 
-              {(data.telefonos || data.whatsapp || data.correo || data.web || data.facebook || data.instagram) && (
+              {(data.telefonos || data.whatsapp || data.correo || data.correos || data.web || data.facebook || data.instagram) && (
                 <ul class="mx-auto mt-5 flex w-full max-w-xs flex-col gap-2.5 text-left text-sm text-slate-700">
                   {data.telefonos?.map((telefono) => (
                     <li>
@@ -187,19 +187,19 @@ const sinProtocolo = (url: string) => url.replace(/^https?:\/\/(www\.)?/, "").re
                       </a>
                     </li>
                   )}
-                  {data.correo && (
+                  {[...(data.correo ? [data.correo] : []), ...(data.correos ?? [])].map((correo) => (
                     <li>
-                      <a href={`mailto:${data.correo}`} class={claseDato}>
+                      <a href={`mailto:${correo}`} class={claseDato}>
                         <Mail className={claseIcono} aria-hidden="true" />
-                        <span class="break-all">{data.correo}</span>
+                        <span class="break-all">{correo}</span>
                       </a>
                     </li>
-                  )}
+                  ))}
                   {data.web && (
                     <li>
                       <a href={data.web} target="_blank" rel="noopener noreferrer" class={claseDato}>
                         <Globe className={claseIcono} aria-hidden="true" />
-                        <span class="break-all">{sinProtocolo(data.web)}</span>
+                        <span>{dominio(data.web)}</span>
                       </a>
                     </li>
                   )}
@@ -209,7 +209,7 @@ const sinProtocolo = (url: string) => url.replace(/^https?:\/\/(www\.)?/, "").re
                         <svg class={claseIcono} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                           <path d="M13.5 22v-8.2h2.8l.5-3.3h-3.3V8.4c0-.9.3-1.6 1.7-1.6h1.7V4a22 22 0 0 0-2.5-.1c-2.5 0-4.2 1.5-4.2 4.3v2.3H7.2v3.3H10V22h3.5Z" />
                         </svg>
-                        <span class="break-all">{sinProtocolo(data.facebook)}</span>
+                        <span>Facebook</span>
                       </a>
                     </li>
                   )}
@@ -221,7 +221,7 @@ const sinProtocolo = (url: string) => url.replace(/^https?:\/\/(www\.)?/, "").re
                           <circle cx="12" cy="12" r="4" />
                           <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
                         </svg>
-                        <span class="break-all">{sinProtocolo(data.instagram)}</span>
+                        <span>Instagram</span>
                       </a>
                     </li>
                   )}
