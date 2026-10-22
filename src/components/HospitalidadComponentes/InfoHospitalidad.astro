@@ -1,8 +1,7 @@
 ---
 import { Image } from "astro:assets";
-import { Bus, HeartPulse, KeyRound, Landmark, Palmtree, Store } from "lucide-react";
+import { Bus, HeartPulse, Landmark, Store } from "lucide-react";
 import imagen from "../../assets/hospitalidad/hospitalidad-1.webp";
-import "../../styles/home/parallax-imagenes.css";
 import "../../styles/hospitalidad/info-hospitalidad.css";
 
 const servicios = [
@@ -11,127 +10,62 @@ const servicios = [
   { titulo: "Transporte", detalle: "Servicio público y privado.", Icono: Bus },
   { titulo: "Comercio", detalle: "Establecimientos que brindan comodidad durante la visita.", Icono: Store },
 ];
-
-// Dibujos de hotel (línea fina, muy suaves) en el espacio libre de arriba a la derecha del panel (abajo va el
-// mostrador). El que tiene "hidden" solo aparece en escritorio
-const dibujos = [
-  { Icono: KeyRound, clases: "right-5 top-5 size-10 rotate-12 sm:size-12 md:right-10 md:top-8 md:size-16" },
-  { Icono: Palmtree, clases: "hidden size-14 -rotate-6 lg:right-36 lg:top-10 lg:block" },
-];
-
 ---
 
-<!-- Dos columnas desde lg: la imagen con parallax ocupa toda la mitad izquierda (con el mismo alto que el panel) y
-     la información va en el panel celeste de la derecha. Más angosto (celular y tablet), la imagen arriba y el panel
-     debajo: a dos columnas la foto quedaría como una tira alta y angosta -->
-<section id="info-hospitalidad" class="overflow-x-clip bg-white py-16 sm:py-24">
-  <div class="mx-auto grid max-w-6xl px-6 lg:grid-cols-2 lg:gap-8">
-    <!-- Foto como una piscina vista desde arriba (la foto es el fondo bajo el agua): borde de piedra clara, franja de
-         mosaico azul en la línea del agua, reflejo del cielo en el agua, una escalera que entra al agua y un salvavidas
-         flotando. Sale del contenedor hacia la izquierda pero deja un margen con el borde de la pantalla, para que el
-         borde de la piscina se vea entero. Desde lg se estira al alto del panel (h-full en cada capa) -->
-    <div class="relative z-10 -ml-[max(0px,(100vw_-_72rem)/2)] mb-8 lg:mb-0">
-      <div class="piscina-borde rounded-2xl p-3 md:p-4 lg:h-full">
-        <div class="piscina-mosaico rounded-xl p-1.5 lg:h-full">
-          <div class="piscina-agua relative aspect-[4/3] overflow-hidden rounded-lg lg:aspect-auto lg:h-full lg:min-h-[28rem]">
-            <!-- Parallax más corto que el normal: la imagen mide 120 % del marco (no el doble) y baja el 20 % del marco,
-                 o sea 16,667 % de su alto. Así la foto (horizontal) no se amplía tanto en el marco alto y se ve más de
-                 la habitación; se centra hacia la cama y la lámpara. El ancho con que se ve depende del alto del
-                 marco (la foto lo cubre de alto): en escritorio unos 1700 px -->
-            <Image
-              src={imagen}
-              alt="Habitación de hotel en Quepos"
-              widths={[640, 960, 1280, 1920, 2560]}
-              sizes="(min-width: 1024px) 1700px, 100vw"
-              quality={75}
-              class="absolute inset-x-0 -top-[20%] h-[120%] w-full max-w-none object-cover object-[70%_center] will-change-transform"
-              style="--parallax-y-fin: 16.667%"
-              data-parallax-img
-              data-parallax-recorrido="16.667"
-            />
-            <!-- Reflejo del cielo en la superficie -->
-            <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(115deg,rgb(255_255_255/0.3),transparent_35%)]" aria-hidden="true"></div>
-            <!-- Salvavidas flotando, con su sombra en el fondo -->
-            <div class="absolute bottom-4 left-4 drop-shadow-[6px_8px_3px_rgb(5_50_75/0.4)] md:bottom-5 md:left-5" aria-hidden="true">
-              <div class="piscina-salvavidas size-12 md:size-14"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Escalera vista desde arriba: dos pasamanos que se apoyan en el borde y entran al agua, y los peldaños bajo
-           el agua, cada vez menos visibles por la profundidad -->
-      <div class="pointer-events-none absolute right-[16%] top-0.5 h-20 w-10 md:h-24 md:w-12" aria-hidden="true">
-        <span class="piscina-pasamanos absolute inset-y-0 left-0"></span>
-        <span class="piscina-pasamanos absolute inset-y-0 right-0"></span>
-        <span class="absolute inset-x-0.5 top-[42%] h-1 rounded-full bg-white/50"></span>
-        <span class="absolute inset-x-0.5 top-[62%] h-1 rounded-full bg-white/30"></span>
-        <span class="absolute inset-x-0.5 top-[82%] h-1 rounded-full bg-white/15"></span>
-      </div>
+<!-- Dos mitades desde lg: la foto en arco a la izquierda y el texto a la derecha sobre un
+     fondo marfil, con el título en serif dorada, una bajada en negrita, el párrafo, los servicios y un botón que lleva a
+     la galería de hoteles. En celular y tablet, la foto arriba y el texto debajo -->
+<section id="info-hospitalidad" class="bg-[#f9f7f3] lg:grid lg:min-h-[640px] lg:grid-cols-2">
+  <!-- Foto en forma de arco (arriba redondeada como una puerta, abajo recta), centrada en su mitad con aire alrededor -->
+  <div class="flex items-center justify-center px-6 pt-14 sm:px-10 lg:px-12 lg:py-16 xl:px-20">
+    <div class="relative aspect-[4/5] w-full max-w-[34rem] overflow-hidden rounded-t-[999px] shadow-[0_20px_40px_-24px_rgb(60_40_20/0.45)]">
+      <Image
+        src={imagen}
+        alt="Habitación de hotel en Quepos"
+        widths={[480, 720, 960, 1280]}
+        sizes="(min-width: 1024px) 34rem, 90vw"
+        quality={78}
+        class="absolute inset-0 size-full object-cover object-[62%_center]"
+        loading="lazy"
+      />
     </div>
+  </div>
 
-    <!-- Tarjeta celeste (la pared de la recepción) con sombra suave; abajo, el mostrador de la recepción. En celular
-         ocupa todo el ancho de la pantalla (sin esquinas redondeadas); desde md tiene bordes redondeados y desde lg es
-         la columna derecha. Sale del contenedor hacia la derecha pero deja un margen con el borde de la pantalla, para que
-         se vean las esquinas -->
-    <div
-      class="relative isolate -mx-6 overflow-hidden bg-[#E8F4FA] md:mx-0 md:-mr-[max(0px,(100vw_-_72rem)/2)] md:rounded-[2rem] pb-32 pt-12 pl-6 pr-[calc(max(0px,(100vw_-_72rem)/2)+1.5rem)] shadow-[0_12px_40px_rgb(100_155_190/0.25)] md:pb-36 md:pt-16 md:pl-10"
-    >
-      <!-- Decoración de hotel (detrás del texto, -z-10): papel tapiz de rayas suaves, borde punteado por dentro y
-           dibujos de hotel en línea fina -->
-      <div class="papel-tapiz pointer-events-none absolute inset-0 -z-10" aria-hidden="true"></div>
-      <div
-        class="pointer-events-none absolute inset-3 -z-10 rounded-xl border-2 border-dashed border-[#2780c9]/20 md:inset-4 md:rounded-[1.6rem]"
-        aria-hidden="true"
-      ></div>
-      {
-        dibujos.map(({ Icono, clases }) => (
-          <Icono
-            className={`pointer-events-none absolute -z-10 text-[#2780c9]/25 ${clases}`}
-            strokeWidth={1.25}
-            aria-hidden="true"
-          />
-        ))
-      }
-
-      <!-- Mostrador de recepción: cubierta de mármol y frente de madera en paneles -->
-      <div class="pointer-events-none absolute inset-x-0 bottom-0 h-24 md:h-28" aria-hidden="true">
-        <div class="mostrador-cubierta relative z-10 h-3.5"></div>
-        <div class="mostrador-frente h-full"></div>
-      </div>
-
-      <!-- whitespace-nowrap y tamaño fluido: "HOSPITALIDAD" entra entera en una línea en cualquier celular -->
-      <h2 class="whitespace-nowrap text-[clamp(1.5rem,7.6vw,3rem)] font-bold uppercase leading-tight tracking-tight text-neutral-700">
-        Hospitalidad
+  <div class="flex items-center px-6 py-14 sm:px-10 lg:px-16 lg:py-20 xl:px-24">
+    <div class="max-w-xl">
+      <h2 class="info-hosp-titulo text-[clamp(2.1rem,4.2vw,3.25rem)] leading-[1.1] text-[#a6844f]">
+        La hospitalidad de Quepos
       </h2>
-
-      <p class="mt-6 max-w-xl text-lg font-medium leading-relaxed text-neutral-800 sm:text-xl">
+      <p class="mt-5 text-lg font-bold text-neutral-900 sm:text-xl">
         Quepos cuenta con una variedad de servicios públicos y privados que facilitan la estadía de sus visitantes.
       </p>
-
-      <p class="mt-8 max-w-2xl text-sm leading-relaxed text-neutral-700">
+      <p class="mt-5 text-[15px] leading-relaxed text-neutral-700">
         Entre ellos se encuentran los servicios de salud, como hospitales y centros médicos, instituciones bancarias,
         transporte público y privado, así como otros establecimientos comerciales que contribuyen a brindar comodidad
         durante la visita al destino.
       </p>
 
-      <ul class="mt-8 grid gap-4 sm:grid-cols-2">
+      <!-- Servicios: ícono, nombre en negrita y su descripción, de a dos -->
+      <ul class="mt-6 grid gap-x-8 gap-y-3 sm:grid-cols-2">
         {
           servicios.map(({ titulo, detalle, Icono }) => (
-            <li class="flex items-start gap-4 rounded-2xl bg-white/70 px-4 py-3">
-              <span class="mt-0.5 flex size-10 shrink-0 items-center justify-center rounded-full bg-[#E8F4FA] text-neutral-700">
-                <Icono className="size-5" strokeWidth={2} aria-hidden="true" />
-              </span>
+            <li class="flex items-start gap-3">
+              <Icono className="mt-0.5 size-5 shrink-0 text-[#a6844f]" strokeWidth={1.75} aria-hidden="true" />
               <div>
-                <p class="text-sm font-bold uppercase tracking-wide text-neutral-800">{titulo}</p>
-                <p class="mt-1 text-sm leading-relaxed text-neutral-700">{detalle}</p>
+                <p class="text-sm font-bold text-neutral-900">{titulo}</p>
+                <p class="text-sm leading-snug text-neutral-600">{detalle}</p>
               </div>
             </li>
           ))
         }
       </ul>
+
+      <a
+        href="#galeria-hospitalidad"
+        class="mt-8 inline-block bg-[#ddd5ca] px-6 py-3 text-sm uppercase tracking-wide text-neutral-800 transition-colors hover:bg-[#cfc4b6]"
+      >
+        Ver hoteles
+      </a>
     </div>
   </div>
 </section>
-
-<script src="../../scripts/home/parallax-imagenes.ts"></script>
