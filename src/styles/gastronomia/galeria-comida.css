@@ -1,0 +1,124 @@
+/* Celular: cada plato aparece (sube y crece un poco) a medida que entra en la pantalla con el scroll y termina
+   justo cuando ya entró entero (así el último, que queda al final de la página, no se queda a medio aparecer).
+   Lo mueve el navegador con la línea de tiempo del scroll; sin soporte los platos simplemente se ven */
+@supports (animation-timeline: view()) {
+  @media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+    [data-plato] {
+      animation: plato-entrar linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 100%;
+    }
+  }
+}
+@keyframes plato-entrar {
+  from {
+    opacity: 0;
+    translate: 0 3rem;
+    scale: 0.85;
+  }
+}
+
+/* Todo el plato gira junto; la transición suaviza el movimiento y la vuelta a plano */
+.plato-escena {
+  transform: rotateX(var(--giro-x, 0deg)) rotateY(var(--giro-y, 0deg));
+  transition: transform 0.35s ease-out;
+}
+
+/* Sombra del plato en la mesa: más abajo que el plato y difuminada */
+.plato-sombra {
+  background: rgb(16 42 67 / 0.4);
+  filter: blur(14px);
+}
+
+/* Canto del plato: la porcelana que se ve por debajo del ala, más gris por estar a la sombra */
+.plato-canto {
+  background: linear-gradient(to bottom, #e4e3de, #b9b8b1);
+}
+
+/* Cara de arriba: hueco blanco en el centro, una línea donde el ala baja al hueco, el ala y su borde un poco más
+   gris. closest-side hace que los anillos sigan la forma del plato (óvalo o círculo) */
+.plato-superficie {
+  background: radial-gradient(
+    closest-side,
+    #ffffff 0%,
+    #fafaf8 74%,
+    #e3e2dd 77.5%,
+    #f4f4f1 80%,
+    #ffffff 88%,
+    #efeeea 96%,
+    #d6d5cf 100%
+  );
+  box-shadow: inset 0 -3px 5px rgb(0 0 0 / 0.08);
+}
+/* Profundidad del hueco: sombra en la pared de arriba, donde el ala lo tapa de la luz */
+.plato-superficie::after {
+  content: "";
+  position: absolute;
+  inset: 11.5%;
+  border-radius: 50%;
+  box-shadow:
+    inset 0 7px 10px -5px rgb(60 50 30 / 0.22),
+    inset 0 -2px 3px rgb(255 255 255 / 0.9);
+}
+
+/* Comida: multiply la funde con el plato (lo blanco de la foto desaparece) y una sombra corta la apoya en el hueco.
+   Se mueve un poco con el puntero, como si estuviera más cerca que el plato */
+.plato-comida {
+  mix-blend-mode: multiply;
+  filter: drop-shadow(0 4px 4px rgb(60 40 20 / 0.28)) saturate(1.08);
+  translate: var(--mover-x, 0) var(--mover-y, 0);
+  transition: translate 0.35s ease-out;
+}
+
+/* Anton (letra gruesa y angosta) para el nombre; alojada en el sitio (public/fonts, licencia OFL) */
+@font-face {
+  font-family: "Anton";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/anton-latin.woff2") format("woff2");
+}
+
+/* Etiqueta: un poco ladeada y con una sombra que sigue la forma rasgada del papel. Las medidas de letra van en cqw
+   (ancho del plato), así se ven igual en cualquier tamaño */
+.etiqueta {
+  rotate: var(--giro-etiqueta);
+  filter: drop-shadow(0 5px 6px rgb(40 25 10 / 0.35));
+}
+/* Papel color crema arrugado (relieve hecho con ruido iluminado de lado), con los bordes tostados y rasgado arriba y
+   abajo (clip-path con puntos irregulares) */
+.etiqueta-papel {
+  background-color: #f1dcbc;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='140'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.03' numOctaves='3' seed='4'/%3E%3CfeDiffuseLighting lighting-color='%23fff' surfaceScale='2.5'%3E%3CfeDistantLight azimuth='45' elevation='55'/%3E%3C/feDiffuseLighting%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23a)'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse at center, transparent 50%, rgb(160 100 40 / 0.4) 100%);
+  background-size: cover;
+  background-blend-mode: multiply;
+  clip-path: polygon(0% 2.3%, 5% 1.1%, 10% 4.6%, 15% 0.5%, 20% 3.8%, 25% 2.6%, 30% 0.4%, 35% 3.6%, 40% 0.3%, 45% 3.0%, 50% 0.5%, 55% 0.6%, 60% 3.0%, 65% 5.8%, 70% 0.9%, 75% 1.6%, 80% 4.4%, 85% 6.6%, 90% 4.0%, 95% 2.8%, 100% 6.8%, 100% 99.7%, 95% 94.0%, 90% 98.0%, 85% 99.0%, 80% 99.2%, 75% 97.8%, 70% 94.3%, 65% 98.7%, 60% 95.9%, 55% 95.5%, 50% 97.4%, 45% 96.2%, 40% 99.6%, 35% 99.6%, 30% 98.6%, 25% 95.2%, 20% 97.0%, 15% 97.8%, 10% 95.9%, 5% 96.8%, 0% 97.9%);
+}
+/* Nombre: letras grandes azules gastadas (la máscara de motas les quita puntitos, como tinta vieja) */
+.etiqueta-nombre {
+  font-family: "Anton", "Impact", "Arial Narrow", sans-serif;
+  font-size: 7cqw;
+  line-height: 1;
+  text-transform: uppercase;
+  text-wrap: balance;
+  color: #3a2fc0;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='1' seed='9'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='0 0 0 1 1 1 1 1 1 1 1 1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E") 0 0 / 9cqw;
+}
+/* Cinta adhesiva semitransparente en cada punta */
+.etiqueta-cinta {
+  position: absolute;
+  top: 50%;
+  width: 17%;
+  height: 62%;
+  translate: 0 -50%;
+  background: linear-gradient(100deg, rgb(255 255 255 / 0.8), rgb(240 238 230 / 0.6) 60%, rgb(255 255 255 / 0.75));
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.15);
+}
+
+/* Brillo de la porcelana: solo sobre el ala (la máscara deja fuera el centro), arriba a la izquierda */
+.plato-brillo {
+  background: radial-gradient(ellipse 45% 30% at 28% 14%, rgb(255 255 255 / 0.95), transparent 70%);
+  mask: radial-gradient(closest-side, transparent 80%, #000 83%);
+}

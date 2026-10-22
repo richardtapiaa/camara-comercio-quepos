@@ -1,0 +1,20 @@
+/* Quieta (sin JS o con "reducir movimiento"): posada en el cielo, a la derecha, y sin rastro */
+[data-mariposa] {
+  left: 62%;
+  top: 30%;
+}
+[data-mariposa-rastro] {
+  display: none;
+}
+
+/* Aleteo: las alas se cierran y abren encogiendo la imagen a lo ancho, muy rápido */
+@media (prefers-reduced-motion: no-preference) {
+  .mariposa-aletea {
+    animation: mariposa-aletear 0.16s ease-in-out infinite alternate;
+  }
+}
+@keyframes mariposa-aletear {
+  to {
+    scale: 0.55 1;
+  }
+}

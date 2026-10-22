@@ -2,6 +2,7 @@ import * as React from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { cn } from "@/lib/utils";
+import "../../../styles/actividades/linea-tiempo.css";
 
 gsap.registerPlugin(ScrollTrigger);
 

@@ -55,12 +55,4 @@ const posterOptimizado = await getImage({ src: poster, format: "webp", quality: 
   </div>
 </section>
 
-<script>
-  // Con "reducir movimiento" el video se queda quieto en su primer cuadro (se ve el poster)
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    document.querySelectorAll<HTMLVideoElement>("[data-hero-capacitaciones-video]").forEach((video) => {
-      video.removeAttribute("autoplay");
-      video.pause();
-    });
-  }
-</script>
+<script src="../../scripts/capacitaciones/hero-capacitaciones.ts"></script>

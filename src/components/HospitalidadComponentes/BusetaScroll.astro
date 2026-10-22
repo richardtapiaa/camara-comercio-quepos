@@ -1,7 +1,9 @@
 ---
 import furgoneta from "../../assets/imagenes-hospitalidad/furgoneta.webp";
-import HospitalidadScroll from "../Scripts/HospitalidadScripts/HospitalidadScroll.astro";
 import { MagicText } from "../ReactComponentes/QUEPOS/ScrollReveal";
+import "../../styles/hospitalidad/buseta-scroll-animacion.css";
+import "../../styles/compartido/cielo-sol.css";
+import "../../styles/hospitalidad/buseta-scroll.css";
 
 const frase =
   "“Cada viaje a Quepos termina con una sonrisa: aquí cada visitante llega como turista y se va como amigo.”";
@@ -29,9 +31,9 @@ const edificios = [
 ---
 
 <!-- Calle con pasto que llega a unos edificios. La furgoneta entra por la izquierda y avanza por la calle hasta
-     llegar a los edificios mientras se hace scroll (HospitalidadScroll.astro). Arriba, en el cielo, va la frase que
+     llegar a los edificios mientras se hace scroll (scripts/hospitalidad/buseta-scroll-animacion.ts). Arriba, en el cielo, va la frase que
      se llena con el scroll (MagicText), igual que en LapasJS.astro. Las alturas de la calle y del pasto
-     están en variables (--calle, --pasto-*) en el <style> de abajo -->
+     están en variables (--calle, --pasto-*) en styles/hospitalidad/buseta-scroll.css -->
 <section
   data-buseta-scroll
   class="buseta-recuadro relative isolate flex min-h-[60svh] flex-col overflow-hidden bg-[#E8F4FA] md:min-h-[75svh]"
@@ -99,98 +101,4 @@ const edificios = [
   </div>
 </section>
 
-<HospitalidadScroll />
-
-<style>
-  .buseta-recuadro {
-    /* Alturas desde abajo: pasto de abajo, calle y pasto de arriba (los edificios se paran encima) */
-    --pasto-abajo: 1.75rem;
-    --calle: 4.5rem;
-    --pasto-arriba: 1.25rem;
-    container-type: inline-size;
-  }
-  @media (min-width: 768px) {
-    .buseta-recuadro {
-      --pasto-abajo: 2.5rem;
-      --calle: 6.5rem;
-      --pasto-arriba: 1.75rem;
-    }
-  }
-
-  .buseta-pasto-abajo {
-    height: var(--pasto-abajo);
-  }
-  .buseta-calle {
-    bottom: var(--pasto-abajo);
-    height: var(--calle);
-    /* Asfalto con una línea discontinua blanca en el centro */
-    background:
-      repeating-linear-gradient(90deg, #f8fafc 0 2.5rem, transparent 2.5rem 4.5rem) center / 100% 0.3rem no-repeat,
-      #4b5563;
-    box-shadow:
-      inset 0 0.25rem 0 #374151,
-      inset 0 -0.25rem 0 #374151;
-  }
-  .buseta-pasto-arriba {
-    bottom: calc(var(--pasto-abajo) + var(--calle));
-    height: var(--pasto-arriba);
-  }
-  .buseta-edificios {
-    bottom: calc(var(--pasto-abajo) + var(--calle) + var(--pasto-arriba) - 2px);
-  }
-
-  /* Pasto con un borde de hojitas arriba (mismo dibujo que el suelo de LapasJS.astro) */
-  .buseta-pasto {
-    background-color: #6db471;
-  }
-  .buseta-pasto::before {
-    content: "";
-    position: absolute;
-    inset-inline: 0;
-    bottom: calc(100% - 1px);
-    height: 10px;
-    background-color: inherit;
-    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 14'%3E%3Cpath fill='black' d='M0 14Q2 8 3 3Q5 9 7 14Q9 7 12 0Q13 8 15 14Q18 9 20 5Q21 10 23 14Q26 6 29 2Q30 9 32 14Q35 8 37 4Q38 10 40 14Q43 7 46 1Q47 8 49 14Q52 9 54 5Q55 10 57 14Z'/%3E%3C/svg%3E")
-      repeat-x left bottom / 60px 10px;
-  }
-  .buseta-pasto-arriba {
-    background-color: #86c08a;
-  }
-
-  /* La furgoneta va por el carril de abajo. La imagen trae ~23 % de borde transparente abajo: se compensa para que
-     las ruedas pisen el asfalto */
-  .buseta-auto {
-    bottom: calc(var(--pasto-abajo) + var(--calle) * 0.12 - 0.2 * 38cqw);
-  }
-  @media (min-width: 768px) {
-    .buseta-auto {
-      bottom: calc(var(--pasto-abajo) + var(--calle) * 0.12 - 0.2 * 18cqw);
-    }
-  }
-
-  .buseta-recuadro .cielo-sol {
-    filter: drop-shadow(0 0 14px rgb(251 191 36 / 0.45));
-  }
-  .cielo-sol-rayos {
-    transform-origin: 50px 50px;
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .cielo-sol-rayos {
-      animation: sol-girar 60s linear infinite;
-    }
-    .buseta-rebote {
-      animation: buseta-rebotar 0.5s ease-in-out infinite alternate;
-    }
-  }
-  @keyframes sol-girar {
-    to {
-      rotate: 360deg;
-    }
-  }
-  @keyframes buseta-rebotar {
-    to {
-      translate: 0 -2px;
-    }
-  }
-</style>
+<script src="../../scripts/hospitalidad/buseta-scroll-animacion.ts"></script>

@@ -1,0 +1,52 @@
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
+// Paneles con sticky nativo: su alto define el "top" con el que se fijan (ver Vision.astro)
+document.querySelectorAll<HTMLElement>("[data-panel-sticky]").forEach((panel) => {
+  new ResizeObserver(() => {
+    panel.style.setProperty("--alto-panel", panel.offsetHeight + "px");
+    ScrollTrigger.refresh();
+  }).observe(panel);
+});
+
+
+const sinReducirMovimiento = "(prefers-reduced-motion: no-preference)";
+
+gsap.matchMedia().add(
+  {
+    escritorio: `(min-width: 768px) and ${sinReducirMovimiento}`,
+    movil: `(max-width: 767px) and ${sinReducirMovimiento}`,
+  },
+  (context) => {
+    const { escritorio } = context.conditions as { escritorio: boolean };
+    const limpiar: Array<() => void> = [];
+
+    gsap.utils.toArray<HTMLElement>(".panel.pinned").forEach((panel) => {
+      if (!escritorio && panel.hasAttribute("data-pin-desktop")) return;
+
+      ScrollTrigger.create({
+        trigger: panel,
+        // Si el panel es más alto que la pantalla, se fija cuando se ve completo hasta su final
+        start: () => (panel.offsetHeight > window.innerHeight ? "bottom bottom" : "top top"),
+        // Panel que se desliza por encima (data-end-pin="#selector"); por defecto, el siguiente hermano
+        endTrigger: (panel.dataset.endPin && document.querySelector<HTMLElement>(panel.dataset.endPin)) ||
+          panel.nextElementSibling ||
+          panel,
+        // Se suelta cuando el panel de encima ya cubre toda la pantalla (su borde superior llega arriba);
+        // antes de eso sigue visible detrás, así no queda un hueco en blanco bajo las esquinas redondeadas
+        end: "top top",
+        pin: true,
+        pinSpacing: false,
+        invalidateOnRefresh: true,
+        onLeave: () => gsap.set(panel, { visibility: "hidden" }),
+        onEnterBack: () => gsap.set(panel, { visibility: "visible" }),
+        id: "pin-" + panel.id,
+      });
+      limpiar.push(() => gsap.set(panel, { clearProps: "visibility" }));
+    });
+
+    return () => limpiar.forEach((fn) => fn());
+  }
+);

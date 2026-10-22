@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 import imagen from "../../assets/imagenes/quepos-foto.webp";
 import mono from "../../assets/imagenes-quepos/mono-sin-fondo.webp";
-import MisionScripts from "../Scripts/home/MisionScripts.astro";
+import "../../styles/home/parallax-imagenes.css";
 ---
 
 <section id="sobre-quepos" class="relative overflow-x-clip bg-white py-16 sm:py-24">
@@ -67,4 +67,4 @@ import MisionScripts from "../Scripts/home/MisionScripts.astro";
   </div>
 </section>
 
-<MisionScripts />
+<script src="../../scripts/home/parallax-imagenes.ts"></script>

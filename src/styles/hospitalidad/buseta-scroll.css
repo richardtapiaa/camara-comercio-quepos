@@ -1,0 +1,76 @@
+.buseta-recuadro {
+  /* Alturas desde abajo: pasto de abajo, calle y pasto de arriba (los edificios se paran encima) */
+  --pasto-abajo: 1.75rem;
+  --calle: 4.5rem;
+  --pasto-arriba: 1.25rem;
+  container-type: inline-size;
+}
+@media (min-width: 768px) {
+  .buseta-recuadro {
+    --pasto-abajo: 2.5rem;
+    --calle: 6.5rem;
+    --pasto-arriba: 1.75rem;
+  }
+}
+
+.buseta-pasto-abajo {
+  height: var(--pasto-abajo);
+}
+.buseta-calle {
+  bottom: var(--pasto-abajo);
+  height: var(--calle);
+  /* Asfalto con una línea discontinua blanca en el centro */
+  background:
+    repeating-linear-gradient(90deg, #f8fafc 0 2.5rem, transparent 2.5rem 4.5rem) center / 100% 0.3rem no-repeat,
+    #4b5563;
+  box-shadow:
+    inset 0 0.25rem 0 #374151,
+    inset 0 -0.25rem 0 #374151;
+}
+.buseta-pasto-arriba {
+  bottom: calc(var(--pasto-abajo) + var(--calle));
+  height: var(--pasto-arriba);
+}
+.buseta-edificios {
+  bottom: calc(var(--pasto-abajo) + var(--calle) + var(--pasto-arriba) - 2px);
+}
+
+/* Pasto con un borde de hojitas arriba (mismo dibujo que el suelo de LapasJS.astro) */
+.buseta-pasto {
+  background-color: #6db471;
+}
+.buseta-pasto::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: calc(100% - 1px);
+  height: 10px;
+  background-color: inherit;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 14'%3E%3Cpath fill='black' d='M0 14Q2 8 3 3Q5 9 7 14Q9 7 12 0Q13 8 15 14Q18 9 20 5Q21 10 23 14Q26 6 29 2Q30 9 32 14Q35 8 37 4Q38 10 40 14Q43 7 46 1Q47 8 49 14Q52 9 54 5Q55 10 57 14Z'/%3E%3C/svg%3E")
+    repeat-x left bottom / 60px 10px;
+}
+.buseta-pasto-arriba {
+  background-color: #86c08a;
+}
+
+/* La furgoneta va por el carril de abajo. La imagen trae ~23 % de borde transparente abajo: se compensa para que
+   las ruedas pisen el asfalto */
+.buseta-auto {
+  bottom: calc(var(--pasto-abajo) + var(--calle) * 0.12 - 0.2 * 38cqw);
+}
+@media (min-width: 768px) {
+  .buseta-auto {
+    bottom: calc(var(--pasto-abajo) + var(--calle) * 0.12 - 0.2 * 18cqw);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .buseta-rebote {
+    animation: buseta-rebotar 0.5s ease-in-out infinite alternate;
+  }
+}
+@keyframes buseta-rebotar {
+  to {
+    translate: 0 -2px;
+  }
+}

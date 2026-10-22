@@ -1,0 +1,46 @@
+/* Pasto con una tira de hojitas arriba (mismo dibujo que el suelo de LapasJS.astro) */
+.mariposa-pasto {
+  background-color: #86c08a;
+}
+.mariposa-pasto::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: calc(100% - 1px);
+  height: 12px;
+  background-color: inherit;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 14'%3E%3Cpath fill='black' d='M0 14Q2 8 3 3Q5 9 7 14Q9 7 12 0Q13 8 15 14Q18 9 20 5Q21 10 23 14Q26 6 29 2Q30 9 32 14Q35 8 37 4Q38 10 40 14Q43 7 46 1Q47 8 49 14Q52 9 54 5Q55 10 57 14Z'/%3E%3C/svg%3E")
+    repeat-x left bottom / 60px 12px;
+}
+
+/* El sol brilla y sus rayos giran; las nubes se mecen de lado a lado */
+.mariposa-sol {
+  filter: drop-shadow(0 0 14px rgb(251 191 36 / 0.45));
+}
+.mariposa-sol-rayos {
+  transform-origin: 50px 50px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .mariposa-sol-rayos {
+    animation: mariposa-sol-girar 60s linear infinite;
+  }
+  .mariposa-nube-lenta {
+    animation: mariposa-nube-mecer 9s ease-in-out infinite alternate;
+  }
+  .mariposa-nube-rapida {
+    animation: mariposa-nube-mecer 6s ease-in-out -2s infinite alternate;
+  }
+}
+@keyframes mariposa-sol-girar {
+  to {
+    rotate: 360deg;
+  }
+}
+@keyframes mariposa-nube-mecer {
+  from {
+    translate: -14px 0;
+  }
+  to {
+    translate: 14px 3px;
+  }
+}

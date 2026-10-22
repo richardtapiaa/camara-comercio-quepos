@@ -1,0 +1,50 @@
+/* Pared de madera cobriza: tonos naranja-cobre con veta vertical irregular y más oscura abajo */
+.recepcion-pared {
+  background-color: #86441f;
+  background-image:
+    linear-gradient(to bottom, rgb(255 200 140 / 0.12), transparent 40%, rgb(30 15 5 / 0.35)),
+    repeating-linear-gradient(
+      90deg,
+      rgb(60 25 5 / 0) 0 5px,
+      rgb(60 25 5 / 0.16) 5px 6px,
+      rgb(255 190 120 / 0.06) 6px 9px,
+      rgb(60 25 5 / 0) 9px 17px,
+      rgb(60 25 5 / 0.1) 17px 19px
+    ),
+    linear-gradient(90deg, #6e3418, #9a5028 20%, #823f1e 45%, #a35a2e 70%, #73361a);
+}
+/* Techo de listones de madera oscura */
+.recepcion-techo {
+  background:
+    linear-gradient(to bottom, transparent 70%, rgb(0 0 0 / 0.45)),
+    repeating-linear-gradient(90deg, #3b2a1c 0 10px, #4a3522 10px 12px, #2e2014 12px 14px),
+    #3b2a1c;
+}
+/* Anillos del candelabro: aro dorado con luz cálida hacia afuera y hacia adentro */
+.anillo {
+  border-radius: 50%;
+  border: clamp(3px, 0.6vw, 7px) solid #e7c27a;
+  box-shadow:
+    0 0 clamp(10px, 2vw, 26px) rgb(255 210 140 / 0.85),
+    inset 0 0 clamp(8px, 1.5vw, 20px) rgb(255 220 160 / 0.7);
+}
+/* Tablero del mostrador: piedra clara con un filo de luz arriba */
+.recepcion-tablero {
+  background: linear-gradient(to bottom, #d8d2c8, #a59d90);
+  box-shadow: 0 2px 0 rgb(0 0 0 / 0.3);
+}
+/* Frente del mostrador: negro cálido con una veta vertical apenas visible y sombra en la base */
+.recepcion-frente {
+  background-color: #17140f;
+  background-image:
+    linear-gradient(to bottom, rgb(255 255 255 / 0.04), transparent 30%, rgb(0 0 0 / 0.35)),
+    repeating-linear-gradient(90deg, transparent 0 22px, rgb(255 255 255 / 0.025) 22px 23px);
+  box-shadow: 0 14px 22px -6px rgb(0 0 0 / 0.5);
+}
+/* Piso de piedra clara, con el reflejo oscuro del mostrador justo debajo */
+.recepcion-piso {
+  background:
+    linear-gradient(to bottom, rgb(23 20 15 / 0.35), transparent 60%),
+    repeating-linear-gradient(90deg, transparent 0 120px, rgb(0 0 0 / 0.06) 120px 121px),
+    linear-gradient(to bottom, #c9bfae, #e4ddd0);
+}

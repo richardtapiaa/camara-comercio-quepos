@@ -9,6 +9,7 @@ import ejemplo from "../../assets/imagenes/seccion-ejemplo.jpg";
 import hero from "../../assets/imagenes/quepos-foto.webp";
 import fondo from "../../assets/imagenes/fondo-inicio-queposx.webp";
 import palmera from "../../assets/imagenes-quepos/palmera-sin-fondo.webp";
+import "../../styles/quepos/galeria-quepos.css";
 
 // Se reutilizan imágenes existentes; reemplazar por fotos de Quepos cuando estén disponibles
 const fuentes = [hero, beneficios, mision, ejemplo, vision, checkout, fondo, hero, beneficios, mision, ejemplo, vision];
@@ -120,15 +121,3 @@ const items = await Promise.all(
     </a>
   </div>
 </section>
-    
-<style>
-  .arena {
-    
-    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320' preserveAspectRatio='none'%3E%3Cpath d='M0 70C240 20 480 110 720 70S1200 30 1440 60V320H0Z'/%3E%3C/svg%3E");
-    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320' preserveAspectRatio='none'%3E%3Cpath d='M0 70C240 20 480 110 720 70S1200 30 1440 60V320H0Z'/%3E%3C/svg%3E");
-    -webkit-mask-size: 100% 100%;
-    mask-size: 100% 100%;
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-  }
-</style>

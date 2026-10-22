@@ -3,6 +3,7 @@ import { Image } from "astro:assets";
 import { CookingPot, Croissant, Fish, Salad, Soup, Utensils, UtensilsCrossed } from "lucide-react";
 import imagen from "../../assets/imagenes-hospitalidad/mercado-municipal.jpg";
 import gorroChef from "../../assets/imagenes-hospitalidad/chef.webp";
+import "../../styles/gastronomia/info-gastronomia.css";
 
 const platillos = [
   { titulo: "Gallo pinto", detalle: "El desayuno tradicional costarricense.", Icono: CookingPot },
@@ -231,93 +232,3 @@ const dibujos = [
     </div>
   </div>
 </section>
-
-
-<style>
-  /* Carta de restaurante: papel marfil con una textura muy suave, doble marco azul (borde fino afuera y otro
-     adentro, separados por un filete de papel) y sombra, como una carta apoyada sobre el mantel */
-  .carta {
-    background-color: #fffdf7;
-    background-image: radial-gradient(rgb(120 90 40 / 0.05) 1px, transparent 1px);
-    background-size: 6px 6px;
-    border: 2px solid rgb(39 128 201 / 0.55);
-    box-shadow:
-      inset 0 0 0 5px #fffdf7,
-      inset 0 0 0 6px rgb(39 128 201 / 0.35),
-      0 14px 30px -14px rgb(16 42 67 / 0.4);
-  }
-  /* Dibujos de comida de la carta, en el azul del sitio */
-  .carta-dibujo {
-    color: #2780c9;
-  }
-  .carta-seccion {
-    font-family: "Caveat", "Comic Sans MS", cursive;
-    font-weight: 700;
-  }
-
-  /* Caveat (letra a mano) para el letrero de tiza; alojada en el sitio (public/fonts, licencia OFL) */
-  @font-face {
-    font-family: "Caveat";
-    font-style: normal;
-    font-weight: 700;
-    font-display: swap;
-    src: url("/fonts/caveat-bold-latin.woff2") format("woff2");
-  }
-
-  /* Madera: tonos café con vetas finas a lo largo y un brillo suave arriba */
-  .marco-madera {
-    background-color: #8a5a32;
-    background-image:
-      linear-gradient(to bottom, rgb(255 255 255 / 0.12), transparent 40%, rgb(0 0 0 / 0.15)),
-      repeating-linear-gradient(
-        92deg,
-        rgb(60 35 15 / 0) 0 6px,
-        rgb(60 35 15 / 0.18) 6px 7px,
-        rgb(60 35 15 / 0) 7px 15px,
-        rgb(255 230 190 / 0.08) 15px 17px
-      ),
-      linear-gradient(90deg, #7a4b26, #9a6a3c 30%, #845530 60%, #a0703f);
-  }
-
-  /* Superficie de la mesa: inclinada hacia atrás desde su borde de abajo (que se une con el canto), así se ve
-     como un tablero visto un poco desde arriba. La perspectiva va en cqw (ancho de la mesa) para que la inclinación
-     se vea igual en cualquier tamaño de pantalla */
-  .mesa-tablero {
-    transform: perspective(200cqw) rotateX(38deg);
-    transform-origin: bottom center;
-    box-shadow: 0 2px 0 rgb(0 0 0 / 0.15);
-  }
-  /* Canto y patas: la misma madera, más oscura por estar a la sombra del tablero */
-  .mesa-canto {
-    box-shadow:
-      inset 0 2px 0 rgb(255 255 255 / 0.15),
-      0 6px 10px -4px rgb(40 25 10 / 0.5);
-  }
-  .mesa-pata {
-    filter: brightness(0.75);
-    border-radius: 0 0 3px 3px;
-  }
-
-  /* Letrero de pizarra: verde oscuro casi negro con manchas de tiza borrada, borde de madera y letra de tiza */
-  .pizarra-tiza {
-    font-family: "Caveat", "Comic Sans MS", cursive;
-    font-weight: 700;
-    color: rgb(255 255 255 / 0.92);
-    text-shadow: 0 0 1px rgb(255 255 255 / 0.6);
-    background-color: #24312b;
-    background-image:
-      radial-gradient(ellipse at 30% 40%, rgb(255 255 255 / 0.07), transparent 60%),
-      radial-gradient(ellipse at 75% 70%, rgb(255 255 255 / 0.05), transparent 55%);
-    border: 4px solid #8a5a32;
-    box-shadow: 0 8px 18px -8px rgb(0 0 0 / 0.5);
-  }
-
-  /* Gorro sobre la G: su base queda apenas metida en la parte de arriba de la letra, ladeado como puesto con gracia */
-  .gorro-chef {
-    bottom: 0.82em;
-    translate: -62% 0;
-    rotate: -22deg;
-    filter: drop-shadow(0 0.05em 0.08em rgb(16 42 67 / 0.35));
-  }
-
-</style>

@@ -1,0 +1,6 @@
+@media (min-width: 1024px) {
+  .avancemos-panel {
+    margin-left: calc((100vw - 100%) / -2 - 2.5rem);
+    width: calc(100% + (100vw - 100%) / 2 + 2.5rem);
+  }
+}

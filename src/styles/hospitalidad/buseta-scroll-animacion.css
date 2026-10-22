@@ -1,0 +1,46 @@
+/* Quieta (sin animación o con "reducir movimiento"): estacionada al final de la carretera */
+[data-buseta] {
+  left: var(--buseta-fin);
+}
+[data-buseta-scroll] {
+  /* Dónde se estaciona la furgoneta: al final de la carretera, pegada al borde derecho sin salirse (mide 38 % del
+     ancho en celular y 18 % en escritorio), dejando un pequeño espacio */
+  --buseta-fin: calc(100cqw - 38cqw - 2cqw);
+}
+@media (min-width: 768px) {
+  [data-buseta-scroll] {
+    --buseta-fin: calc(100cqw - 18cqw - 2cqw);
+  }
+}
+
+/* Viaje con scroll-driven animations: lo mueve el navegador junto con el scroll, sin esperar a JS (mismo enfoque
+   que KayakJs.astro). Sin soporte (Firefox, Safari < 26) se usa GSAP abajo */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    [data-buseta-scroll] {
+      view-timeline-name: --buseta-viaje;
+    }
+    [data-buseta] {
+      left: 0;
+      animation-name: buseta-viaje;
+      /* Lineal para que avance al mismo ritmo que el scroll */
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: --buseta-viaje;
+      /* Todo el tiempo que el recuadro está en pantalla, como el kayak: entra cuando el recuadro empieza a
+         aparecer y termina de salir cuando el recuadro se va por arriba */
+      animation-range: cover 0% cover 100%;
+    }
+  }
+}
+
+/* Entra desde fuera de la pantalla por la izquierda, recorre la carretera y sigue de largo hasta desaparecer
+   por la derecha */
+@keyframes buseta-viaje {
+  from {
+    translate: -110% 0;
+  }
+  to {
+    translate: 100cqw 0;
+  }
+}

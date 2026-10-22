@@ -2,6 +2,8 @@
 import kayak from "../../assets/imagenes/kayak-sin-fondo.webp";
 import KayakJs from "../Quepos-Componentes/KayakJs.astro";
 import { MagicText } from "../ReactComponentes/QUEPOS/ScrollReveal";
+import "../../styles/compartido/cielo-sol.css";
+import "../../styles/actividades/kayak-scroll.css";
 
 const frase =
   "“Entre manglares, ríos y mar abierto, en Quepos cada remada te acerca a la naturaleza del Pacífico Central.”";
@@ -94,96 +96,3 @@ const frase =
 </section>
 
 <KayakJs />
-
-<style>
- 
-  .kayak-recuadro {
-    container-type: inline-size;
-  }
-
-  .kayak-flotando {
-    bottom: calc(19% - 0.43 * 60cqw);
-  }
-  @media (min-width: 768px) {
-    .kayak-flotando {
-      bottom: calc(19% - 0.43 * 32cqw);
-    }
-  }
-  .kayak-balanceo {
-    clip-path: inset(0 0 43% 0);
-  }
-
-  /* Sol con un halo cálido */
-  .cielo-sol {
-    filter: drop-shadow(0 0 14px rgb(251 191 36 / 0.45));
-  }
-  .cielo-sol-rayos {
-    transform-origin: 50px 50px;
-  }
-
-  /* Nubes con un borde celeste muy suave para que no se pierdan en el cielo claro */
-  .cielo-nube svg {
-    filter: drop-shadow(0 4px 6px rgb(110 170 205 / 0.18));
-  }
-
-  /* El agua se mece de lado a lado y el kayak sube, baja y se inclina un poco con ella */
-  @media (prefers-reduced-motion: no-preference) {
-    .agua-ola {
-      animation: agua-mecer ease-in-out infinite alternate;
-    }
-    .agua-ola-frente {
-      animation-duration: 4.5s;
-      animation-delay: -3s;
-    }
-    .kayak-balanceo {
-      animation: kayak-balanceo 3.2s ease-in-out infinite alternate;
-    }
-    /* El sol "respira" despacio y las nubes van a la deriva, cada una a su ritmo */
-    .cielo-sol-rayos {
-      animation: sol-girar 60s linear infinite;
-    }
-    .cielo-deriva-lenta {
-      animation: cielo-deriva 16s ease-in-out infinite alternate;
-    }
-    .cielo-deriva-media {
-      animation: cielo-deriva 12s ease-in-out -4s infinite alternate;
-    }
-    .cielo-deriva-rapida {
-      animation: cielo-deriva 10s ease-in-out -7s infinite alternate;
-    }
-  }
-
-  @keyframes sol-girar {
-    to {
-      rotate: 360deg;
-    }
-  }
-
-
-  @keyframes cielo-deriva {
-    from {
-      translate: -14px 0;
-    }
-    to {
-      translate: 14px -3px;
-    }
-  }
-
-  @keyframes agua-mecer {
-    from {
-      translate: -40px 0;
-    }
-    to {
-      translate: 40px 6px;
-    }
-  }
-
-  @keyframes kayak-balanceo {
-    from {
-      transform: translateY(-4px) rotate(-1.5deg);
-    }
-    to {
-      transform: translateY(4px) rotate(1.5deg);
-    }
-  }
-</style>

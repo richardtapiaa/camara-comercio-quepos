@@ -1,0 +1,110 @@
+.hero-isla {
+  /* Para medir el recuadro y el título en % del hero (cqw / cqh) */
+  container-type: size;
+}
+
+/* --foco-x: punto de la foto que queda al centro. En celular, que recorta los costados, se centra en la isla */
+.hero-isla-recuadro {
+  --foco-x: 46.7%;
+  translate: calc(-1 * var(--foco-x)) 0;
+}
+@media (min-width: 768px) {
+  .hero-isla-recuadro {
+    --foco-x: 50%;
+  }
+}
+
+/* Tamaño del título: 15 % del ancho de la foto (que es max(100cqw, 150cqh)), sin pasar del 22 % del ancho de la
+   pantalla (en celular "QUEPOS" ocupa así casi todo el ancho). */
+.hero-isla-titulo {
+  font-size: min(22cqw, max(15cqw, 22.5cqh));
+  white-space: nowrap;
+}
+.hero-isla-quepos {
+  /* Letra gruesa con remates, como la del letrero */
+  font-family: "Alfa Slab One", "Arial Black", Poppins, serif;
+  font-weight: 400;
+  line-height: 0.85;
+  letter-spacing: 0.04em;
+  /* Esta letra es más ancha que Arial Black: en pantallas angostas se limita a 18,5 % del ancho del hero para que
+     "QUEPOS" quepa entero (en escritorio queda igual, 1em) */
+  font-size: min(1em, 18.5cqw);
+}
+/* Cada letra: el mural recortado por la forma de la letra (background-clip: text), un borde de su color y el
+   volumen con sombras escalonadas del color del canto hacia abajo a la derecha, más una sombra suave final.
+   Las sombras van en filter (drop-shadow), no en text-shadow, porque text-shadow se pinta encima del mural */
+.hero-isla-letra {
+  display: inline-block;
+  background-image: var(--textura);
+  background-size: cover;
+  background-position: center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: 0.022em var(--borde);
+  filter: drop-shadow(0.012em 0.012em 0 var(--canto)) drop-shadow(0.012em 0.012em 0 var(--canto))
+    drop-shadow(0.012em 0.012em 0 var(--canto)) drop-shadow(0 0.04em 0.06em rgb(16 42 67 / 0.35));
+}
+
+/* Entrada: la foto aparece y luego el título sube y aparece */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-isla-foto {
+    animation: hero-isla-aparece 1s ease-out both;
+  }
+  .hero-isla-entrada {
+    animation: hero-isla-sube 1s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+  }
+}
+@keyframes hero-isla-aparece {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes hero-isla-sube {
+  from {
+    opacity: 0;
+    translate: 0 40px;
+  }
+}
+
+/* Al hacer scroll el título baja hasta quedar entero bajo el horizonte, escondido detrás de la isla y el mar.
+   --bajada es cuánto baja, en % del alto del título: en celular más, porque ahí el título está más arriba de la
+   isla. Usa transform (y no translate, que ya centra el contenedor). Va con scroll-driven animations: el
+   navegador lo mueve junto con el scroll; sin soporte (Firefox, Safari < 26) se usa GSAP abajo */
+.hero-isla-titulo {
+  --bajada: 210%;
+}
+@media (min-width: 768px) {
+  .hero-isla-titulo {
+    --bajada: 145%;
+  }
+}
+/* No se anima transform directamente: Chrome mandaría esa animación a la GPU, con el título en su propia capa, y
+   al hacer scroll rápido el título se alcanzaba a ver un instante POR DELANTE de la isla (las capas se reacomodan
+   tarde). Se anima un número (--hero-isla-progreso, de 0 a 1) y el transform se calcula con él: así el título se
+   dibuja junto con la foto y la isla siempre queda encima */
+@property --hero-isla-progreso {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-isla {
+      view-timeline-name: --hero-isla;
+    }
+    .hero-isla-titulo {
+      transform: translateY(calc(var(--hero-isla-progreso) * var(--bajada)));
+      animation: hero-isla-esconde linear both;
+      animation-timeline: --hero-isla;
+      /* El hero arranca ocupando la pantalla: termina de esconderse cuando se ha hecho scroll del 85 % de su
+         alto, así baja despacio */
+      animation-range: exit 0% exit 85%;
+    }
+  }
+}
+@keyframes hero-isla-esconde {
+  to {
+    --hero-isla-progreso: 1;
+  }
+}
