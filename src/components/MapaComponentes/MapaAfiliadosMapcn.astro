@@ -1,0 +1,42 @@
+---
+import { getCollection, getEntry } from "astro:content";
+import MapaAfiliadosMapcn from "@/components/ReactComponentes/MAPA/MapaAfiliadosMapcn";
+import { optimizarImagen } from "@/lib/imagenes";
+
+// Alto del logo en el mapa (h-12 menos el padding), al doble para pantallas retina
+const ALTO_LOGO = 36 * 2;
+// Ancho de la foto en la tarjeta (420 px), al doble para pantallas retina
+const ANCHO_FOTO = 420 * 2;
+
+// Salen los afiliados de src/data/mapa-afiliados.yaml, con sus datos de src/data/afiliados.yaml (mismo id)
+const afiliados = await Promise.all(
+  (await getCollection("mapaAfiliados")).map(async ({ id, data: mapa }) => {
+    const afiliado = await getEntry("afiliados", id);
+    if (!afiliado) throw new Error(`"${id}" está en mapa-afiliados.yaml pero no existe en afiliados.yaml`);
+    const { data } = afiliado;
+    return {
+      id,
+      nombre: data.nombre,
+      categoria: data.categoria,
+      descripcion: data.descripcion,
+      logo: {
+        src: await optimizarImagen(data.logo, Math.ceil((ALTO_LOGO * data.logo.width) / data.logo.height)),
+        ancho: data.logo.width,
+        alto: data.logo.height,
+      },
+      foto: mapa.foto && (await optimizarImagen(mapa.foto, ANCHO_FOTO)),
+      info: mapa.info,
+      web: data.web,
+      facebook: data.facebook,
+      instagram: data.instagram,
+      lat: mapa.ubicacion.lat,
+      lng: mapa.ubicacion.lng,
+    };
+  }),
+);
+---
+
+<!-- relative z-0: los controles del mapa no quedan por encima del navbar ni de los menús -->
+<div class="relative z-0 h-dvh min-h-[480px] w-full overflow-hidden">
+  <MapaAfiliadosMapcn client:only="react" afiliados={afiliados} />
+</div>

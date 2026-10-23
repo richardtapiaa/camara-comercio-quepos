@@ -6,6 +6,7 @@
 # - descripcion, telefonos, whatsapp, correo, web, facebook e instagram son opcionales: si no se tienen, se borra
 #   la línea
 # - web, facebook e instagram van con https:// adelante (ej. facebook: https://www.facebook.com/nombre)
+# - Para que salga en el mapa de afiliados, agrégalo también en src/data/mapa-afiliados.yaml (ubicación y foto)
 
 - id: chasing-adventures-tours
   nombre: Chasing Adventures
