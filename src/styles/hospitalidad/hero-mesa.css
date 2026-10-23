@@ -19,9 +19,9 @@
 }
 
 .hero-mesa-rotulo {
-  font-size: min(10cqw, 9cqh, 5.25rem);
+  font-size: min(14cqw, 12cqh, 7.5rem);
   --giro: -14deg;
-  transform: translateY(-50%);
+  transform: translateY(15%);
   transform-origin: 0.2em 50%;
   rotate: var(--giro);
   filter: drop-shadow(0 8px 10px rgb(0 0 0 / 0.4));
@@ -90,10 +90,10 @@
 
 @media (max-width: 640px) {
   .hero-mesa-rotulo {
-    top: 40%;
+    top: 48%;
     left: 4%;
     max-width: 92%;
-    font-size: 9.5cqw;
+    font-size: 13cqw;
     --giro: -9deg;
   }
 }

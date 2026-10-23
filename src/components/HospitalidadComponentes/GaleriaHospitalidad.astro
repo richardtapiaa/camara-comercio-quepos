@@ -27,86 +27,11 @@ const imagenes = await Promise.all(
 
 ---
 
-<section id="galeria-hospitalidad">
-  <div class="recepcion relative isolate w-full overflow-hidden">
-    <div class="recepcion-pared absolute inset-0 -z-20" aria-hidden="true"></div>
-    <div class="recepcion-techo absolute inset-x-0 top-0 -z-10 h-[clamp(28px,4vw,48px)]" aria-hidden="true"></div>
-    <div class="pointer-events-none absolute left-1/2 top-0 -z-10 h-[70%] w-[90%] -translate-x-1/2 bg-[radial-gradient(ellipse_at_50%_25%,rgb(255_214_150/0.45),transparent_65%)]" aria-hidden="true"></div>
-
-    <div class="pointer-events-none absolute left-1/2 top-[clamp(28px,4vw,48px)] w-[min(56%,560px)] -translate-x-1/2" aria-hidden="true">
-      <span class="absolute left-[30%] top-0 h-[clamp(14px,2.5vw,30px)] w-px bg-neutral-800/70"></span>
-      <span class="absolute right-[30%] top-0 h-[clamp(14px,2.5vw,30px)] w-px bg-neutral-800/70"></span>
-      <div class="relative mx-auto mt-[clamp(14px,2.5vw,30px)] aspect-[100/30] w-full">
-        <span class="anillo absolute inset-x-0 top-0 h-[44%]"></span>
-        <span class="anillo absolute inset-x-[16%] top-[38%] h-[34%]"></span>
-        <span class="anillo absolute inset-x-[10%] top-[64%] h-[36%]"></span>
-      </div>
+<section id="galeria-hospitalidad" class="hospitalidad-galeria">
+  <div class="hospitalidad-galeria-contenido">
+    <h2 class="hospitalidad-galeria-titulo">Experiencias populares</h2>
+    <div class="hospitalidad-galeria-carrusel">
+      <ImagenesHoteles client:visible imagenes={imagenes} enMostrador />
     </div>
-
-    <div class="h-[clamp(190px,30vw,400px)]" aria-hidden="true"></div>
-
-    <div class="relative mx-3 md:mx-[6%]">
-      <svg class="pointer-events-none absolute bottom-full left-[5%] w-[clamp(54px,9vw,110px)]" viewBox="0 0 100 120" aria-hidden="true">
-        <g fill="#5f7a3a">
-          <path d="M50 92C46 70 36 52 22 40" stroke="#5f7a3a" stroke-width="2.5" fill="none" />
-          <path d="M50 92C54 66 64 48 80 36" stroke="#5f7a3a" stroke-width="2.5" fill="none" />
-          <path d="M50 92C50 64 48 42 52 20" stroke="#5f7a3a" stroke-width="2.5" fill="none" />
-          <ellipse cx="34" cy="62" rx="8" ry="3.5" transform="rotate(-30 34 62)" />
-          <ellipse cx="68" cy="58" rx="8" ry="3.5" transform="rotate(30 68 58)" />
-        </g>
-        <g>
-          <circle cx="22" cy="38" r="9" fill="#e88aa0" /><circle cx="15" cy="30" r="7" fill="#f2a7b8" /><circle cx="28" cy="27" r="6" fill="#d96d88" />
-          <circle cx="80" cy="34" r="9" fill="#e88aa0" /><circle cx="88" cy="26" r="6" fill="#f2a7b8" /><circle cx="72" cy="24" r="7" fill="#d96d88" />
-          <circle cx="52" cy="18" r="9" fill="#f2a7b8" /><circle cx="44" cy="10" r="6" fill="#d96d88" /><circle cx="60" cy="9" r="7" fill="#e88aa0" />
-          <circle cx="38" cy="48" r="5" fill="#f2a7b8" /><circle cx="66" cy="44" r="5" fill="#d96d88" />
-        </g>
-        <path d="M38 88H62L60 118H40Z" fill="#2b2b2b" />
-        <path d="M42 90H46L45 116H42Z" fill="#ffffff" fill-opacity="0.18" />
-      </svg>
-
-      <svg class="absolute size-0" aria-hidden="true">
-        <defs>
-          <linearGradient id="monitor-carcasa" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="#4a4a4f" />
-            <stop offset="1" stop-color="#1f1f22" />
-          </linearGradient>
-          <linearGradient id="monitor-brazo" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0" stop-color="#2a2a2c" />
-            <stop offset="0.5" stop-color="#55555a" />
-            <stop offset="1" stop-color="#2a2a2c" />
-          </linearGradient>
-          <filter id="monitor-brillo" x="-20%" y="-30%" width="140%" height="160%">
-            <feGaussianBlur stdDeviation="4" />
-          </filter>
-        </defs>
-      </svg>
-        <svg class="pointer-events-none absolute bottom-full left-[34%] w-[clamp(64px,11vw,150px)]" viewBox="0 0 120 96" aria-hidden="true">
-          <rect x="2" y="2" width="116" height="66" rx="5" fill="#bfe3ff" fill-opacity="0.35" filter="url(#monitor-brillo)" />
-          <rect x="4" y="4" width="112" height="62" rx="4" fill="url(#monitor-carcasa)" />
-          <rect x="4" y="4" width="112" height="3" rx="1.5" fill="#ffffff" fill-opacity="0.12" />
-          <rect x="40" y="22" width="40" height="26" rx="3" fill="#000000" fill-opacity="0.18" />
-          <circle cx="60" cy="35" r="4" fill="#ffffff" fill-opacity="0.18" />
-          <path d="M54 66H66L68 88H52Z" fill="url(#monitor-brazo)" />
-          <rect x="36" y="86" width="48" height="8" rx="3" fill="#2a2a2c" />
-          <rect x="36" y="86" width="48" height="2" rx="1" fill="#ffffff" fill-opacity="0.15" />
-        </svg>
-        <svg class="pointer-events-none absolute bottom-full right-[24%] hidden sm:block w-[clamp(64px,11vw,150px)]" viewBox="0 0 120 96" aria-hidden="true">
-          <rect x="2" y="2" width="116" height="66" rx="5" fill="#bfe3ff" fill-opacity="0.35" filter="url(#monitor-brillo)" />
-          <rect x="4" y="4" width="112" height="62" rx="4" fill="url(#monitor-carcasa)" />
-          <rect x="4" y="4" width="112" height="3" rx="1.5" fill="#ffffff" fill-opacity="0.12" />
-          <rect x="40" y="22" width="40" height="26" rx="3" fill="#000000" fill-opacity="0.18" />
-          <circle cx="60" cy="35" r="4" fill="#ffffff" fill-opacity="0.18" />
-          <path d="M54 66H66L68 88H52Z" fill="url(#monitor-brazo)" />
-          <rect x="36" y="86" width="48" height="8" rx="3" fill="#2a2a2c" />
-          <rect x="36" y="86" width="48" height="2" rx="1" fill="#ffffff" fill-opacity="0.15" />
-        </svg>
-
-      <div class="recepcion-tablero h-[clamp(10px,1.4vw,18px)] rounded-t-sm" aria-hidden="true"></div>
-      <div class="recepcion-frente">
-        <ImagenesHoteles client:visible imagenes={imagenes} enMostrador />
-      </div>
-    </div>
-
-    <div class="recepcion-piso h-[clamp(36px,6vw,80px)]" aria-hidden="true"></div>
   </div>
 </section>

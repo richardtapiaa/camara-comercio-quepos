@@ -1,44 +1,175 @@
-.recepcion-pared {
-  background-color: #86441f;
-  background-image:
-    linear-gradient(to bottom, rgb(255 200 140 / 0.12), transparent 40%, rgb(30 15 5 / 0.35)),
-    repeating-linear-gradient(
-      90deg,
-      rgb(60 25 5 / 0) 0 5px,
-      rgb(60 25 5 / 0.16) 5px 6px,
-      rgb(255 190 120 / 0.06) 6px 9px,
-      rgb(60 25 5 / 0) 9px 17px,
-      rgb(60 25 5 / 0.1) 17px 19px
-    ),
-    linear-gradient(90deg, #6e3418, #9a5028 20%, #823f1e 45%, #a35a2e 70%, #73361a);
+.hospitalidad-galeria {
+  background: #ffffff;
+  padding: clamp(2rem, 5vw, 5rem) 0 clamp(3rem, 7vw, 7rem);
 }
-.recepcion-techo {
-  background:
-    linear-gradient(to bottom, transparent 70%, rgb(0 0 0 / 0.45)),
-    repeating-linear-gradient(90deg, #3b2a1c 0 10px, #4a3522 10px 12px, #2e2014 12px 14px),
-    #3b2a1c;
+
+.hospitalidad-galeria-contenido {
+  margin: 0 auto;
+  max-width: 1800px;
 }
-.anillo {
-  border-radius: 50%;
-  border: clamp(3px, 0.6vw, 7px) solid #e7c27a;
-  box-shadow:
-    0 0 clamp(10px, 2vw, 26px) rgb(255 210 140 / 0.85),
-    inset 0 0 clamp(8px, 1.5vw, 20px) rgb(255 220 160 / 0.7);
+
+.hospitalidad-galeria-titulo {
+  margin: 0 clamp(1.5rem, 4vw, 3rem) clamp(1.25rem, 3vw, 2rem);
+  color: #20252b;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.1;
 }
-.recepcion-tablero {
-  background: linear-gradient(to bottom, #d8d2c8, #a59d90);
-  box-shadow: 0 2px 0 rgb(0 0 0 / 0.3);
+
+.hospitalidad-galeria-carrusel [class*="scroll-px-8"] {
+  gap: clamp(1rem, 2vw, 2rem);
+  padding-inline: clamp(1.5rem, 4vw, 3rem);
 }
-.recepcion-frente {
-  background-color: #17140f;
-  background-image:
-    linear-gradient(to bottom, rgb(255 255 255 / 0.04), transparent 30%, rgb(0 0 0 / 0.35)),
-    repeating-linear-gradient(90deg, transparent 0 22px, rgb(255 255 255 / 0.025) 22px 23px);
-  box-shadow: 0 14px 22px -6px rgb(0 0 0 / 0.5);
+
+.hospitalidad-galeria-carrusel > div {
+  position: relative;
 }
-.recepcion-piso {
-  background:
-    linear-gradient(to bottom, rgb(23 20 15 / 0.35), transparent 60%),
-    repeating-linear-gradient(90deg, transparent 0 120px, rgb(0 0 0 / 0.06) 120px 121px),
-    linear-gradient(to bottom, #c9bfae, #e4ddd0);
+
+.hospitalidad-galeria-carrusel div[style*="linear-gradient"] {
+  display: none;
+}
+
+.hospitalidad-galeria-carrusel [class*="scroll-px-8"] > div {
+  position: relative;
+  width: clamp(260px, 31vw, 450px) !important;
+  min-width: clamp(260px, 31vw, 450px) !important;
+  height: clamp(390px, 42vw, 600px) !important;
+  aspect-ratio: auto !important;
+  overflow: hidden;
+  border-radius: 2.5rem;
+  box-shadow: none;
+  background: #dcecf4;
+}
+
+.hospitalidad-galeria-carrusel [class*="scroll-px-8"] > div > button {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.hospitalidad-galeria-carrusel [class*="scroll-px-8"] > div > button::before {
+  position: absolute;
+  z-index: 3;
+  right: 1.5rem;
+  bottom: 4.5rem;
+  left: 1.5rem;
+  color: #ffffff;
+  font-size: clamp(1rem, 1.5vw, 1.35rem);
+  font-weight: 700;
+  line-height: 1.15;
+  text-align: left;
+  text-shadow: 0 2px 8px rgb(0 0 0 / 0.45);
+}
+
+.hospitalidad-galeria-carrusel [class*="scroll-px-8"] > div > button::after {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to top, rgb(0 0 0 / 0.72), transparent 48%);
+  content: "";
+}
+
+.hospitalidad-galeria-carrusel [class*="scroll-px-8"] > div::before {
+  position: absolute;
+  z-index: 4;
+  right: 1.5rem;
+  bottom: 1.35rem;
+  left: 1.5rem;
+  color: #dcff4f;
+  font-size: 0.95rem;
+  font-style: italic;
+  font-weight: 600;
+  content: "Quepos, Costa Rica";
+}
+
+.hospitalidad-galeria-carrusel [class*="scroll-px-8"] > div:nth-child(6n + 1) > button::before { content: "Habitación y descanso"; }
+.hospitalidad-galeria-carrusel [class*="scroll-px-8"] > div:nth-child(6n + 2) > button::before { content: "Piscinas frente al mar"; }
+.hospitalidad-galeria-carrusel [class*="scroll-px-8"] > div:nth-child(6n + 3) > button::before { content: "Villas rodeadas de naturaleza"; }
+.hospitalidad-galeria-carrusel [class*="scroll-px-8"] > div:nth-child(6n + 4) > button::before { content: "Sabores locales"; }
+.hospitalidad-galeria-carrusel [class*="scroll-px-8"] > div:nth-child(6n + 5) > button::before { content: "Comercio de Quepos"; }
+.hospitalidad-galeria-carrusel [class*="scroll-px-8"] > div:nth-child(6n) > button::before { content: "Malecón y atardeceres"; }
+
+.hospitalidad-galeria-carrusel [class*="scroll-px-8"] > div > button img {
+  border-radius: inherit;
+}
+
+.hospitalidad-galeria-carrusel [class*="scroll-px-8"] + div {
+  margin-inline: clamp(1.5rem, 4vw, 3rem);
+}
+
+.hospitalidad-galeria-carrusel div[class*="flex-col"] > div:last-child {
+  display: flex !important;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin: 1rem clamp(1.5rem, 4vw, 3rem) 0;
+  position: relative;
+  z-index: 20;
+}
+
+.hospitalidad-galeria-carrusel div[class*="flex-col"] > div:last-child button {
+  display: flex !important;
+  width: 2.75rem;
+  height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #8bd7e3;
+  border-radius: 999px;
+  background: #9cdeea;
+  color: #163746;
+  opacity: 1;
+}
+
+@media (min-width: 768px) {
+  .hospitalidad-galeria-carrusel [class*="scroll-px-8"] {
+    scroll-snap-type: x mandatory;
+  }
+}
+
+@media (max-width: 767px) {
+  .hospitalidad-galeria {
+    padding: 3.5rem 0 4.5rem;
+  }
+
+  .hospitalidad-galeria-titulo {
+    margin-bottom: 1.5rem;
+    font-size: 1.55rem;
+  }
+
+  .hospitalidad-galeria-carrusel [class*="scroll-px-8"] {
+    gap: 1rem;
+    padding-inline: 1.5rem;
+    scroll-padding-inline: 1.5rem;
+  }
+
+  .hospitalidad-galeria-carrusel [class*="scroll-px-8"] > div {
+    width: min(70vw, 18rem) !important;
+    min-width: min(70vw, 18rem) !important;
+    height: min(91vw, 25rem) !important;
+    border-radius: 2rem;
+  }
+
+  .hospitalidad-galeria-carrusel [class*="scroll-px-8"] > div > button::before {
+    right: 1.25rem;
+    bottom: 4.25rem;
+    left: 1.25rem;
+    font-size: 1rem;
+  }
+
+  .hospitalidad-galeria-carrusel [class*="scroll-px-8"] > div::before {
+    right: 1.25rem;
+    bottom: 1.25rem;
+    left: 1.25rem;
+    font-size: 0.85rem;
+  }
+
+  .hospitalidad-galeria-carrusel [class*="scroll-px-8"] + div {
+    margin: 0;
+  }
+
+  .hospitalidad-galeria-carrusel [class*="scroll-px-8"] + div button {
+    margin: 0;
+  }
+
 }
