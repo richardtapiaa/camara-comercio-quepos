@@ -1,10 +1,10 @@
 ---
 import { Image } from "astro:assets";
-import arrozCamarones from "../../assets/gastronomia/platos/arroz-con-camaroes.webp";
+import arrozCamarones from "../../assets/gastronomia/platos/arroz_con_camarones.webp";
 import casado from "../../assets/gastronomia/platos/casado.webp";
-import filetePescado from "../../assets/gastronomia/platos/filt-pescado.webp";
-import galloPinto from "../../assets/gastronomia/platos/gallo-pinto.webp";
-import picadillo from "../../assets/gastronomia/platos/picadillos-tortilla.webp";
+import filetePescado from "../../assets/gastronomia/platos/filete_pescado.webp";
+import galloPinto from "../../assets/gastronomia/platos/gallo_pinto.webp";
+import picadillo from "../../assets/gastronomia/platos/picadillos.webp";
 import "../../styles/compartido/etiqueta-papel.css";
 import "../../styles/gastronomia/galeria-comida.css";
 
@@ -59,7 +59,7 @@ const platos = [
       platos.map(({ src, forma, nombre, alt }, i) => (
         <li
           class:list={[
-            "relative aspect-[3/2] [perspective:900px]",
+            "comida-tarjeta relative aspect-[3/2] [perspective:900px]",
             i < 3 ? "md:col-span-2" : "md:col-span-3",
           ]}
           data-plato
@@ -70,10 +70,11 @@ const platos = [
               forma === "redondo" ? "left-1/2 aspect-square -translate-x-1/2" : "inset-x-0",
             ]}
           >
-            <div class="plato-sombra absolute inset-x-[3%] bottom-[-5%] top-[12%] rounded-[50%]" aria-hidden="true"></div>
-            <div class="plato-canto absolute inset-0 translate-y-[3.5%] rounded-[50%]" aria-hidden="true"></div>
-            <div class="plato-superficie absolute inset-0 rounded-[50%]" aria-hidden="true"></div>
-            <div class="plato-comida absolute inset-x-[14%] bottom-[18%] top-[10%]">
+            <div class="plato-sombra absolute inset-x-[12%] bottom-[4%] top-[14%] rounded-[50%]" aria-hidden="true"></div>
+            <div class="plato-canto absolute inset-x-[14%] bottom-[10%] top-[8%] rounded-[50%]" aria-hidden="true"></div>
+            <div class="plato-superficie absolute inset-x-[16%] bottom-[13%] top-[11%] rounded-[50%]" aria-hidden="true"></div>
+            <div class="plato-pañito absolute inset-x-[21%] bottom-[22%] top-[16%] rounded-[45%]" aria-hidden="true"></div>
+            <div class="plato-comida absolute inset-x-[23%] bottom-[25%] top-[18%] overflow-hidden rounded-[38%]">
               <Image
                 src={src}
                 alt={alt}
@@ -84,9 +85,8 @@ const platos = [
                 loading="lazy"
               />
             </div>
-            <div class="plato-brillo pointer-events-none absolute inset-0 rounded-[50%]" aria-hidden="true"></div>
             <div
-              class="etiqueta absolute bottom-[2%] left-1/2 w-[56%] -translate-x-1/2 translate-y-1/3"
+              class="etiqueta absolute bottom-[2%] left-1/2 z-10 w-[56%] -translate-x-1/2 translate-y-1/3"
               style={`--giro-etiqueta: ${i % 2 === 0 ? -4 : 3}deg`}
             >
               <div class="etiqueta-papel px-[14%] py-[5%] text-center">
