@@ -12,11 +12,7 @@ const servicios = [
 ];
 ---
 
-<!-- Dos mitades desde lg: la foto en arco a la izquierda y el texto a la derecha sobre un
-     fondo marfil, con el título en serif dorada, una bajada en negrita, el párrafo, los servicios y un botón que lleva a
-     la galería de hoteles. En celular y tablet, la foto arriba y el texto debajo -->
 <section id="info-hospitalidad" class="bg-[#f9f7f3] lg:grid lg:min-h-[640px] lg:grid-cols-2">
-  <!-- Foto en forma de arco (arriba redondeada como una puerta, abajo recta), centrada en su mitad con aire alrededor -->
   <div class="flex items-center justify-center px-6 pt-14 sm:px-10 lg:px-12 lg:py-16 xl:px-20">
     <div class="relative aspect-[4/5] w-full max-w-[34rem] overflow-hidden rounded-t-[999px] shadow-[0_20px_40px_-24px_rgb(60_40_20/0.45)]">
       <Image
@@ -45,7 +41,6 @@ const servicios = [
         durante la visita al destino.
       </p>
 
-      <!-- Servicios: ícono, nombre en negrita y su descripción, de a dos -->
       <ul class="mt-6 grid gap-x-8 gap-y-3 sm:grid-cols-2">
         {
           servicios.map(({ titulo, detalle, Icono }) => (

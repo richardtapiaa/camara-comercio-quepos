@@ -1,6 +1,4 @@
-/* Franja con el video de Quepos (VideoQuepos.astro) */
 
-/* Playfair Display para el título; alojada en el sitio (public/fonts, licencia OFL) */
 @font-face {
   font-family: "Playfair Display";
   font-style: normal;
@@ -13,8 +11,6 @@
   text-wrap: balance;
 }
 
-/* Los datos van uno encima del otro (misma celda de la grilla, así la caja toma el alto del más largo) y se ve solo
-   el activo, con un fundido */
 .video-quepos-dato {
   opacity: 0;
   visibility: hidden;
@@ -27,7 +23,6 @@
   visibility: visible;
 }
 
-/* Puntos: chicos y transparentes; el activo, blanco */
 .video-quepos-punto {
   width: 0.5rem;
   height: 0.5rem;

@@ -18,7 +18,6 @@ if (!conCss && !sinMovimiento) {
     const scrollTrigger = { trigger: recuadro, start: "top bottom", end: "bottom top", scrub: true };
 
 
-    // Mismo recorrido que el keyframe kayak-remada (misma fórmula y mismos 33 puntos)
     const PUNTOS = 32;
     const punto = (i: number) => {
       const t = i / PUNTOS;

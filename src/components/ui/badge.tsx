@@ -1,7 +1,6 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
-// Etiqueta pequeña (misma API básica que el Badge de shadcn)
 type BadgeProps = React.HTMLAttributes<HTMLSpanElement> & {
   variant?: "default" | "secondary" | "outline";
 };

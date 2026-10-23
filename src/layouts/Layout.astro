@@ -14,10 +14,7 @@ import PiePagina from "../components/home/pie_pagina.astro";
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/webp" href={logo.src} />
 		<link rel="apple-touch-icon" href={logo.src} />
-		<!-- Poppins está alojada en el sitio (public/fonts, ver global.css): se precarga solo la normal, que usa casi
-		     todo el texto; los demás grosores son livianos y se piden al usarse -->
 		<link rel="preload" href="/fonts/poppins-400-latin.woff2" as="font" type="font/woff2" crossorigin>
-		<!-- Lo que una página necesite precargar (ej. la fuente de su portada) -->
 		<slot name="head" />
 		<meta name="generator" content={Astro.generator} />
 		<title>Camara Comercio Quepos.</title>

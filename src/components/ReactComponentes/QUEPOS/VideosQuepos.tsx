@@ -31,7 +31,6 @@ const videoPlayerVariants = cva(
   },
 );
 
-// Un formato del mismo video (ej. WebM y MP4): el navegador usa el primero que puede reproducir
 export interface FuenteVideo {
   src: string;
   type: string;
@@ -167,8 +166,6 @@ const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
         if (Number.isFinite(video.duration)) setDuration(video.duration);
       };
 
-      // El video puede cargar sus metadatos antes de que React se hidrate,
-      // en ese caso "loadedmetadata" ya pasó y la duración quedaría en 0
       if (video.readyState >= 1) {
         handleLoadedMetadata();
         setCurrentTime(video.currentTime);
@@ -294,7 +291,6 @@ const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
         </video>
         {showControls && (
           <>
-            {/* Play/Pause Overlay - Only visible when not playing or on hover */}
             <div
               className={cn(
                 "absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-300",
@@ -317,7 +313,6 @@ const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
               </button>
             </div>
 
-            {/* Controls Bar */}
             <div
               className={cn(
                 "absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent",
@@ -326,7 +321,6 @@ const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
               )}
             >
               <div className="p-4 space-y-3 pointer-events-auto">
-                {/* Progress Bar */}
                 <div className="flex items-center gap-2 text-white text-sm">
                   <span className="min-w-0 text-xs font-mono">
                     {formatTime(currentTime)}
@@ -362,7 +356,6 @@ const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
                   </span>
                 </div>
 
-                {/* Control Buttons */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     {" "}
@@ -480,9 +473,6 @@ const idiomas: { valor: Idioma; texto: string }[] = [
   { valor: "en", texto: "Ver en inglés" },
 ];
 
-// El reproductor con dos botones debajo para elegir el video en español o en inglés. Arranca en español; al
-// cambiar, el reproductor se vuelve a montar (key) con el otro video desde el principio y empieza a reproducirse,
-// porque la persona acaba de tocar el botón
 function VideoQueposIdiomas({ fuentesEs, fuentesEn, autoPlay, ...props }: VideoQueposIdiomasProps) {
   const [idioma, setIdioma] = React.useState<Idioma>("es");
   const [cambiado, setCambiado] = React.useState(false);

@@ -12,7 +12,6 @@ const platillos = [
   { titulo: "Pescado fresco", detalle: "Directo del mar a la mesa.", Icono: Fish },
 ];
 
-// Dibujos de restaurante (línea fina, muy suaves) sobre el mantel, en la franja libre de abajo, debajo de la carta
 const dibujos = [
   { Icono: UtensilsCrossed, clases: "bottom-5 left-6 size-12 -rotate-12 md:bottom-6 md:left-[calc(max(0px,(100vw_-_72rem)/2)+3rem)] md:size-14" },
   { Icono: Croissant, clases: "bottom-6 left-1/2 size-10 -translate-x-1/2 -rotate-[20deg] md:size-12" },
@@ -20,26 +19,15 @@ const dibujos = [
 ];
 ---
 
-<!-- Diseño de InfoHospitalidad.astro en espejo: imagen a la derecha (como una mesa) montada sobre el panel celeste
-     de la izquierda -->
 <section id="info-gastronomia" class="overflow-x-clip bg-white py-16 sm:py-24">
   <div class="mx-auto grid max-w-6xl px-6 md:grid-cols-12">
-    <!-- Foto como una mesa de restaurante (la foto es la superficie de la mesa) y, colgado arriba con dos cordeles,
-         un letrero de pizarra que dice "Pura Vida!" escrito a tiza. Sale del contenedor hacia la derecha pero deja un
-         margen con el borde de la pantalla (igual que el panel a la izquierda), para que el marco se vea entero -->
     <div class="relative z-10 -mr-[max(0px,(100vw_-_72rem)/2)] mb-8 mt-14 md:col-span-4 md:col-start-9 md:row-start-1 md:mt-24 md:self-start">
-      <!-- Letrero de pizarra colgando de dos cordeles, un poco ladeado -->
       <div class="pizarra-letrero absolute -top-14 left-1/2 z-20 -translate-x-1/2 -rotate-3 md:-top-16" aria-hidden="true">
         <span class="absolute -top-5 left-[18%] h-6 w-px rotate-[20deg] bg-[#6b4a2b]"></span>
         <span class="absolute -top-5 right-[18%] h-6 w-px -rotate-[20deg] bg-[#6b4a2b]"></span>
         <span class="pizarra-tiza block whitespace-nowrap rounded-md px-5 py-1.5 text-2xl md:text-3xl">Pura Vida!</span>
       </div>
 
-      <!-- Mesa de madera: la foto es la superficie de la mesa vista desde adelante y un poco desde arriba (inclinada
-           en 3D hacia atrás), con un borde fino de madera alrededor; debajo, el canto grueso del tablero y dos patas,
-           con las sombras: la que el tablero proyecta debajo, la del piso y una bajo cada pata. Al inclinarse, la
-           superficie se ve más baja que el espacio que ocupa (un 27 % del ancho en celular y un 33 % desde md, por la
-           proporción de la foto): el margen negativo de arriba sube la mesa para que quede justo debajo del letrero -->
       <div class="mesa relative -mt-[23%] pb-20 [container-type:inline-size] md:-mt-[29%] md:pb-24">
         <div class="mesa-tablero marco-madera rounded-md p-1.5 md:p-2">
           <div class="relative aspect-[4/3] overflow-hidden rounded-sm md:aspect-[8/7]">
@@ -54,30 +42,19 @@ const dibujos = [
             />
           </div>
         </div>
-        <!-- Canto del tablero, un poco más ancho que la superficie inclinada -->
         <div class="mesa-canto marco-madera relative z-10 -mx-1 h-4 rounded-b-md md:h-5"></div>
-        <!-- Sombra que el tablero proyecta debajo, sobre las patas -->
         <div class="pointer-events-none absolute inset-x-[3%] bottom-14 z-[5] h-6 bg-gradient-to-b from-[rgb(40_25_10/0.45)] to-transparent md:bottom-[4.5rem]" aria-hidden="true"></div>
-        <!-- Patas -->
         <div class="mesa-pata marco-madera absolute bottom-3 left-[9%] h-[4.25rem] w-3.5 md:h-20 md:w-4" aria-hidden="true"></div>
         <div class="mesa-pata marco-madera absolute bottom-3 right-[9%] h-[4.25rem] w-3.5 md:h-20 md:w-4" aria-hidden="true"></div>
-        <!-- Sombras en el piso: general y de contacto bajo cada pata -->
         <div class="absolute inset-x-[2%] bottom-0 h-6 rounded-[50%] bg-[radial-gradient(closest-side,rgb(60_40_20/0.3),transparent)]" aria-hidden="true"></div>
         <div class="absolute bottom-1.5 left-[calc(9%-0.9rem)] h-3 w-14 rounded-[50%] bg-[radial-gradient(closest-side,rgb(40_25_10/0.55),transparent)]" aria-hidden="true"></div>
         <div class="absolute bottom-1.5 right-[calc(9%-0.9rem)] h-3 w-14 rounded-[50%] bg-[radial-gradient(closest-side,rgb(40_25_10/0.55),transparent)]" aria-hidden="true"></div>
       </div>
     </div>
 
-    <!-- Tarjeta celeste (el mantel) con bordes redondeados y sombra suave; adentro va la carta. En celular ocupa todo el ancho de la pantalla (sin
-         esquinas redondeadas); desde md sale del contenedor hasta pegarse al borde izquierdo de la pantalla (sin
-         esquinas redondeadas de ese lado) y a la derecha deja el espacio donde se monta la imagen. A la derecha deja el
-         espacio de la columna donde se monta la imagen -->
     <div
       class="relative isolate -mx-6 overflow-hidden bg-[#E8F4FA] md:mr-0 md:rounded-[2rem] pb-24 pt-12 pl-[calc(max(0px,(100vw_-_72rem)/2)+1.5rem)] pr-6 md:-ml-[calc(max(0px,(100vw_-_72rem)/2)+1.5rem)] md:rounded-l-none md:pl-[calc(max(0px,(100vw_-_72rem)/2)+3rem)] shadow-[0_12px_40px_rgb(100_155_190/0.25)] md:col-span-9 md:col-start-1 md:row-start-1 md:pb-28 md:pt-16 md:pr-[calc(100%/9+2rem)]"
     >
-      <!-- Fondo: pañuelo de tela de cuadros celeste con pliegues, igual que la manta de GaleriaComida.astro (mismo
-           patrón, ondulado con ruido y con luces y sombras en los pliegues). SVG sin viewBox, así los cuadros no se
-           estiran. Detrás, -z-10, junto con los dibujos de restaurante de la franja de abajo -->
       <svg class="pointer-events-none absolute inset-0 -z-10 size-full" aria-hidden="true">
         <defs>
           <pattern id="panuelo-cuadros" width="28" height="28" patternUnits="userSpaceOnUse" patternTransform="rotate(-4)">
@@ -111,12 +88,7 @@ const dibujos = [
         ))
       }
 
-      <!-- La información va como una carta de restaurante apoyada sobre el mantel: papel color marfil con doble marco
-           azul, encabezado centrado con adornos y los platillos como los platos de un menú (nombre, línea de puntos
-           y su ícono en lugar del precio, y la descripción en cursiva debajo) -->
       <div class="carta relative rounded-md px-4 pb-24 pt-9 text-center sm:px-8 md:px-10 md:pb-28 md:pt-12">
-        <!-- Dibujos de comida en línea, como en las cartas impresas: un pescado con limón arriba a la izquierda y una piña
-             abajo a la derecha (debajo de los platillos; la carta tiene más espacio abajo para ella) -->
         <svg
           class="carta-dibujo pointer-events-none absolute left-3 top-3 w-16 rotate-6 sm:left-5 sm:top-5 md:w-24"
           viewBox="0 0 120 84"
@@ -127,7 +99,6 @@ const dibujos = [
           stroke-linejoin="round"
           aria-hidden="true"
         >
-          <!-- Pescado -->
           <path d="M14 38C28 16 68 12 90 38C68 64 28 60 14 38Z" fill="rgb(39 128 201 / 0.1)" />
           <path d="M90 38L112 20L105 38L112 56Z" fill="rgb(39 128 201 / 0.1)" />
           <path d="M50 20C56 8 70 8 76 22" />
@@ -135,7 +106,6 @@ const dibujos = [
           <circle cx="28" cy="34" r="3" fill="currentColor" />
           <path d="M40 24C47 32 47 44 40 52" />
           <path d="M55 30q5 8 0 16M65 28q6 10 0 20M75 31q5 7 0 14" stroke-width="2" />
-          <!-- Rodaja de limón -->
           <circle cx="26" cy="68" r="12" fill="rgb(251 191 36 / 0.25)" />
           <circle cx="26" cy="68" r="8" stroke-width="1.5" />
           <path d="M26 60V76M18 68H34M20.5 62.5l11 11M31.5 62.5l-11 11" stroke-width="1.5" />
@@ -155,13 +125,11 @@ const dibujos = [
               <ellipse cx="40" cy="82" rx="24" ry="34" />
             </clipPath>
           </defs>
-          <!-- Hojas de la corona -->
           <path d="M40 50C34 34 32 20 38 4C42 20 44 34 40 50Z" fill="rgb(39 128 201 / 0.1)" />
           <path d="M38 50C28 40 20 30 16 16C28 24 36 36 38 50Z" fill="rgb(39 128 201 / 0.1)" />
           <path d="M42 50C52 40 60 30 64 16C52 24 44 36 42 50Z" fill="rgb(39 128 201 / 0.1)" />
           <path d="M36 52C26 48 16 46 8 38C20 38 30 42 36 52Z" />
           <path d="M44 52C54 48 64 46 72 38C60 38 50 42 44 52Z" />
-          <!-- Fruta con su cuadriculado en diagonal -->
           <ellipse cx="40" cy="82" rx="24" ry="34" fill="rgb(251 191 36 / 0.25)" />
           <g clip-path="url(#carta-pina)" stroke-width="1.75">
             <path d="M0 52L80 132M0 68L80 148M0 36L80 116M0 20L80 100M0 4L80 84" />
@@ -173,10 +141,6 @@ const dibujos = [
           
         </p>
 
-        <!-- Gorro de chef puesto sobre la "G": va dentro de la letra (en em, así escala con el título) y un poco
-             inclinado. Es decorativo: el título se sigue leyendo "Gastronomía".
-             whitespace-nowrap: sin esto el navegador podía partir la palabra entre la G y "astronomía". El tamaño es
-             fluido para que la palabra entera quepa dentro de la carta en cualquier celular -->
         <h2 class="mt-7 whitespace-nowrap text-[clamp(1.25rem,6.6vw,3rem)] font-bold uppercase leading-tight tracking-tight text-neutral-700">
           <span class="relative inline-block"
             >G<Image
@@ -191,7 +155,6 @@ const dibujos = [
           >astronomía
         </h2>
 
-        <!-- Adorno: línea, rombo y línea -->
         <div class="mx-auto mt-4 flex max-w-[14rem] items-center gap-3 text-[#2780c9]/60" aria-hidden="true">
           <span class="h-px flex-1 bg-current"></span>
           <span class="size-2 rotate-45 border border-current"></span>
@@ -209,7 +172,6 @@ const dibujos = [
           tradiciones de la región.
         </p>
 
-        <!-- Sección del menú, en letra a mano como la pizarra -->
         <p class="carta-seccion mx-auto mt-9 flex max-w-sm items-center justify-center gap-3 text-2xl text-[#2780c9] md:text-3xl">
           <span class="h-px flex-1 bg-[#2780c9]/30"></span>Platos típicos<span class="h-px flex-1 bg-[#2780c9]/30"></span>
         </p>

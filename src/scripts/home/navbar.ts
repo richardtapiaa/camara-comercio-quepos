@@ -4,7 +4,6 @@ const header = document.getElementById("site-header");
 const hero = document.getElementById("hero");
 const toggle = document.getElementById("nav-toggle");
 const menu = document.getElementById("nav-menu");
-// Puede haber varios menús desplegables (Quepos...)
 const dropdowns = Array.from(document.querySelectorAll<HTMLElement>("[data-nav-dropdown]")).map((root) => ({
   root,
   toggle: root.querySelector<HTMLButtonElement>("[data-nav-dropdown-toggle]"),
@@ -26,7 +25,6 @@ const setDropdownOpen = (dropdown: Dropdown, open: boolean, immediate = false) =
   dropdownIcon?.classList.toggle("rotate-180", open);
 
   gsap.killTweensOf(dropdownMenu);
-  // Escritorio: popup simple. Móvil: acordeón animado dentro del panel.
   if (!isMobile() || (!open && immediate)) {
     gsap.set(dropdownMenu, { clearProps: "height,opacity" });
     dropdownMenu.classList.toggle("hidden", !open);
@@ -50,7 +48,6 @@ const setDropdownOpen = (dropdown: Dropdown, open: boolean, immediate = false) =
   }
 };
 
-/* ---------- Menú lateral móvil (timeline GSAP) ---------- */
 let tl: gsap.core.Timeline | null = null;
 let menuOpen = false;
 
@@ -80,10 +77,6 @@ const closeMenu = () => {
   tl?.timeScale(1.3).reverse();
 };
 
-// Solo existe la timeline en móvil; al pasar a escritorio GSAP revierte todos los estilos inline.
-// El menú entra desde la derecha y empuja la página hacia la izquierda (menú "push"): para poder mover la página
-// (barra incluida) sin arrastrar el menú, en móvil el menú y su fondo oscuro se pasan al <body>; en escritorio
-// vuelven a su lugar dentro de la barra, donde son la fila de enlaces
 const mm = gsap.matchMedia();
 mm.add("(max-width: 767px)", () => {
   if (!menu || !overlay) return;
@@ -92,7 +85,6 @@ mm.add("(max-width: 767px)", () => {
   overlay.before(lugarOriginal);
   document.body.append(overlay, menu);
 
-  // Todo lo que se ve de la página (cada hijo del <body> menos el menú, su fondo y lo que no ocupa lugar)
   const pagina = Array.from(document.body.children).filter(
     (el) =>
       el !== menu &&
@@ -106,20 +98,15 @@ mm.add("(max-width: 767px)", () => {
   tl = gsap
     .timeline({
       paused: true,
-      // Al terminar de cerrar se borra el transform de la página: aunque sea 0, un transform cambia cómo se
-      // ubican los elementos fijos de adentro (pin de ScrollTrigger, sticky) y rompería las animaciones
       onReverseComplete: () => {
         gsap.set(pagina, { clearProps: "transform" });
         if (toggle) gsap.set(toggle, { clearProps: "opacity,visibility,transform" });
-        // Si el foco quedó dentro del menú (botón cerrar, Escape), vuelve a la hamburguesa ahora que se ve
         if (menu.contains(document.activeElement)) toggle?.focus({ preventScroll: true });
       },
     })
-    // La hamburguesa se va al abrir (vuelve al cerrar, con el reverse)
     .to(toggle ?? [], { autoAlpha: 0, scale: 0.6, duration: 0.2, ease: "power2.in" }, 0)
     .to(overlay, { autoAlpha: 1, duration: 0.3, ease: "power2.out" }, 0)
     .to(menu, { autoAlpha: 1, duration: 0.01 }, 0)
-    // Menú y página se mueven juntos con una curva suave al arrancar y al frenar
     .to(menu, { xPercent: 0, duration: 0.38, ease: "power3.inOut" }, 0)
     .to(pagina, { x: () => -menu.offsetWidth, duration: 0.38, ease: "power3.inOut" }, 0);
 
@@ -143,7 +130,6 @@ overlay?.addEventListener("click", closeMenu);
 dropdowns.forEach((dropdown) => {
   dropdown.toggle?.addEventListener("click", () => {
     const open = !isOpen(dropdown);
-    // Solo uno abierto a la vez
     if (open) dropdowns.forEach((otro) => otro !== dropdown && setDropdownOpen(otro, false, true));
     setDropdownOpen(dropdown, open);
   });
@@ -179,12 +165,9 @@ const update = () => {
   if (!header) return;
   const y = window.scrollY;
 
-  // El hero puede quedar fijo (pin/sticky), así que su borde no sirve: se usa el inicio de la sección siguiente,
-  // que sigue el flujo normal de la página.
   const heroRef = hero?.parentElement?.classList.contains("pin-spacer")
     ? hero.parentElement
     : hero;
-  // Se saltan <script>/<style>: no ocupan lugar y en desarrollo Astro los deja justo después del Hero
   let siguiente = heroRef?.nextElementSibling ?? null;
   while (siguiente && ["SCRIPT", "STYLE", "TEMPLATE", "LINK"].includes(siguiente.tagName)) {
     siguiente = siguiente.nextElementSibling;

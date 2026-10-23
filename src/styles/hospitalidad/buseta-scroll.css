@@ -1,5 +1,4 @@
 .buseta-recuadro {
-  /* Alturas desde abajo: pasto de abajo, calle y pasto de arriba (los edificios se paran encima) */
   --pasto-abajo: 1.75rem;
   --calle: 4.5rem;
   --pasto-arriba: 1.25rem;
@@ -19,7 +18,6 @@
 .buseta-calle {
   bottom: var(--pasto-abajo);
   height: var(--calle);
-  /* Asfalto con una línea discontinua blanca en el centro */
   background:
     repeating-linear-gradient(90deg, #f8fafc 0 2.5rem, transparent 2.5rem 4.5rem) center / 100% 0.3rem no-repeat,
     #4b5563;
@@ -35,7 +33,6 @@
   bottom: calc(var(--pasto-abajo) + var(--calle) + var(--pasto-arriba) - 2px);
 }
 
-/* Pasto con un borde de hojitas arriba (mismo dibujo que el suelo de LapasJS.astro) */
 .buseta-pasto {
   background-color: #6db471;
 }
@@ -53,8 +50,6 @@
   background-color: #86c08a;
 }
 
-/* La furgoneta va por el carril de abajo. La imagen trae ~23 % de borde transparente abajo: se compensa para que
-   las ruedas pisen el asfalto */
 .buseta-auto {
   bottom: calc(var(--pasto-abajo) + var(--calle) * 0.12 - 0.2 * 38cqw);
 }

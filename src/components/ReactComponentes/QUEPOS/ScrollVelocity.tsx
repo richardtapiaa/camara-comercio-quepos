@@ -28,8 +28,6 @@ export const wrap = (min: number, max: number, v: number) => {
   return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min;
 };
 
-// Definido fuera de VelocityScroll: si se declara dentro, React lo trata como un componente nuevo
-// en cada render y reinicia su estado y su animación.
 function ParallaxText({ children, baseVelocity = 100, className }: ParallaxProps) {
   const baseX = useMotionValue(0);
   const x = useMotionValue("0%");
@@ -81,7 +79,6 @@ function ParallaxText({ children, baseVelocity = 100, className }: ParallaxProps
 
     const nextX = baseX.get() + moveBy;
     baseX.set(nextX);
-    // Se avanza de a un texto completo y se vuelve al inicio sin que se note el salto
     x.set(`${wrap(-100 / repetitionsRef.current, 0, nextX)}%`);
   });
 

@@ -3,7 +3,6 @@ import InformacionBolsa from "./InformacionBolsa.astro";
 import Bolsa from "../ReactComponentes/BOLSAEMPLEO/bolsa.tsx";
 ---
 
-<!-- Panel de Bolsa de empleo (estático) a la izquierda y formulario a la derecha -->
 <main class="relative grid min-h-screen w-full overflow-hidden bg-white pt-24 text-slate-800 lg:grid-cols-[0.88fr_1.12fr] lg:pt-28">
   <InformacionBolsa />
   <Bolsa client:visible />

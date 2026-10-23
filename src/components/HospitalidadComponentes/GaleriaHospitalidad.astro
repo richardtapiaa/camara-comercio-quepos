@@ -9,12 +9,6 @@ import maleconLetras from "../../assets/hospitalidad/malecon-letras.jpg";
 import { variantesGaleria } from "../../lib/imagenes";
 import "../../styles/hospitalidad/galeria-hospitalidad.css";
 
-// Fotos provisionales de Wikimedia Commons; reemplazar por fotos propias cuando estén disponibles. Sus licencias
-// (CC BY / CC BY-SA) piden dar crédito al autor si se publican:
-//   hotel-piscina.jpg      Andrei Konovalenko, CC BY-SA 4.0 — commons.wikimedia.org/wiki/File:Makanda_by_the_Sea_infinity_pool.jpg
-//   hotel-villa-teca.jpg   Erick Hidalgo, CC BY 3.0 — commons.wikimedia.org/wiki/File:Villa_Teca_Hotel_Manuel_Antonio_Costa_Rica_-_panoramio.jpg
-//   mercado-municipal.jpg  Axxis10, CC BY-SA 4.0 — commons.wikimedia.org/wiki/File:Mercado_municipal_de_Quepos-_Costa_Rica.jpg
-//   centro-comercio.jpg y malecon-letras.jpg  Hanay, CC BY-SA 4.0 — "Quepos City, the head city in Quepos district" (8) y (5)
 const fotos = [
   { id: "habitacion", imagen: hotelHabitacion, alt: "Habitación de hotel en Quepos" },
   { id: "piscina", imagen: hotelPiscina, alt: "Piscina infinita del hotel Makanda by the Sea, Manuel Antonio" },
@@ -24,10 +18,8 @@ const fotos = [
   { id: "malecon", imagen: maleconLetras, alt: "Letras de Quepos en el malecón" },
 ];
 
-// El visor amplía la foto, así que se pide más ancha que la tarjeta; las tarjetas usan miniaturas
 const imagenes = await Promise.all(
   fotos.map(async ({ id, imagen, alt }) => {
-    // Versión grande (1600 px) para ampliar y miniaturas de 360/600/900 px para las tarjetas
     const { src, miniatura, srcSet } = await variantesGaleria(imagen);
     return { id, alt, src, miniatura, srcSet };
   }),
@@ -37,13 +29,10 @@ const imagenes = await Promise.all(
 
 <section id="galeria-hospitalidad">
   <div class="recepcion relative isolate w-full overflow-hidden">
-    <!-- Pared cobriza (de borde a borde) y techo -->
     <div class="recepcion-pared absolute inset-0 -z-20" aria-hidden="true"></div>
     <div class="recepcion-techo absolute inset-x-0 top-0 -z-10 h-[clamp(28px,4vw,48px)]" aria-hidden="true"></div>
-    <!-- Luz cálida del candelabro sobre la pared -->
     <div class="pointer-events-none absolute left-1/2 top-0 -z-10 h-[70%] w-[90%] -translate-x-1/2 bg-[radial-gradient(ellipse_at_50%_25%,rgb(255_214_150/0.45),transparent_65%)]" aria-hidden="true"></div>
 
-    <!-- Candelabro: cables y tres anillos encendidos (vistos un poco desde abajo, por eso son óvalos) -->
     <div class="pointer-events-none absolute left-1/2 top-[clamp(28px,4vw,48px)] w-[min(56%,560px)] -translate-x-1/2" aria-hidden="true">
       <span class="absolute left-[30%] top-0 h-[clamp(14px,2.5vw,30px)] w-px bg-neutral-800/70"></span>
       <span class="absolute right-[30%] top-0 h-[clamp(14px,2.5vw,30px)] w-px bg-neutral-800/70"></span>
@@ -54,12 +43,9 @@ const imagenes = await Promise.all(
       </div>
     </div>
 
-    <!-- Espacio de la pared encima del mostrador (crece con el ancho, así el candelabro entra entero) -->
     <div class="h-[clamp(190px,30vw,400px)]" aria-hidden="true"></div>
 
-    <!-- Mostrador -->
     <div class="relative mx-3 md:mx-[6%]">
-      <!-- Florero con flores sobre el mostrador, a la izquierda -->
       <svg class="pointer-events-none absolute bottom-full left-[5%] w-[clamp(54px,9vw,110px)]" viewBox="0 0 100 120" aria-hidden="true">
         <g fill="#5f7a3a">
           <path d="M50 92C46 70 36 52 22 40" stroke="#5f7a3a" stroke-width="2.5" fill="none" />
@@ -74,12 +60,10 @@ const imagenes = await Promise.all(
           <circle cx="52" cy="18" r="9" fill="#f2a7b8" /><circle cx="44" cy="10" r="6" fill="#d96d88" /><circle cx="60" cy="9" r="7" fill="#e88aa0" />
           <circle cx="38" cy="48" r="5" fill="#f2a7b8" /><circle cx="66" cy="44" r="5" fill="#d96d88" />
         </g>
-        <!-- Florero de vidrio oscuro -->
         <path d="M38 88H62L60 118H40Z" fill="#2b2b2b" />
         <path d="M42 90H46L45 116H42Z" fill="#ffffff" fill-opacity="0.18" />
       </svg>
 
-      <!-- Monitores de la recepción sobre el mostrador, vistos desde atrás (la pantalla mira al recepcionista) -->
       <svg class="absolute size-0" aria-hidden="true">
         <defs>
           <linearGradient id="monitor-carcasa" x1="0" y1="0" x2="1" y2="1">
@@ -97,42 +81,32 @@ const imagenes = await Promise.all(
         </defs>
       </svg>
         <svg class="pointer-events-none absolute bottom-full left-[34%] w-[clamp(64px,11vw,150px)]" viewBox="0 0 120 96" aria-hidden="true">
-          <!-- Brillo de la pantalla (que mira hacia el recepcionista) asomando por los bordes -->
           <rect x="2" y="2" width="116" height="66" rx="5" fill="#bfe3ff" fill-opacity="0.35" filter="url(#monitor-brillo)" />
-          <!-- Parte de atrás del monitor -->
           <rect x="4" y="4" width="112" height="62" rx="4" fill="url(#monitor-carcasa)" />
           <rect x="4" y="4" width="112" height="3" rx="1.5" fill="#ffffff" fill-opacity="0.12" />
-          <!-- Tapa trasera con el logo -->
           <rect x="40" y="22" width="40" height="26" rx="3" fill="#000000" fill-opacity="0.18" />
           <circle cx="60" cy="35" r="4" fill="#ffffff" fill-opacity="0.18" />
-          <!-- Brazo y base -->
           <path d="M54 66H66L68 88H52Z" fill="url(#monitor-brazo)" />
           <rect x="36" y="86" width="48" height="8" rx="3" fill="#2a2a2c" />
           <rect x="36" y="86" width="48" height="2" rx="1" fill="#ffffff" fill-opacity="0.15" />
         </svg>
         <svg class="pointer-events-none absolute bottom-full right-[24%] hidden sm:block w-[clamp(64px,11vw,150px)]" viewBox="0 0 120 96" aria-hidden="true">
-          <!-- Brillo de la pantalla (que mira hacia el recepcionista) asomando por los bordes -->
           <rect x="2" y="2" width="116" height="66" rx="5" fill="#bfe3ff" fill-opacity="0.35" filter="url(#monitor-brillo)" />
-          <!-- Parte de atrás del monitor -->
           <rect x="4" y="4" width="112" height="62" rx="4" fill="url(#monitor-carcasa)" />
           <rect x="4" y="4" width="112" height="3" rx="1.5" fill="#ffffff" fill-opacity="0.12" />
-          <!-- Tapa trasera con el logo -->
           <rect x="40" y="22" width="40" height="26" rx="3" fill="#000000" fill-opacity="0.18" />
           <circle cx="60" cy="35" r="4" fill="#ffffff" fill-opacity="0.18" />
-          <!-- Brazo y base -->
           <path d="M54 66H66L68 88H52Z" fill="url(#monitor-brazo)" />
           <rect x="36" y="86" width="48" height="8" rx="3" fill="#2a2a2c" />
           <rect x="36" y="86" width="48" height="2" rx="1" fill="#ffffff" fill-opacity="0.15" />
         </svg>
 
-      <!-- Tablero del mostrador (piedra clara) y frente oscuro donde pasan las fotos -->
       <div class="recepcion-tablero h-[clamp(10px,1.4vw,18px)] rounded-t-sm" aria-hidden="true"></div>
       <div class="recepcion-frente">
         <ImagenesHoteles client:visible imagenes={imagenes} enMostrador />
       </div>
     </div>
 
-    <!-- Piso de piedra con el reflejo del mostrador -->
     <div class="recepcion-piso h-[clamp(36px,6vw,80px)]" aria-hidden="true"></div>
   </div>
 </section>

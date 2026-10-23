@@ -1,6 +1,5 @@
 const sinMovimiento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-// El video de fondo baja y se reproduce recién cuando la franja se acerca a la pantalla, y se pausa al salir
 document.querySelectorAll<HTMLVideoElement>("[data-video-quepos]").forEach((video) => {
   if (sinMovimiento) return;
   new IntersectionObserver(
@@ -12,7 +11,6 @@ document.querySelectorAll<HTMLVideoElement>("[data-video-quepos]").forEach((vide
   ).observe(video);
 });
 
-// Datos que pasan solos cada 6 segundos; los puntos eligen uno y reinician la cuenta
 document.querySelectorAll<HTMLElement>("[data-video-quepos-datos]").forEach((caja) => {
   const datos = [...caja.querySelectorAll<HTMLElement>(".video-quepos-dato")];
   const puntos = [...caja.querySelectorAll<HTMLButtonElement>(".video-quepos-punto")];

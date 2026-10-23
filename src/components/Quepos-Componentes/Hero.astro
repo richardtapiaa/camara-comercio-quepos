@@ -5,16 +5,10 @@ import foto from "../../assets/quepos/isla-quepos.jpg";
 import primerPlano from "../../assets/quepos/isla-quepos-primer-plano.webp";
 import "../../styles/quepos/hero.css";
 
-// CAPA 1: la foto tal cual. CAPA 3: la misma foto, del mismo tamaño, con solo la isla y el mar visibles (WebP con
-// canal alfa), para que queden delante del título. Las dos se exportan en
-// los mismos anchos (srcset) para que calcen; en celular baja una versión chica en vez de la de ancho completo
 const fotoOptimizada = await variantesCapa(foto, [800, 1200, 1600], 80);
 const sizes = sizesCubrePantalla(foto);
 const primerPlanoOptimizado = await variantesCapa(primerPlano, [800, 1200, 1600], 85);
 
-// "QUEPOS" como el letrero de la foto quepos-foto.webp: cada letra rellena con el mural de su letra (recortes de esa
-// foto en letras-quepos/, con el cielo de los huecos rellenado con el color de la letra), su borde de color y el
-// canto (la cara de lado, más oscura) para el volumen 3D
 const letrasArchivos = import.meta.glob<{ default: ImageMetadata }>("../../assets/quepos/letras-quepos/*.webp", {
   eager: true,
 });
@@ -34,10 +28,6 @@ const letras = await Promise.all(
 );
 ---
 
-<!-- Hero de Quepos en tres capas del mismo tamaño apiladas (mismo enfoque que HeroActividades.tsx): la foto, el
-     título "QUEPOS" y encima la isla con el mar, así las letras quedan en el cielo, detrás de la isla.
-     El recuadro tiene la proporción de la foto y cubre todo el hero (como object-cover): todo va en porcentajes de
-     la foto, así calza en cualquier pantalla -->
 <section class="hero-isla relative isolate h-svh min-h-[560px] w-full overflow-hidden bg-[#cfe3f1]" aria-label="Quepos">
   <div
     class="hero-isla-recuadro absolute left-1/2"
@@ -47,7 +37,6 @@ const letras = await Promise.all(
       top: `calc((100cqh - max(100cqw * ${foto.height} / ${foto.width}, 100cqh)) * 0.5)`,
     }}
   >
-    <!-- CAPA 1 — La foto -->
     <img
       src={fotoOptimizada.src}
       srcset={fotoOptimizada.srcSet}
@@ -58,10 +47,6 @@ const letras = await Promise.all(
       fetchpriority="high"
     />
 
-    <!-- CAPA 2 — Título en el cielo. Su borde de abajo queda a media altura de la isla, así la isla le tapa la parte
-         de abajo de las letras. En celular va más arriba porque ahí la isla ocupa todo el ancho y es más grande en
-         proporción al título. Al hacer scroll el contenedor baja y el título se esconde detrás de la isla (y lo que
-         sobresale a los lados, detrás del mar); la entrada va en el h1 para que no choquen -->
     <div
       data-hero-isla-titulo
       class="hero-isla-titulo absolute bottom-[49%] left-[var(--foco-x)] -translate-x-1/2 md:bottom-[46%]"
@@ -82,7 +67,6 @@ const letras = await Promise.all(
       </h1>
     </div>
 
-    <!-- CAPA 3 — La isla y el mar, encima del título -->
     <img
       src={primerPlanoOptimizado.src}
       srcset={primerPlanoOptimizado.srcSet}

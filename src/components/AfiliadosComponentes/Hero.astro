@@ -5,14 +5,9 @@ import video from "../../assets/afiliados/hero-afiliados.mp4";
 import videoWebm from "../../assets/afiliados/hero-afiliados.webm";
 import poster from "../../assets/afiliados/hero-afiliados-poster.jpg";
 
-// El video se importa desde src/assets: Vite le pone un nombre con hash para que el navegador lo guarde en caché.
-// El poster (primer cuadro del video) se optimiza con getImage y se ve al instante, antes de que cargue el video
 const posterOptimizado = await getImage({ src: poster, width: 1920, format: "webp", quality: 70 });
 ---
 
-<!-- Hero de afiliados: video de fondo a pantalla completa con un overlay oscuro encima. No lleva id="hero" para
-     que la barra de navegación se vea normal (blanca y sin la franja de contacto), no transparente sobre el video.
-     Lo que se ponga dentro de <Hero> va centrado encima del video -->
 <section data-parallax-afiliados class="relative isolate flex h-svh min-h-[560px] w-full items-center justify-center overflow-hidden bg-black">
   <video
     data-hero-afiliados-video
@@ -26,27 +21,21 @@ const posterOptimizado = await getImage({ src: poster, width: 1920, format: "web
     preload="auto"
     aria-hidden="true"
   >
-    <!-- WebM AV1 (mucho más liviano) y MP4 de respaldo: el navegador usa el primero que puede reproducir (el códec
-         en type hace que los que no tienen AV1 pasen directo al MP4) -->
     <source src={videoWebm} type='video/webm; codecs="av01.0.08M.08"' />
     <source src={video} type="video/mp4" />
   </video>
 
-  <!-- Overlay oscuro: parejo sobre todo el video y un poco más fuerte arriba y abajo -->
   <div class="pointer-events-none absolute inset-0 -z-10 bg-black/35" aria-hidden="true"></div>
   <div
     class="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-black/30 via-transparent to-black/25"
     aria-hidden="true"
   ></div>
-  <!-- Se oscurece al hacer scroll (scripts/afiliados/parallax.ts) -->
   <div data-parallax-oscuro class="pointer-events-none absolute inset-0 -z-10 bg-black opacity-0" aria-hidden="true"></div>
 
-  <!-- Título y logo: suben y se desvanecen al hacer scroll (scripts/afiliados/parallax.ts) -->
   <div data-parallax-contenido class="px-6 text-center text-white">
     <h1 class="text-5xl font-bold uppercase tracking-tight drop-shadow-[0_4px_24px_rgba(0,0,0,0.45)] sm:text-6xl md:text-8xl">
       Afiliados
     </h1>
-    <!-- Logo de la Cámara debajo del título, directo sobre el video -->
     <Image
       src={logo}
       alt="Cámara de Comercio, Industria y Turismo de Quepos"

@@ -1,7 +1,5 @@
 const el = document.getElementById("mapa-quepos");
 
-// Leaflet (JS, CSS e íconos del marcador) se descarga recién aquí, cuando el mapa está por verse: antes iba en el
-// bundle de todas las páginas (unos 150 KB de JS y su CSS bloqueaba el primer dibujo) aunque el mapa está al final
 const init = async (el: HTMLElement) => {
   const [{ default: L }, { default: markerIcon }, { default: markerIcon2x }, { default: markerShadow }] =
     await Promise.all([
@@ -58,7 +56,6 @@ const init = async (el: HTMLElement) => {
   L.marker([lat, lng], { icon, title: el.dataset.title }).addTo(map).bindPopup(content, { autoClose: false, closeOnClick: false }).openPopup();
 };
 
-// Carga diferida: solo se descarga e inicia cuando el mapa está cerca de verse
 if (el) {
   const observer = new IntersectionObserver(
     (entries) => {

@@ -1,11 +1,8 @@
-/* Quieto (sin animación o con "reducir movimiento"): centrado en el recuadro */
 [data-kayak] {
   left: 50%;
   translate: -50% 0;
 }
 
-/* Remada con scroll-driven animations, igual que la lapa (scripts/quepos/lapa-scroll.ts): la mueve el navegador junto con el
-   scroll, sin esperar a JS. Sin soporte (Firefox, Safari < 26) se usa GSAP abajo */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
     [data-kayak-scroll] {
@@ -17,11 +14,8 @@
       animation-timing-function: linear;
       animation-fill-mode: both;
       animation-timeline: --kayak-remada;
-      /* Todo el tiempo que el recuadro está en pantalla, para que avance pausado */
       animation-range: cover 0% cover 100%;
     }
-    /* El agua corre hacia la derecha, como la corriente que lleva al kayak. Va en el <g> de cada capa (el <path>
-       de adentro se mece solo) para que las dos animaciones no se pisen */
     .agua-capa,
     .cielo-nube {
       animation-name: agua-scroll;
@@ -33,11 +27,9 @@
   }
 }
 
-/* Distancia que se corre cada cosa con el scroll: el agua, cerca, más que las nubes */
 .agua-capa-frente {
   --agua-x: 160px;
 }
-/* Las nubes, lejos, se corren poco con el scroll */
 .cielo-nube {
   --agua-x: 60px;
 }
@@ -53,10 +45,6 @@
 
 
 
-/* Cruza de izquierda a derecha y, al pasar por las olas, sube y baja 4 veces (las que caben en el ancho del agua),
-   inclinándose con la pendiente: la punta hacia arriba al subir una ola y hacia abajo al bajarla. Las olas del
-   dibujo son bajitas, así que el movimiento va un poco exagerado (14 px y 4°) para que se note. Los puntos salen
-   de y = -14·sen(8π·t) px y giro = -4·cos(8π·t)°, con 33 puntos para que se vea suave; GSAP (abajo) usa los mismos */
 @keyframes kayak-remada {
   0% {
     translate: -100% 0px;

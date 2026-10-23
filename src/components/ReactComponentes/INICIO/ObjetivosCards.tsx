@@ -22,10 +22,8 @@ export interface Objetivo {
   texto: string;
 }
 
-// Ícono de cada objetivo, en el mismo orden (A, B, C...)
 const iconos: LucideIcon[] = [Landmark, MessagesSquare, Handshake, Users, Globe, Smile, HeartHandshake, Leaf, Scale];
 
-// tempId cambia cada vez que una tarjeta da la vuelta, para que React la trate como nueva y anime su entrada
 type ObjetivoEnLista = Objetivo & { tempId: number; icono: LucideIcon };
 
 interface ObjetivoCardProps {
@@ -35,8 +33,6 @@ interface ObjetivoCardProps {
   cardSize: number;
 }
 
-// Tarjetas blancas con esquinas redondeadas y sin borde: la del centro se distingue por subir, quedar recta y
-// tener una sombra más marcada; las de los lados llevan una sombra suave
 const ObjetivoCard: React.FC<ObjetivoCardProps> = ({ position, objetivo, handleMove, cardSize }) => {
   const isCenter = position === 0;
   const Icono = objetivo.icono;
@@ -62,7 +58,6 @@ const ObjetivoCard: React.FC<ObjetivoCardProps> = ({ position, objetivo, handleM
           : "0 6px 16px -6px rgba(14, 59, 102, 0.12)",
       }}
     >
-      {/* Ícono azul en el lugar de la foto de la referencia */}
       <div className="mb-4 flex h-14 w-12 items-center justify-center rounded-xl bg-[#E8F4FA] text-[#1B66A6]">
         <Icono className="h-6 w-6" aria-hidden="true" />
       </div>
@@ -75,14 +70,12 @@ const ObjetivoCard: React.FC<ObjetivoCardProps> = ({ position, objetivo, handleM
 
 export default function ObjetivosCards({ objetivos }: { objetivos: Objetivo[] }) {
   const [cardSize, setCardSize] = useState(365);
-  // Se rota el orden inicial para que el Objetivo A quede en el centro (posición 0) al cargar
   const [lista, setLista] = useState<ObjetivoEnLista[]>(() => {
     const items = objetivos.map((objetivo, i) => ({ ...objetivo, tempId: i, icono: iconos[i % iconos.length] }));
     const centro = items.length % 2 ? (items.length + 1) / 2 : items.length / 2;
     return [...items.slice(-centro), ...items.slice(0, -centro)];
   });
 
-  // Mueve las tarjetas: pasos > 0 hacia adelante, < 0 hacia atrás (las que salen por un lado entran por el otro)
   const handleMove = (steps: number) => {
     const nuevaLista = [...lista];
     if (steps > 0) {

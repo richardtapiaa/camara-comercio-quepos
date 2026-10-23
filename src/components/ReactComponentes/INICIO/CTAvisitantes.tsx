@@ -26,10 +26,10 @@ const filterVariants: Variants = {
   },
 }
 const areaClasses = [
-  "col-start-2 col-end-3 row-start-1 row-end-3", // .div1
-  "col-start-1 col-end-2 row-start-2 row-end-4", // .div2
-  "col-start-1 col-end-2 row-start-4 row-end-6", // .div3
-  "col-start-2 col-end-3 row-start-3 row-end-5", // .div4
+  "col-start-2 col-end-3 row-start-1 row-end-3",
+  "col-start-1 col-end-2 row-start-2 row-end-4",
+  "col-start-1 col-end-2 row-start-4 row-end-6",
+  "col-start-2 col-end-3 row-start-3 row-end-5",
 ]
 
 export const ContainerStagger = React.forwardRef<
@@ -112,7 +112,6 @@ export const GalleryGridCell = React.forwardRef<
 })
 GalleryGridCell.displayName = "GalleryGridCell"
 
-// Sección de visitantes: texto a la izquierda y galería de 4 imágenes a la derecha
 type CTAVisitantesProps = {
   imagenes: { src: string; alt: string }[]
 }

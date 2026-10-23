@@ -6,8 +6,6 @@ gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 const sinMovimiento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-// Camino en píxeles del recuadro: entra por abajo a la izquierda (desde las flores) y sale por arriba a la
-// derecha, subiendo y bajando en ondas. Se calcula con el tamaño real para que el rastro no se deforme
 const trazar = (ancho: number, alto: number) => {
   const ondas = ancho < 700 ? 3 : 5;
   const amplitud = alto * (ancho < 700 ? 0.08 : 0.1);
@@ -16,7 +14,6 @@ const trazar = (ancho: number, alto: number) => {
   for (let i = 0; i <= puntos; i++) {
     const t = i / puntos;
     const x = -0.1 * ancho + t * 1.2 * ancho;
-    // Base que sube de las flores (78 % del alto) al cielo (22 %), más la onda
     const y = alto * (0.78 - 0.56 * t) - amplitud * Math.sin(t * ondas * 2 * Math.PI);
     d += `${i === 0 ? "M" : "L"}${x.toFixed(1)} ${y.toFixed(1)}`;
   }
@@ -31,7 +28,6 @@ if (!sinMovimiento) {
     const mascara = recuadro.querySelector<SVGPathElement>("[data-mariposa-mascara]");
     if (!mariposa || !rastro || !camino || !mascara) return;
 
-    // GSAP la mueve con transform desde la esquina del recuadro; se muestra el rastro
     mariposa.style.left = "0";
     mariposa.style.top = "0";
     rastro.style.display = "block";
@@ -49,7 +45,6 @@ if (!sinMovimiento) {
       camino.setAttribute("d", d);
       mascara.setAttribute("d", d);
 
-      // El rastro de puntitos se va descubriendo con una máscara: un trazo lleno que se "dibuja" (dashoffset)
       const largo = mascara.getTotalLength();
       mascara.style.strokeDasharray = `${largo}`;
 
@@ -57,8 +52,6 @@ if (!sinMovimiento) {
       tl?.scrollTrigger?.kill();
       tl?.kill();
 
-      // Todo el tiempo que el recuadro está en pantalla, como el vuelo de la lapa (scripts/quepos/lapa-scroll.ts).
-      // scrub con un poco de suavizado para que el movimiento no salte con el scroll táctil
       tl = gsap
         .timeline({
           defaults: { ease: "none" },
@@ -71,7 +64,6 @@ if (!sinMovimiento) {
 
     construir();
 
-    // Si cambia el ancho (giro del celular, ventana), se recalcula el camino
     let espera: number | undefined;
     window.addEventListener("resize", () => {
       window.clearTimeout(espera);

@@ -9,18 +9,11 @@ const frase =
   "“Entre manglares, ríos y mar abierto, en Quepos cada remada te acerca a la naturaleza del Pacífico Central.”";
 ---
 
-<!-- Mismo recuadro que LapasJS.astro, pero con agua abajo en vez de nubes arriba, y un kayak que la cruza remando al
-     hacer scroll (KayakJs.astro). El agua es una capa con el borde de arriba en olas que se mece despacio; el <g>
-     lo mueve el scroll. Arriba, en el cielo, va la frase que se llena con el scroll (MagicText), con
-     las nubes pasando por delante -->
 <section
   data-kayak-scroll
   class="kayak-recuadro relative isolate flex min-h-[48svh] flex-col overflow-hidden bg-[#E8F4FA] md:min-h-[70svh]"
   aria-label="Kayak remando en las aguas de Quepos"
 >
-  <!-- Cielo: un sol pequeño arriba a la derecha y nubes suaves. El div de cada nube lo mueve el scroll (KayakJs.astro)
-       y el svg de adentro va a la deriva solo -->
-  <!-- Sol: 12 rayos curvos, un poco en remolino, y el centro amarillo encima. Gira despacio (solo los rayos) -->
   <svg
     class="cielo-sol pointer-events-none absolute right-[12%] top-[3%] size-16 md:right-[8%] md:top-[5%] md:size-28"
     viewBox="0 0 100 100"
@@ -30,8 +23,6 @@ const frase =
     <circle cx="50" cy="50" r="27" fill="#FDE047" />
   </svg>
 
-  <!-- Frase en el cielo, detrás de las nubes (ellas van con z-[2]). En celular las nubes van más arriba y la frase
-       más abajo, para que no tapen las primeras palabras -->
   <div class="relative z-[1] mx-auto w-full max-w-4xl px-6 pt-36 md:pt-28">
     <MagicText
       client:visible={{ rootMargin: "300px" }}
@@ -59,11 +50,8 @@ const frase =
     ))
   }
 
-  <!-- Espacio para el agua y el kayak debajo de la frase -->
   <div class="h-[30svh] shrink-0 md:h-[42svh]" aria-hidden="true"></div>
 
-  <!-- Encima de todas las olas, flotando sobre la de adelante. El div lo mueve el scroll de lado a lado; la imagen
-       de adentro se balancea sola sobre las olas -->
   <div data-kayak class="kayak-flotando absolute z-30 w-[60%] max-w-lg md:w-[32%]">
     <img
       src={kayak.src}
@@ -77,7 +65,6 @@ const frase =
     />
   </div>
 
-  <!-- Agua: el kayak flota sobre su borde -->
   <svg
     class="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-[24%] w-full"
     viewBox="0 0 1440 200"

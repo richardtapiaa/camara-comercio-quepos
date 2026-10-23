@@ -7,20 +7,13 @@ import videoEsWebm from "../../../assets/quepos/videos/video-es.webm";
 import videoEnWebm from "../../../assets/quepos/videos/video-en.webm";
 import palmera from "../../../assets/quepos/palmera-sin-fondo.webp";
 
-// WebM AV1 (más liviano) con MP4 de respaldo; el códec en type hace que los navegadores sin AV1 usen el MP4
 const webmAv1 = 'video/webm; codecs="av01.0.08M.08, opus"';
 
-// Mismas palmeras que GaleriaCompleta.astro: crecen con la pantalla y arriba se difuminan para ocultar el corte de
-// la foto
 const clasesPalmera =
   "h-auto w-44 select-none sm:w-64 md:w-72 lg:w-80 xl:w-96 2xl:w-[28rem] [mask-image:linear-gradient(to_bottom,transparent,black_30%)]";
 ---
 
-<!-- El título va centrado: en pantallas grandes las palmeras quedan a los lados sin tocarlo; en celular, tablet y
-     pantallas medianas (donde las hojas llegarían al título) el contenido empieza más abajo -->
 <section id="videos-quepos" class="relative overflow-x-clip bg-white px-6 pb-16 pt-32 sm:pb-24 sm:pt-44 md:pt-48 lg:pt-24">
-  <!-- Palmeras colgando de las esquinas de arriba: la de la derecha tal cual y la de la izquierda en espejo. No
-       bloquean los clics -->
   <Image
     src={palmera}
     alt=""
@@ -42,7 +35,6 @@ const clasesPalmera =
     aria-hidden="true"
   />
 
-  <!-- "relative" deja el contenido delante de las palmeras -->
   <div class="relative mx-auto max-w-7xl">
     <h2 class="text-center font-serif text-4xl font-bold uppercase tracking-tight text-slate-900 sm:text-5xl">
       Videos de Quepos
@@ -51,7 +43,6 @@ const clasesPalmera =
       Conozca Quepos en movimiento: sus paisajes, su gente y su comercio.
     </p>
     <div class="mt-10 flex justify-center">
-      <!-- Debajo del video, botones para verlo en español o en inglés -->
       <VideoQueposIdiomas
         client:visible
         fuentesEs={[{ src: videoEsWebm, type: webmAv1 }, { src: videoEs, type: "video/mp4" }]}

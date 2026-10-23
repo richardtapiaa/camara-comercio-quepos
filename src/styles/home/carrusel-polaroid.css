@@ -1,5 +1,3 @@
-/* Carrusel de polaroids colgadas de un cordel (InicioQuepos.tsx). Los colores y el ancho de cada foto llegan como
-   variables desde el componente: --pl-bg, --pl-ink, --pl-muted, --pl-line y --pl-cw */
 .pl-root {
   position: relative;
   width: 100%;

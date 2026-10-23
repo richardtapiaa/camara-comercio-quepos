@@ -8,7 +8,6 @@ import "../../../styles/quepos/mariposa-scroll.css";
 const frase =
   "“Entre flores y selva, las mariposas morfo pintan de azul el bosque tropical de Quepos.”";
 
-// Flores del pasto: posición (en % del ancho), tamaño y color de los pétalos
 const flores = [
   { x: 4, tam: "size-5 md:size-7", color: "#f472b6" },
   { x: 11, tam: "size-4 md:size-5", color: "#facc15" },
@@ -21,15 +20,11 @@ const flores = [
 ];
 ---
 
-<!-- Mismo recuadro celeste que LapasJS.astro: sol, nubes que se mecen, frase que se llena con el scroll y pasto
-     con flores abajo. Una mariposa morfo sale de las flores y cruza volando, subiendo y bajando, con un rastro de
-     puntitos detrás (scripts/quepos/mariposa.ts) -->
 <section
   data-mariposa-scroll
   class="mariposa-recuadro relative isolate flex min-h-[48svh] flex-col overflow-hidden bg-[#E8F4FA] md:min-h-[70svh]"
   aria-label="Mariposa morfo volando sobre Quepos"
 >
-  <!-- Sol: el mismo de LapasJS.astro, arriba a la izquierda -->
   <svg
     class="mariposa-sol pointer-events-none absolute left-6 top-24 z-0 size-14 md:left-[12%] md:top-[12%] md:size-24"
     viewBox="0 0 100 100"
@@ -39,7 +34,6 @@ const flores = [
     <circle cx="50" cy="50" r="27" fill="#FDE047" />
   </svg>
 
-  <!-- Nubes suaves que se mecen solas -->
   {
     [
       { lugar: "right-[6%] top-[6%] w-28 md:right-[10%] md:top-[10%] md:w-48", clase: "mariposa-nube-lenta opacity-90" },
@@ -56,7 +50,6 @@ const flores = [
     ))
   }
 
-  <!-- Frase en el cielo, detrás del rastro y de la mariposa -->
   <div class="relative z-[1] mx-auto w-full max-w-4xl px-6 pt-36 md:pt-40">
     <MagicText
       client:visible={{ rootMargin: "300px" }}
@@ -66,10 +59,8 @@ const flores = [
     />
   </div>
 
-  <!-- Espacio para el vuelo y el pasto debajo de la frase -->
   <div class="h-[34svh] shrink-0 md:h-[44svh]" aria-hidden="true"></div>
 
-  <!-- Pasto con borde de hojitas y flores -->
   <div class="mariposa-pasto pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-14 md:h-20" aria-hidden="true">
     {
       flores.map(({ x, tam, color }) => (
@@ -86,7 +77,6 @@ const flores = [
     }
   </div>
 
-  <!-- Rastro: camino de puntitos que se va dibujando detrás de la mariposa (lo arma scripts/quepos/mariposa.ts) -->
   <svg data-mariposa-rastro class="pointer-events-none absolute inset-0 z-[2] size-full" aria-hidden="true">
     <defs>
       <mask id="mariposa-rastro-mascara" maskUnits="userSpaceOnUse">
@@ -105,8 +95,6 @@ const flores = [
     />
   </svg>
 
-  <!-- La mariposa: el div lo mueve el scroll y la imagen aletea. La foto trae abajo el tallito donde estaba posada:
-       se oculta recortando el 14 % de abajo -->
   <div data-mariposa class="pointer-events-none absolute z-[3] w-20 md:w-32">
     <Image
       src={mariposa}

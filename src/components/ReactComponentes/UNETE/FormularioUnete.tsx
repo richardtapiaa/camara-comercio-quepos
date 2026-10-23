@@ -31,7 +31,6 @@ const CAMPO =
 const ETIQUETA = "grid gap-2 text-sm font-semibold text-slate-700";
 
 interface Props {
-  // Recibe los datos validados; si no se pasa, solo se muestra la confirmación en pantalla
   onSubmit?: (datos: Datos) => void | Promise<void>;
 }
 

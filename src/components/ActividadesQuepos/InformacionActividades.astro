@@ -11,7 +11,6 @@ import actividades4 from "../../assets/actividades/actividades-4.jpg";
 import actividades5 from "../../assets/actividades/actividades-5.jpg";
 import actividades6 from "../../assets/actividades/actividades-6.jpeg";
 
-// Mismo orden que los textos de InformacionActividades.tsx
 const imagenes = [
   { src: await optimizarImagen(actividades1, 1000), alt: "Perezoso en el Parque Nacional Manuel Antonio" },
   { src: await optimizarImagen(actividades2, 1000), alt: "Grupo haciendo rafting en el río" },
@@ -22,7 +21,6 @@ const imagenes = [
 ];
 ---
 
-<!-- El perezoso, el kayak y la persona del canopy se ven de 128, 80 y 96 px de ancho como mucho: se piden al doble (alta densidad) -->
 <InformacionActividades
   client:visible
   imagenes={imagenes}

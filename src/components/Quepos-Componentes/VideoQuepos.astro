@@ -4,7 +4,6 @@ import videoWebm from "../../assets/quepos/catedral/quepos-catedral.webm";
 import videoMp4 from "../../assets/quepos/catedral/quepos-catedral.mp4";
 import "../../styles/quepos/video-quepos.css";
 
-// Datos de Quepos que van pasando a la derecha (los mismos de las preguntas frecuentes)
 const datos = [
   {
     texto: "Quepos es reconocido por la pesca deportiva y la Marina Pez Vela, con rafting, catamarán, kayak en los manglares, canopy y sus playas.",
@@ -21,9 +20,6 @@ const datos = [
 ];
 ---
 
-<!-- Franja con el video de Quepos de fondo (la playa y la selva de Manuel Antonio), oscurecido para que el texto se
-     lea: a la izquierda el título y una frase, y a la derecha datos del destino que van pasando solos, con puntos para
-     elegirlos. El video empieza a cargar recién cuando la franja se acerca a la pantalla (scripts/quepos/video-quepos.ts) -->
 <section class="relative isolate overflow-hidden bg-[#16201a] text-white" aria-label="Quepos en video">
   <video
     data-video-quepos
@@ -50,7 +46,6 @@ const datos = [
       </p>
     </div>
 
-    <!-- Datos que pasan solos cada pocos segundos; los puntos de abajo permiten elegir uno -->
     <div class="text-center" data-video-quepos-datos>
       <div class="grid">
         {

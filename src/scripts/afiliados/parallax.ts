@@ -3,13 +3,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Parallax del hero de afiliados (AfiliadosComponentes/Hero.astro) mientras sale de la pantalla:
-// - el video baja más lento que la página y hace un leve zoom (100 % → 115 %). El video es casi uniforme (manos
-//   sobre un fondo desenfocado) y solo bajarlo casi no se notaba; el zoom sí. Su hueco de arriba nunca se ve: el
-//   video baja el 40 % mientras la sección sube el 100 %, así que ese hueco queda siempre por encima de la pantalla
-// - el título y el logo suben el 35 % del alto del hero y terminan de desvanecerse al 70 % del recorrido
-// - el overlay se oscurece, para pasar suave a la sección siguiente
-// Todo va con scrub (pegado al scroll). Con "reducir movimiento" no se activa
 const mm = gsap.matchMedia();
 
 mm.add("(prefers-reduced-motion: no-preference)", () => {

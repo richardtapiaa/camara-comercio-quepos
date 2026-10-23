@@ -6,11 +6,7 @@ import "../../styles/home/parallax-imagenes.css";
 import "../../styles/quepos/fondo-animales.css";
 ---
 
-<!-- Diseño de SobreQuepos.astro en espejo: foto a la derecha montada sobre el panel celeste de la izquierda -->
 <section id="biodiversidad-quepos" class="fondo-animales relative overflow-x-clip py-16 sm:py-24">
-  <!-- Perezoso colgado arriba a la izquierda, pegado al borde de la pantalla y en espejo para que mire hacia el
-       contenido (como el mono de SobreQuepos.astro, que va a la derecha). Sus brazos tocan el borde de arriba,
-       como si colgara de la sección anterior. Va delante de la tarjeta -->
   <Image
     src={perezoso}
     alt="Perezoso colgado"
@@ -21,7 +17,6 @@ import "../../styles/quepos/fondo-animales.css";
   />
 
   <div class="mx-auto grid max-w-6xl px-6 md:grid-cols-12">
-    <!-- Sale del contenedor hasta el borde derecho de la pantalla y se monta sobre el panel -->
     <div class="relative z-10 -mr-[calc(max(0px,(100vw_-_72rem)/2)+1.5rem)] mb-8 aspect-[4/3] overflow-hidden rounded-2xl md:col-span-4 md:col-start-9 md:row-start-1 md:mt-24 md:self-start md:aspect-[8/7]">
       <Image
         src={imagen}
@@ -31,9 +26,6 @@ import "../../styles/quepos/fondo-animales.css";
       />
     </div>
 
-    <!-- Tarjeta celeste con bordes redondeados y sombra suave (como InfoHospitalidad.astro). Sale del contenedor
-         hacia la izquierda pero deja un margen con el borde de la pantalla, para que se vean las esquinas. A la
-         derecha deja el espacio de la columna donde se monta la foto -->
     <div
       class="-ml-[max(0px,(100vw_-_72rem)/2)] rounded-[2rem] bg-[#E8F4FA] py-12 pl-[calc(max(0px,(100vw_-_72rem)/2)+1.5rem)] pr-6 shadow-[0_12px_40px_rgb(100_155_190/0.25)] md:col-span-9 md:col-start-1 md:row-start-1 md:py-16 md:pr-[calc(100%/9+2rem)]"
     >
