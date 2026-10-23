@@ -3,16 +3,23 @@ import { VelocityScroll } from '../ReactComponentes/QUEPOS/ScrollVelocity.tsx';
 
 interface Props {
   texto?: string;
+  reaccionaScroll?: boolean;
+  espaciado?: string;
 }
 
-const { texto = "GALERIA" } = Astro.props;
+const {
+  texto = "GALERIA",
+  reaccionaScroll = true,
+  espaciado = "pb-8 pt-28 sm:pb-12 sm:pt-32",
+} = Astro.props;
 ---
 
-<section class="overflow-hidden bg-white pb-8 pt-28 sm:pb-12 sm:pt-32">
+<section class:list={["overflow-hidden bg-white", espaciado]}>
   <VelocityScroll
     client:visible
     text={texto}
     default_velocity={5}
+    scrollReactive={reaccionaScroll}
     className="font-serif text-5xl font-bold uppercase tracking-[0.12em] text-black sm:text-7xl lg:text-8xl"
   />
 </section>

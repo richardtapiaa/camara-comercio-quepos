@@ -6,101 +6,109 @@
   object-position: 50% 55%;
 }
 
+.hero-mesa-pared {
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 28%, rgb(255 200 150 / 0.16), transparent 70%),
+    linear-gradient(to bottom, #1b2e48, #14233a 70%);
+}
+
 .hero-mesa-luz {
   background:
     linear-gradient(to bottom, rgb(255 176 120 / 0.38), rgb(255 200 150 / 0.12) 45%, transparent 60%),
     linear-gradient(to top, rgb(16 42 67 / 0.35), transparent 40%);
 }
 
-.hero-mesa-tiza {
-  font-family: "Caveat", "Comic Sans MS", cursive;
-  font-weight: 700;
-  color: rgb(255 255 255 / 0.94);
-  text-shadow: 0 0 1px rgb(255 255 255 / 0.6);
-  background-color: #24312b;
-  background-image:
-    radial-gradient(ellipse at 30% 40%, rgb(255 255 255 / 0.08), transparent 60%),
-    radial-gradient(ellipse at 75% 70%, rgb(255 255 255 / 0.05), transparent 55%);
-  border: 6px solid #8a5a32;
-  box-shadow:
-    inset 0 0 0 2px rgb(0 0 0 / 0.25),
-    0 18px 30px -12px rgb(0 0 0 / 0.55);
+.hero-mesa-rotulo {
+  font-size: min(10cqw, 9cqh, 5.25rem);
+  --giro: -14deg;
+  transform: translateY(-50%);
+  transform-origin: 0.2em 50%;
+  rotate: var(--giro);
+  filter: drop-shadow(0 8px 10px rgb(0 0 0 / 0.4));
 }
-.hero-mesa-pizarra {
-  font-size: min(9.5cqw, 9cqh, 5.2rem);
-  transform-origin: top center;
+.hero-mesa-rotulo .etiqueta-cinta {
+  width: 0.7em;
+  height: 72%;
+  background:
+    linear-gradient(90deg, rgb(255 255 255 / 0.35), transparent 30% 70%, rgb(255 255 255 / 0.3)),
+    rgb(250 248 240 / 0.55);
+  backdrop-filter: blur(1px) brightness(1.08);
+  clip-path: polygon(0% 3%, 12% 0%, 25% 3%, 38% 0%, 50% 3%, 62% 0%, 75% 3%, 88% 0%, 100% 3%, 100% 97%, 88% 100%, 75% 97%, 62% 100%, 50% 97%, 38% 100%, 25% 97%, 12% 100%, 0% 97%);
 }
 .hero-mesa-titulo {
+  font-family: "Anton", "Impact", "Arial Narrow", sans-serif;
   font-size: 1em;
-  line-height: 0.95;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #3a2fc0;
 }
 .hero-mesa-amp {
-  color: #ffd34d;
+  color: #2780c9;
 }
 .hero-mesa-kicker {
-  margin-bottom: 0.15em;
-  font-size: 0.32em;
-  letter-spacing: 0.08em;
-  color: rgb(255 255 255 / 0.7);
-}
-.hero-mesa-cordel {
-  position: absolute;
-  bottom: calc(100% - 0.15em);
-  width: 2px;
-  height: 40cqh;
-  background: #6b4a2b;
-  transform-origin: bottom center;
+  margin-bottom: 0.2em;
+  font-size: 0.26em;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgb(90 60 30 / 0.75);
 }
 
-.hero-mesa-mantel {
+.hero-mesa-mantel,
+.hero-mesa-faldon {
   background-color: #f4f9fd;
   background-image:
     repeating-linear-gradient(90deg, rgb(39 128 201 / 0.3) 0 22px, transparent 22px 44px),
     repeating-linear-gradient(0deg, rgb(39 128 201 / 0.3) 0 22px, transparent 22px 44px);
-  box-shadow:
-    inset 0 6px 0 rgb(255 255 255 / 0.9),
-    inset 0 -40px 60px -30px rgb(16 42 67 / 0.35),
-    0 -8px 18px rgb(16 42 67 / 0.25);
+}
+.hero-mesa-mantel {
+  box-shadow: inset 0 -30px 40px -30px rgb(16 42 67 / 0.25);
   transform: perspective(70cqh) rotateX(38deg);
   transform-origin: bottom center;
 }
+.hero-mesa-faldon {
+  background-image:
+    linear-gradient(to bottom, rgb(255 255 255 / 0.55), transparent 18%, transparent 55%, rgb(16 42 67 / 0.28)),
+    repeating-linear-gradient(90deg, transparent 0 18px, rgb(16 42 67 / 0.1) 30px, transparent 44px),
+    repeating-linear-gradient(90deg, rgb(39 128 201 / 0.3) 0 22px, transparent 22px 44px),
+    repeating-linear-gradient(0deg, rgb(39 128 201 / 0.3) 0 22px, transparent 22px 44px);
+  mask:
+    linear-gradient(#000 0 0) top / 100% calc(100% - 12px) no-repeat,
+    radial-gradient(circle 22px at 50% -10px, #000 98%, transparent) bottom / 44px 12px repeat-x;
+  filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.35));
+}
+.hero-mesa-pata {
+  background:
+    linear-gradient(90deg, rgb(255 230 190 / 0.25), transparent 35%, rgb(0 0 0 / 0.35)),
+    #6b4423;
+  clip-path: polygon(0 0, 100% 0, 85% 100%, 15% 100%);
+}
+.hero-mesa-piso {
+  background: radial-gradient(ellipse 50% 50% at 50% 50%, rgb(0 0 0 / 0.45), transparent 70%);
+}
 
-.hero-mesa-pipa {
-  width: min(16cqw, 19cqh);
-}
-.hero-mesa-copa {
-  width: min(10cqw, 12cqh);
-}
-.hero-mesa-llave {
-  width: min(30cqw, 26cqh);
-}
-.hero-mesa-objeto {
-  filter: drop-shadow(0 6px 6px rgb(16 42 67 / 0.25));
-}
 @media (max-width: 640px) {
-  .hero-mesa-pipa {
-    width: 27cqw;
-  }
-  .hero-mesa-copa {
-    width: 17cqw;
-  }
-  .hero-mesa-llave {
-    width: 52cqw;
+  .hero-mesa-rotulo {
+    top: 40%;
+    left: 4%;
+    max-width: 92%;
+    font-size: 9.5cqw;
+    --giro: -9deg;
   }
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .hero-mesa-pizarra {
-    animation:
-      hero-mesa-caer 0.9s cubic-bezier(0.22, 1, 0.36, 1) both,
-      hero-mesa-mecer 3.6s ease-in-out 0.9s infinite alternate;
+  /* Llega el papel colgando, se pega la cinta izquierda, se aplana contra la pared y se pega la derecha */
+  .hero-mesa-rotulo {
+    animation: hero-mesa-pegar 2.4s ease-in-out both;
   }
-  .hero-mesa-objeto {
-    animation: hero-mesa-servir 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
+  .hero-mesa-rotulo .etiqueta-cinta {
+    transform-origin: top center;
+    animation: hero-mesa-cinta 0.5s cubic-bezier(0.3, 0.7, 0.4, 1) 0.75s both;
   }
-  .hero-mesa-llave {
-    animation-name: hero-mesa-servir-centro;
-    animation-delay: 0.5s;
+  .hero-mesa-rotulo .etiqueta-cinta + .etiqueta-cinta {
+    animation-delay: 1.95s;
   }
   @supports (animation-timeline: scroll()) {
     .hero-mesa-foto {
@@ -112,32 +120,46 @@
     }
   }
 }
-@keyframes hero-mesa-caer {
-  from {
-    translate: -50% -60cqh;
+@keyframes hero-mesa-pegar {
+  0% {
+    translate: -110% 0;
+    rotate: calc(var(--giro) + 24deg);
+    scale: 1.05;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
   }
-  to {
-    translate: -50% 0;
+  30% {
+    translate: 0 0;
+    rotate: calc(var(--giro) + 24deg);
+    scale: 1.05;
+  }
+  52% {
+    rotate: calc(var(--giro) + 24deg);
+    scale: 1.05;
+    animation-timing-function: cubic-bezier(0.5, 0, 0.3, 1);
+  }
+  72% {
+    rotate: calc(var(--giro) - 2deg);
+    scale: 1;
+  }
+  80%,
+  100% {
+    rotate: var(--giro);
+    scale: 1;
   }
 }
-@keyframes hero-mesa-mecer {
-  from {
-    rotate: -2.5deg;
-  }
-  to {
-    rotate: 2deg;
-  }
-}
-@keyframes hero-mesa-servir {
-  from {
+@keyframes hero-mesa-cinta {
+  0% {
     opacity: 0;
-    translate: 0 1.5rem;
+    scale: 1.25 0;
   }
-}
-@keyframes hero-mesa-servir-centro {
-  from {
-    opacity: 0;
-    translate: -50% 1.5rem;
+  15% {
+    opacity: 1;
+  }
+  70% {
+    scale: 1.12 1.04;
+  }
+  100% {
+    scale: 1 1;
   }
 }
 @keyframes hero-mesa-parallax {

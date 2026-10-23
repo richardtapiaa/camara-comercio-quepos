@@ -11,3 +11,38 @@
   font-weight: 400;
   text-wrap: balance;
 }
+
+.puerta-marco,
+.puerta-umbral {
+  background-color: #8a5a32;
+  background-image:
+    linear-gradient(to bottom, rgb(255 255 255 / 0.12), transparent 40%, rgb(0 0 0 / 0.15)),
+    repeating-linear-gradient(
+      92deg,
+      rgb(60 35 15 / 0) 0 6px,
+      rgb(60 35 15 / 0.18) 6px 7px,
+      rgb(60 35 15 / 0) 7px 15px,
+      rgb(255 230 190 / 0.08) 15px 17px
+    );
+}
+.puerta-marco {
+  box-shadow:
+    inset 0 2px 0 rgb(255 255 255 / 0.2),
+    0 20px 40px -24px rgb(60 40 20 / 0.6);
+}
+.puerta-vano {
+  box-shadow: inset 0 0 0 3px rgb(40 22 8 / 0.55);
+}
+.puerta-vano::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 40px rgb(20 10 0 / 0.45);
+  pointer-events: none;
+}
+.puerta-umbral {
+  background-color: #6b4423;
+  box-shadow: 0 8px 14px -6px rgb(40 25 10 / 0.5);
+}
+
