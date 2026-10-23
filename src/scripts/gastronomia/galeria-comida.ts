@@ -1,5 +1,3 @@
-// Inclina el plato hacia el puntero (hasta 10°) y mueve un poco la comida, como si estuviera más cerca; al salir
-// vuelve a quedar plano. Solo con mouse y si no se pidió reducir el movimiento
 if (window.matchMedia("(hover: hover) and (prefers-reduced-motion: no-preference)").matches) {
   document.querySelectorAll<HTMLElement>("[data-plato]").forEach((plato) => {
     plato.addEventListener("pointermove", (e) => {

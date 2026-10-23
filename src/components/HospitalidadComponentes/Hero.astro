@@ -1,31 +1,17 @@
 ---
 import { sizesCubrePantalla, variantesCapa } from "../../lib/imagenes";
-// Foto: vista a las islas de Manuel Antonio desde la terraza de un hotel. Dominio público, de Wikimedia Commons:
-// https://commons.wikimedia.org/wiki/File:Manuel-antonio-islands-costa-rica.jpg (reducida a 2560 px de ancho)
 import foto from "../../assets/hospitalidad/vista-hotel-manuel-antonio.jpg";
 import primerPlano from "../../assets/hospitalidad/vista-hotel-primer-plano.webp";
 import "../../styles/hospitalidad/hero.css";
 
-// CAPA 1: la foto tal cual. CAPA 3: la misma foto, del mismo tamaño, con solo el primer plano visible (troncos,
-// ramas, el techo de arriba a la derecha y la selva de abajo; WebP con canal alfa): el cielo, el mar y las islas
-// quedan transparentes. Las dos se exportan en
-// los mismos anchos (srcset) para que calcen; en celular baja una versión chica en vez de la de ancho completo
-// Calidad un poco más baja que lo normal: es una foto de fondo y la capa de follaje con transparencia pesa mucho
 const anchos = [800, 1280, 1920, 2560];
 const fotoOptimizada = await variantesCapa(foto, anchos, 72);
 const sizes = sizesCubrePantalla(foto);
 const primerPlanoOptimizado = await variantesCapa(primerPlano, anchos, 68);
-// Las mismas capas en AVIF, que pesa entre 33 % y 46 % menos con igual o mejor calidad (sobre todo el primer plano,
-// por la transparencia); el WebP de arriba queda de respaldo para los navegadores sin AVIF
 const fotoAvif = await variantesCapa(foto, anchos, 50, "avif");
 const primerPlanoAvif = await variantesCapa(primerPlano, anchos, 50, "avif");
 ---
 
-<!-- Hero de Hospitalidad, mismo enfoque que el hero de Quepos (Quepos-Componentes/Hero.astro): tres capas del mismo
-     tamaño apiladas, la foto de la vista desde el hotel, el título "HOSPITALIDAD" y encima el primer plano, así las
-     letras quedan sobre el mar, detrás de los troncos, y la selva de abajo les tapa la base, como vistas desde la
-     terraza. El recuadro tiene la
-     proporción de la foto y cubre todo el hero (como object-cover): todo va en porcentajes de la foto -->
 <section class="hero-vista relative isolate h-svh min-h-[560px] w-full overflow-hidden bg-[#cfdde6]" aria-label="Hospitalidad">
   <div
     class="hero-vista-recuadro absolute left-1/2"
@@ -35,7 +21,6 @@ const primerPlanoAvif = await variantesCapa(primerPlano, anchos, 50, "avif");
       top: `calc((100cqh - max(100cqw * ${foto.height} / ${foto.width}, 100cqh)) * 0.5)`,
     }}
   >
-    <!-- CAPA 1 — La foto -->
     <picture>
       <source type="image/avif" srcset={fotoAvif.srcSet} sizes={sizes} />
       <img
@@ -49,9 +34,6 @@ const primerPlanoAvif = await variantesCapa(primerPlano, anchos, 50, "avif");
       />
     </picture>
 
-    <!-- CAPA 2 — Título en el cielo, justo sobre el horizonte (que está al 43 % desde abajo de la foto): las ramas
-         del árbol de la derecha le pasan por delante. Al hacer scroll baja por delante del mar y las islas y se
-         hunde entero detrás de la selva; la entrada va en el h1 para que no choquen -->
     <div
       data-hero-vista-titulo
       class="hero-vista-titulo absolute bottom-[45%] left-[var(--foco-x)] -translate-x-1/2"
@@ -59,8 +41,6 @@ const primerPlanoAvif = await variantesCapa(primerPlano, anchos, 50, "avif");
       <h1 class="hero-vista-entrada text-center font-black uppercase text-[#102a43]">Hospitalidad</h1>
     </div>
 
-    <!-- CAPA 3 — Troncos, ramas, techo y selva, encima del título. También con prioridad alta: sin esta capa la
-         portada se ve incompleta -->
     <picture>
       <source type="image/avif" srcset={primerPlanoAvif.srcSet} sizes={sizes} />
       <img

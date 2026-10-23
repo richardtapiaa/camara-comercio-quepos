@@ -1,5 +1,3 @@
-/* Perezoso colgado de la línea de tiempo de actividades (timeline.tsx): se balancea despacio desde las manos y se
-   estira un poco, como si fuera bajando por la línea */
 @keyframes perezoso-balanceo {
   0%,
   100% {
@@ -10,8 +8,6 @@
   }
 }
 
-/* Tronco del tramo del perezoso en la línea de tiempo (timeline.tsx): rama café con volumen (luz a la izquierda,
-   sombra a la derecha), corteza en vetas verticales irregulares y nudos oscuros */
 .tronco-linea {
   background-color: #6b4524;
   background-image:
@@ -30,9 +26,6 @@
   background: radial-gradient(ellipse at center, #2e1b0b 0 35%, #4a2e15 55%, transparent 72%);
 }
 
-/* Río del tramo del kayak en la línea de tiempo (timeline.tsx): agua azul lisa (como el mar del hero de
-   KayakScroll) con las orillas onduladas suaves. Las ondas son una máscara SVG que se repite hacia abajo y se
-   desplaza en bucle, así el agua parece correr */
 .agua-linea {
   background-color: #4195ce;
   -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 120' preserveAspectRatio='none'%3E%3Cpath d='M5 0C2 20 2 40 5 60S8 100 5 120H27C30 100 30 80 27 60S24 20 27 0Z'/%3E%3C/svg%3E");
@@ -53,7 +46,6 @@
     mask-position: 0 120px;
   }
 }
-/* Kayak sobre el agua: se mece de lado a lado y sube y baja un poco */
 @keyframes kayak-oleaje {
   0%,
   100% {
@@ -71,8 +63,6 @@
   }
 }
 
-/* Cable de la tirolesa en la línea de tiempo (timeline.tsx): acero trenzado (franjas en diagonal que se repiten) con
-   brillo en el centro, y placas de anclaje en las puntas */
 .cable-linea {
   background-color: #4b5563;
   background-image:
@@ -84,7 +74,6 @@
   background: linear-gradient(180deg, #9ca3af, #4b5563);
   box-shadow: 0 1px 2px rgb(15 23 42 / 0.35);
 }
-/* Persona en la tirolesa: se balancea desde la polea, como cuando baja con velocidad */
 @keyframes tirolesa-balanceo {
   0%,
   100% {

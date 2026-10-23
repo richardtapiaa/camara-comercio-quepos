@@ -1,17 +1,12 @@
-/* Halo de luz cálida y casi blanca que irradia hacia el fondo azul (un amarillo puro sobre azul se veía verdoso) */
 .foco-halo {
   background: radial-gradient(closest-side, rgb(255 246 200 / 0.95) 0%, rgb(255 236 160 / 0.45) 35%, transparent 100%);
   filter: blur(6px);
 }
-/* Tinte amarillo sobre el vidrio: con multiply el blanco se vuelve amarillo. Mide un poco menos que el vidrio y se
-   desvanece justo en su borde, para no teñir el fondo azul de alrededor (amarillo sobre azul se ve verde) */
 .foco-luz {
   background: radial-gradient(closest-side, #fde68a 0%, #fde047 55%, transparent 100%);
   mix-blend-mode: multiply;
 }
 
-/* Se prende y se apaga en ciclos de 6 s: apagado, un par de parpadeos al arrancar, encendido un rato y se apaga.
-   Con "reducir movimiento" queda encendido fijo, sin parpadeos */
 @media (prefers-reduced-motion: no-preference) {
   .foco-halo,
   .foco-luz {

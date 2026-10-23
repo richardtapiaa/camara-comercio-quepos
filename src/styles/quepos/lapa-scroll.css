@@ -1,16 +1,12 @@
-/* Quieta (sin animación o con "reducir movimiento"): centrada en el recuadro */
 [data-lapa] {
   left: 50%;
   translate: -50% 0;
 }
 
-/* Vuelo con scroll-driven animations: lo mueve el navegador junto con el scroll, sin esperar a JS (mismo
-   enfoque que scripts/home/parallax-imagenes.ts). Sin soporte (Firefox, Safari < 26) se usa GSAP abajo */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
     [data-lapa-scroll] {
       view-timeline-name: --lapa-vuelo;
-      /* 100cqw = ancho del recuadro, para que la lapa lo cruce entero */
       container-type: inline-size;
     }
     [data-lapa] {
@@ -19,12 +15,8 @@
       animation-timing-function: linear;
       animation-fill-mode: both;
       animation-timeline: --lapa-vuelo;
-      /* Todo el tiempo que el recuadro está en pantalla, para que el vuelo sea pausado */
       animation-range: cover 0% cover 100%;
     }
-    /* Las nubes se cierran hacia el centro y bajan mientras dura el recuadro en pantalla. Va en el <g> de cada
-       capa (el <path> de adentro se mece solo) y no en el svg, porque la nube de la derecha está en espejo: así
-       "hacia el centro" es +x en las dos */
     .nube-capa,
     .selva-capa {
       animation-name: nube-scroll;
@@ -36,7 +28,6 @@
   }
 }
 
-/* Cada capa recorre distinto: la de adelante más y la de atrás menos, así se nota la profundidad */
 .nube-capa-frente {
   --nube-x: 90px;
   --nube-y: 26px;
@@ -49,7 +40,6 @@
   --nube-x: 25px;
   --nube-y: 8px;
 }
-/* La selva solo se corre de lado: la de adelante más que la de atrás */
 .selva-capa-frente {
   --nube-x: 120px;
   --nube-y: 0px;
@@ -68,12 +58,6 @@
   }
 }
 
-/* Cruza de izquierda a derecha subiendo hasta las nubes y bajando hasta el pasto: arranca a ras del pasto, sube
-   a las nubes, baja al pasto y vuelve a subir para salir por las nubes. La altura sigue h = ½ − ½·cos(3π·t)
-   (0 = pasto, 1 = nubes) y --subida es cuánto sube en px: lo mide scripts/quepos/lapa-scroll.ts en cada pantalla (de la lapa
-   quieta hasta meterse en el borde de abajo de las nubes). Se inclina con la pendiente: -16°·sen(3π·t), el pico
-   hacia arriba cuando sube y hacia abajo cuando baja. 17 puntos para que la curva se vea suave; GSAP (abajo) usa
-   la misma fórmula */
 @keyframes lapa-vuelo {
   0% {
     translate: -100% calc(5% - var(--subida, 200%) * 0.000);

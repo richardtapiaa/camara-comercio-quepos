@@ -1,23 +1,17 @@
-/* Portada de Hospitalidad y Gastronomía (HeroMesa.astro). Las medidas van en cqw / cqh (ancho y alto de la portada),
-   así la escena guarda sus proporciones en cualquier pantalla */
 .hero-mesa {
   container-type: size;
 }
 
-/* Encuadre: la piscina y el horizonte quedan sobre la mesa, centrados */
 .hero-mesa-foto {
   object-position: 50% 55%;
 }
 
-/* Atardecer: luz cálida que baja desde arriba y una sombra suave donde empieza la mesa */
 .hero-mesa-luz {
   background:
     linear-gradient(to bottom, rgb(255 176 120 / 0.38), rgb(255 200 150 / 0.12) 45%, transparent 60%),
     linear-gradient(to top, rgb(16 42 67 / 0.35), transparent 40%);
 }
 
-/* Pizarra: verde oscuro casi negro con manchas de tiza borrada, marco de madera y letra de tiza (como el letrero
-   "Pura Vida!" de InfoGastronomia) */
 .hero-mesa-tiza {
   font-family: "Caveat", "Comic Sans MS", cursive;
   font-weight: 700;
@@ -33,7 +27,6 @@
     0 18px 30px -12px rgb(0 0 0 / 0.55);
 }
 .hero-mesa-pizarra {
-  /* Tamaño de la letra: crece con la pantalla sin pasarse en celular ni en pantallas bajas */
   font-size: min(9.5cqw, 9cqh, 5.2rem);
   transform-origin: top center;
 }
@@ -50,7 +43,6 @@
   letter-spacing: 0.08em;
   color: rgb(255 255 255 / 0.7);
 }
-/* Cordeles: suben desde las esquinas de arriba de la pizarra hasta fuera de la pantalla */
 .hero-mesa-cordel {
   position: absolute;
   bottom: calc(100% - 0.15em);
@@ -60,8 +52,6 @@
   transform-origin: bottom center;
 }
 
-/* Mantel de cuadros celeste visto un poco desde arriba: se inclina hacia atrás desde su borde de abajo; arriba un
-   dobladillo blanco y la sombra del borde de la mesa */
 .hero-mesa-mantel {
   background-color: #f4f9fd;
   background-image:
@@ -75,7 +65,6 @@
   transform-origin: bottom center;
 }
 
-/* Tamaño de lo servido, en proporción a la portada */
 .hero-mesa-pipa {
   width: min(16cqw, 19cqh);
 }
@@ -88,7 +77,6 @@
 .hero-mesa-objeto {
   filter: drop-shadow(0 6px 6px rgb(16 42 67 / 0.25));
 }
-/* En celular (pantalla angosta y alta) se miden con el ancho, más grandes, para que se reconozcan */
 @media (max-width: 640px) {
   .hero-mesa-pipa {
     width: 27cqw;
@@ -101,8 +89,6 @@
   }
 }
 
-/* Movimiento: la pizarra baja al entrar y queda meciéndose colgada de sus cordeles; lo de la mesa sube apenas. Al
-   hacer scroll la foto se mueve más lenta que la página. Sin movimiento si la persona lo pidió */
 @media (prefers-reduced-motion: no-preference) {
   .hero-mesa-pizarra {
     animation:
@@ -112,13 +98,10 @@
   .hero-mesa-objeto {
     animation: hero-mesa-servir 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
   }
-  /* La llave va centrada con translate: su entrada parte de ese mismo centrado */
   .hero-mesa-llave {
     animation-name: hero-mesa-servir-centro;
     animation-delay: 0.5s;
   }
-  /* Propiedades sueltas y no el atajo "animation": al publicar, el minificador junta el atajo con
-     animation-timeline en una sola línea que el navegador descarta por inválida */
   @supports (animation-timeline: scroll()) {
     .hero-mesa-foto {
       animation-name: hero-mesa-parallax;

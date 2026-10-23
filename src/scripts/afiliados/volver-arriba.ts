@@ -5,8 +5,6 @@ if (boton) {
   const destino = document.getElementById("afiliados");
   let pendiente = false;
 
-  // Visible cuando el título de "Nuestros afiliados" ya quedó media pantalla por encima (sin la sección: cuando
-  // se bajó más de un alto de pantalla)
   const actualizar = () => {
     pendiente = false;
     const visible = destino
@@ -28,7 +26,6 @@ if (boton) {
   window.addEventListener("resize", actualizar);
   actualizar();
 
-  // scrollIntoView respeta el scroll-margin-top de la sección, que deja el título debajo de la barra de navegación
   boton.addEventListener("click", () => {
     const behavior = sinMovimiento.matches ? "auto" : "smooth";
     if (destino) destino.scrollIntoView({ behavior, block: "start" });

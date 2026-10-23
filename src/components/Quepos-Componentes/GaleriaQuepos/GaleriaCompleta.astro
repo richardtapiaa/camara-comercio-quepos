@@ -25,12 +25,9 @@ import hotelVillaTeca from "../../../assets/hospitalidad/hotel-villa-teca.jpg";
 import centro from "../../../assets/hospitalidad/centro-comercio.jpg";
 import habitacion from "../../../assets/hospitalidad/hospitalidad-1.webp";
 
-// Tamaño de las palmeras: crecen con el ancho de la pantalla; el texto empieza debajo de sus hojas (ver el
-// espacio de arriba del contenido). Arriba se difuminan para ocultar el corte de la foto
 const clasesPalmera =
   "h-auto w-44 select-none sm:w-64 md:w-72 lg:w-80 xl:w-96 2xl:w-[28rem] [mask-image:linear-gradient(to_bottom,transparent,black_30%)]";
 
-// Cada foto lleva su versión grande (para verla ampliada), miniaturas en varios anchos y su proporción real
 const items = [
   { id: 1, ...(await variantesGaleria(hero)), alt: "Paisaje de Quepos" },
   { id: 2, ...(await variantesGaleria(fondo)), alt: "Naturaleza de Quepos" },
@@ -57,9 +54,6 @@ const items = [
 ---
 
 <section id="galeria-completa" class="relative w-full self-start overflow-x-clip bg-white">
-  <!-- Palmeras colgando de las esquinas de arriba (mismas que GaleriaQuepos.astro): la de la derecha tal cual y la
-       de la izquierda en espejo, saliendo del borde de la pantalla. No bloquean los clics. La foto trae las hojas
-       cortadas en línea recta arriba: ese borde se difumina para que no se vea el corte -->
   <Image
     src={palmera}
     alt=""
@@ -81,13 +75,7 @@ const items = [
     aria-hidden="true"
   />
 
-  <!-- "relative" (sin z-index) deja el contenido delante de las palmeras sin crear un contexto de apilamiento: así
-       el visor de fotos ampliadas (fixed z-[70]) sigue quedando por encima de la barra de navegación -->
-  <!-- El espacio de arriba crece con las palmeras (que miden 2/3 de su ancho de alto), así el texto empieza debajo
-       de las hojas y nunca queda cruzado por ellas -->
   <div class="relative mx-auto max-w-7xl px-4 pb-24 pt-32 sm:px-6 sm:pt-44 md:pt-48 lg:pt-52 xl:pt-60 2xl:pt-72">
-    <!-- client:visible: el HTML del mosaico ya viene listo desde el servidor (las fotos se ven igual); React y
-         framer-motion se cargan recién cuando la galería entra en pantalla, para poder ampliar las fotos -->
     <GaleriaQuepos client:visible items={items} />
   </div>
 </section>

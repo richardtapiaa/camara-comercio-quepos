@@ -8,9 +8,7 @@ import { cn } from "@/lib/utils";
  
 export interface MagicTextProps {
   text: string;
-  /** Clases del párrafo (tamaño, peso, color, interlineado...); las palabras las heredan */
   className?: string;
-  /** Opacidad de las palabras que todavía no se revelan */
   opacidadInicial?: number;
 }
  
@@ -21,7 +19,6 @@ interface WordProps {
   opacidadInicial: number;
 }
  
-// Cada palabra tiene una copia tenue detrás y encima la versión llena, que aparece con el scroll
 const Word: React.FC<WordProps> = ({ children, progress, range, opacidadInicial }) => {
   const opacity = useTransform(progress, range, [0, 1]);
  

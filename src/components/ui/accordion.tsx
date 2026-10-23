@@ -3,7 +3,6 @@ import { gsap } from "gsap";
 import { Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-// Acordeón ligero con la misma API que el de shadcn (sin depender de Radix)
 type AccordionContextValue = {
   abiertos: string[];
   alternar: (value: string) => void;
@@ -27,7 +26,6 @@ export function Accordion({ type = "single", collapsible = false, defaultValue, 
     setAbiertos((actuales) => {
       const abierto = actuales.includes(value);
       if (type === "multiple") return abierto ? actuales.filter((v) => v !== value) : [...actuales, value];
-      // En modo "single" solo se puede cerrar el abierto si es collapsible
       if (abierto) return collapsible ? [] : actuales;
       return [value];
     });
@@ -66,7 +64,6 @@ export function AccordionTrigger({ className, children, ...props }: React.Button
       {...props}
     >
       {children}
-      {/* El "+" gira 45° y queda como "×" al abrir */}
       <Plus
         strokeWidth={1.5}
         className={cn("size-5 shrink-0 text-slate-900 transition-transform duration-[380ms] ease-out", item?.abierto && "rotate-45")}
@@ -81,8 +78,6 @@ export function AccordionContent({ className, children }: { className?: string; 
   const marco = React.useRef<HTMLDivElement>(null);
   const contenido = React.useRef<HTMLDivElement>(null);
 
-  // Abre y cierra con un timeline de GSAP: primero la altura y, encimado, el texto entrando suave.
-  // Se crea uno nuevo en cada cambio para partir de la altura actual si se interrumpe a medio camino
   React.useLayoutEffect(() => {
     const tl = gsap.timeline({ defaults: { overwrite: "auto" } });
 

@@ -7,8 +7,6 @@ import "../../styles/quepos/fondo-animales.css";
 ---
 
 <section id="sobre-quepos" class="fondo-animales relative overflow-x-clip py-16 sm:py-24">
-  <!-- Mono cariblanco en su rama, arriba a la derecha. Va en espejo y pegado al borde de la pantalla, así el tronco
-     (que en la foto está cortado a la izquierda) sale del borde y la rama cruza hacia adentro. Va delante de todo -->
   <Image
     src={mono}
     alt="Mono cariblanco descansando en una rama"
@@ -19,9 +17,6 @@ import "../../styles/quepos/fondo-animales.css";
   />
 
   <div class="mx-auto grid max-w-6xl px-6 md:grid-cols-12">
-    <!-- Sale del contenedor hasta el borde izquierdo de la pantalla y se monta sobre el panel. Va sin parallax y en
-         su proporción (3:2): las letras de QUEPOS ocupan todo el ancho de la foto y el parallax (que estira la
-         imagen al doble de alto) las recortaba a los lados -->
     <div class="relative z-10 -ml-[calc(max(0px,(100vw_-_72rem)/2)+1.5rem)] mb-8 aspect-[3/2] overflow-hidden rounded-2xl md:col-span-4 md:col-start-1 md:row-start-1 md:mt-24 md:self-start">
       <Image
         src={imagen}
@@ -33,8 +28,6 @@ import "../../styles/quepos/fondo-animales.css";
       />
     </div>
 
-    <!-- Tarjeta celeste con bordes redondeados y sombra suave (como InfoHospitalidad.astro). Sale del contenedor
-         hacia la derecha pero deja un margen con el borde de la pantalla, para que se vean las esquinas -->
     <div
       class="-mr-[max(0px,(100vw_-_72rem)/2)] rounded-[2rem] bg-[#E8F4FA] py-12 pl-6 pr-[calc(max(0px,(100vw_-_72rem)/2)+1.5rem)] shadow-[0_12px_40px_rgb(100_155_190/0.25)] md:col-span-9 md:col-start-4 md:row-start-1 md:py-16 md:pl-[calc(100%/9+2rem)]"
     >

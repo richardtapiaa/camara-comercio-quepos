@@ -28,20 +28,13 @@ import {
 } from "lucide-react";
 
 interface Props {
-  /** id del <pattern>: único por página (si hay dos fondos en la misma página no deben repetirse) */
   id: string;
-  /** Color de los íconos y puntitos */
   color: string;
-  /** Opacidad de los íconos (los puntitos van un poco más suaves) */
   opacidad: number;
 }
 
 const { id, color, opacidad } = Astro.props;
 
-// Fondo de mosaico de íconos en línea fina (como un fondo de chat), con temas de
-// afiliación: alianzas, empresas, comercios, crecimiento, beneficios y premios. Es una celda de 480 × 480 px que se
-// repite; cada ícono va con su giro y tamaño (fijos, para que el dibujo no cambie entre builds) y entre ellos puntitos
-// de relleno. Los íconos del borde derecho se repiten a la izquierda (x − 480) para que el mosaico empalme sin cortes
 const iconosFondo = [
   { Icono: Handshake, x: 14, y: 8, giro: 16, tam: 30 },
   { Icono: Briefcase, x: 102, y: 21, giro: -16, tam: 38 },
@@ -91,7 +84,6 @@ const puntosFondo = [
 ];
 ---
 
-<!-- Va detrás del contenido (-z-10) y no bloquea clics: la sección que lo usa necesita "relative isolate" -->
 <svg class="pointer-events-none absolute inset-0 -z-10 size-full" aria-hidden="true">
   <defs>
     <pattern id={id} width="480" height="480" patternUnits="userSpaceOnUse">

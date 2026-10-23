@@ -11,7 +11,6 @@ export default defineConfig({
     enabled: false,
   },
 
-  // El CSS de cada página va dentro del HTML: son unos 20 KB y así el navegador no espera otros archivos para dibujar
   build: {
     inlineStylesheets: "always",
   },

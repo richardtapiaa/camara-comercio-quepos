@@ -3,7 +3,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Paneles con sticky nativo: su alto define el "top" con el que se fijan (ver Vision.astro)
 document.querySelectorAll<HTMLElement>("[data-panel-sticky]").forEach((panel) => {
   new ResizeObserver(() => {
     panel.style.setProperty("--alto-panel", panel.offsetHeight + "px");
@@ -28,14 +27,10 @@ gsap.matchMedia().add(
 
       ScrollTrigger.create({
         trigger: panel,
-        // Si el panel es más alto que la pantalla, se fija cuando se ve completo hasta su final
         start: () => (panel.offsetHeight > window.innerHeight ? "bottom bottom" : "top top"),
-        // Panel que se desliza por encima (data-end-pin="#selector"); por defecto, el siguiente hermano
         endTrigger: (panel.dataset.endPin && document.querySelector<HTMLElement>(panel.dataset.endPin)) ||
           panel.nextElementSibling ||
           panel,
-        // Se suelta cuando el panel de encima ya cubre toda la pantalla (su borde superior llega arriba);
-        // antes de eso sigue visible detrás, así no queda un hueco en blanco bajo las esquinas redondeadas
         end: "top top",
         pin: true,
         pinSpacing: false,

@@ -1,4 +1,3 @@
-// Filtra las tarjetas por categoría y por nombre (sin importar mayúsculas ni tildes)
 const normalizar = (texto: string) =>
   texto.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
 
@@ -23,7 +22,6 @@ document.querySelectorAll<HTMLElement>("[data-afiliados]").forEach((seccion) => 
     if (vacio) vacio.hidden = visibles > 0;
   };
 
-  // Desplegable de categoría con íconos
   if (desplegable) {
     const boton = desplegable.querySelector<HTMLButtonElement>("[data-cat-boton]")!;
     const lista = desplegable.querySelector<HTMLUListElement>("[data-cat-lista]")!;
@@ -77,7 +75,6 @@ document.querySelectorAll<HTMLElement>("[data-afiliados]").forEach((seccion) => 
         e.preventDefault();
       });
     });
-    // Se cierra al tocar o hacer clic fuera
     document.addEventListener("pointerdown", (e) => {
       if (abierta() && !desplegable.contains(e.target as Node)) cerrar();
     });

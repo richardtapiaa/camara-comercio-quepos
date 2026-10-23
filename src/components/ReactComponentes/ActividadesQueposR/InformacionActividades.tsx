@@ -3,7 +3,6 @@
 import Timeline from "@/components/ui/timeline-01-utils/timeline";
 import { Badge } from "@/components/ui/badge";
 
-// Textos de cada actividad, en el mismo orden que las imágenes que llegan desde el .astro
 const actividades = [
   {
     title: "Parque Nacional Manuel Antonio",
@@ -45,11 +44,8 @@ const actividades = [
 
 type InformacionActividadesProps = {
   imagenes: { src: string; alt: string }[];
-  /** Perezoso que baja colgado de la línea entre la primera y la segunda actividad */
   perezoso?: string;
-  /** Kayak que baja por el río entre la segunda y la tercera actividad */
   kayak?: string;
-  /** Persona en la tirolesa entre la cuarta y la quinta actividad */
   canopy?: string;
 };
 

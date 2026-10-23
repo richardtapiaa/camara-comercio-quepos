@@ -8,8 +8,6 @@ import "../../styles/hospitalidad/buseta-scroll.css";
 const frase =
   "“Cada viaje a Quepos termina con una sonrisa: aquí cada visitante llega como turista y se va como amigo.”";
 
-// Edificios a la derecha (viewBox 600 x 360): x, ancho, alto y color de cada uno. Las ventanas se calculan en una
-// cuadrícula dentro de cada edificio
 const edificios = [
   { x: 0, ancho: 110, alto: 170, color: "#9CC3DC" },
   { x: 96, ancho: 128, alto: 290, color: "#6FA6CB" },
@@ -30,16 +28,11 @@ const edificios = [
 });
 ---
 
-<!-- Calle con pasto que llega a unos edificios. La furgoneta entra por la izquierda y avanza por la calle hasta
-     llegar a los edificios mientras se hace scroll (scripts/hospitalidad/buseta-scroll-animacion.ts). Arriba, en el cielo, va la frase que
-     se llena con el scroll (MagicText), igual que en LapasJS.astro. Las alturas de la calle y del pasto
-     están en variables (--calle, --pasto-*) en styles/hospitalidad/buseta-scroll.css -->
 <section
   data-buseta-scroll
   class="buseta-recuadro relative isolate flex min-h-[60svh] flex-col overflow-hidden bg-[#E8F4FA] md:min-h-[75svh]"
   aria-label="Furgoneta llegando a la ciudad"
 >
-  <!-- Sol: el mismo de LapasJS.astro y KayakScroll.astro -->
   <svg
     class="cielo-sol pointer-events-none absolute left-[10%] top-[10%] size-14 md:left-[14%] md:size-24"
     viewBox="0 0 100 100"
@@ -49,7 +42,6 @@ const edificios = [
     <circle cx="50" cy="50" r="27" fill="#FDE047" />
   </svg>
 
-  <!-- Frase en el cielo (mismo estilo que LapasJS.astro), delante del sol -->
   <div class="relative z-[1] mx-auto w-full max-w-4xl px-6 pt-24 md:pt-28">
     <MagicText
       client:visible={{ rootMargin: "300px" }}
@@ -59,10 +51,8 @@ const edificios = [
     />
   </div>
 
-  <!-- Espacio para la calle, los edificios y la furgoneta debajo de la frase -->
   <div class="h-[38svh] shrink-0 md:h-[48svh]" aria-hidden="true"></div>
 
-  <!-- Edificios parados sobre el pasto de arriba, al fondo a la derecha -->
   <svg
     class="buseta-edificios pointer-events-none absolute right-0 w-[55%] max-w-3xl md:w-[42%]"
     viewBox="0 0 600 360"
@@ -81,12 +71,10 @@ const edificios = [
     }
   </svg>
 
-  <!-- Pasto de arriba (entre los edificios y la calle), calle y pasto de abajo -->
   <div class="buseta-pasto buseta-pasto-arriba pointer-events-none absolute inset-x-0" aria-hidden="true"></div>
   <div class="buseta-calle pointer-events-none absolute inset-x-0" aria-hidden="true"></div>
   <div class="buseta-pasto buseta-pasto-abajo pointer-events-none absolute inset-x-0 bottom-0" aria-hidden="true"></div>
 
-  <!-- Furgoneta sobre la calle. El div lo mueve el scroll; la imagen de adentro rebota apenas, como al andar -->
   <div data-buseta class="buseta-auto absolute z-10 w-[38%] max-w-xs md:w-[18%]">
     <img
       src={furgoneta.src}

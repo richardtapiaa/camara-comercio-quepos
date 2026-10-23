@@ -1,5 +1,3 @@
-/* Sol de los paisajes (KayakScroll, LapasJS y BusetaScroll): halo cálido y rayos que giran despacio sobre el centro
-   del sol (50px 50px en su viewBox de 100) */
 .cielo-sol {
   filter: drop-shadow(0 0 14px rgb(251 191 36 / 0.45));
 }

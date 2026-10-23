@@ -10,17 +10,11 @@ const frase =
   "“En Quepos las lapas rojas cruzan el cielo entre la selva y el mar: una señal de que aquí la naturaleza sigue viva.”";
 ---
 
-<!-- Recuadro celeste (mismos colores que ScrollRevealConozcaQuepos.astro) con nubes en las esquinas de arriba y una
-     lapa que lo cruza volando al hacer scroll (scripts/quepos/lapa-scroll.ts). Cada nube son capas con el borde de abajo en olas
-     (curvas que bajan en diagonal hacia el centro) que se mecen despacio; el <g> de cada capa lo mueve el scroll.
-     Arriba va la frase que se llena con el scroll (detrás de las nubes) y abajo la selva, de donde sale la lapa -->
 <section
   data-lapa-scroll
   class="lapas-recuadro relative isolate flex min-h-[48svh] flex-col overflow-hidden bg-[#E8F4FA] md:min-h-[70svh]"
   aria-label="Lapa roja volando sobre Quepos"
 >
-  <!-- Sol: el mismo de KayakScroll.astro (12 rayos curvos que giran despacio y el centro amarillo). Va detrás de la
-       nube de la derecha (z-10), asomándose por debajo de su borde -->
   <svg
     class="cielo-sol pointer-events-none absolute right-4 top-28 z-[5] size-14 md:right-[19%] md:top-[14%] md:size-28"
     viewBox="0 0 100 100"
@@ -30,8 +24,6 @@ const frase =
     <circle cx="50" cy="50" r="27" fill="#FDE047" />
   </svg>
 
-  <!-- Frase en el cielo, detrás de las nubes (z-10) y de la lapa. Arranca más abajo que las nubes para que solo
-       rocen los costados -->
   <div class="relative z-[1] mx-auto w-full max-w-4xl px-6 pt-40 md:pt-56">
     <MagicText
       client:visible={{ rootMargin: "300px" }}
@@ -41,10 +33,8 @@ const frase =
     />
   </div>
 
-  <!-- Espacio para el vuelo y la selva debajo de la frase -->
   <div class="h-[34svh] shrink-0 md:h-[44svh]" aria-hidden="true"></div>
 
-  <!-- Encima de la frase y del suelo, y detrás de las nubes: arranca desde abajo, junto al pasto -->
   <img
     data-lapa
     src={lapa.src}
@@ -92,10 +82,6 @@ const frase =
     ))
   }
 
-  <!-- Suelo plano en dos franjas: pasto claro atrás (un poco más alto) y tierra verde oscura adelante, cada una con
-       un borde de hojitas de pasto arriba y la de adelante con piedritas y manchas (clases suelo-* en styles/quepos/lapas.css). Son más
-       anchas que el recuadro (-inset-x-32) porque el scroll las corre de lado (scripts/quepos/lapa-scroll.ts) y no deben dejar
-       huecos en los bordes -->
   <div class="selva-capa selva-capa-atras pointer-events-none absolute -inset-x-32 bottom-0 z-[1] h-[4.5rem] suelo-pasto md:h-[max(6rem,7vw)]" aria-hidden="true"></div>
   <div class="selva-capa selva-capa-frente pointer-events-none absolute -inset-x-32 bottom-0 z-[1] h-14 suelo-tierra md:h-[max(5rem,6vw)]" aria-hidden="true"></div>
 </section>

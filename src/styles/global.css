@@ -17,9 +17,6 @@ body {
   font-family: var(--font-sans);
 }
 
-/* Poppins, la letra del sitio, alojada en el sitio (public/fonts, licencia OFL) en vez de pedirla a Google Fonts: así
-   no hay que esperar a otro servidor para dibujar la página. Solo los grosores que se usan (400 a 900) y la itálica
-   normal, con los caracteres latinos (incluye tildes, ñ, ¿ y ¡) */
 @font-face {
   font-family: "Poppins";
   font-style: normal;
@@ -70,9 +67,6 @@ body {
   src: url("/fonts/poppins-400-italic-latin.woff2") format("woff2");
 }
 
-/* Alfa Slab One (letrero "QUEPOS" del hero de Quepos), alojada en el sitio (public/fonts, licencia OFL) y precargada
-   en pages/quepos.astro. font-display: block: mientras carga, el título espera invisible en vez de mostrarse con la letra
-   de respaldo (en celulares sin Arial Black caía en Poppins fina y se veía mal) */
 @font-face {
   font-family: "Alfa Slab One";
   font-style: normal;
@@ -81,8 +75,6 @@ body {
   src: url("/fonts/alfa-slab-one-latin.woff2") format("woff2");
 }
 
-/* Caveat (letra a mano) para las pizarras de tiza (portada de Hospitalidad y letrero de
-   InfoGastronomia); alojada en el sitio (public/fonts, licencia OFL) */
 @font-face {
   font-family: "Caveat";
   font-style: normal;

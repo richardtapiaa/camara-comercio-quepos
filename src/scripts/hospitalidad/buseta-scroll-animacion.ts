@@ -11,10 +11,8 @@ if (!conCss && !sinMovimiento) {
     const buseta = recuadro.querySelector<HTMLElement>("[data-buseta]");
     if (!buseta) return;
 
-    // GSAP mueve con transform; se arranca desde el borde izquierdo para que no se sume al "left" de reposo
     buseta.style.left = "0";
 
-    // Mismo recorrido que el keyframe de CSS: de fuera por la izquierda a fuera por la derecha
     gsap.fromTo(
       buseta,
       { xPercent: -110, x: 0 },
@@ -24,7 +22,6 @@ if (!conCss && !sinMovimiento) {
         ease: "none",
         scrollTrigger: {
           trigger: recuadro,
-          // Equivale a "cover 0% cover 100%" del CSS
           start: "top bottom",
           end: "bottom top",
           scrub: true,

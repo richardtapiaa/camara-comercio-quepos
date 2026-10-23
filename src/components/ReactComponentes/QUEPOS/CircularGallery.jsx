@@ -225,7 +225,6 @@ const link = gl => {
   return { program, uniforms };
 };
 
-/** @param {Record<string, any>} props */
 const CircularGallery = ({
   items,
   bend = 3,
@@ -825,7 +824,6 @@ const CircularGallery = ({
       setSlot(nearest());
     };
 
-    // Con wheelOnClick, la rueda solo mueve la galería después de presionarla
     let wheelActive = false;
 
     const onPointerDown = event => {
@@ -969,7 +967,6 @@ const CircularGallery = ({
       typing = false;
       if (container.contains(event.target)) return;
       wheelActive = false;
-      // Tocar o hacer clic fuera de la galería cierra la imagen abierta
       if (state.openTarget > 0) close();
     };
 

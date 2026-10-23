@@ -3,16 +3,6 @@
 import * as React from "react"
 import "../../../styles/home/carrusel-polaroid.css"
 
-/*
- * Polaroid Line Carousel — instant photos pegged to a sagging string. Drag the
- * line (or use the arrows) and the prints slide along it, swinging on their
- * pegs with the speed you give them and settling back with a little
- * overshoot; even at rest they sway in a light breeze. The one in the middle
- * is the one you're looking at.
- *
- * Drag, click a print, ←/→ and autoplay. Slides without an `image` get a
- * painted landscape, so it works with no assets at all.
- */
 
 export type LandPalette = "dawn" | "alpine" | "dusk" | "mist"
 
@@ -21,24 +11,17 @@ export type Slide = {
   title?: string
   caption?: string
   alt?: string
-  /** Palette and seed of the painted landscape used when `image` is empty. */
   palette?: LandPalette
   seed?: number
 }
 
 export type PolaroidLineCarouselProps = {
   slides?: Slide[]
-  /** Any CSS length. Default 100svh. */
   height?: number | string
-  /** Width of a print in px (it shrinks on narrow screens). */
   cardWidth?: number
-  /** How far the string sags in the middle, px. */
   sag?: number
-  /** How much the prints swing; 0 holds them still. */
   swing?: number
-  /** ms per print; 0 turns autoplay off. It waits while someone is interacting. */
   autoplay?: number
-  /** Colour of the string and pegs. */
   string?: string
   background?: string
   ink?: string
@@ -48,7 +31,6 @@ export type PolaroidLineCarouselProps = {
   ariaLabel?: string
 }
 
-// #region logic
 export function wrap(i: number, n: number): number {
   return n ? ((i % n) + n) % n : 0
 }
@@ -57,26 +39,22 @@ export function clamp(v: number, a: number, b: number): number {
   return Math.min(b, Math.max(a, v))
 }
 
-/** Height of a string sagging by `sag` between (0, y0) and (w, y0), at x. */
 export function stringY(x: number, w: number, y0: number, sag: number): number {
   const t = clamp(x / w, 0, 1)
   return y0 + 4 * sag * t * (1 - t)
 }
 
-/** One step of a critically damped spring toward target. */
 export function springStep(x: number, v: number, target: number, dt: number, k = 70): [number, number] {
   const c = 2 * Math.sqrt(k)
   const nv = v + (k * (target - x) - c * v) * dt
   return [x + nv * dt, nv]
 }
 
-/** One step of a print's swing. lineVel is the prints' on-screen speed (px/s, + = moving right); a print lags behind the motion, is pulled back by gravity and damped. */
 export function swingStep(a: number, w: number, lineVel: number, dt: number, gain: number): [number, number] {
   const nw = w + (-38 * a - 4.2 * w + lineVel * 0.0034 * gain) * dt
   return [clamp(a + nw * dt, -0.6, 0.6), nw]
 }
 
-/** Index of the print nearest the centre for a line offset. */
 export function nearestAt(off: number, spacing: number, n: number): number {
   return clamp(Math.round(off / spacing), 0, Math.max(0, n - 1))
 }
@@ -84,9 +62,7 @@ export function nearestAt(off: number, spacing: number, n: number): number {
 export function pad2(n: number): string {
   return n < 10 ? "0" + n : String(n)
 }
-// #endregion logic
 
-/* ------------------------------------------------------- painted images */
 
 const PALETTES = {
   dawn: { top: "#e7b7a5", bottom: "#f8e8d6", sun: "#fff4df", far: "#d2b2bb", near: "#3a2a3b", mist: "255,240,232" },
@@ -115,8 +91,6 @@ function mixRgb(a: string, b: string, t: number): string {
   return "rgb(" + A.map((v, i) => Math.round(v + (B[i] - v) * t)).join(",") + ")"
 }
 
-// A layered-ridge landscape: sky, a low sun, five ridges fading into haze with
-// mist between them, a tree line on the nearest, film grain. Painted once.
 function paintLandscape(seed: number, palette: LandPalette, w = 1600, h = 1000): string {
   if (typeof document === "undefined") return ""
   const c = document.createElement("canvas")
@@ -221,7 +195,6 @@ const DEFAULT_SLIDES: Slide[] = [
   { title: "Blue Hour", caption: "Pines going dark against the snow.", palette: "alpine", seed: 55 },
 ]
 
-// Every slide as an image URL; slides without one are painted after mount.
 function useSlideImages(slides: Slide[]): string[] {
   const key = slides.map((s) => s.image || (s.palette || "dawn") + ":" + (s.seed ?? 1)).join("|")
   const [painted, setPainted] = React.useState(() => slides.map(() => ""))
@@ -282,7 +255,6 @@ export default function PolaroidLineCarousel({
     return () => ro.disconnect()
   }, [cardWidth])
 
-  // keep the target on the active print when the spacing changes
   React.useEffect(() => {
     sim.current.target = activeRef.current * spacing
     sim.current.off = activeRef.current * spacing
@@ -292,7 +264,6 @@ export default function PolaroidLineCarousel({
     onChange?.(active)
   }, [active, onChange])
 
-  // the simulation, written straight to the DOM each frame
   React.useEffect(() => {
     const root = rootRef.current
     if (!root) return
@@ -361,7 +332,6 @@ export default function PolaroidLineCarousel({
     }
   }, [size, spacing, n])
 
-  // autoplay, back to the first print after the last
   React.useEffect(() => {
     if (!autoplay || n < 2) return
     const t = window.setInterval(() => {

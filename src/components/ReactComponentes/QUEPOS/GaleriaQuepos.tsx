@@ -4,17 +4,12 @@ import { motion, AnimatePresence, useIsPresent, type Transition } from "framer-m
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
-// --- Tipos ---
 export interface GaleriaItem {
   id: number;
-  /** Versión grande, para la vista ampliada */
   src: string;
   alt: string;
-  /** Miniatura para el mosaico (si no viene se usa src) */
   miniatura?: string;
-  /** Miniaturas en varios anchos ("url 360w, url 600w, …") */
   srcSet?: string;
-  /** Ancho y alto originales: la miniatura usa su proporción real, sin recortar la foto */
   ancho?: number;
   alto?: number;
 }
@@ -29,17 +24,13 @@ interface GalleryContextType {
   selectedImage: ImageData | null;
   setSelectedImage: (image: ImageData | null) => void;
   images: ImageData[];
-  /** Pasa a la imagen siguiente (1) o anterior (-1), dando la vuelta al llegar a un extremo */
   navegar: (direccion: number) => void;
-  /** Dirección del último cambio, para la animación de deslizar */
   direccion: number;
-  /** Ya se cambió de imagen desde que se abrió (la vista ya no corresponde a la miniatura de origen) */
   navegado: boolean;
 }
 
 const GalleryContext = React.createContext<GalleryContextType | null>(null);
 
-// --- Física ---
 const spring: Transition = {
   type: "spring",
   stiffness: 350,
@@ -47,18 +38,13 @@ const spring: Transition = {
   mass: 1,
 };
 
-// Deslizamiento al cambiar de imagen; la dirección llega por "custom"
 const deslizar = {
   entrar: (direccion: number) => ({ x: direccion * 120, opacity: 0 }),
   centro: { x: 0, opacity: 1 },
   salir: (direccion: number) => ({ x: direccion * -120, opacity: 0 }),
 };
 
-// --- Componentes ---
 
-/**
- * Proveedor raíz: guarda la imagen ampliada y renderiza el modal.
- */
 export function Gallery({ children, images = [] }: { children: React.ReactNode; images?: ImageData[] }) {
   const [vista, setVista] = React.useState<{ imagen: ImageData | null; direccion: number; navegado: boolean }>({
     imagen: null,
@@ -83,7 +69,6 @@ export function Gallery({ children, images = [] }: { children: React.ReactNode; 
     [images],
   );
 
-  // Escape cierra; las flechas cambian de imagen
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") setSelectedImage(null);
@@ -94,7 +79,6 @@ export function Gallery({ children, images = [] }: { children: React.ReactNode; 
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [navegar, setSelectedImage]);
 
-  // Precarga la anterior y la siguiente para que el cambio sea instantáneo
   React.useEffect(() => {
     if (!selectedImage || images.length < 2) return;
     const actual = images.findIndex((img) => img.id === selectedImage.id);
@@ -103,8 +87,6 @@ export function Gallery({ children, images = [] }: { children: React.ReactNode; 
     });
   }, [selectedImage, images]);
 
-  // Bloquea el scroll de la página mientras el modal está abierto. Se reserva el ancho de la barra de scroll:
-  // si no, al quitarla y volver a ponerla el mosaico se reacomoda y la foto vuelve a un lugar que se movió
   const abierto = selectedImage !== null;
   React.useEffect(() => {
     if (!abierto) return;
@@ -129,16 +111,10 @@ export function Gallery({ children, images = [] }: { children: React.ReactNode; 
   );
 }
 
-/**
- * Cuadrícula masonry responsive
- */
 export function GalleryGrid({ children, className }: { children: React.ReactNode; className?: string }) {
   return <div className={cn("columns-2 gap-3 md:columns-3 md:gap-4 lg:columns-4", className)}>{children}</div>;
 }
 
-/**
- * Miniatura de la galería
- */
 export function GalleryImage({
   src,
   alt,
@@ -158,15 +134,11 @@ export function GalleryImage({
   id: string;
   className?: string;
   loading?: "lazy" | "eager";
-  /** Proporción de la miniatura (p. ej. "aspect-[3/5]"); la imagen se recorta para llenarla */
   aspect?: string;
-  /** Para la misma imagen repetida (carrusel infinito): las copias no comparten la animación con la vista ampliada */
   copia?: number;
-  /** Imagen liviana para el mosaico; src (la grande) queda para la vista ampliada */
   miniatura?: string;
   srcSet?: string;
   sizes?: string;
-  /** Ancho y alto originales: reservan el espacio con la proporción real (sin saltos mientras carga) */
   ancho?: number;
   alto?: number;
 }) {
@@ -185,7 +157,6 @@ export function GalleryImage({
       )}
       style={!aspect && ancho && alto ? { aspectRatio: `${ancho} / ${alto}` } : undefined}
       onClick={() => context.setSelectedImage({ id, src, alt })}
-      // Al acercar el cursor o enfocar se empieza a bajar la versión grande, así al ampliar ya está lista
       onPointerEnter={miniatura ? () => (new Image().src = src) : undefined}
       onFocus={miniatura ? () => (new Image().src = src) : undefined}
       aria-label={`Ampliar imagen: ${alt || "Galería"}`}
@@ -208,7 +179,6 @@ export function GalleryImage({
         transition={spring}
       />
 
-      {/* Oscurecido sutil al pasar el cursor */}
       <motion.div
         variants={{
           hover: { opacity: 1 },
@@ -229,13 +199,9 @@ function GalleryModal() {
 
   const { selectedImage, direccion, navegado } = context;
 
-  // Se dibuja directo en el <body> (portal): si la galería está dentro de una sección con su propio contexto de
-  // apilamiento (isolate, transform, z-index…), el visor quedaba atrapado ahí y la barra de navegación le pasaba por
-  // encima. Desde el body, su z-[70] sí queda sobre la barra (z-50) y cubre toda la pantalla
   if (typeof document === "undefined") return null;
   return createPortal(
     <AnimatePresence>
-      {/* Se pasan como props: al cerrar, la vista que sale conserva la última imagen mientras se anima */}
       {selectedImage && <VistaAmpliada key="vista" imagen={selectedImage} direccion={direccion} navegado={navegado} />}
     </AnimatePresence>,
     document.body,
@@ -244,10 +210,7 @@ function GalleryModal() {
 
 function VistaAmpliada({ imagen, direccion, navegado }: { imagen: ImageData; direccion: number; navegado: boolean }) {
   const { setSelectedImage, images, navegar } = React.useContext(GalleryContext)!;
-  // Mientras se anima el cierre la vista sigue montada; sin esto su capa transparente tapaba la página
-  // y no se podía hacer clic ni scroll hasta que terminaba
   const presente = useIsPresent();
-  // El navegador lanza "click" al soltar aunque se haya arrastrado; así se distingue un toque de un deslizamiento
   const huboArrastre = React.useRef(false);
 
   const posicion = images.findIndex((img) => img.id === imagen.id);
@@ -256,13 +219,11 @@ function VistaAmpliada({ imagen, direccion, navegado }: { imagen: ImageData; dir
     "absolute z-50 p-2.5 bg-white/10 text-white rounded-full backdrop-blur-md hover:bg-white/20 transition-colors";
 
   return (
-    // z-[70]: por encima del Navbar (z-50) y su menú móvil (z-[60])
     <div
       className={cn("fixed inset-0 z-[70] flex items-center justify-center", !presente && "pointer-events-none")}
       role="dialog"
       aria-modal="true"
     >
-      {/* Fondo de vidrio esmerilado */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -272,7 +233,6 @@ function VistaAmpliada({ imagen, direccion, navegado }: { imagen: ImageData; dir
         onClick={() => setSelectedImage(null)}
       />
 
-      {/* Contenedor del gesto de arrastre: horizontal cambia de imagen, vertical cierra */}
       <motion.div
         className="relative z-10 w-full h-full flex items-center justify-center cursor-zoom-out"
         drag={conVarias ? true : "y"}
@@ -290,24 +250,21 @@ function VistaAmpliada({ imagen, direccion, navegado }: { imagen: ImageData; dir
           if (horizontal) {
             if (Math.abs(info.offset.x) > 80 || Math.abs(info.velocity.x) > 400) navegar(info.offset.x < 0 ? 1 : -1);
           } else if (Math.abs(info.offset.y) > 100 || Math.abs(info.velocity.y) > 300) {
-            // Se cierra si se arrastró lo suficiente o con suficiente velocidad
             setSelectedImage(null);
           }
         }}
-        // Un toque cierra; al terminar de deslizar no, así cambiar de imagen no cierra la vista
         onClick={() => {
           if (!huboArrastre.current) setSelectedImage(null);
         }}
       >
         <AnimatePresence initial={false} custom={direccion} mode="popLayout">
-          {/* Al abrir es el elemento compartido con la miniatura; al cambiar de imagen se desliza */}
           <motion.img
             key={imagen.id}
             layoutId={navegado ? undefined : `image-${imagen.id}`}
             src={imagen.src}
             alt={imagen.alt || "Imagen ampliada de la galería"}
             className="w-auto h-auto max-w-[95vw] max-h-[80vh] sm:max-w-[calc(100vw-9rem)] rounded-2xl shadow-2xl object-contain will-change-transform"
-            draggable={false} // Evita el arrastre nativo para que funcione el de framer-motion
+            draggable={false}
             custom={direccion}
             variants={deslizar}
             initial="entrar"
@@ -320,7 +277,6 @@ function VistaAmpliada({ imagen, direccion, navegado }: { imagen: ImageData; dir
 
       {conVarias && (
         <>
-          {/* Anterior / siguiente */}
           <motion.button
             type="button"
             initial={{ opacity: 0 }}
@@ -346,7 +302,6 @@ function VistaAmpliada({ imagen, direccion, navegado }: { imagen: ImageData; dir
             <ChevronRight className="w-6 h-6" />
           </motion.button>
 
-          {/* Contador */}
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -360,7 +315,6 @@ function VistaAmpliada({ imagen, direccion, navegado }: { imagen: ImageData; dir
         </>
       )}
 
-      {/* Botón cerrar */}
       <motion.button
         type="button"
         initial={{ opacity: 0, y: -20 }}
@@ -377,10 +331,8 @@ function VistaAmpliada({ imagen, direccion, navegado }: { imagen: ImageData; dir
   );
 }
 
-// Proporciones variadas (verticales y horizontales) para el mosaico estilo masonry
 const PROPORCIONES = ["aspect-[3/5]", "aspect-[16/10]", "aspect-[2/3]", "aspect-[4/5]", "aspect-[16/10]", "aspect-[3/4]", "aspect-[3/5]"];
 
-// Ancho con que se muestra cada miniatura según las columnas del mosaico (2 / 3 / 4), para elegir del srcset
 const TAMANOS_MINIATURA = "(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw";
 
 const GaleriaQuepos = ({ items, className }: { items: GaleriaItem[]; className?: string }) => (
@@ -397,10 +349,7 @@ const GaleriaQuepos = ({ items, className }: { items: GaleriaItem[]; className?:
           sizes={TAMANOS_MINIATURA}
           ancho={item.ancho}
           alto={item.alto}
-          // Todas diferidas: el mosaico va por columnas (las primeras de la lista son la 1.ª columna, no la fila de
-          // arriba) y el navegador igual baja enseguida las que ya están en pantalla
           loading="lazy"
-          // Con su proporción real (si viene) la foto se ve entera; si no, una proporción variada del mosaico
           aspect={item.ancho && item.alto ? undefined : PROPORCIONES[index % PROPORCIONES.length]}
         />
       ))}

@@ -7,9 +7,6 @@ import galloPinto from "../../assets/gastronomia/platos/gallo-pinto.webp";
 import picadillo from "../../assets/gastronomia/platos/picadillos-tortilla.webp";
 import "../../styles/gastronomia/galeria-comida.css";
 
-// Comidas recortadas de sus fotos (óvalo con borde difuminado y fondo transparente), servidas en un plato dibujado.
-// "redondo": la comida es redonda (plato redondo en el centro del recuadro); "ovalado": ocupa todo el recuadro.
-// En el borde de abajo del plato va una etiqueta de papel con el nombre en letras azules
 const platos = [
   { src: casado, forma: "ovalado", nombre: "Casado", alt: "Casado costarricense con pollo, arroz, frijoles, plátano maduro y ensalada" },
   { src: arrozCamarones, forma: "ovalado", nombre: "Arroz con camarones", alt: "Arroz con camarones" },
@@ -19,21 +16,7 @@ const platos = [
 ];
 ---
 
-<!-- Cada comida va servida en un plato de porcelana que se ve en 3D: sombra en la mesa, el canto del plato debajo,
-     el ala con brillo, el hueco del centro con su sombra y la comida encima (con multiply, así lo blanco de su foto
-     toma el color y las sombras del plato). Al pasar el mouse el plato se inclina hacia el puntero.
-     Mosaico en las dos medidas, con los 5 platos a la vista:
-     - Celular (1 columna): un plato por fila, a todo el ancho, y cada uno aparece al llegar a él con el scroll.
-     - Escritorio (6 columnas): 3 platos arriba (2 columnas cada uno) y 2 más grandes abajo (3 columnas cada uno) -->
-<!-- overflow-clip y no overflow-hidden: recorta igual, pero hidden convierte la sección en un contenedor de scroll y la
-     aparición de los platos (animation-timeline: view()) seguía el scroll de la sección (que no se mueve) en vez del
-     de la página -->
 <section class="relative isolate overflow-clip bg-white px-4 py-12 md:px-6 md:py-20" aria-label="Galería de gastronomía de Quepos">
-  <!-- Manta de cuadros celeste (el mismo color del mantel y los pañuelos) que sube desde abajo, arrugada, y sobre la
-       que quedan apoyados los platos. Es un SVG sin viewBox (medidas en px, así los cuadros no se estiran):
-       - el patrón de cuadros se ondula con ruido (feDisplacementMap), como tela con pliegues,
-       - el mismo ruido, iluminado de lado, da las luces y sombras de los pliegues,
-       - el borde de arriba es una curva irregular (clipPath en % del ancho), como la tela recogida -->
   <svg class="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-[96%] w-full" aria-hidden="true">
     <defs>
       <pattern id="manta-cuadros" width="28" height="28" patternUnits="userSpaceOnUse" patternTransform="rotate(-4)">
@@ -47,7 +30,6 @@ const platos = [
         <feDiffuseLighting in="ruido" surfaceScale="22" diffuseConstant="1" lighting-color="#ffffff" result="luz">
           <feDistantLight azimuth="225" elevation="50" />
         </feDiffuseLighting>
-        <!-- Lo plano queda casi sin tocar y las caras de los pliegues se oscurecen en un azul grisáceo -->
         <feComponentTransfer in="luz" result="luz">
           <feFuncR type="linear" slope="1.05" intercept="0.12" />
           <feFuncG type="linear" slope="1" intercept="0.15" />
@@ -61,7 +43,6 @@ const platos = [
     </defs>
     <g clip-path="url(#manta-borde)">
       <rect x="-40" y="-40" width="calc(100% + 80px)" height="calc(100% + 80px)" fill="url(#manta-cuadros)" filter="url(#manta-pliegues)" />
-      <!-- Sombra suave bajo el borde recogido de la tela -->
       <rect width="100%" height="100%" fill="url(#manta-sombra-borde)" />
     </g>
     <defs>
@@ -91,8 +72,6 @@ const platos = [
             <div class="plato-sombra absolute inset-x-[3%] bottom-[-5%] top-[12%] rounded-[50%]" aria-hidden="true"></div>
             <div class="plato-canto absolute inset-0 translate-y-[3.5%] rounded-[50%]" aria-hidden="true"></div>
             <div class="plato-superficie absolute inset-0 rounded-[50%]" aria-hidden="true"></div>
-            <!-- Comida dentro del hueco del plato, con un poco de plato blanco alrededor y más arriba que la etiqueta,
-                 así no queda tapada -->
             <div class="plato-comida absolute inset-x-[14%] bottom-[18%] top-[10%]">
               <Image
                 src={src}
@@ -105,8 +84,6 @@ const platos = [
               />
             </div>
             <div class="plato-brillo pointer-events-none absolute inset-0 rounded-[50%]" aria-hidden="true"></div>
-            <!-- Etiqueta con el nombre, pegada sobre el ala de abajo del plato (deja ver la comida): papel arrugado y
-                 rasgado arriba y abajo, pegado con dos cintas, ladeado (alterna el lado en cada plato) -->
             <div
               class="etiqueta absolute bottom-[2%] left-1/2 w-[56%] -translate-x-1/2 translate-y-1/3"
               style={`--giro-etiqueta: ${i % 2 === 0 ? -4 : 3}deg`}

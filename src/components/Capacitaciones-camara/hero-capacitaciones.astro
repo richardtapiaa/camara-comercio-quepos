@@ -5,9 +5,6 @@ import video from "../../assets/capacitaciones/hero-capacitaciones.mp4";
 import videoWebm from "../../assets/capacitaciones/hero-capacitaciones.webm";
 import poster from "../../assets/capacitaciones/hero-capacitaciones.jpg";
 
-// Igual que el hero de afiliados: el video se importa desde src/assets (nombre con hash, queda en caché) y la foto
-// se optimiza con getImage y se usa de poster, así se ve al instante antes de que cargue el video
-// (la foto mide 600 × 400, se deja en su tamaño original)
 const posterOptimizado = await getImage({ src: poster, format: "webp", quality: 70 });
 ---
 
@@ -23,25 +20,17 @@ const posterOptimizado = await getImage({ src: poster, format: "webp", quality: 
     preload="auto"
     aria-hidden="true"
   >
-    <!-- WebM AV1 (mucho más liviano) y MP4 de respaldo: el navegador usa el primero que puede reproducir (el códec
-         en type hace que los que no tienen AV1 pasen directo al MP4) -->
     <source src={videoWebm} type='video/webm; codecs="av01.0.09M.08"' />
     <source src={video} type="video/mp4" />
   </video>
-  <!-- Overlay oscuro, el mismo del hero de afiliados: parejo sobre todo el video y un poco más fuerte arriba y abajo -->
   <div class="pointer-events-none absolute inset-0 -z-10 bg-black/35" aria-hidden="true"></div>
   <div
     class="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-black/30 via-transparent to-black/25"
     aria-hidden="true"
   ></div>
 
-  <!-- min-h-svh: en celulares cuenta la pantalla sin las barras del navegador. El padding de arriba (pt) deja libre el
-       alto de la barra de navegación, que va encima del hero; así el título no queda tapado en pantallas bajas (celular
-       acostado, laptops pequeñas) -->
   <div class="mx-auto flex min-h-svh max-w-7xl flex-col justify-center px-6 pb-16 pt-36 sm:px-10 sm:pb-20 lg:px-16">
     <div class="max-w-3xl">
-      <!-- Tamaño fluido: crece con el ancho de la pantalla (10.5vw) entre 2rem y 5rem, así "Capacitaciones" nunca se
-           corta en celulares angostos y no se pasa del ancho del bloque en pantallas grandes -->
       <h1 class="text-[clamp(2rem,10.5vw,5rem)] font-bold leading-[1.05] tracking-tight">
         Capacitaciones
         <span class="block font-normal">para crecer juntos</span>
@@ -49,7 +38,6 @@ const posterOptimizado = await getImage({ src: poster, format: "webp", quality: 
       <p class="mt-5 max-w-xl text-base font-medium leading-relaxed text-white/90 sm:mt-7 sm:text-lg">
         Espacios de aprendizaje para fortalecer el talento y las empresas de Quepos.
       </p>
-      <!-- Logo de la Cámara debajo del texto, directo sobre el video (mismo tamaño y sombra que en el hero de afiliados) -->
       <Image
         src={logo}
         alt="Cámara de Comercio, Industria y Turismo de Quepos"

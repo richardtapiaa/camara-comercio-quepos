@@ -1,5 +1,3 @@
-/* Lo mueve el navegador junto con el scroll (sin JS): de transparente arriba de todo a casi negro cuando
-   Misión ya cubre la pantalla, es decir, al bajar el alto del Hero (toda la pantalla) */
 @supports (animation-timeline: scroll()) {
   [data-hero-oscuro] {
     animation-name: hero-oscurecer;

@@ -4,13 +4,8 @@ import { HeroActividades } from "../ReactComponentes/ActividadesQueposR/HeroActi
 import foto from "../../assets/actividades/kayak-rio-ampliada.jpg";
 import primerPlano from "../../assets/actividades/kayakista-primer-plano-ampliada.webp";
 
-// CAPA 1: la foto ampliada a lo ancho (a la derecha se agregó agua y rocas de la misma escena),
-// para que en escritorio se vea completa. CAPA 3: la misma foto, del mismo tamaño, con solo el kayakista visible (WebP con
-// canal alfa), para que quede encima del título. Las dos se exportan al mismo ancho para que calcen
 const fotoOptimizada = await getImage({ src: foto, width: Math.min(foto.width, 2250), format: "webp", quality: 80 });
 const primerPlanoOptimizado = await getImage({ src: primerPlano, width: primerPlano.width, format: "webp", quality: 90 });
-// Las mismas capas en AVIF: pesan 43 % y 63 % menos con igual o mejor calidad; el WebP queda de respaldo. Van al
-// ancho completo porque en celular la foto se ve muy ampliada (unas 3,5 veces el ancho de la pantalla)
 const fotoAvif = await getImage({ src: foto, width: Math.min(foto.width, 2250), format: "avif", quality: 50 });
 const primerPlanoAvif = await getImage({ src: primerPlano, width: primerPlano.width, format: "avif", quality: 50 });
 ---

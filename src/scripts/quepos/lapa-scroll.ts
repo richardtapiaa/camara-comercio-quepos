@@ -6,15 +6,12 @@ gsap.registerPlugin(ScrollTrigger);
 const conCss = CSS.supports("animation-timeline: view()");
 const sinMovimiento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-// Cuánto tiene que subir la lapa (en px) para llegar a las nubes desde donde está quieta: hasta que su centro
-// quede un poco metido en el borde de abajo de las nubes. offsetTop no cambia con la animación (va en translate)
 const medirSubida = (recuadro: HTMLElement, lapa: HTMLElement) => {
   const nube = recuadro.querySelector<SVGElement>("svg.nube-svg");
   const bordeNubes = nube ? nube.getBoundingClientRect().height : 0;
   return Math.max(0, lapa.offsetTop - bordeNubes + lapa.offsetHeight * 0.7);
 };
 
-// Para el vuelo con CSS: la subida se pasa como --subida y se recalcula si cambia el tamaño del recuadro
 if (conCss && !sinMovimiento) {
   document.querySelectorAll<HTMLElement>("[data-lapa-scroll]").forEach((recuadro) => {
     const lapa = recuadro.querySelector<HTMLElement>("[data-lapa]");
@@ -31,11 +28,9 @@ if (!conCss && !sinMovimiento) {
     const lapa = recuadro.querySelector<HTMLElement>("[data-lapa]");
     if (!lapa) return;
 
-    // GSAP mueve con transform; se quita el centrado (translate) para que no se sumen
     lapa.style.left = "0";
     lapa.style.translate = "none";
 
-    // Mismo recorrido que el keyframe de CSS (misma fórmula y mismos 17 puntos), en px
     const PUNTOS = 16;
     const punto = (i: number) => {
       const t = i / PUNTOS;
@@ -60,7 +55,6 @@ if (!conCss && !sinMovimiento) {
     gsap.set(lapa, punto(0));
     for (let i = 1; i <= PUNTOS; i++) vuelo.to(lapa, { ...punto(i), duration: 1 });
 
-    // Nubes y selva: mismo recorrido que el keyframe nube-scroll, con las distancias de cada capa
     recuadro.querySelectorAll<Element>(".nube-capa, .selva-capa").forEach((capa) => {
       const estilo = getComputedStyle(capa);
       const dx = parseFloat(estilo.getPropertyValue("--nube-x"));

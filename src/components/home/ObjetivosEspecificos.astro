@@ -14,7 +14,6 @@ const objetivos = [
 ];
 ---
 
-<!-- Panel que se desliza por encima de Visión (que queda fijo detrás) -->
 <section id="objetivos" class="panel relative z-10 min-h-screen rounded-t-[40px] bg-[#E8F4FA] py-20 shadow-[0_-20px_50px_rgba(0,0,0,0.35)] sm:py-28">
   <div class="mx-auto max-w-6xl px-6">
     <header class="mx-auto max-w-2xl text-center">
@@ -25,7 +24,6 @@ const objetivos = [
 
   </div>
 
-  <!-- Ocupa todo el ancho (fuera del max-w) para que se vean las tarjetas de los lados, como en el demo -->
   <div class="flex h-screen w-full items-center justify-center">
     <ObjetivosCards client:visible objetivos={objetivos} />
   </div>

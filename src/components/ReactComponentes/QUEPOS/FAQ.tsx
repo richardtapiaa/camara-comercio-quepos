@@ -3,8 +3,6 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 
 
-// fondoAnimales: fondo crema con dibujos de animales (clase de styles/quepos/fondo-animales.css), en la página de
-// Quepos; sin él, blanco (Visítenos)
 export default function FAQs({ fondoAnimales = false }: { fondoAnimales?: boolean }) {
   const faqItems = [
     {

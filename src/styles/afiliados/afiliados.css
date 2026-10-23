@@ -1,6 +1,3 @@
-/* Apertura del desplegable de categorías: la lista aparece bajando un poco y creciendo desde arriba a la derecha
-   (de donde está el botón), y las opciones entran una tras otra. Al cerrar se desvanece. visibility (y no hidden)
-   para que la transición también se vea al cerrar; cerrada, no se puede tocar ni la lee el lector de pantalla */
 .cat-lista {
   transform-origin: top right;
   transition:

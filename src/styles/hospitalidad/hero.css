@@ -1,17 +1,12 @@
 .hero-vista {
-  /* Para medir el recuadro y el título en % del hero (cqw / cqh) */
   container-type: size;
 }
 
-/* --foco-x: punto de la foto que queda al centro: el claro entre los dos árboles, donde se ve el mar */
 .hero-vista-recuadro {
   --foco-x: 50%;
   translate: calc(-1 * var(--foco-x)) 0;
 }
 
-/* Tamaño del título: 6,1 % del ancho de la foto (que es max(100cqw, 133,33cqh)), así "HOSPITALIDAD" ocupa más o
-   menos el claro entre los dos árboles; sin pasar del 11 % del ancho de la pantalla, para que en celular quepa
-   entero */
 .hero-vista-titulo {
   font-size: min(11cqw, max(6.1cqw, 8.13cqh));
   white-space: nowrap;
@@ -19,11 +14,9 @@
 .hero-vista-titulo h1 {
   line-height: 0.9;
   letter-spacing: -0.01em;
-  /* Sombra suave del mismo azul, como en el hero de Quepos: le da profundidad sobre el mar y las nubes */
   text-shadow: 0 0.04em 0.12em rgb(16 42 67 / 0.3);
 }
 
-/* Entrada: la foto aparece y luego el título sube y aparece */
 @media (prefers-reduced-motion: no-preference) {
   .hero-vista-foto {
     animation: hero-vista-aparece 1s ease-out both;
@@ -44,11 +37,6 @@
   }
 }
 
-/* Al hacer scroll el título baja hasta quedar entero detrás de la selva. --bajada es cuánto baja: del 45 % al 26 %
-   desde abajo de la foto (donde empieza la selva), o sea el 19 % de su alto (la foto mide max(75cqw, 100cqh) de
-   alto), más el 110 % del alto del título para que se esconda entero. Como en el hero de Quepos, no se anima transform directo (Chrome lo pasaría a la GPU y al
-   hacer scroll rápido el título se veía un instante por delante): se anima un número de 0 a 1 y el transform se
-   calcula con él. Sin scroll-driven animations (Firefox, Safari < 26) se usa GSAP abajo */
 .hero-vista-titulo {
   --bajada: calc(max(14.25cqw, 19cqh) + 110%);
 }
@@ -64,13 +52,10 @@
     }
     .hero-vista-titulo {
       transform: translateY(calc(var(--hero-vista-progreso) * var(--bajada)));
-      /* Propiedades sueltas y no el atajo "animation": al publicar, el minificador junta el atajo con animation-timeline
-         en una sola línea que el navegador descarta por inválida, y la animación de scroll no funcionaba */
       animation-name: hero-vista-esconde;
       animation-timing-function: linear;
       animation-fill-mode: both;
       animation-timeline: --hero-vista;
-      /* Termina de esconderse cuando se ha hecho scroll del 85 % del alto del hero, así baja despacio */
       animation-range: exit 0% exit 85%;
     }
   }
