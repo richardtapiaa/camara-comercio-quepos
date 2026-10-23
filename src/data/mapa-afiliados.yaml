@@ -1,0 +1,108 @@
+# Afiliados que salen en el mapa (src/pages/mapa-afiliados.astro).
+#
+# Aquí solo va lo del mapa: el nombre, el logo, la categoría y los contactos salen de src/data/afiliados.yaml.
+# Para agregar uno, copia un bloque de abajo:
+# - id: el mismo id que tiene en afiliados.yaml (si no existe allá, el sitio no compila y avisa cuál es)
+# - ubicacion: en Google Maps, clic derecho sobre el negocio y clic en los números de arriba (se copian como
+#   "9.42619, -84.16749"): el primero es lat y el segundo lng
+# - foto: opcional, la foto del lugar para la tarjeta del mapa; va en src/assets/afiliados/lugares-afiliados/.
+#   Si no se pone, la tarjeta sale sin foto
+# - info: opcional, un par de líneas sobre el lugar para la tarjeta del mapa
+
+- id: 2-costa-rica-real-estate
+  ubicacion: { lat: 9.426491, lng: -84.167244 }
+
+- id: aguas-azules-costa-rica
+  ubicacion: { lat: 9.391966, lng: -84.150717 }
+
+- id: asoproquepos
+  ubicacion: { lat: 9.430107, lng: -84.164034 }
+
+- id: best-western-kamuk
+  ubicacion: { lat: 9.430658, lng: -84.165050 }
+
+- id: blue-horizon
+  ubicacion: { lat: 9.393961, lng: -84.153717 }
+
+- id: chasing-adventures-tours
+  # Aproximada: Google no tiene su dirección exacta, solo "Manuel Antonio". Cambiarla cuando se sepa
+  ubicacion: { lat: 9.408569, lng: -84.154759 }
+
+- id: costa-rica-green-airways
+  ubicacion: { lat: 9.442781, lng: -84.130119 }
+
+- id: dantes-watersports-tours
+  ubicacion: { lat: 9.394062, lng: -84.153576 }
+
+- id: diario-mirador
+  # En Google sale como "Capitan Morgan Bar & Restaurant", pero con la web de Diario Mirador: confirmar
+  ubicacion: { lat: 9.430923, lng: -84.164787 }
+
+- id: ferreteria-costanera-sur
+  ubicacion: { lat: 9.429830, lng: -84.163731 }
+
+- id: hotel-costa-verde
+  ubicacion: { lat: 9.398753, lng: -84.153946 }
+
+- id: hotel-karahe
+  ubicacion: { lat: 9.396321, lng: -84.153888 }
+
+- id: iguana-tours
+  ubicacion: { lat: 9.431170, lng: -84.159306 }
+
+- id: issimo-suites
+  ubicacion: { lat: 9.401115, lng: -84.163699 }
+
+- id: los-altos-resort
+  ubicacion: { lat: 9.405395, lng: -84.157974 }
+
+- id: manuel-antonio-estates
+  ubicacion: { lat: 9.427169, lng: -84.156629 }
+
+- id: marina-pez-vela
+  ubicacion: { lat: 9.426195, lng: -84.167487 }
+
+- id: mini-price-store
+  ubicacion: { lat: 9.431376, lng: -84.160578 }
+
+- id: parador-nature-resort
+  ubicacion: { lat: 9.397339, lng: -84.168787 }
+  foto: ../assets/afiliados/lugares-afiliados/parador-prueba.webp
+  info: En lo alto de Punta Quepos, junto al Parque Nacional Manuel Antonio, sobre 5 hectáreas de bosque tropical
+    frente al Pacífico. Tiene cinco piscinas, el Pacífica Spa, varios restaurantes y suites con vista al mar.
+
+- id: planet-dolphin
+  ubicacion: { lat: 9.426192, lng: -84.167569 }
+
+- id: portasol
+  ubicacion: { lat: 9.368187, lng: -83.970187 }
+
+- id: quatro-legal
+  ubicacion: { lat: 9.405485, lng: -84.157211 }
+
+- id: roots2river
+  ubicacion: { lat: 9.465167, lng: -84.192768 }
+
+- id: sabromar
+  ubicacion: { lat: 9.433528, lng: -84.164950 }
+
+- id: safari-adventure-park
+  ubicacion: { lat: 9.431087, lng: -84.164871 }
+
+- id: sea-quest-catamaran
+  ubicacion: { lat: 9.422771, lng: -84.158518 }
+
+- id: si-como-no-resort
+  ubicacion: { lat: 9.403800, lng: -84.155117 }
+
+- id: the-falls-resort
+  ubicacion: { lat: 9.403240, lng: -84.153094 }
+
+- id: tracopa
+  ubicacion: { lat: 9.430511, lng: -84.163535 }
+
+- id: tucanes-tours
+  ubicacion: { lat: 9.443338, lng: -84.137893 }
+
+- id: villa-costa-vida
+  ubicacion: { lat: 9.402223, lng: -84.160053 }

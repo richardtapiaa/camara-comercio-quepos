@@ -50,19 +50,23 @@ const setDropdownOpen = (dropdown: Dropdown, open: boolean, immediate = false) =
 
 let tl: gsap.core.Timeline | null = null;
 let menuOpen = false;
+// Ancho del panel, medido antes de tocar atributos para no forzar un recálculo del layout a mitad de la animación
+let anchoMenu = 0;
 
-const lockScroll = (lock: boolean) => {
-  document.documentElement.style.overflow = lock ? "hidden" : "";
-};
-
+// El scroll de la página no se bloquea con overflow: hidden (eso recalcula el layout de toda la página justo al
+// empezar la animación): el fondo oscuro tiene touch-none y el panel overscroll-contain
 const openMenu = () => {
   if (!tl) return;
+  const ancho = menu?.offsetWidth ?? 0;
+  if (ancho !== anchoMenu) {
+    anchoMenu = ancho;
+    tl.invalidate();
+  }
   menuOpen = true;
   toggle?.setAttribute("aria-expanded", "true");
   toggle?.setAttribute("aria-label", "Cerrar menú");
   header?.setAttribute("data-menu-open", "true");
   header?.setAttribute("data-hidden", "false");
-  lockScroll(true);
   tl.timeScale(1).play();
   gsap.delayedCall(0.1, () => menuOpen && closeBtn?.focus({ preventScroll: true }));
 };
@@ -73,7 +77,6 @@ const closeMenu = () => {
   toggle?.setAttribute("aria-expanded", "false");
   toggle?.setAttribute("aria-label", "Abrir menú");
   header?.setAttribute("data-menu-open", "false");
-  lockScroll(false);
   tl?.timeScale(1.3).reverse();
 };
 
@@ -99,7 +102,8 @@ mm.add("(max-width: 767px)", () => {
     .timeline({
       paused: true,
       onReverseComplete: () => {
-        gsap.set(pagina, { clearProps: "transform" });
+        gsap.set(pagina, { clearProps: "transform,willChange" });
+        gsap.set(menu, { clearProps: "willChange" });
         if (toggle) gsap.set(toggle, { clearProps: "opacity,visibility,transform" });
         if (menu.contains(document.activeElement)) toggle?.focus({ preventScroll: true });
       },
@@ -108,14 +112,21 @@ mm.add("(max-width: 767px)", () => {
     .to(overlay, { autoAlpha: 1, duration: 0.3, ease: "power2.out" }, 0)
     .to(menu, { autoAlpha: 1, duration: 0.01 }, 0)
     .to(menu, { xPercent: 0, duration: 0.38, ease: "power3.inOut" }, 0)
-    .to(pagina, { x: () => -menu.offsetWidth, duration: 0.38, ease: "power3.inOut" }, 0);
+    .to(pagina, { x: () => -anchoMenu, duration: 0.38, ease: "power3.inOut" }, 0);
+
+  // Al tocar el botón (antes del click) el navegador ya empieza a preparar las capas que se van a mover
+  const prepararCapas = () => {
+    if (!menuOpen) gsap.set([menu, ...pagina], { willChange: "transform" });
+  };
+  toggle?.addEventListener("pointerdown", prepararCapas);
 
   if (menuOpen) tl.progress(1);
 
   return () => {
+    toggle?.removeEventListener("pointerdown", prepararCapas);
     tl?.kill();
     tl = null;
-    gsap.set(pagina, { clearProps: "transform" });
+    gsap.set(pagina, { clearProps: "transform,willChange" });
     lugarOriginal.replaceWith(overlay, menu);
   };
 });

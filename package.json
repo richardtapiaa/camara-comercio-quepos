@@ -23,12 +23,15 @@
     "gsap": "^3.15.0",
     "leaflet": "^1.9.4",
     "lucide-react": "^1.55.0",
+    "maplibre-gl": "^6.15.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
+    "supercluster": "^9.1.0",
     "tailwind-merge": "^3.7.0",
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
+    "@types/geojson": "^7946.0.16",
     "@types/leaflet": "^1.9.22"
   }
 }
