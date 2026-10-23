@@ -15,12 +15,14 @@ interface VelocityScrollProps {
   text: string;
   default_velocity?: number;
   className?: string;
+  scrollReactive?: boolean;
 }
 
 interface ParallaxProps {
   children: string;
   baseVelocity: number;
   className?: string;
+  scrollReactive?: boolean;
 }
 
 export const wrap = (min: number, max: number, v: number) => {
@@ -28,7 +30,7 @@ export const wrap = (min: number, max: number, v: number) => {
   return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min;
 };
 
-function ParallaxText({ children, baseVelocity = 100, className }: ParallaxProps) {
+function ParallaxText({ children, baseVelocity = 100, className, scrollReactive = true }: ParallaxProps) {
   const baseX = useMotionValue(0);
   const x = useMotionValue("0%");
   const { scrollY } = useScroll();
@@ -69,13 +71,15 @@ function ParallaxText({ children, baseVelocity = 100, className }: ParallaxProps
   useAnimationFrame((_, delta) => {
     let moveBy = directionFactor.current * baseVelocity * (delta / 1000);
 
-    if (velocityFactor.get() < 0) {
-      directionFactor.current = -1;
-    } else if (velocityFactor.get() > 0) {
-      directionFactor.current = 1;
-    }
+    if (scrollReactive) {
+      if (velocityFactor.get() < 0) {
+        directionFactor.current = -1;
+      } else if (velocityFactor.get() > 0) {
+        directionFactor.current = 1;
+      }
 
-    moveBy += directionFactor.current * moveBy * velocityFactor.get();
+      moveBy += directionFactor.current * moveBy * velocityFactor.get();
+    }
 
     const nextX = baseX.get() + moveBy;
     baseX.set(nextX);
@@ -95,13 +99,13 @@ function ParallaxText({ children, baseVelocity = 100, className }: ParallaxProps
   );
 }
 
-export function VelocityScroll({ text, default_velocity = 5, className }: VelocityScrollProps) {
+export function VelocityScroll({ text, default_velocity = 5, className, scrollReactive = true }: VelocityScrollProps) {
   return (
     <section className="relative w-full">
-      <ParallaxText baseVelocity={default_velocity} className={className}>
+      <ParallaxText baseVelocity={default_velocity} className={className} scrollReactive={scrollReactive}>
         {text}
       </ParallaxText>
-      <ParallaxText baseVelocity={-default_velocity} className={className}>
+      <ParallaxText baseVelocity={-default_velocity} className={className} scrollReactive={scrollReactive}>
         {text}
       </ParallaxText>
     </section>

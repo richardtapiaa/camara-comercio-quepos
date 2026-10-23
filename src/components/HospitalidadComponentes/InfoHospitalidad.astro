@@ -14,16 +14,21 @@ const servicios = [
 
 <section id="info-hospitalidad" class="bg-[#f9f7f3] lg:grid lg:min-h-[640px] lg:grid-cols-2">
   <div class="flex items-center justify-center px-6 pt-14 sm:px-10 lg:px-12 lg:py-16 xl:px-20">
-    <div class="relative aspect-[4/5] w-full max-w-[34rem] overflow-hidden rounded-t-[999px] shadow-[0_20px_40px_-24px_rgb(60_40_20/0.45)]">
-      <Image
-        src={imagen}
-        alt="Habitación de hotel en Quepos"
-        widths={[480, 720, 960, 1280]}
-        sizes="(min-width: 1024px) 34rem, 90vw"
-        quality={78}
-        class="absolute inset-0 size-full object-cover object-[62%_center]"
-        loading="lazy"
-      />
+    <div class="puerta relative w-full max-w-[34rem]">
+      <div class="puerta-marco rounded-t-[999px] p-[4%] pb-0">
+        <div class="puerta-vano relative aspect-[4/5] overflow-hidden rounded-t-[999px]">
+          <Image
+            src={imagen}
+            alt="Habitación de hotel en Quepos"
+            widths={[480, 720, 960, 1280]}
+            sizes="(min-width: 1024px) 34rem, 90vw"
+            quality={78}
+            class="absolute inset-0 size-full object-cover object-[62%_center]"
+            loading="lazy"
+          />
+        </div>
+      </div>
+      <div class="puerta-umbral -mx-[3%] h-3 rounded-sm sm:h-4"></div>
     </div>
   </div>
 
@@ -54,13 +59,6 @@ const servicios = [
           ))
         }
       </ul>
-
-      <a
-        href="#galeria-hospitalidad"
-        class="mt-8 inline-block bg-[#ddd5ca] px-6 py-3 text-sm uppercase tracking-wide text-neutral-800 transition-colors hover:bg-[#cfc4b6]"
-      >
-        Ver hoteles
-      </a>
     </div>
   </div>
 </section>
