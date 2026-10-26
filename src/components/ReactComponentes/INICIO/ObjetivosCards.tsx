@@ -4,27 +4,37 @@ import React, { useState, useEffect } from "react";
 import {
   ChevronLeft,
   ChevronRight,
-  Globe,
-  Handshake,
-  HeartHandshake,
-  Landmark,
-  Leaf,
-  MessagesSquare,
-  Scale,
-  Smile,
-  Users,
-  type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import balanceIcon from "@/assets/icons-svg/inicio-icons/balance-svgrepo-com.svg";
+import cantonIcon from "@/assets/icons-svg/inicio-icons/canton.svg";
+import dialogoIcon from "@/assets/icons-svg/inicio-icons/dialogo.svg";
+import grupoAfiliadosIcon from "@/assets/icons-svg/inicio-icons/grupo_afiliados.svg";
+import initiativeIcon from "@/assets/icons-svg/inicio-icons/Initiative.svg";
+import manosIcon from "@/assets/icons-svg/inicio-icons/manos.svg";
+import mejorasIcon from "@/assets/icons-svg/inicio-icons/mejoraras.svg";
+import naturalezaIcon from "@/assets/icons-svg/inicio-icons/naturaleza.svg";
+import reconocimientoIcon from "@/assets/icons-svg/inicio-icons/reconocimiento.svg";
 
 export interface Objetivo {
   letra: string;
   texto: string;
 }
 
-const iconos: LucideIcon[] = [Landmark, MessagesSquare, Handshake, Users, Globe, Smile, HeartHandshake, Leaf, Scale];
+const iconos = [
+  reconocimientoIcon,
+  dialogoIcon,
+  manosIcon,
+  grupoAfiliadosIcon,
+  cantonIcon,
+  mejorasIcon,
+  initiativeIcon,
+  naturalezaIcon,
+  balanceIcon,
+];
 
-type ObjetivoEnLista = Objetivo & { tempId: number; icono: LucideIcon };
+type Icono = { src: string };
+type ObjetivoEnLista = Objetivo & { tempId: number; icono: Icono };
 
 interface ObjetivoCardProps {
   position: number;
@@ -35,7 +45,6 @@ interface ObjetivoCardProps {
 
 const ObjetivoCard: React.FC<ObjetivoCardProps> = ({ position, objetivo, handleMove, cardSize }) => {
   const isCenter = position === 0;
-  const Icono = objetivo.icono;
 
   return (
     <div
@@ -58,8 +67,8 @@ const ObjetivoCard: React.FC<ObjetivoCardProps> = ({ position, objetivo, handleM
           : "0 6px 16px -6px rgba(14, 59, 102, 0.12)",
       }}
     >
-      <div className="mb-4 flex h-14 w-12 items-center justify-center rounded-xl bg-[#E8F4FA] text-[#1B66A6]">
-        <Icono className="h-6 w-6" aria-hidden="true" />
+      <div className="mb-4 flex h-14 w-12 items-center justify-center">
+        <img src={objetivo.icono.src} alt="" className="h-12 w-12 object-contain" aria-hidden="true" />
       </div>
       <h3 className={cn("text-[15px] font-medium leading-snug sm:text-lg", isCenter ? "text-neutral-900" : "text-neutral-800")}>
         {objetivo.texto}
