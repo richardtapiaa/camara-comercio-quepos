@@ -2,7 +2,7 @@
 #
 # Para agregar uno: pon su logo en src/assets/afiliados/logos/ y copia un bloque de abajo.
 # - id: único, en minúsculas y con guiones (no se repite)
-# - categoria: una de Hospedaje, Tours y aventura, Transporte, Comercio, Gastronomía, Bienes raíces, Servicios, Otros
+# - categoria: el sector, uno de Comercio, Turismo, Industria
 # - descripcion, telefonos, whatsapp, correo, web, facebook e instagram son opcionales: si no se tienen, se borra
 #   la línea
 # - web, facebook e instagram van con https:// adelante (ej. facebook: https://www.facebook.com/nombre)
@@ -10,7 +10,7 @@
 
 - id: chasing-adventures-tours
   nombre: Chasing Adventures
-  categoria: Tours y aventura
+  categoria: Turismo
   descripcion: Tours y aventuras
   logo: ../assets/afiliados/logos/chasing-adventures-tours.webp
   telefonos: ["+506 6462-2162"]
@@ -20,8 +20,7 @@
 
 - id: hotel-costa-verde
   nombre: Hotel Costa Verde
-  categoria: Hospedaje
-  descripcion: Hotel en Manuel Antonio
+  categoria: Turismo
   logo: ../assets/afiliados/logos/hotel-costa-verde.webp
   telefonos: ["+506 2777-0584", "+506 2777-0187"]
   correo: info@costaverde.com
@@ -29,7 +28,7 @@
 
 - id: iguana-tours
   nombre: Iguana Tours
-  categoria: Tours y aventura
+  categoria: Turismo
   descripcion: Agencia de tours
   logo: ../assets/afiliados/logos/iguana-tours.webp
   telefonos: ["+506 2777-2052", "+506 2777-1262"]
@@ -39,8 +38,7 @@
 
 - id: hotel-karahe
   nombre: Karahe Hotel
-  categoria: Hospedaje
-  descripcion: Hotel de playa
+  categoria: Turismo
   logo: ../assets/afiliados/logos/hotel-karahe.webp
   telefonos: ["+506 2777-0170"]
   whatsapp: "+506 8754-7250"
@@ -51,8 +49,7 @@
 
 - id: issimo-suites
   nombre: Issimo Suites Boutique Hotel, Restaurant & Spa
-  categoria: Hospedaje
-  descripcion: Hotel boutique y spa
+  categoria: Turismo
   logo: ../assets/afiliados/logos/issimo-suites.webp
   telefonos: ["+506 2777-4410"]
   correos: ["reservations@issimosuites.com", "info@issimosuitescr.com"]
@@ -62,8 +59,7 @@
 
 - id: los-altos-resort
   nombre: Los Altos Resort
-  categoria: Hospedaje
-  descripcion: Resort de lujo
+  categoria: Turismo
   logo: ../assets/afiliados/logos/los-altos-resort.webp
   telefonos: ["+506 2777-8888"]
   correo: reservations@losaltosresort.com
@@ -71,8 +67,7 @@
 
 - id: best-western-kamuk
   nombre: Best Western Hotel & Casino Kamuk
-  categoria: Hospedaje
-  descripcion: Hotel en Quepos
+  categoria: Turismo
   logo: ../assets/afiliados/logos/best-western-kamuk.webp
   telefonos: ["+506 2777-0811"]
   whatsapp: "+506 8787-1600"
@@ -81,8 +76,7 @@
 
 - id: parador-nature-resort
   nombre: Parador Nature Resort & Spa
-  categoria: Hospedaje
-  descripcion: Resort y spa
+  categoria: Turismo
   logo: ../assets/afiliados/logos/parador-nature-resort.webp
   telefonos: ["+506 2777-1414"]
   whatsapp: "+506 8645-1414"
@@ -94,7 +88,7 @@
 - id: mini-price-store
   nombre: Mini Price Store
   categoria: Comercio
-  descripcion: Supermercado y comercio local
+  descripcion: Comercio 
   logo: ../assets/afiliados/logos/mini-price-store.webp
   telefonos: ["+506 8576-4242"]
   correo: info@miniprice.cr
@@ -102,9 +96,8 @@
 
 - id: si-como-no-resort
   nombre: Sí Como No Resort
-  categoria: Hospedaje
-  descripcion: Hotel y refugio de vida silvestre
-  logo: ../assets/afiliados/logos/si-como-no-resort.webp
+  categoria: Turismo
+  logo: ../assets/afiliados/logos/si-como-no-resort.png
   telefonos: ["+506 2777-0300", "+506 4001-8754"]
   whatsapp: "+506 8337-7337"
   correo: reservations@sicomono.com
@@ -112,8 +105,7 @@
 
 - id: the-falls-resort
   nombre: The Falls at Manuel Antonio
-  categoria: Hospedaje
-  descripcion: Hotel boutique
+  categoria: Turismo
   logo: ../assets/afiliados/logos/the-falls-resort.webp
   telefonos: ["+506 2777-1332", "+506 8767-6011"]
   correo: info@fallsresortcr.com
@@ -121,8 +113,8 @@
 
 - id: sea-quest-catamaran
   nombre: Sea Quest Catamaran
-  categoria: Tours y aventura
-  descripcion: Excursiones en catamarán
+  categoria: Turismo
+  descripcion: Turismo
   logo: ../assets/afiliados/logos/sea-quest-catamaran.webp
   telefonos: ["+506 8504-5880"]
   whatsapp: "+506 8504-5880"
@@ -131,8 +123,8 @@
 
 - id: roots2river
   nombre: Roots2River
-  categoria: Tours y aventura
-  descripcion: Rafting y actividades de aventura
+  categoria: Turismo
+  descripcion: Turismo
   logo: ../assets/afiliados/logos/roots2river.webp
   telefonos: ["+506 8670-6740"]
   correo: info@roots2river.com
@@ -140,8 +132,8 @@
 
 - id: tracopa
   nombre: Tracopa
-  categoria: Transporte
-  descripcion: Transporte de autobuses
+  categoria: Comercio
+  descripcion: Turismo
   logo: ../assets/afiliados/logos/tracopa.webp
   telefonos: ["+506 2221-4214"]
   correo: info@tracopacr.com
@@ -149,8 +141,8 @@
 
 - id: quatro-legal
   nombre: Quatro Legal
-  categoria: Servicios
-  descripcion: Firma de asesoría legal
+  categoria: Comercio
+  descripcion: Comercio
   logo: ../assets/afiliados/logos/quatro-legal.webp
   telefonos: ["+506 2103-7294"]
   correo: info@quatro.legal
@@ -160,7 +152,7 @@
 
 - id: 2-costa-rica-real-estate
   nombre: 2 Costa Rica Real Estate
-  categoria: Bienes raíces
+  categoria: Comercio
   logo: ../assets/afiliados/logos/2-costa-rica-real-estate.webp
   telefonos: ["+506 2519-9413"]
   correo: info@2costaricarealestate.com
@@ -170,17 +162,16 @@
 
 - id: asoproquepos
   nombre: Asoproquepos
-  categoria: Servicios
+  categoria: Comercio
   logo: ../assets/afiliados/logos/asoproquepos.webp
   telefonos: ["+506 8356-6551", "+506 2777-0342"]
   correo: asoproquepos@racsa.co.cr
   facebook: https://www.facebook.com/tiendapescaasoproquepos/?locale=es_LA
   instagram: https://www.instagram.com/asoproquepos/
 
-# Categoría por confirmar
 - id: blue-horizon
   nombre: Blue Horizon
-  categoria: Otros
+  categoria: Turismo
   logo: ../assets/afiliados/logos/blue-horizon.webp
   telefonos: ["+506 8994-1424"]
   correo: reservations@bluehorizoncostarica.com
@@ -190,7 +181,7 @@
 
 - id: costa-rica-green-airways
   nombre: Costa Rica Green Airways
-  categoria: Transporte
+  categoria: Turismo
   logo: ../assets/afiliados/logos/costa-rica-green-airways.webp
   telefonos: ["+506 4070-0771", "+506 8583-1741"]
   correo: customercare@costaricagreenair.com
@@ -198,10 +189,9 @@
   facebook: https://www.facebook.com/crgreenairways/
   instagram: https://www.instagram.com/costaricagreenairways/
 
-# Categoría por confirmar
 - id: aguas-azules-costa-rica
   nombre: Aguas Azules Parasailing
-  categoria: Otros
+  categoria: Turismo
   logo: ../assets/afiliados/logos/aguas-azules-costa-rica.webp
   telefonos: ["+506 8366-0227", "+506 8701-4126", "+506 2519-9320"]
   correo: info@costaricaparasailing.com
@@ -211,7 +201,7 @@
 
 - id: dantes-watersports-tours
   nombre: Dante's Water Sports y Tours
-  categoria: Tours y aventura
+  categoria: Turismo
   logo: ../assets/afiliados/logos/dantes-watersports-tours.webp
   telefonos: ["+506 2777-4000"]
   correo: danteswatersports@gmail.com
@@ -221,7 +211,7 @@
 
 - id: safari-adventure-park
   nombre: Safari Adventure
-  categoria: Tours y aventura
+  categoria: Turismo
   logo: ../assets/afiliados/logos/safari-adventure-park.webp
   telefonos: ["+506 8989-7888", "+506 2777-7111"]
   correo: info@safariventurescr.com
@@ -231,7 +221,7 @@
 
 - id: diario-mirador
   nombre: Diario Mirador
-  categoria: Servicios
+  categoria: Comercio
   logo: ../assets/afiliados/logos/diario-mirador.webp
   telefonos: ["+506 8831-2358"]
   correo: diariomiradorcr@gmail.com
@@ -241,7 +231,7 @@
 
 - id: planet-dolphin
   nombre: Planet Dolphin
-  categoria: Tours y aventura
+  categoria: Turismo
   logo: ../assets/afiliados/logos/planet-dolphin.webp
   telefonos: ["+506 2777-1647"]
   correo: info@planetdolphin.com
@@ -251,16 +241,15 @@
 
 - id: sabromar
   nombre: Marisquería Sabromar
-  categoria: Gastronomía
+  categoria: Comercio
   logo: ../assets/afiliados/logos/sabromar.webp
   telefonos: ["+506 2777-7767"]
   facebook: https://www.facebook.com/marisqueriasabromar/
   instagram: https://www.instagram.com/marisqueriasabromar/
 
-# Categoría por confirmar
 - id: villa-costa-vida
   nombre: Villa Costa Vida
-  categoria: Hospedaje
+  categoria: Turismo
   logo: ../assets/afiliados/logos/villa-costa-vida.webp
   telefonos: ["+506 8915-8547", "+1 757-339-6489"]
   correo: info@villacostavida.com
@@ -278,10 +267,9 @@
   facebook: https://www.facebook.com/FerreteriaCostaneraSur/
   instagram: https://www.instagram.com/ferreteriacostanerasurquepos/
 
-# Categoría por confirmar
 - id: portasol
   nombre: Portasol
-  categoria: Bienes raíces
+  categoria: Turismo
   logo: ../assets/afiliados/logos/portasol.webp
   telefonos: ["+506 8507-9393"]
   correo: reservaciones@portasol.cr
@@ -291,7 +279,7 @@
 
 - id: manuel-antonio-estates
   nombre: Manuel Antonio Estates
-  categoria: Bienes raíces
+  categoria: Comercio
   logo: ../assets/afiliados/logos/manuel-antonio-estates.webp
   telefonos: ["+506 2777-3339", "+1 800-680-1518"]
   correo: info@manuelantonioestates.com
@@ -301,7 +289,7 @@
 
 - id: marina-pez-vela
   nombre: Marina Pez Vela
-  categoria: Servicios
+  categoria: Industria
   logo: ../assets/afiliados/logos/marina-pez-vela.webp
   telefonos: ["+506 2774-9000", "+1 866-739-8352"]
   correo: info@marinapezvela.com
@@ -311,10 +299,77 @@
 
 - id: tucanes-tours
   nombre: Tucanes Tours
-  categoria: Tours y aventura
+  categoria: Turismo
   logo: ../assets/afiliados/logos/tucanes-tours.webp
   telefonos: ["+506 2777-0775", "+1 800-213-5730"]
   correo: info@tucanestours.com
   web: https://tucanestours.com/es/
   facebook: https://www.facebook.com/TucanesToursCR/
   instagram: https://www.instagram.com/tucanestours/
+
+- id: amigos-del-rio
+  nombre: Amigos del Río
+  categoria: Turismo
+  logo: ../assets/afiliados/logos/amigos-del-rio.png
+  telefonos: ["+506 2777-0082"]
+  correo: reservations@amigosdelrio.net
+  web: https://amigosdelrio.net
+  facebook: https://www.facebook.com/amigosdelrio/
+  instagram: https://www.instagram.com/amigosdelrio/
+
+- id: brisa-elegante
+  nombre: Brisa Elegante
+  categoria: Turismo
+  logo: ../assets/afiliados/logos/brisa-elegante-cruise.avif
+  telefonos: ["+506 6003-0200"]
+  whatsapp: "+506 6003-0200"
+  web: https://www.sailcr.com
+  facebook: https://www.facebook.com/BrisaEleganteCR
+  instagram: https://www.instagram.com/brisa_elegante/
+
+- id: hotel-playa-espadilla
+  nombre: Hotel Playa Espadilla
+  categoria: Turismo
+  logo: ../assets/afiliados/logos/hotel-playa-espadilla.png
+  telefonos: ["+506 2777-0903", "+506 2777-0416"]
+  correo: hotel@espadilla.com
+  web: https://www.espadilla.com/hotel.html
+  facebook: https://www.facebook.com/Hotel-Playa-Espadilla-202804719786071/
+  instagram: https://www.instagram.com/hotelycabinasespadilla/
+
+- id: hotel-villas-lirio
+  nombre: Hotel Villas Lirio
+  categoria: Turismo
+  logo: ../assets/afiliados/logos/hotel-villa-lirio.png
+  telefonos: ["+506 2777-1182"]
+  whatsapp: "+506 8777-3827"
+  correo: reservations@villaslirio.com
+  web: https://villaslirio.com
+  facebook: https://www.facebook.com/hotelvillaslirio/
+  instagram: https://www.instagram.com/hotelvillaslirio/
+
+- id: palma-tica
+  nombre: Palma Tica
+  categoria: Industria
+  logo: ../assets/afiliados/logos/palma-tica.webp
+  telefonos: ["+506 2777-8100"]
+  web: https://www.palmatica.com
+
+- id: ronnys-place
+  nombre: Ronny's Place
+  categoria: Turismo
+  logo: ../assets/afiliados/logos/ronnys-place.webp
+  telefonos: ["+506 2777-5120"]
+  correo: reservations@ronnysplace.com
+  web: https://www.ronnysplace.com
+  facebook: https://www.facebook.com/RonnysPlace/
+  instagram: https://www.instagram.com/ronnysplace
+
+# No está en la lista de afiliados de la Cámara: el sector (Comercio) es por ser una oficina de seguros
+- id: seguros-largaespada
+  nombre: Seguros Largaespada
+  categoria: Comercio
+  logo: ../assets/afiliados/logos/seguros-largaespada.jpg
+  correo: "slargaespada@hotmail.com"
+  telefonos: ["+506 2777-0536", "+506 8385-9248", "+506 8844-0221"]
+

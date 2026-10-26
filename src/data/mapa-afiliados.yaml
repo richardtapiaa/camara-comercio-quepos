@@ -11,59 +11,140 @@
 
 - id: 2-costa-rica-real-estate
   ubicacion: { lat: 9.426491, lng: -84.167244 }
+  info: Agencia de bienes raíces con propiedades en venta en Manuel Antonio y en otras zonas del país. Casas, villas,
+    condominios, hoteles y lotes, además de alquileres vacacionales.
 
 - id: aguas-azules-costa-rica
   ubicacion: { lat: 9.391966, lng: -84.150717 }
+  foto: ../assets/afiliados/lugares-afiliados/aguas-azules.jpg
+  info: Más de 35 años de parasailing y deportes acuáticos en Manuel Antonio, con vuelos de hasta 180 metros sobre el
+    Pacífico. También ofrece motos acuáticas, banana, esquí acuático, surf, snorkel y paseos al atardecer.
+
+- id: amigos-del-rio
+  ubicacion: { lat: 9.416650, lng: -84.157706 }
+  foto: ../assets/afiliados/lugares-afiliados/amigos-del-rio.jpg
+  info: Empresa familiar de aventura en el km 2 de la carretera a Manuel Antonio. Rafting en los ríos Savegre,
+    Naranjo y El Chorro, kayak por la costa y en los manglares de Isla Damas, y el ADR Adventure Park con más de 10
+    actividades en un mismo tour.
 
 - id: asoproquepos
   ubicacion: { lat: 9.430107, lng: -84.164034 }
+  foto: ../assets/afiliados/lugares-afiliados/asoproquepos.jpg
+  info: Tienda de artículos de pesca en el centro de Quepos, con todo lo necesario para salir a pescar.
 
 - id: best-western-kamuk
   ubicacion: { lat: 9.430658, lng: -84.165050 }
+  foto: ../assets/afiliados/lugares-afiliados/best-western-kamuk.jpg
+  info: Hotel de cuatro estrellas frente al malecón de Quepos, con piscina, casino, el Kaë Spa y el restaurante Mira
+    Olas con vista al mar. En la recepción se reservan tours al Parque Nacional, rafting, canopy y pesca deportiva.
 
 - id: blue-horizon
   ubicacion: { lat: 9.393961, lng: -84.153717 }
+  info: Tours y servicios en Manuel Antonio, conocido por su campamento de surf y la pesca deportiva. También ofrece
+    avistamiento de ballenas, snorkel, cuadraciclos, canopy, cabalgatas y alquileres vacacionales.
+
+- id: brisa-elegante
+  # Aproximada: la oficina es la 107 de Marina Pez Vela, al lado del cajero (en la plaza hay dos). Confirmar
+  ubicacion: { lat: 9.426169, lng: -84.166759 }
+  foto: ../assets/afiliados/lugares-afiliados/brisa-elegant.avif
+  info: Velero de madera de 100 pies que sale todos los días de Marina Pez Vela. Hace paseos en la mañana, al
+    atardecer y privados, con comida preparada a bordo, bar, snorkel, kayak y paddleboard.
 
 - id: chasing-adventures-tours
   # Aproximada: Google no tiene su dirección exacta, solo "Manuel Antonio". Cambiarla cuando se sepa
   ubicacion: { lat: 9.408569, lng: -84.154759 }
+  foto: ../assets/afiliados/lugares-afiliados/chasing-adventures.avif
+  info: Grupos pequeños desde Manuel Antonio para rafting en el río Naranjo, caminatas a la catarata Nauyaca y otras
+    cataratas, kayak en los manglares y snorkel.
 
 - id: costa-rica-green-airways
   ubicacion: { lat: 9.442781, lng: -84.130119 }
+  foto: ../assets/afiliados/lugares-afiliados/costa-rica-green-airways.jpg
+  info: Aerolínea nacional con vuelos regulares y chárter que llegan al aeródromo de Quepos (La Managua). También
+    vuela a Cóbano, Nosara y Puerto Jiménez, y cuenta con la certificación de seguridad Argus Gold.
 
 - id: dantes-watersports-tours
   ubicacion: { lat: 9.394062, lng: -84.153576 }
+  foto: ../assets/afiliados/lugares-afiliados/dante-watersports.jpg
+  info: Empresa local de Manuel Antonio desde 2004. Da clases de surf privadas y en grupo para todo nivel, días de
+    playa con silla, sombrilla y boogie board, kayak, paddleboard y tours al Parque Nacional.
 
 - id: diario-mirador
   # En Google sale como "Capitan Morgan Bar & Restaurant", pero con la web de Diario Mirador: confirmar
   ubicacion: { lat: 9.430923, lng: -84.164787 }
+  info: Medio de comunicación con noticias de Quepos y el Pacífico Central.
 
 - id: ferreteria-costanera-sur
   ubicacion: { lat: 9.429830, lng: -84.163731 }
+  foto: ../assets/afiliados/lugares-afiliados/ferreteria-costanera-sur.png
+  info: Ferretería en el centro de Quepos, frente a la terminal de buses. Todo para construir, con herramientas
+    eléctricas, pintura y accesorios.
 
 - id: hotel-costa-verde
   ubicacion: { lat: 9.398753, lng: -84.153946 }
+  foto: ../assets/afiliados/lugares-afiliados/costa-verde.webp
+  info: Hotel de 70 habitaciones entre el Parque Nacional Manuel Antonio y el Pacífico, famoso por su suite dentro de
+    un Boeing 727 en medio de la selva. Tiene tres piscinas en el acantilado, spa y cuatro restaurantes.
 
 - id: hotel-karahe
   ubicacion: { lat: 9.396321, lng: -84.153888 }
+  foto: ../assets/afiliados/lugares-afiliados/hotel-karahe.webp
+  info: Hotel frente a la playa en Manuel Antonio, con acceso directo al mar y piscina con cascada. Tiene el
+    restaurante Canto del Mar, de cocina costarricense y peruana, y tours guiados al Parque Nacional.
+
+- id: hotel-playa-espadilla
+  ubicacion: { lat: 9.392627, lng: -84.147382 }
+  foto: ../assets/afiliados/lugares-afiliados/hotel-playa-espadilla.jpg
+  info: Hotel y cabinas a cinco minutos a pie del Parque Nacional Manuel Antonio. Tiene jardines, un sendero de
+    montaña, piscina para adultos y para niños, cancha de tenis y el restaurante Puerto Escondido.
+
+- id: hotel-villas-lirio
+  ubicacion: { lat: 9.410694, lng: -84.154575 }
+  foto: ../assets/afiliados/lugares-afiliados/hotel-villa-lirio.jpg
+  info: Hotel de 33 habitaciones rodeado de jardines tropicales, cerca del Parque Nacional Manuel Antonio. Tiene dos
+    piscinas, restaurante y sala de conferencias para reuniones y eventos.
 
 - id: iguana-tours
   ubicacion: { lat: 9.431170, lng: -84.159306 }
+  foto: ../assets/afiliados/lugares-afiliados/iguana-tours.webp
+  info: Opera en el centro de Quepos desde 1989, con caminatas por el Parque Nacional Manuel Antonio, rafting en los
+    ríos Savegre y Naranjo, kayak y botes en los manglares, cabalgatas, canopy y traslados.
 
 - id: issimo-suites
   ubicacion: { lat: 9.401115, lng: -84.163699 }
+  foto: ../assets/afiliados/lugares-afiliados/issimo-suites.jpg
+  info: Hotel boutique solo para adultos frente al mar en Manuel Antonio, a pocos minutos del Parque Nacional. Tiene
+    13 suites con balcón y jacuzzi privados, spa y el restaurante mediterráneo Terrazza by Issimo.
 
 - id: los-altos-resort
   ubicacion: { lat: 9.405395, lng: -84.157974 }
+  foto: ../assets/afiliados/lugares-afiliados/los-altos.jpg
+  info: Resort de lujo de la colección Small Luxury Hotels of the World. Tiene piscina infinita con vista al mar, el
+    restaurante Karola's, yoga, clases de cocina costarricense y senderos con monos, perezosos y tucanes.
 
 - id: manuel-antonio-estates
   ubicacion: { lat: 9.427169, lng: -84.156629 }
+  foto: ../assets/afiliados/lugares-afiliados/manuel-antonio-estates.jpeg
+  info: Alquileres vacacionales en Manuel Antonio, con más de 20 villas y condominios cerca del Parque Nacional,
+    muchos con piscina privada y vista al mar. También alquileres a largo plazo y venta de casas y lotes.
 
 - id: marina-pez-vela
   ubicacion: { lat: 9.426195, lng: -84.167487 }
+  foto: ../assets/afiliados/lugares-afiliados/maria-pez-vela.jpg
+  info: Marina y astillero de clase mundial en Quepos, punto de salida de la pesca deportiva y de los tours en
+    catamarán. Tiene una plaza comercial y es sede de torneos internacionales de pesca.
 
 - id: mini-price-store
   ubicacion: { lat: 9.431376, lng: -84.160578 }
+  foto: ../assets/afiliados/lugares-afiliados/mini-price-store.jpg
+  info: Abarrotes, frutas y verduras, carnes, panadería, vinos y cervezas, además de productos importados.
+
+- id: palma-tica
+  # Aproximada: centro del terreno de Palma Tica - División Quepos, en Damas. Cambiarla por la entrada de las oficinas
+  ubicacion: { lat: 9.494761, lng: -84.213914 }
+  foto: ../assets/afiliados/lugares-afiliados/palma-tica.webp
+  info: Empresa del Grupo Numar que cultiva y procesa palma aceitera. Tiene su División Quepos en Damas y
+    plantaciones en la zona sur, y distribuye productos derivados del aceite de palma.
 
 - id: parador-nature-resort
   ubicacion: { lat: 9.397339, lng: -84.168787 }
@@ -73,36 +154,85 @@
 
 - id: planet-dolphin
   ubicacion: { lat: 9.426192, lng: -84.167569 }
+  foto: ../assets/afiliados/lugares-afiliados/planet-dolphin.jpg
+  info: Tours en catamarán desde 1989, con salida de Marina Pez Vela. Incluyen almuerzo o cena, barra libre, snorkel,
+    tobogán y transporte desde los hoteles de Manuel Antonio.
 
 - id: portasol
   ubicacion: { lat: 9.368187, lng: -83.970187 }
+  foto: ../assets/afiliados/lugares-afiliados/portasol-living.jpg
+  info: Comunidad ecológica privada en Portalón de Savegre, con 540 hectáreas de bosque, ríos y tres cataratas.
+    Alquila 11 casas vacacionales y tiene senderos, alquiler de bicicletas y servicios de construcción y
+    administración.
 
 - id: quatro-legal
   ubicacion: { lat: 9.405485, lng: -84.157211 }
+  info: Oficina en Plaza Vista Real, Manuel Antonio. Atiende bienes raíces, migración, derecho laboral, corporativo y
+    de familia, planificación patrimonial y contabilidad.
+
+- id: ronnys-place
+  ubicacion: { lat: 9.411192, lng: -84.158098 }
+  foto: ../assets/afiliados/lugares-afiliados/ronnys-place.jpg
+  info: Restaurante y mirador fundado en 2003 por Ronny Alpízar, en lo más alto de una finca de 90 acres frente al
+    mar. Es conocido por sus atardeceres y su cocina con productos frescos y locales. La entrada está frente a Amigos
+    del Río.
 
 - id: roots2river
   ubicacion: { lat: 9.465167, lng: -84.192768 }
+  foto: ../assets/afiliados/lugares-afiliados/root2-river.jpg
+  info: Bajadas por los ríos Naranjo (clase III-IV), El Chorro (clase IV-V) y Savegre (clase II-III), con salida
+    desde Manuel Antonio. También hace tours al Parque Nacional, cabalgatas y tours por los manglares.
 
 - id: sabromar
   ubicacion: { lat: 9.433528, lng: -84.164950 }
+  foto: ../assets/afiliados/lugares-afiliados/marisqueria-sabromar.jpg
+  info: Marisquería en Boca Vieja, Quepos, conocida por sus ceviches, la pasta con mariscos, el pulpo y el pescado
+    fresco del día.
 
 - id: safari-adventure-park
   ubicacion: { lat: 9.431087, lng: -84.164871 }
+  foto: ../assets/afiliados/lugares-afiliados/safari-adventures.webp
+  info: Empresa local con más de 26 años en Manuel Antonio. Tours en cuadraciclo y buggy, canopy, caminatas a
+    cataratas y tours en bote y kayak por los manglares de Isla Damas, con guías bilingües y transporte incluido.
 
 - id: sea-quest-catamaran
   ubicacion: { lat: 9.422771, lng: -84.158518 }
+  foto: ../assets/afiliados/lugares-afiliados/sea-quast-catamaran.webp
+  info: Paseos por la costa de Manuel Antonio con comida y bebidas a bordo, atardeceres en el mar y avistamiento de
+    delfines y ballenas.
+
+- id: seguros-largaespada
+  ubicacion: { lat: 9.435645, lng: -84.164587 }
+  foto: ../assets/afiliados/lugares-afiliados/seguros-largaespada.jpeg
+  info: Oficina de seguros en Quepos, sobre Calle María Luisa.
 
 - id: si-como-no-resort
   ubicacion: { lat: 9.403800, lng: -84.155117 }
+  foto: ../assets/afiliados/lugares-afiliados/hotel-si-como.webp
+  info: Resort sostenible en Manuel Antonio, sobre 4 hectáreas de bosque protegido con monos, perezosos y aves. Tiene
+    54 habitaciones con vista al mar, piscinas para familias y solo para adultos, el Cala Spa y cine privado.
 
 - id: the-falls-resort
   ubicacion: { lat: 9.403240, lng: -84.153094 }
+  foto: ../assets/afiliados/lugares-afiliados/the-fallas.jpg
+  info: Hotel boutique en lo alto de una colina en Manuel Antonio, rodeado de selva y jardines. Tiene piscina
+    infinita, habitaciones y bungalows entre la vegetación y el restaurante Medusa, con mariscos y cocina peruana.
 
 - id: tracopa
   ubicacion: { lat: 9.430511, lng: -84.163535 }
+  foto: ../assets/afiliados/lugares-afiliados/tracopa.jpg
+  info: Empresa familiar que viaja entre Quepos y San José y atiende la zona sur del país. También envía encomiendas,
+    y los boletos se compran en la terminal, en línea o con la app Passer.
 
 - id: tucanes-tours
   ubicacion: { lat: 9.443338, lng: -84.137893 }
+  foto: ../assets/afiliados/lugares-afiliados/tucanes-tours.webp
+  info: Empresa familiar de tours fundada en 1992. Parque Nacional Manuel Antonio, kayak y snorkel, rafting en el
+    Savegre, cabalgatas a cataratas, catamarán y tour de chocolate, vainilla y café, con recogida gratis en hoteles
+    de Quepos y Manuel Antonio.
 
 - id: villa-costa-vida
   ubicacion: { lat: 9.402223, lng: -84.160053 }
+  foto: ../assets/afiliados/lugares-afiliados/villa-costa-vida.jpg
+  info: Villa de lujo para grupos en el corazón de Manuel Antonio, para hasta 55 personas en 17 habitaciones. Tiene
+    piscina infinita en la azotea con vista al Pacífico, chef privado y transporte al aeropuerto.

@@ -7,18 +7,15 @@ import { setWorkerUrl } from "maplibre-gl";
 import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?url";
 import Supercluster, { type AnyProps, type ClusterFeature, type PointFeature } from "supercluster";
 import {
-  BedDouble,
-  Bus,
-  House,
+  Factory,
+  IdCard,
   Info,
   MapPin,
   Maximize2,
   Search,
-  Mountain,
   Shapes,
   ShoppingBag,
-  UtensilsCrossed,
-  Wrench,
+  TreePalm,
   X,
   type LucideIcon,
 } from "lucide-react";
@@ -51,14 +48,9 @@ const PADDING_CANTON = { top: 126, right: 30, bottom: 30, left: 30 };
 
 // Mismos íconos por categoría que la página de afiliados
 const iconosCategoria: Record<string, LucideIcon> = {
-  Hospedaje: BedDouble,
-  "Tours y aventura": Mountain,
-  Transporte: Bus,
   Comercio: ShoppingBag,
-  Gastronomía: UtensilsCrossed,
-  "Bienes raíces": House,
-  Servicios: Wrench,
-  Otros: Shapes,
+  Turismo: TreePalm,
+  Industria: Factory,
 };
 
 export type AfiliadoMapa = {
@@ -81,7 +73,21 @@ type Punto = PointFeature<AfiliadoMapa>;
 
 const esGrupo = (marcador: Grupo | Punto): marcador is Grupo => "cluster" in marcador.properties;
 
+// Hasta este zoom los logos que quedarían encimados se juntan en un círculo con el número; más cerca salen todos
+const ZOOM_MAXIMO_GRUPOS = 18;
+
 export default function MapaAfiliadosMapcn({ afiliados }: { afiliados: AfiliadoMapa[] }) {
+  const indice = useMemo(
+    () =>
+      new Supercluster<AfiliadoMapa>({ radius: 64, maxZoom: ZOOM_MAXIMO_GRUPOS }).load(
+        afiliados.map((afiliado) => ({
+          type: "Feature",
+          geometry: { type: "Point", coordinates: [afiliado.lng, afiliado.lat] },
+          properties: afiliado,
+        })),
+      ),
+    [afiliados],
+  );
   const [seleccionado, setSeleccionado] = useState<AfiliadoMapa | null>(null);
   // Mientras "cerrando" es true la tarjeta sigue montada para que se vea la animación de salida
   const [cerrando, setCerrando] = useState(false);
@@ -110,10 +116,11 @@ export default function MapaAfiliadosMapcn({ afiliados }: { afiliados: AfiliadoM
       <MapControls />
       <BuscadorAfiliados
         afiliados={afiliados}
+        indice={indice}
         onSeleccionar={seleccionar}
         oculto={seleccionado !== null && !cerrando}
       />
-      <MarcadoresAfiliados afiliados={afiliados} seleccionado={seleccionado} onSeleccionar={seleccionar} />
+      <MarcadoresAfiliados indice={indice} seleccionado={seleccionado} onSeleccionar={seleccionar} />
       {seleccionado && (
         <TarjetaAfiliado
           key={seleccionado.id}
@@ -140,50 +147,32 @@ const COLORES_MAPA: Record<string, [propiedad: "background-color" | "fill-color"
 };
 
 function ColoresMapa() {
-  const { map } = useMap();
+  // isLoaded se pone en true cuando ya cargaron el mapa y el estilo (y otra vez al recargar el estilo). No se usa
+  // map.isStyleLoaded(): en iPhone a veces da false aunque el estilo ya esté, y el mapa se quedaba blanco
+  const { map, isLoaded } = useMap();
 
   useEffect(() => {
-    if (!map) return;
-    const pintar = () => {
-      for (const [capa, [propiedad, color]] of Object.entries(COLORES_MAPA)) {
-        if (map.getLayer(capa)) map.setPaintProperty(capa, propiedad, color);
-      }
-    };
-    if (map.isStyleLoaded()) pintar();
-    // También al recargar el estilo, para que no vuelva a quedar blanco
-    map.on("style.load", pintar);
-    return () => {
-      map.off("style.load", pintar);
-    };
-  }, [map]);
+    if (!map || !isLoaded) return;
+    for (const [capa, [propiedad, color]] of Object.entries(COLORES_MAPA)) {
+      if (map.getLayer(capa)) map.setPaintProperty(capa, propiedad, color);
+    }
+  }, [map, isLoaded]);
 
   return null;
 }
 
 // Junta en un círculo con el número los logos que quedarían encimados; al acercar el mapa se separan
 function MarcadoresAfiliados({
-  afiliados,
+  indice,
   seleccionado,
   onSeleccionar,
 }: {
-  afiliados: AfiliadoMapa[];
+  indice: Supercluster<AfiliadoMapa>;
   seleccionado: AfiliadoMapa | null;
   onSeleccionar: (afiliado: AfiliadoMapa) => void;
 }) {
   const { map } = useMap();
   const [vista, setVista] = useState<{ limites: [number, number, number, number]; zoom: number }>();
-
-  const indice = useMemo(
-    () =>
-      new Supercluster<AfiliadoMapa>({ radius: 64, maxZoom: 18 }).load(
-        afiliados.map((afiliado) => ({
-          type: "Feature",
-          geometry: { type: "Point", coordinates: [afiliado.lng, afiliado.lat] },
-          properties: afiliado,
-        })),
-      ),
-    [afiliados],
-  );
 
   useEffect(() => {
     if (!map) return;
@@ -270,13 +259,33 @@ function mostrarJuntoATarjeta(map: MapRef, centro: [number, number]) {
 const normalizar = (texto: string) =>
   texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
+// Primer zoom (desde 16) en el que el afiliado sale con su logo y no dentro de un círculo con el número. Los que
+// están a pocos metros de otro, como los de Marina Pez Vela, necesitan acercarse más
+function zoomParaVerLogo(indice: Supercluster<AfiliadoMapa>, afiliado: AfiliadoMapa) {
+  const alrededor: [number, number, number, number] = [
+    afiliado.lng - 0.001,
+    afiliado.lat - 0.001,
+    afiliado.lng + 0.001,
+    afiliado.lat + 0.001,
+  ];
+  for (let zoom = 16; zoom <= ZOOM_MAXIMO_GRUPOS; zoom++) {
+    const suelto = indice
+      .getClusters(alrededor, zoom)
+      .some((marcador) => !esGrupo(marcador) && marcador.properties.id === afiliado.id);
+    if (suelto) return zoom;
+  }
+  return ZOOM_MAXIMO_GRUPOS + 1;
+}
+
 // Arriba a la derecha en compu (la tarjeta va a la izquierda) y arriba a lo ancho en celular
 function BuscadorAfiliados({
   afiliados,
+  indice,
   onSeleccionar,
   oculto,
 }: {
   afiliados: AfiliadoMapa[];
+  indice: Supercluster<AfiliadoMapa>;
   onSeleccionar: (afiliado: AfiliadoMapa) => void;
   oculto: boolean;
 }) {
@@ -285,6 +294,14 @@ function BuscadorAfiliados({
   const [abierto, setAbierto] = useState(false);
   const [activo, setActivo] = useState(0);
   const campo = useRef<HTMLInputElement>(null);
+
+  // Al abrir un afiliado se cierra el teclado y la lista; si no, en iPhone el buscador quedaba trabado
+  // detrás de la tarjeta
+  useEffect(() => {
+    if (!oculto) return;
+    campo.current?.blur();
+    setAbierto(false);
+  }, [oculto]);
 
   const resultados = useMemo(() => {
     const buscado = normalizar(texto.trim());
@@ -299,12 +316,12 @@ function BuscadorAfiliados({
     // En compu se abre la tarjeta; en celular solo se lleva al logo (la tarjeta taparía casi todo el mapa)
     const compu = window.matchMedia("(min-width: 768px)").matches;
     if (compu) onSeleccionar(afiliado);
-    // flyTo se aleja un poco y vuelve a acercarse en arco, más fluido que un desplazamiento recto. El zoom 16
-    // basta para que el logo salga solo y no dentro de un círculo. En celular, el offset deja el logo
-    // centrado en lo que no tapan el navbar y el buscador
+    // flyTo se aleja un poco y vuelve a acercarse en arco, más fluido que un desplazamiento recto. Se acerca lo
+    // necesario para que el logo salga solo y no haya que tocar el círculo con el número. En celular, el offset
+    // deja el logo centrado en lo que no tapan el navbar y el buscador
     map.flyTo({
       center: [afiliado.lng, afiliado.lat],
-      zoom: Math.max(map.getZoom(), 16),
+      zoom: Math.max(map.getZoom(), zoomParaVerLogo(indice, afiliado)),
       offset: compu ? [226, 48] : [0, 60],
       duration: 1800,
       curve: 1.4,
@@ -620,6 +637,11 @@ function TarjetaAfiliado({
         >
           <MapPin className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
           Ver el lugar en Google Maps
+        </a>
+        {/* Lleva a la tarjeta del afiliado en la página de afiliados, con todos sus contactos */}
+        <a href={`/afiliados#${afiliado.id}`} className={claseDato}>
+          <IdCard className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
+          Ver más información
         </a>
       </div>
 

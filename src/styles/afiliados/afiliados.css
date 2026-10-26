@@ -30,6 +30,20 @@
     transform: translateY(-4px);
   }
 }
+/* Al llegar desde el mapa (/afiliados#id), la tarjeta de ese afiliado se resalta unos segundos. Es un anillo de
+   sombra (y no outline) para que quede por debajo del círculo del logo; las otras dos sombras son las de la tarjeta */
+[data-afiliado]:target > article {
+  animation: afiliado-destacado 3s ease-out 0.3s both;
+}
+@keyframes afiliado-destacado {
+  0%,
+  60% {
+    box-shadow:
+      0 0 0 3px rgb(39 128 201 / 0.85),
+      0 24px 50px -18px rgb(16 42 67 / 0.28),
+      0 6px 14px -6px rgb(16 42 67 / 0.12);
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .cat-lista,
   .cat-lista[data-abierto="true"] {
@@ -37,5 +51,12 @@
   }
   .cat-lista[data-abierto="true"] > li {
     animation: none;
+  }
+  [data-afiliado]:target > article {
+    animation: none;
+    box-shadow:
+      0 0 0 3px rgb(39 128 201 / 0.85),
+      0 24px 50px -18px rgb(16 42 67 / 0.28),
+      0 6px 14px -6px rgb(16 42 67 / 0.12);
   }
 }
