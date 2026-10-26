@@ -2,16 +2,7 @@ import { defineCollection } from "astro:content";
 import { file } from "astro/loaders";
 import { z } from "astro/zod";
 
-export const categoriasAfiliados = [
-  "Hospedaje",
-  "Tours y aventura",
-  "Transporte",
-  "Comercio",
-  "Gastronomía",
-  "Bienes raíces",
-  "Servicios",
-  "Otros",
-] as const;
+export const categoriasAfiliados = ["Comercio", "Turismo", "Industria"] as const;
 
 const afiliados = defineCollection({
   loader: file("src/data/afiliados.yaml"),

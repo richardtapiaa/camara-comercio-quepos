@@ -2,22 +2,18 @@
 import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 import {
-  BedDouble,
-  Bus,
   Check,
   ChevronDown,
+  Factory,
   Globe,
-  House,
   LayoutGrid,
   Mail,
   MessageCircle,
-  Mountain,
   Phone,
   Search,
   Shapes,
   ShoppingBag,
-  UtensilsCrossed,
-  Wrench,
+  TreePalm,
 } from "lucide-react";
 import FondoAfiliacion from "./FondoAfiliacion.astro";
 import { categoriasAfiliados } from "../../content.config";
@@ -31,14 +27,9 @@ const afiliados = (await getCollection("afiliados")).sort((a, b) =>
 const categorias = categoriasAfiliados.filter((c) => afiliados.some((a) => a.data.categoria === c));
 
 const iconosCategoria: Record<string, typeof LayoutGrid> = {
-  Hospedaje: BedDouble,
-  "Tours y aventura": Mountain,
-  Transporte: Bus,
   Comercio: ShoppingBag,
-  Gastronomía: UtensilsCrossed,
-  "Bienes raíces": House,
-  Servicios: Wrench,
-  Otros: Shapes,
+  Turismo: TreePalm,
+  Industria: Factory,
 };
 const opcionesCategoria = [
   { valor: "", nombre: "Todas", Icono: LayoutGrid },
@@ -134,8 +125,8 @@ const dominio = (url: string) => new URL(url).hostname.replace(/^www\./, "");
 
     <ul class="mt-12 grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:gap-x-10 lg:gap-y-14 lg:grid-cols-3 xl:grid-cols-4">
       {
-        afiliados.map(({ data }) => (
-          <li data-afiliado data-categoria={data.categoria} data-nombre={normalizar(data.nombre)} class="pt-20">
+        afiliados.map(({ id, data }) => (
+          <li id={id} data-afiliado data-categoria={data.categoria} data-nombre={normalizar(data.nombre)} class="scroll-mt-28 pt-20">
             <article class="flex h-full flex-col rounded-[2.5rem] bg-white px-6 pb-8 text-center shadow-[0_24px_50px_-18px_rgba(16,42,67,0.28),0_6px_14px_-6px_rgba(16,42,67,0.12)] ring-1 ring-slate-900/5 transition duration-300 hover:-translate-y-1.5 hover:shadow-[0_32px_60px_-18px_rgba(16,42,67,0.34),0_8px_18px_-6px_rgba(16,42,67,0.14)]">
               <div class="mx-auto -mt-20 flex size-40 items-center justify-center overflow-hidden rounded-full bg-white p-6 shadow-[0_12px_30px_-10px_rgba(16,42,67,0.35)] ring-4 ring-white">
                 <Image

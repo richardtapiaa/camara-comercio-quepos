@@ -17,6 +17,16 @@ body {
   font-family: var(--font-sans);
 }
 
+/* En iPhone, si un campo tiene letra de menos de 16px, Safari hace zoom al tocarlo y la página queda
+   agrandada y descuadrada. Va fuera de las capas de Tailwind para ganarle a text-sm y similares */
+@media (pointer: coarse) {
+  input:not([type="checkbox"], [type="radio"], [type="file"]),
+  textarea,
+  select {
+    font-size: max(16px, 1em);
+  }
+}
+
 @font-face {
   font-family: "Poppins";
   font-style: normal;
