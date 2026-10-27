@@ -1,14 +1,13 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Navbar from "../components/home/Navbar.astro";
-
 import FormularioBolsa from "../components/BolsaEmpleoComponentes/FormularioBolsa.astro";
 import FraseCelebre from "../components/AfiliadosComponentes/FraseCelebre.astro";
 ---
 
-<Layout>
-  <Navbar />
+<Layout
+  titulo="Bolsa de empleo"
+  descripcion="Bolsa de Empleo de la Cámara de Comercio de Quepos: conectamos a las personas que buscan trabajo con las oportunidades laborales de nuestros asociados."
+>
   <FormularioBolsa />
   <FraseCelebre />
-  
 </Layout>

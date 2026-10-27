@@ -27,6 +27,9 @@ import habitacion from "../../../assets/hospitalidad/hospitalidad-1.webp";
 
 const clasesPalmera =
   "h-auto w-44 select-none sm:w-64 md:w-72 lg:w-80 xl:w-96 2xl:w-[28rem] [mask-image:linear-gradient(to_bottom,transparent,black_30%)]";
+// Los mismos anchos de clasesPalmera, para que el navegador elija la versión del tamaño justo
+const sizesPalmera =
+  "(min-width: 1536px) 448px, (min-width: 1280px) 384px, (min-width: 1024px) 320px, (min-width: 768px) 288px, (min-width: 640px) 256px, 176px";
 
 const items = [
   { id: 1, ...(await variantesGaleria(hero)), alt: "Paisaje de Quepos" },
@@ -58,6 +61,8 @@ const items = [
     src={palmera}
     alt=""
     width={600}
+    widths={[300, 450, 600]}
+    sizes={sizesPalmera}
     class={`pointer-events-none absolute right-0 top-0 ${clasesPalmera}`}
     loading="lazy"
     fetchpriority="low"
@@ -68,6 +73,8 @@ const items = [
     src={palmera}
     alt=""
     width={600}
+    widths={[300, 450, 600]}
+    sizes={sizesPalmera}
     class={`pointer-events-none absolute left-0 top-0 -scale-x-100 ${clasesPalmera}`}
     loading="lazy"
     fetchpriority="low"

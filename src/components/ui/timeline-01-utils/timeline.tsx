@@ -11,8 +11,13 @@ export type TimelineItem = {
   description: string;
   date: string;
   image: string;
+  /** Versiones de la foto en varios anchos (srcset), para que el navegador baje la del tamaño justo */
+  imageSrcSet?: string;
   alt?: string;
 };
+
+// Ancho de la foto de cada tarjeta: casi todo el ancho en celular, ~35 % de la pantalla en tablet y 480 px desde 1280 px
+const TAMANO_FOTO = "(min-width: 1280px) 480px, (min-width: 768px) 35vw, calc(100vw - 72px)";
 
 const PUNTO_REFERENCIA = "70%";
 
@@ -289,6 +294,8 @@ export default function Timeline({
                   <div className="relative aspect-[16/10] overflow-hidden">
                     <img
                       src={item.image}
+                      srcSet={item.imageSrcSet}
+                      sizes={item.imageSrcSet ? TAMANO_FOTO : undefined}
                       alt={item.alt ?? item.title}
                       loading="lazy"
                       decoding="async"

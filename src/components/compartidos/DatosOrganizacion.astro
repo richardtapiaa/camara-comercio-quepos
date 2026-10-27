@@ -1,0 +1,43 @@
+---
+// Datos estructurados (JSON-LD) para Google: quién es la Cámara, su logo y cómo contactarla. Van en el inicio
+// (pages/index.astro), que es donde Google los busca. Se pueden revisar en https://search.google.com/test/rich-results
+import { getImage } from "astro:assets";
+import logo from "../../assets/compartido/logo-camara.webp";
+import { contacto, nombreSitio } from "../../lib/sitio";
+
+const sitio = Astro.site!.href;
+// Google pide el logo en PNG, JPG o WebP de al menos 112 px
+const logoGoogle = await getImage({ src: logo, width: logo.width, format: "png" });
+
+const datos = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${sitio}#organizacion`,
+      name: nombreSitio,
+      url: sitio,
+      logo: new URL(logoGoogle.src, sitio).href,
+      email: contacto.email,
+      telephone: contacto.telefono,
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Quepos",
+        addressRegion: "Puntarenas",
+        addressCountry: "CR",
+      },
+      sameAs: [contacto.facebook, contacto.instagram],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${sitio}#sitio`,
+      name: nombreSitio,
+      url: sitio,
+      inLanguage: "es-CR",
+      publisher: { "@id": `${sitio}#organizacion` },
+    },
+  ],
+};
+---
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(datos)} />

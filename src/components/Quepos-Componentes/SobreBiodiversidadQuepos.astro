@@ -1,62 +1,57 @@
 ---
 import { Image } from "astro:assets";
+import { Leaf } from "lucide-react";
 import imagen from "../../assets/actividades/actividades-1.jpg";
-import perezoso from "../../assets/quepos/perezoso-sin-fondo.webp";
-import "../../styles/home/parallax-imagenes.css";
-import "../../styles/quepos/fondo-animales.css";
 ---
 
-<section id="biodiversidad-quepos" class="fondo-animales relative overflow-x-clip py-16 sm:py-24">
-  <Image
-    src={perezoso}
-    alt="Perezoso colgado"
-    width={600}
-    class="pointer-events-none absolute left-0 top-0 z-20 h-auto w-36 -scale-x-100 select-none sm:w-52 md:w-72"
-    loading="lazy"
-    draggable="false"
-  />
+<!-- Mismo diseño que SobreQuepos: container de Bootstrap (540/720/960/1140/1320 px) con 12 px de margen -->
+<!-- Se queda fija (como Vision en el inicio) y NahomiScroll sube por encima; ver scripts/home/paneles.ts -->
+<section
+  id="biodiversidad-quepos"
+  data-panel-sticky
+  class="panel sticky top-[min(0px,calc(100svh_-_var(--alto-panel,100svh)))] overflow-x-clip bg-white py-16 sm:py-20"
+>
+  <div
+    class="mx-auto grid w-full items-start gap-10 px-3 sm:max-md:max-w-[540px] md:max-lg:max-w-[720px] lg:max-xl:max-w-[960px] lg:grid-cols-2 lg:gap-12 xl:max-[1399px]:max-w-[1140px] min-[1400px]:max-w-[1320px]"
+  >
+    <div>
+      <div class="flex items-center gap-4">
+        <!-- Mismo estilo que el ícono de ubicación de quepos-icons/whypr.svg -->
+        <span class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#F8E39A]" aria-hidden="true">
+          <Leaf className="size-6 text-neutral-900" strokeWidth={1.75} />
+        </span>
+        <h2 class="text-2xl font-semibold leading-tight text-neutral-900 sm:text-[1.75rem]">Biodiversidad de Quepos</h2>
+      </div>
 
-  <div class="mx-auto grid max-w-6xl px-6 md:grid-cols-12">
-    <div class="relative z-10 -mr-[calc(max(0px,(100vw_-_72rem)/2)+1.5rem)] mb-8 aspect-[4/3] overflow-hidden rounded-2xl md:col-span-4 md:col-start-9 md:row-start-1 md:mt-24 md:self-start md:aspect-[8/7]">
+      <div class="mt-6 space-y-6 text-base leading-relaxed text-neutral-600">
+        <p>
+          Quepos se distingue por su riqueza natural y la diversidad de especies que habitan sus bosques y ecosistemas
+          marinos. En la región viven monos, lapas, iguanas, venados y dantas, y en ciertas épocas del año se pueden ver
+          ballenas y delfines.
+        </p>
+        <p>
+          A pocos kilómetros del centro está el Parque Nacional Manuel Antonio, creado en 1972 y uno de los más visitados
+          del país. Aunque es pequeño, reúne bosque tropical, manglares, arrecifes y playas de arena blanca en un mismo
+          lugar.
+        </p>
+        <p>
+          Sus senderos permiten ver de cerca perezosos, mapaches y tres especies de monos: el cariblanco, el congo y el mono
+          tití, propio del Pacífico Central. Playas como Manuel Antonio y Espadilla Sur, junto con el mirador de Punta
+          Catedral, lo convierten en una visita obligada para quienes disfrutan del ecoturismo.
+        </p>
+      </div>
+    </div>
+
+    <div class="relative aspect-[624/320] overflow-hidden rounded-[40px] lg:mt-14">
       <Image
         src={imagen}
         alt="Perezoso colgado de una rama en el bosque de Quepos"
-        class="absolute inset-x-0 -top-full h-[200%] w-full max-w-none object-cover will-change-transform"
-        data-parallax-img
+        widths={[480, 720, 960, 1200]}
+        sizes="(min-width: 1400px) 642px, (min-width: 1024px) 50vw, 100vw"
+        quality={75}
+        class="absolute inset-0 size-full object-cover"
+        loading="lazy"
       />
-    </div>
-
-    <div
-      class="-ml-[max(0px,(100vw_-_72rem)/2)] rounded-[2rem] bg-[#E8F4FA] py-12 pl-[calc(max(0px,(100vw_-_72rem)/2)+1.5rem)] pr-6 shadow-[0_12px_40px_rgb(100_155_190/0.25)] md:col-span-9 md:col-start-1 md:row-start-1 md:py-16 md:pr-[calc(100%/9+2rem)]"
-    >
-      <h2 class="text-4xl font-bold uppercase leading-tight tracking-tight text-neutral-700 sm:text-5xl">
-        Biodiversidad
-      </h2>
-
-      <p class="mt-6 max-w-xl text-lg font-medium leading-relaxed text-neutral-800 sm:text-xl">
-        Quepos se distingue por su riqueza natural y la diversidad de especies que habitan sus bosques y ecosistemas marinos.
-      </p>
-
-      <div class="mt-8 grid gap-6 text-sm leading-relaxed text-neutral-700 lg:grid-cols-2">
-        <div class="space-y-4">
-          <p>
-            En la región es posible encontrar animales como monos, lapas, iguanas, venados y dantas. Además, sus aguas ofrecen oportunidades para observar ballenas y delfines en determinadas épocas del año.
-          </p>
-          <p>
-            Esta riqueza natural convierte a Quepos en un destino ideal para quienes disfrutan del ecoturismo, la observación de fauna y las experiencias al aire libre.
-          </p>
-        </div>
-        <div class="space-y-4">
-          <p>
-            A pocos kilómetros del centro se encuentra el Parque Nacional Manuel Antonio, creado en 1972 y uno de los más visitados del país. Aunque es pequeño en extensión, reúne bosque tropical, manglares, arrecifes y playas de arena blanca en un mismo lugar.
-          </p>
-          <p>
-            Sus senderos permiten ver de cerca perezosos, mapaches y tres especies de monos: el cariblanco, el congo y el mono tití, propio del Pacífico Central. Playas como Manuel Antonio y Espadilla Sur, junto con el mirador de Punta Catedral, lo convierten en una visita obligada al llegar a Quepos.
-          </p>
-        </div>
-      </div>
     </div>
   </div>
 </section>
-
-<script src="../../scripts/home/parallax-imagenes.ts"></script>

@@ -1,59 +1,33 @@
 ---
-import Layout from '../layouts/Layout.astro';
-
-import Navbar from '../components/home/Navbar.astro';
-
-import Hero from '../components/Quepos-Componentes/Hero.astro';
-
-import TextVelocity from '../components/compartidos/TextVelocity.astro';
-
-import SobreQuepos from '../components/Quepos-Componentes/SobreQuepos.astro';
-
-
-import LapasJS from '../components/Quepos-Componentes/LapasJS.astro';
-
-
-
-
-import FAQ from '../components/Quepos-Componentes/FAQ.astro';
-
-
-
-
-import SobreBiodiversidadQuepos from '../components/Quepos-Componentes/SobreBiodiversidadQuepos.astro';
-import VideoQuepos from '../components/Quepos-Componentes/VideoQuepos.astro';
+import Layout from "../layouts/Layout.astro";
+import Hero from "../components/Quepos-Componentes/Hero.astro";
+import SobreQuepos from "../components/Quepos-Componentes/SobreQuepos.astro";
+import LapasJS from "../components/Quepos-Componentes/LapasJS.astro";
+import SobreBiodiversidadQuepos from "../components/Quepos-Componentes/SobreBiodiversidadQuepos.astro";
+import NahomiScroll from "../components/Quepos-Componentes/NahomiScroll.astro";
+import MaleconScroll from "../components/Quepos-Componentes/MaleconScroll.astro";
+import FAQ from "../components/Quepos-Componentes/FAQ.astro";
+import islaQuepos from "../assets/quepos/isla-quepos.jpg";
 ---
 
-<Layout>
-<link slot="head" rel="preload" href="/fonts/alfa-slab-one-latin.woff2" as="font" type="font/woff2" crossorigin />
+<Layout
+  titulo="Quepos"
+  descripcion="Quepos, en el Pacífico central de Costa Rica, es la puerta de entrada al Parque Nacional Manuel Antonio: conoce su biodiversidad, su malecón y cómo visitarlo."
+  imagen={{ src: islaQuepos, alt: "Isla frente a la playa de Manuel Antonio, en Quepos, con surfistas en el mar" }}
+>
+  <link slot="head" rel="preload" href="/fonts/alfa-slab-one-latin.woff2" as="font" type="font/woff2" crossorigin />
 
-<Navbar/>    
-<Hero/>
+  <Hero />
+  <SobreQuepos />
+  <LapasJS />
 
+  <div>
+    <SobreBiodiversidadQuepos />
+    <NahomiScroll />
+    <MaleconScroll />
+  </div>
 
-<SobreQuepos/>
+  <FAQ fondoAnimales />
 
-<LapasJS/>
-
-<SobreBiodiversidadQuepos/>
-<VideoQuepos/>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<FAQ fondoAnimales />
-
+  <script src="../scripts/home/paneles.ts"></script>
 </Layout>

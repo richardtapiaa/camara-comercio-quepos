@@ -205,7 +205,8 @@ function MarcadoresAfiliados({
           onClick={() => map.easeTo({ center: [lng, lat], zoom: indice.getClusterExpansionZoom(cluster_id) })}
         >
           <MarkerContent>
-            <span className="flex size-11 items-center justify-center rounded-full bg-[#2780c9] motion-safe:animate-aparecer-marcador text-sm font-semibold text-white shadow-lg ring-4 ring-white/80 transition-transform hover:scale-110">
+            {/* #2578bd: el azul de la marca un 6 % más oscuro, para que el número blanco se lea bien (contraste 4,7:1) */}
+            <span className="flex size-11 items-center justify-center rounded-full bg-[#2578bd] motion-safe:animate-aparecer-marcador text-sm font-semibold text-white shadow-lg ring-4 ring-white/80 transition-transform hover:scale-110">
               {point_count}
             </span>
           </MarkerContent>

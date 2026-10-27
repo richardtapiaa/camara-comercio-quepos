@@ -9,16 +9,16 @@ const posterOptimizado = await getImage({ src: poster, width: 1920, format: "web
 ---
 
 <section data-parallax-afiliados class="relative isolate flex h-svh min-h-[560px] w-full items-center justify-center overflow-hidden bg-black">
+  <!-- data-video-diferido: empieza a descargarse cuando la página terminó de cargar (scripts/compartido/videos.ts) -->
   <video
-    data-hero-afiliados-video
+    data-video-diferido
     data-parallax-fondo
     poster={posterOptimizado.src}
     class="absolute inset-0 -z-20 size-full object-cover"
-    autoplay
     muted
     loop
     playsinline
-    preload="auto"
+    preload="none"
     aria-hidden="true"
   >
     <source src={videoWebm} type='video/webm; codecs="av01.0.08M.08"' />
@@ -48,4 +48,4 @@ const posterOptimizado = await getImage({ src: poster, width: 1920, format: "web
 
 <script src="../../scripts/afiliados/parallax.ts"></script>
 
-<script src="../../scripts/afiliados/hero.ts"></script>
+

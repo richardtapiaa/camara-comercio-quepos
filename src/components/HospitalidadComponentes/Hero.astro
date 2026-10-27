@@ -1,60 +1,49 @@
 ---
-import { sizesCubrePantalla, variantesCapa } from "../../lib/imagenes";
+import { Image } from "astro:assets";
+import { ChevronRight } from "lucide-react";
 import foto from "../../assets/hospitalidad/vista-hotel-manuel-antonio.jpg";
-import primerPlano from "../../assets/hospitalidad/vista-hotel-primer-plano.webp";
+import "../../styles/compartido/etiqueta-papel.css";
 import "../../styles/hospitalidad/hero.css";
-
-const anchos = [800, 1280, 1920, 2560];
-const fotoOptimizada = await variantesCapa(foto, anchos, 72);
-const sizes = sizesCubrePantalla(foto);
-const primerPlanoOptimizado = await variantesCapa(primerPlano, anchos, 68);
-const fotoAvif = await variantesCapa(foto, anchos, 50, "avif");
-const primerPlanoAvif = await variantesCapa(primerPlano, anchos, 50, "avif");
 ---
 
-<section class="hero-vista relative isolate h-svh min-h-[560px] w-full overflow-hidden bg-[#cfdde6]" aria-label="Hospitalidad">
-  <div
-    class="hero-vista-recuadro absolute left-1/2"
-    style={{
-      width: `max(100cqw, calc(100cqh * ${foto.width} / ${foto.height}))`,
-      aspectRatio: `${foto.width} / ${foto.height}`,
-      top: `calc((100cqh - max(100cqw * ${foto.height} / ${foto.width}, 100cqh)) * 0.5)`,
-    }}
-  >
-    <picture>
-      <source type="image/avif" srcset={fotoAvif.srcSet} sizes={sizes} />
-      <img
-        src={fotoOptimizada.src}
-        srcset={fotoOptimizada.srcSet}
-        sizes={sizes}
-        alt="Vista al mar y a las islas de Manuel Antonio desde la terraza de un hotel, entre árboles"
-        class="hero-vista-foto absolute inset-0 size-full"
-        draggable="false"
-        fetchpriority="high"
-      />
-    </picture>
+<!-- id="hero": el navbar se ve transparente mientras está sobre esta sección -->
+<section id="hero" class="relative isolate flex h-[78svh] min-h-[520px] items-end overflow-hidden bg-[#2b4a5c]">
+  <Image
+    src={foto}
+    alt="Vista al mar y a las islas de Manuel Antonio desde la terraza de un hotel, entre árboles"
+    widths={[800, 1280, 1920, 2560]}
+    sizes="100vw"
+    quality={75}
+    class="absolute inset-0 -z-20 size-full object-cover"
+    loading="eager"
+    fetchpriority="high"
+  />
+  <div class="absolute inset-0 -z-10 bg-gradient-to-t from-black/45 via-black/10 to-black/30" aria-hidden="true"></div>
 
-    <div
-      data-hero-vista-titulo
-      class="hero-vista-titulo absolute bottom-[45%] left-[var(--foco-x)] -translate-x-1/2"
-    >
-      <h1 class="hero-vista-entrada text-center font-black uppercase text-[#102a43]">Hospitalidad</h1>
+  <div class="mx-auto w-full max-w-[1320px] px-6 pb-[clamp(5rem,12vh,8rem)] sm:px-10">
+    <div class="hero-rotulo relative w-fit max-w-full">
+      <div class="etiqueta-papel px-[0.9em] pb-[0.3em] pt-[0.35em]">
+        <p class="hero-rotulo-kicker">Quepos · Costa Rica</p>
+        <h1 class="hero-rotulo-titulo">
+          Hospitalidad <span class="hero-rotulo-amp">&amp;</span><br />Gastronomía
+        </h1>
+      </div>
+      <span class="etiqueta-cinta -left-[0.3em] -rotate-[4deg]" aria-hidden="true"></span>
+      <span class="etiqueta-cinta -right-[0.3em] rotate-[5deg]" aria-hidden="true"></span>
     </div>
-
-    <picture>
-      <source type="image/avif" srcset={primerPlanoAvif.srcSet} sizes={sizes} />
-      <img
-        src={primerPlanoOptimizado.src}
-        srcset={primerPlanoOptimizado.srcSet}
-        sizes={sizes}
-        alt=""
-        class="hero-vista-foto absolute inset-0 size-full"
-        draggable="false"
-        fetchpriority="high"
-        aria-hidden="true"
-      />
-    </picture>
   </div>
-</section>
 
-<script src="../../scripts/hospitalidad/hero.ts"></script>
+  <!-- Borde blanco de pincelada: un trazo principal con dientes y pinceladas que se afinan en las puntas -->
+  <svg
+    class="absolute inset-x-0 -bottom-px h-[clamp(40px,6vw,90px)] w-full text-white"
+    viewBox="0 0 1440 100"
+    preserveAspectRatio="none"
+    aria-hidden="true"
+  >
+    <path fill="currentColor" opacity="0.6" d="M-20 64.6 L-10 62.3 L0 62.2 L10 61.6 L20 61.4 L30 59.5 L40 59.2 L50 58.9 L60 57.6 L70 57.6 L80 58.8 L90 58.1 L100 55.5 L110 56.3 L120 53.4 L130 54.4 L140 52.3 L150 52.8 L160 52.6 L170 51.7 L180 53.7 L190 50.9 L200 53.1 L210 51.5 L220 50.2 L230 52.2 L240 53 L250 54.2 L260 53.1 L270 55.4 L280 55.7 L290 55.2 L300 56.4 L310 56.5 L320 58.6 L330 58.6 L340 59.8 L350 60.8 L360 61 L370 62.1 L380 63.5 L390 63.8 L400 64.1 L410 65.6 L420 67 L430 69 L430 72 L420 72.3 L410 72.5 L400 72.7 L390 72.7 L380 72.7 L370 72.6 L360 72.4 L350 72.1 L340 71.8 L330 71.4 L320 71 L310 70.6 L300 70.1 L290 69.7 L280 69.3 L270 68.9 L260 68.6 L250 68.3 L240 68.1 L230 67.9 L220 67.8 L210 67.8 L200 67.8 L190 67.9 L180 68 L170 68.2 L160 68.5 L150 68.7 L140 69 L130 69.3 L120 69.6 L110 69.9 L100 70.1 L90 70.3 L80 70.4 L70 70.5 L60 70.5 L50 70.5 L40 70.3 L30 70 L20 69.7 L10 69.3 L0 68.8 L-10 68.2 L-20 67.6 Z"></path>
+    <path fill="currentColor" opacity="0.35" d="M360 69.4 L370 68 L380 67.2 L390 66.1 L400 64.9 L410 63.8 L420 63.8 L430 62.3 L440 62 L450 60.9 L460 59.1 L470 57.7 L480 57.9 L490 57.4 L500 54.8 L510 56.7 L520 54.5 L530 55.2 L540 51.3 L550 50.4 L560 50 L570 52.1 L580 49.9 L590 51.1 L600 50.4 L610 48.8 L620 48.2 L630 49.1 L640 48.8 L650 50.7 L660 51.1 L670 51.5 L680 50.9 L690 50.4 L700 51.9 L710 51.8 L720 53.1 L730 54.6 L740 55.8 L750 55.9 L760 58.2 L760 61.2 L750 61.2 L740 61.2 L730 61.1 L720 61 L710 60.8 L700 60.6 L690 60.5 L680 60.4 L670 60.2 L660 60.2 L650 60.2 L640 60.2 L630 60.3 L620 60.5 L610 60.7 L600 61.1 L590 61.5 L580 62 L570 62.5 L560 63.2 L550 63.8 L540 64.6 L530 65.3 L520 66.1 L510 66.9 L500 67.7 L490 68.5 L480 69.2 L470 69.9 L460 70.5 L450 71.1 L440 71.6 L430 72 L420 72.3 L410 72.5 L400 72.7 L390 72.7 L380 72.7 L370 72.6 L360 72.4 Z"></path>
+    <path fill="currentColor" opacity="0.55" d="M640 57.2 L650 54.1 L660 53 L670 51.3 L680 50.7 L690 49.9 L700 49.4 L710 49.4 L720 48.4 L730 48.1 L740 47.6 L750 47.6 L760 44.7 L770 46 L780 46 L790 44.8 L800 44 L810 44.5 L820 42.7 L830 40.9 L840 40.2 L850 40.7 L860 40.1 L870 37.8 L880 40 L890 38.3 L900 36.7 L910 35.6 L920 36.7 L930 37.3 L940 34.7 L950 36.6 L960 34.6 L970 34.4 L980 37.2 L990 35.2 L1000 35.7 L1010 37.2 L1020 38.2 L1030 40.4 L1040 40.4 L1050 42 L1060 42.2 L1070 44.5 L1080 46.3 L1090 46.9 L1100 49.4 L1110 51.3 L1120 54.9 L1120 57.9 L1110 57.3 L1100 56.7 L1090 56.1 L1080 55.4 L1070 54.8 L1060 54.3 L1050 53.7 L1040 53.2 L1030 52.8 L1020 52.5 L1010 52.2 L1000 52.1 L990 52 L980 52 L970 52.2 L960 52.4 L950 52.7 L940 53 L930 53.5 L920 54 L910 54.6 L900 55.2 L890 55.8 L880 56.5 L870 57.1 L860 57.7 L850 58.3 L840 58.9 L830 59.4 L820 59.9 L810 60.3 L800 60.6 L790 60.9 L780 61.1 L770 61.2 L760 61.2 L750 61.2 L740 61.2 L730 61.1 L720 61 L710 60.8 L700 60.6 L690 60.5 L680 60.4 L670 60.2 L660 60.2 L650 60.2 L640 60.2 Z"></path>
+    <path fill="currentColor" opacity="0.45" d="M1040 50.2 L1050 48.3 L1060 47.6 L1070 46.7 L1080 47.5 L1090 47.2 L1100 47.1 L1110 46.4 L1120 45.2 L1130 47.2 L1140 46.8 L1150 47.7 L1160 46.5 L1170 45.6 L1180 45.3 L1190 45.4 L1200 45.2 L1210 45.5 L1220 46.8 L1230 46.3 L1240 44.5 L1250 46.3 L1260 44.1 L1270 44 L1280 45 L1290 45.1 L1300 44.9 L1310 44.6 L1320 45.4 L1330 46.6 L1340 45.1 L1350 46.2 L1360 47.5 L1370 48.2 L1380 49.1 L1390 51.5 L1400 51.9 L1410 52.2 L1420 55 L1430 55.8 L1440 57.4 L1450 60.2 L1460 63.3 L1460 66.3 L1450 65.5 L1440 64.7 L1430 64 L1420 63.2 L1410 62.6 L1400 62 L1390 61.4 L1380 61 L1370 60.6 L1360 60.3 L1350 60.1 L1340 59.9 L1330 59.8 L1320 59.8 L1310 59.9 L1300 59.9 L1290 60.1 L1280 60.2 L1270 60.4 L1260 60.5 L1250 60.7 L1240 60.8 L1230 60.9 L1220 61 L1210 60.9 L1200 60.9 L1190 60.7 L1180 60.5 L1170 60.3 L1160 59.9 L1150 59.5 L1140 59 L1130 58.5 L1120 57.9 L1110 57.3 L1100 56.7 L1090 56.1 L1080 55.4 L1070 54.8 L1060 54.3 L1050 53.7 L1040 53.2 Z"></path>
+    <path fill="currentColor" d="M0 65.6 L9 68 L20 66.5 L29 68.8 L35 65.6 L44 67.2 L53 68.9 L58 67.2 L64 65.5 L75 69.4 L85 65.1 L93 69.6 L103 68.2 L113 65.1 L118 68.3 L123 64.3 L129 68.2 L138 63.7 L146 65 L155 67.3 L164 64 L171 65.2 L181 62.9 L191 63.8 L200 67.3 L211 62.7 L218 63.9 L224 64.9 L229 62.8 L240 63.1 L245 66.9 L253 63.2 L258 67.3 L263 64.3 L268 65.7 L278 65.7 L283 66.8 L289 68.1 L296 66.2 L303 66.4 L311 68.9 L316 66 L326 66.2 L331 68.3 L339 67.1 L348 67.5 L357 67.7 L367 70.9 L375 70.4 L380 69.2 L386 67.2 L397 72.1 L408 70 L413 68 L421 71.8 L430 69.7 L435 66.5 L441 67.1 L448 65.7 L457 66.8 L464 66.7 L469 64.9 L478 67 L483 66.5 L490 66.1 L496 67.3 L504 66 L510 65.7 L516 64.1 L523 64.9 L534 62.6 L544 59.7 L554 61.2 L563 58.4 L571 61.4 L580 56.9 L585 56.7 L590 58.5 L597 56.9 L607 57.3 L615 59.2 L624 57.3 L633 55.6 L643 59.6 L649 55.8 L658 57.9 L667 57.8 L674 55.8 L680 58.6 L685 56.3 L693 56.3 L698 56 L705 57.9 L711 55.8 L717 59.9 L724 58.8 L734 58.2 L740 58.6 L745 58.1 L752 59.3 L757 55.9 L767 56.1 L772 59.3 L779 56.3 L784 55.9 L793 57.1 L798 59.7 L808 58.5 L814 58.6 L821 56.1 L831 56.2 L836 58 L844 57.9 L849 57.2 L858 52.4 L868 53.7 L877 51.2 L882 51.2 L892 50.8 L899 54.2 L909 50.8 L919 52 L927 50.4 L938 50.3 L947 51 L952 48.6 L957 49.3 L963 51.6 L968 49.2 L977 49.9 L985 47.8 L990 48.3 L996 49.9 L1002 49.2 L1013 51.3 L1023 51.7 L1031 51.8 L1038 49.7 L1045 49 L1053 52.4 L1064 53.6 L1070 51.3 L1079 54.5 L1085 50.9 L1093 52.5 L1104 51.7 L1109 56.5 L1116 56.3 L1121 54.7 L1128 57.5 L1139 55.5 L1149 56.6 L1159 55.9 L1170 59 L1179 57.3 L1184 59.3 L1191 59.6 L1196 58.7 L1203 58.3 L1210 58.7 L1219 55.6 L1225 57.5 L1231 55.5 L1242 56.6 L1253 55.9 L1258 60 L1263 57.2 L1273 57.5 L1283 58.7 L1288 58 L1294 58.6 L1301 55.3 L1306 58.2 L1315 57.9 L1321 55.4 L1332 56.1 L1342 59.2 L1351 57.6 L1362 55.6 L1373 59.2 L1379 55.9 L1389 57.8 L1397 58.6 L1407 61.3 L1412 59.1 L1421 61.1 L1430 62.4 L1437 61.3 L1440 61.7 L1440 100 L0 100 Z"></path>
+  </svg>
+</section>

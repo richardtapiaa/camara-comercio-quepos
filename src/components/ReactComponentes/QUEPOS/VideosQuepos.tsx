@@ -57,10 +57,15 @@ const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
       poster,
       showControls = true,
       autoHide = true,
+      preload,
       ...props
     },
     ref,
   ) => {
+    // El HTML del servidor sale con preload="none" y el `preload` pedido se aplica al montarse (la isla se activa al
+    // acercarse a la pantalla): si no, el navegador empieza a bajar el video al abrir la página y compite con las fotos
+    const [montado, setMontado] = React.useState(false);
+    React.useEffect(() => setMontado(true), []);
     const [isPlaying, setIsPlaying] = React.useState(false);
     const [currentTime, setCurrentTime] = React.useState(0);
     const [duration, setDuration] = React.useState(0);
@@ -277,6 +282,8 @@ const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
           autoHide && isPlaying && setShowControlsState(false)
         }
         tabIndex={0}
+        role="group"
+        aria-label="Reproductor de video"
       >
         {" "}
         <video
@@ -285,6 +292,7 @@ const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
           poster={poster}
           className="w-full h-full object-cover"
           onClick={togglePlay}
+          preload={montado ? preload : "none"}
           {...props}
         >
           {fuentes?.map((fuente) => <source key={fuente.src} src={fuente.src} type={fuente.type} />)}
@@ -303,6 +311,7 @@ const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
                   e.stopPropagation();
                   togglePlay();
                 }}
+                aria-label={isPlaying ? "Pausar" : "Reproducir"}
                 className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white hover:bg-white/30 transition-all duration-200 pointer-events-auto"
               >
                 {isPlaying ? (
@@ -332,6 +341,8 @@ const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
                       min={0}
                       max={duration || 0}
                       value={currentTime}
+                      aria-label="Posición del video"
+                      aria-valuetext={`${formatTime(currentTime)} de ${formatTime(duration)}`}
                       onChange={(e) => {
                         e.stopPropagation();
                         handleSeek(e);
@@ -364,6 +375,7 @@ const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
                         e.stopPropagation();
                         skip(-10);
                       }}
+                      aria-label="Retroceder 10 segundos"
                       className="p-2 text-white hover:bg-white/20 rounded-md transition-colors"
                     >
                       <SkipBack className="w-4 h-4" />
@@ -373,6 +385,7 @@ const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
                         e.stopPropagation();
                         togglePlay();
                       }}
+                      aria-label={isPlaying ? "Pausar" : "Reproducir"}
                       className="p-2 text-white hover:bg-white/20 rounded-md transition-colors"
                     >
                       {isPlaying ? (
@@ -386,6 +399,7 @@ const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
                         e.stopPropagation();
                         skip(10);
                       }}
+                      aria-label="Adelantar 10 segundos"
                       className="p-2 text-white hover:bg-white/20 rounded-md transition-colors"
                     >
                       <SkipForward className="w-4 h-4" />
@@ -397,6 +411,7 @@ const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
                           e.stopPropagation();
                           toggleMute();
                         }}
+                        aria-label={isMuted || volume === 0 ? "Activar sonido" : "Silenciar"}
                         className="p-2 text-white hover:bg-white/20 rounded-md transition-colors"
                       >
                         {isMuted || volume === 0 ? (
@@ -413,6 +428,7 @@ const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
                           max={1}
                           step={0.1}
                           value={isMuted ? 0 : volume}
+                          aria-label="Volumen"
                           onChange={(e) => {
                             e.stopPropagation();
                             handleVolumeChange(e);
@@ -440,6 +456,7 @@ const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
                         e.stopPropagation();
                         toggleFullscreen();
                       }}
+                      aria-label={isFullscreen ? "Salir de pantalla completa" : "Pantalla completa"}
                       className="p-2 text-white hover:bg-white/20 rounded-md transition-colors"
                     >
                       {isFullscreen ? (
@@ -502,7 +519,8 @@ function VideoQueposIdiomas({ fuentesEs, fuentesEn, autoPlay, ...props }: VideoQ
             aria-pressed={idioma === valor}
             className={cn(
               "rounded-full px-5 py-2.5 text-sm font-semibold transition-colors sm:px-6",
-              idioma === valor ? "bg-[#2780c9] text-white shadow" : "text-slate-600 hover:text-slate-900",
+              // #2578bd: el azul de la marca (#2780c9) un 6 % más oscuro, para que el texto blanco se lea bien (contraste 4,7:1)
+              idioma === valor ? "bg-[#2578bd] text-white shadow" : "text-slate-600 hover:text-slate-900",
             )}
           >
             {texto}

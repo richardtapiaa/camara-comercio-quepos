@@ -1,16 +1,14 @@
 ---
-import Layout from '../layouts/Layout.astro';
-
-import Navbar from '../components/home/Navbar.astro';
-import MapaAfiliadosMapcn from '../components/MapaComponentes/MapaAfiliadosMapcn.astro';
+import Layout from "../layouts/Layout.astro";
+import MapaAfiliadosMapcn from "../components/MapaComponentes/MapaAfiliadosMapcn.astro";
 ---
 
-
-
-<Layout>
-    <Navbar/>
-    <section>
-        <MapaAfiliadosMapcn />  
-    </section>
-    
+<Layout
+  titulo="Mapa de afiliados"
+  descripcion="Encuentra en el mapa los comercios, hoteles, tours e industrias de Quepos afiliados a la Cámara de Comercio, Industria y Turismo, y cómo contactarlos."
+>
+  <h1 class="sr-only">Mapa de afiliados de la Cámara de Comercio de Quepos</h1>
+  <section>
+    <MapaAfiliadosMapcn />
+  </section>
 </Layout>

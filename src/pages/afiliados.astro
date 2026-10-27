@@ -1,28 +1,17 @@
 ---
-import Layout from '../layouts/Layout.astro';
-
-import Navbar from '../components/home/Navbar.astro';
-
+import Layout from "../layouts/Layout.astro";
 import Hero from "../components/AfiliadosComponentes/Hero.astro";
 import Afiliados from "../components/AfiliadosComponentes/Afiliados.astro";
-
 import FraseCelebre from "../components/AfiliadosComponentes/FraseCelebre.astro";
 import VolverArriba from "../components/AfiliadosComponentes/VolverArriba.astro";
 ---
 
-
-
-<Layout>
-
-
-  <Navbar />
-
-  <Hero/>
-  <Afiliados/>
-
-  <FraseCelebre/>
-
-
-  <VolverArriba/>
-  
-  </Layout>    
+<Layout
+  titulo="Afiliados"
+  descripcion="Directorio de los comercios, empresas turísticas e industrias de Quepos afiliados a la Cámara de Comercio, Industria y Turismo, con sus teléfonos, correos y redes."
+>
+  <Hero />
+  <Afiliados />
+  <FraseCelebre />
+  <VolverArriba />
+</Layout>

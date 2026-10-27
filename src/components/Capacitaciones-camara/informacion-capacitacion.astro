@@ -1,6 +1,5 @@
 ---
 import avancemos from "../../assets/capacitaciones/avancemos.svg";
-import "../../styles/capacitaciones/informacion-capacitacion.css";
 ---
 
 <section class="bg-white px-6 py-16 sm:px-10 sm:py-24">
@@ -17,6 +16,9 @@ import "../../styles/capacitaciones/informacion-capacitacion.css";
     <div>
       <img
         src={avancemos.src}
+        width={avancemos.width}
+        height={avancemos.height}
+        loading="lazy"
         alt="Ilustración de crecimiento y aprendizaje mediante capacitaciones"
         class="h-auto w-full object-contain"
       />

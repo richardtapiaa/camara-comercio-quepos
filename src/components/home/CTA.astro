@@ -1,16 +1,18 @@
 ---
-import { optimizarImagen } from "../../lib/imagenes";
+import { variantesCapa } from "../../lib/imagenes";
 import { CTAVisitantes } from "../ReactComponentes/INICIO/CTAvisitantes";
 import actividades1 from "../../assets/actividades/actividades-1.jpg";
 import actividades2 from "../../assets/actividades/actividades-2.jpg";
 import actividades3 from "../../assets/actividades/actividades-3.jpg";
 import actividades4 from "../../assets/actividades/actividades-4.jpg";
 
+// Cada foto se muestra a 148-268 px de ancho: 300 y 600 alcanzan para casi todas las pantallas, 900 para las de alta densidad
+const anchos = [300, 600, 900];
 const imagenesVisitantes = [
-  { src: await optimizarImagen(actividades3, 900), alt: "Visitantes en Quepos" },
-  { src: await optimizarImagen(actividades1, 900), alt: "Actividades en Quepos" },
-  { src: await optimizarImagen(actividades4, 900), alt: "Turismo en Quepos" },
-  { src: await optimizarImagen(actividades2, 900), alt: "Aventura en Quepos" },
+  { ...(await variantesCapa(actividades3, anchos, 75)), alt: "Visitantes en Quepos" },
+  { ...(await variantesCapa(actividades1, anchos, 75)), alt: "Actividades en Quepos" },
+  { ...(await variantesCapa(actividades4, anchos, 75)), alt: "Turismo en Quepos" },
+  { ...(await variantesCapa(actividades2, anchos, 75)), alt: "Aventura en Quepos" },
 ];
 ---
 

@@ -1,6 +1,5 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Navbar from "../components/home/Navbar.astro";
 import HeroCapacitaciones from "../components/Capacitaciones-camara/hero-capacitaciones.astro";
 import InformacionCapacitacion from "../components/Capacitaciones-camara/informacion-capacitacion.astro";
 import ModalidadesAprendizaje from "../components/Capacitaciones-camara/ModalidadesAprendizaje.astro";
@@ -8,13 +7,13 @@ import GaleriaCapacitaciones from "../components/Capacitaciones-camara/GaleriaCa
 import FraseCelebre from "../components/AfiliadosComponentes/FraseCelebre.astro";
 ---
 
-<Layout>
-  <Navbar />
+<Layout
+  titulo="Capacitaciones"
+  descripcion="Capacitaciones de la Cámara de Comercio de Quepos con el ICT, el INA y profesionales del sector privado para fortalecer el talento y las empresas del cantón."
+>
   <HeroCapacitaciones />
-  <main>
-    <InformacionCapacitacion />
-    <ModalidadesAprendizaje />
-    <GaleriaCapacitaciones />
-    <FraseCelebre />
-  </main>
+  <InformacionCapacitacion />
+  <ModalidadesAprendizaje />
+  <GaleriaCapacitaciones />
+  <FraseCelebre />
 </Layout>

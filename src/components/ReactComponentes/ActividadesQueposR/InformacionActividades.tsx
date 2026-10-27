@@ -43,7 +43,7 @@ const actividades = [
 ];
 
 type InformacionActividadesProps = {
-  imagenes: { src: string; alt: string }[];
+  imagenes: { src: string; srcSet?: string; alt: string }[];
   perezoso?: string;
   kayak?: string;
   canopy?: string;
@@ -53,6 +53,7 @@ const InformacionActividades = ({ imagenes, perezoso, kayak, canopy }: Informaci
   const timelineData = actividades.slice(0, imagenes.length).map((actividad, i) => ({
     ...actividad,
     image: imagenes[i].src,
+    imageSrcSet: imagenes[i].srcSet,
     alt: imagenes[i].alt,
   }));
 

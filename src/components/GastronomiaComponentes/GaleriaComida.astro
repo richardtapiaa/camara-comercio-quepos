@@ -8,12 +8,13 @@ import picadillo from "../../assets/gastronomia/platos/picadillos.webp";
 import "../../styles/compartido/etiqueta-papel.css";
 import "../../styles/gastronomia/galeria-comida.css";
 
+// sizes: el ancho de la foto de cada plato, medido en pantallas de 360 a 1920 px (deja de crecer desde ~1440 px)
 const platos = [
-  { src: casado, forma: "ovalado", nombre: "Casado", alt: "Casado costarricense con pollo, arroz, frijoles, plátano maduro y ensalada" },
-  { src: arrozCamarones, forma: "ovalado", nombre: "Arroz con camarones", alt: "Arroz con camarones" },
-  { src: galloPinto, forma: "redondo", nombre: "Gallo pinto", alt: "Gallo pinto con culantro" },
-  { src: filetePescado, forma: "redondo", nombre: "Filet de pescado", alt: "Filete de pescado con arroz, aguacate y ensalada" },
-  { src: picadillo, forma: "ovalado", nombre: "Picadillos", alt: "Picadillo sobre tortillas" },
+  { src: casado, forma: "ovalado", nombre: "Casado", alt: "Casado costarricense con pollo, arroz, frijoles, plátano maduro y ensalada", sizes: "(min-width: 768px) min(17vw, 220px), 50vw" },
+  { src: arrozCamarones, forma: "ovalado", nombre: "Arroz con camarones", alt: "Arroz con camarones", sizes: "(min-width: 768px) min(17vw, 220px), 50vw" },
+  { src: galloPinto, forma: "redondo", nombre: "Gallo pinto", alt: "Gallo pinto con culantro", sizes: "(min-width: 768px) min(11vw, 150px), 34vw" },
+  { src: filetePescado, forma: "redondo", nombre: "Filet de pescado", alt: "Filete de pescado con arroz, aguacate y ensalada", sizes: "(min-width: 768px) min(17vw, 230px), 34vw" },
+  { src: picadillo, forma: "ovalado", nombre: "Picadillos", alt: "Picadillo sobre tortillas", sizes: "(min-width: 768px) min(26vw, 340px), 50vw" },
 ];
 ---
 
@@ -56,7 +57,7 @@ const platos = [
 
   <ul class="mx-auto grid max-w-7xl grid-cols-1 gap-8 md:grid-cols-6">
     {
-      platos.map(({ src, forma, nombre, alt }, i) => (
+      platos.map(({ src, forma, nombre, alt, sizes }, i) => (
         <li
           class:list={[
             "comida-tarjeta relative aspect-[3/2] [perspective:900px]",
@@ -79,7 +80,7 @@ const platos = [
                 src={src}
                 alt={alt}
                 widths={[320, 480, 640, 900]}
-                sizes={i < 3 ? "(min-width: 768px) 26vw, 70vw" : "(min-width: 768px) 38vw, 70vw"}
+                sizes={sizes}
                 quality={85}
                 class="size-full object-contain"
                 loading="lazy"

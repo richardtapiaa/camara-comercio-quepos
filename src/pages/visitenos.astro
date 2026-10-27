@@ -1,23 +1,17 @@
 ---
 import Layout from "../layouts/Layout.astro";
-
-import Navbar from "../components/home/Navbar.astro";
-
-import FAQ from "../components/Quepos-Componentes/FAQ.astro";
 import Hero from "../components/ActividadesQuepos/Hero.astro";
 import InformacionActividades from "../components/ActividadesQuepos/InformacionActividades.astro";
 import KayakScroll from "../components/ActividadesQuepos/KayakScroll.astro";
+import FAQ from "../components/Quepos-Componentes/FAQ.astro";
 ---
 
-
-<Layout>
-
-<Navbar />
-<Hero />
-
-<InformacionActividades />
-<KayakScroll />
-
-<FAQ />
- 
+<Layout
+  titulo="Visítenos"
+  descripcion="Vive Quepos a tu manera: naturaleza, aventura y mar en un solo destino. Descubre las actividades que no te puedes perder y respuestas para planear tu visita."
+>
+  <Hero />
+  <InformacionActividades />
+  <KayakScroll />
+  <FAQ />
 </Layout>

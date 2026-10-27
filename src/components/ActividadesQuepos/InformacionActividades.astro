@@ -1,5 +1,5 @@
 ---
-import { optimizarImagen } from "../../lib/imagenes";
+import { optimizarImagen, variantesCapa } from "../../lib/imagenes";
 import InformacionActividades from "../ReactComponentes/ActividadesQueposR/InformacionActividades";
 import perezosoLinea from "../../assets/actividades/perezoso-linea.webp";
 import kayakLinea from "../../assets/actividades/kayak-linea.webp";
@@ -11,13 +11,15 @@ import actividades4 from "../../assets/actividades/actividades-4.jpg";
 import actividades5 from "../../assets/actividades/actividades-5.jpg";
 import actividades6 from "../../assets/actividades/actividades-6.jpeg";
 
+// Las fotos se muestran a 256-480 px de ancho (340 en celular): 400 y 700 para la mayoría de pantallas, 1000 para las de alta densidad
+const anchosFotos = [400, 700, 1000];
 const imagenes = [
-  { src: await optimizarImagen(actividades1, 1000), alt: "Perezoso en el Parque Nacional Manuel Antonio" },
-  { src: await optimizarImagen(actividades2, 1000), alt: "Grupo haciendo rafting en el río" },
-  { src: await optimizarImagen(actividades3, 1000), alt: "Catamarán navegando al atardecer" },
-  { src: await optimizarImagen(actividades4, 1000), alt: "Turista haciendo rappel en el bosque" },
-  { src: await optimizarImagen(actividades5, 1000), alt: "Kayaks entre los manglares" },
-  { src: await optimizarImagen(actividades6, 1000), alt: "Marlín saltando en el mar" },
+  { ...(await variantesCapa(actividades1, anchosFotos, 75)), alt: "Perezoso en el Parque Nacional Manuel Antonio" },
+  { ...(await variantesCapa(actividades2, anchosFotos, 75)), alt: "Grupo haciendo rafting en el río" },
+  { ...(await variantesCapa(actividades3, anchosFotos, 75)), alt: "Catamarán navegando al atardecer" },
+  { ...(await variantesCapa(actividades4, anchosFotos, 75)), alt: "Turista haciendo rappel en el bosque" },
+  { ...(await variantesCapa(actividades5, anchosFotos, 75)), alt: "Kayaks entre los manglares" },
+  { ...(await variantesCapa(actividades6, anchosFotos, 75)), alt: "Marlín saltando en el mar" },
 ];
 ---
 

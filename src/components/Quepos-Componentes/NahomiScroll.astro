@@ -1,0 +1,33 @@
+---
+// Paseo por el malecón: al bajar, la imagen se queda fija y avanzan los cuadros del video
+// public/malecon/frame_001 a frame_144, en .avif y .webp (sacados de ../videos-originales/NAHOMI-mejorado.webm, fuera del
+// repositorio, a 12 fps, 1440×810). En pantallas angostas se usa public/malecon-mobile (recorte vertical 9:16 del centro, 606×1080).
+// Se generan con herramientas/cuadros-malecon.sh.
+// Mide 360svh: el video avanza durante 260svh de scroll. En la primera pantalla se ve solo y en las 1,6 siguientes
+// MaleconScroll va entrando por la derecha y lo empuja hacia la izquierda, así nunca se queda quieto.
+// Al terminar queda fija en el último cuadro debajo de MaleconScroll (scripts/home/paneles.ts).
+// La lapa de LapasJS usa este id para saber cuándo esconderse (scripts/quepos/lapa-scroll.ts).
+---
+
+<section
+  id="malecon-paseo"
+  data-malecon-scroll
+  data-carpeta="/malecon"
+  data-primero="1"
+  data-ultimo="144"
+  data-panel-sticky
+  class="panel sticky top-[min(0px,calc(100svh_-_var(--alto-panel,100svh)))] z-10 h-[360svh] overflow-clip rounded-t-[40px] bg-[#1d2a24] shadow-[0_-20px_50px_rgba(0,0,0,0.35)]"
+  aria-label="Paseo por el malecón de Quepos"
+>
+  <div class="sticky top-0 h-svh overflow-hidden">
+    <canvas data-malecon-lienzo class="absolute inset-0 size-full" aria-hidden="true"></canvas>
+    <div class="absolute inset-x-0 bottom-0 mx-auto w-full max-w-[1320px] px-6 pb-14 text-white sm:px-10 sm:pb-20">
+      <p class="text-sm font-semibold uppercase tracking-[0.2em] text-white/80">Quepos · Costa Rica</p>
+      <h2 class="mt-2 text-[clamp(2rem,5vw,3.75rem)] font-bold leading-tight drop-shadow-[0_4px_18px_rgba(0,0,0,0.4)]">
+        Un paseo por el malecón
+      </h2>
+    </div>
+  </div>
+</section>
+
+<script src="../../scripts/quepos/malecon-scroll.ts"></script>

@@ -1,21 +1,25 @@
 ---
+import { getImage } from "astro:assets";
 import fondo from "../../assets/quepos/quepos-foto.webp";
 import videoHero from "../../assets/inicio/hero-quepos-inicio.mp4";
 import videoHeroMovil from "../../assets/inicio/hero-quepos-inicio-movil.mp4";
 import videoHeroWebm from "../../assets/inicio/hero-quepos-inicio.webm";
 import videoHeroMovilWebm from "../../assets/inicio/hero-quepos-inicio-movil.webm";
 import "../../styles/home/hero.css";
+
+const poster = await getImage({ src: fondo, width: fondo.width, format: "webp", quality: 70 });
 ---
 
 <section id="hero" data-end-pin="#mision" data-pin-desktop class="panel pinned sticky top-0 isolate md:relative h-svh w-full overflow-hidden bg-black">
+  <!-- data-video-diferido: empieza a descargarse cuando la página terminó de cargar (scripts/compartido/videos.ts) -->
   <video
-    poster={fondo.src}
+    data-video-diferido
+    poster={poster.src}
     class="absolute inset-0 -z-20 h-full w-full object-cover object-left-bottom"
-    autoplay
     muted
     loop
     playsinline
-    preload="auto"
+    preload="none"
     aria-hidden="true"
   >
     <source src={videoHeroMovilWebm} type='video/webm; codecs="av01.0.05M.08"' media="(max-width: 767px)" />
@@ -26,6 +30,8 @@ import "../../styles/home/hero.css";
   <div class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-48 bg-gradient-to-b from-black/50 to-transparent"></div>
 
   <div class="pointer-events-none absolute inset-0 bg-black opacity-0" data-hero-oscuro aria-hidden="true"></div>
+
+  <h1 class="sr-only">Cámara de Comercio, Industria y Turismo de Quepos</h1>
 </section>
 
 <script src="../../scripts/home/hero.ts"></script>

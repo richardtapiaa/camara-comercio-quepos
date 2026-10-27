@@ -1,36 +1,25 @@
 ---
-import Layout from '../layouts/Layout.astro';
-
-import Navbar from '../components/home/Navbar.astro';
-
-import Hero from '../components/HospitalidadComponentes/HeroMesa.astro';
-
-import TextVelocityHospitalidad from '../components/HospitalidadComponentes/TextVelocityHospitalidad.astro';
-import InfoHospitalidad from '../components/HospitalidadComponentes/InfoHospitalidad.astro';
-
-
-import GaleriaHospitalidad from '../components/HospitalidadComponentes/GaleriaHospitalidad.astro';
-
-
-import BusetaScroll from '../components/HospitalidadComponentes/BusetaScroll.astro';
-
-import InfoGastronomia from '../components/GastronomiaComponentes/InfoGastronomia.astro';
-import GaleriaComida from '../components/GastronomiaComponentes/GaleriaComida.astro';
-import TextVelocity from '../components/compartidos/TextVelocity.astro';
-
-
+import Layout from "../layouts/Layout.astro";
+import Hero from "../components/HospitalidadComponentes/Hero.astro";
+import InfoHospitalidad from "../components/HospitalidadComponentes/InfoHospitalidad.astro";
+import GaleriaHospitalidad from "../components/HospitalidadComponentes/GaleriaHospitalidad.astro";
+import BusetaScroll from "../components/HospitalidadComponentes/BusetaScroll.astro";
+import InfoGastronomia from "../components/GastronomiaComponentes/InfoGastronomia.astro";
+import GaleriaComida from "../components/GastronomiaComponentes/GaleriaComida.astro";
+import TextVelocity from "../components/compartidos/TextVelocity.astro";
+import vistaHotel from "../assets/hospitalidad/vista-hotel-manuel-antonio.jpg";
 ---
 
-
-
-<Layout>
-
-  <Navbar/>
-  <Hero/>
-  <InfoHospitalidad/>
-  <GaleriaHospitalidad/>
-  <BusetaScroll/>
-  <InfoGastronomia/>
+<Layout
+  titulo="Hospitalidad y gastronomía"
+  descripcion="La hospitalidad de Quepos: hoteles, experiencias populares y una gran variedad de opciones gastronómicas para todos los gustos, con su comida típica."
+  imagen={{ src: vistaHotel, alt: "Vista al mar y a las islas de Manuel Antonio desde la terraza de un hotel, entre árboles" }}
+>
+  <Hero />
+  <InfoHospitalidad />
+  <GaleriaHospitalidad />
+  <BusetaScroll />
+  <InfoGastronomia />
   <TextVelocity texto="COMIDAS TÍPICAS" reaccionaScroll={false} espaciado="py-2" />
-  <GaleriaComida/>
+  <GaleriaComida />
 </Layout>

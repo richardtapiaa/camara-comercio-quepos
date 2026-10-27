@@ -188,15 +188,24 @@ const update = () => {
     : 0;
   const pastHero = y >= heroEnd - header.offsetHeight;
 
-  if (!pastHero) {
-    header.dataset.solid = "false";
-  } else {
-    header.dataset.solid = "true";
-  }
-  header.dataset.hidden = "false";
+  // Solo se escribe si cambió: reescribir el mismo valor igual obliga al navegador a recalcular estilos
+  const solid = pastHero ? "true" : "false";
+  if (header.dataset.solid !== solid) header.dataset.solid = solid;
+  if (header.dataset.hidden !== "false") header.dataset.hidden = "false";
 };
 
-window.addEventListener("scroll", update, { passive: true });
+// Una vez por cuadro como máximo (el scroll puede disparar varios eventos por cuadro)
+let cuadroPendiente = 0;
+window.addEventListener(
+  "scroll",
+  () => {
+    cuadroPendiente ||= requestAnimationFrame(() => {
+      cuadroPendiente = 0;
+      update();
+    });
+  },
+  { passive: true },
+);
 
 
 window.addEventListener("resize", () => {

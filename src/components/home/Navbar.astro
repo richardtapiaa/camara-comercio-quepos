@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import logo from "../../assets/compartido/logo-camara.webp";
+import { contacto } from "../../lib/sitio";
 
 type Enlace = { label: string; href: string };
 type Desplegable = { label: string; id: string; submenu: Enlace[] };
@@ -33,14 +34,6 @@ const links: Array<Enlace | Desplegable> = [
 
 const claseLink =
   "text-[15px] font-medium text-slate-800 transition-colors hover:text-sky-700 max-md:px-6 max-md:py-4 max-md:uppercase max-md:tracking-[0.12em] max-md:text-white max-md:hover:text-sky-300 md:group-data-[solid=false]/nav:text-white md:group-data-[solid=false]/nav:hover:text-sky-200";
-
-
-const contacto = {
-  email: "info@camaraquepos.com",
-  telefono: "+506 2774-9130",
-  facebook: "https://www.facebook.com/CCITQuepos",
-  instagram: "https://www.instagram.com/camaradequepos",
-};
 ---
 
 <header

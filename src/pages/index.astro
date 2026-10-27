@@ -1,58 +1,29 @@
 ---
-
-import Layout from '../layouts/Layout.astro';
-
-import Navbar from '../components/home/Navbar.astro';
-
-import Hero from '../components/home/Hero.astro';
-
-
-import Mision from '../components/home/Mision.astro';
-
-import Vision from '../components/home/Vision.astro';
-
-
-import CTA from '../components/home/CTA.astro';
-
-import ObjetivosEspecificos from '../components/home/ObjetivosEspecificos.astro';
-
-
-
-
-
-
-
-
+import Layout from "../layouts/Layout.astro";
+import Hero from "../components/home/Hero.astro";
+import Mision from "../components/home/Mision.astro";
+import Vision from "../components/home/Vision.astro";
+import CTA from "../components/home/CTA.astro";
+import ObjetivosEspecificos from "../components/home/ObjetivosEspecificos.astro";
 import FraseCelebre from "../components/AfiliadosComponentes/FraseCelebre.astro";
-
-
-
-
+import DatosOrganizacion from "../components/compartidos/DatosOrganizacion.astro";
 ---
 
-<Layout>
-    
+<Layout
+  titulo="Cámara de Comercio, Industria y Turismo de Quepos"
+  descripcion="La Cámara de Comercio, Industria y Turismo de Quepos fomenta el desarrollo socioeconómico del cantón: conoce su misión, su visión y los beneficios para sus afiliados."
+>
+  <DatosOrganizacion slot="head" />
+  <div>
+    <Hero />
+    <Mision />
+  </div>
+  <div>
+    <Vision />
+    <ObjetivosEspecificos />
+  </div>
+  <CTA />
+  <FraseCelebre />
 
-<Navbar />
-
-	<div>
-		<Hero />
-		<Mision />
-	</div>
-	<div>
-		<Vision />
-		<ObjetivosEspecificos />
-	</div>
-	<CTA />
-
-
-	
-	
-	<FraseCelebre />
-	
-
-	
-
-	<script src="../scripts/home/paneles.ts"></script>
-
+  <script src="../scripts/home/paneles.ts"></script>
 </Layout>
