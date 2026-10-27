@@ -2,7 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import {
   motion,
   useAnimationFrame,
+  useInView,
   useMotionValue,
+  useReducedMotion,
   useScroll,
   useSpring,
   useTransform,
@@ -48,6 +50,9 @@ function ParallaxText({ children, baseVelocity = 100, className, scrollReactive 
   const repetitionsRef = useRef(1);
   const containerRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLSpanElement>(null);
+  // Solo se mueve cerca de la pantalla: fuera de ella no tiene sentido recalcular un cuadro tras otro
+  const enPantalla = useInView(containerRef, { margin: "200px 0px" });
+  const sinMovimiento = useReducedMotion();
 
   useEffect(() => {
     const calculateRepetitions = () => {
@@ -69,6 +74,7 @@ function ParallaxText({ children, baseVelocity = 100, className, scrollReactive 
 
   const directionFactor = useRef<number>(1);
   useAnimationFrame((_, delta) => {
+    if (!enPantalla || sinMovimiento) return;
     let moveBy = directionFactor.current * baseVelocity * (delta / 1000);
 
     if (scrollReactive) {

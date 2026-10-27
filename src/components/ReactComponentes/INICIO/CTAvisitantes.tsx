@@ -113,8 +113,11 @@ export const GalleryGridCell = React.forwardRef<
 GalleryGridCell.displayName = "GalleryGridCell"
 
 type CTAVisitantesProps = {
-  imagenes: { src: string; alt: string }[]
+  imagenes: { src: string; srcSet?: string; alt: string }[]
 }
+
+// Ancho de cada celda: la mitad de la columna en celular, ~22 % de la pantalla en tablet y 268 px desde 1280 px
+const TAMANO_CELDA = "(min-width: 1280px) 268px, (min-width: 768px) 22vw, calc(50vw - 32px)"
 
 export const CTAVisitantes = ({ imagenes }: CTAVisitantesProps) => {
   return (
@@ -146,9 +149,13 @@ export const CTAVisitantes = ({ imagenes }: CTAVisitantesProps) => {
             <GalleryGridCell index={index} key={imagen.src}>
               <img
                 src={imagen.src}
+                srcSet={imagen.srcSet}
+                sizes={imagen.srcSet ? TAMANO_CELDA : undefined}
                 alt={imagen.alt}
                 className="size-full object-cover object-center"
                 draggable={false}
+                loading="lazy"
+                decoding="async"
               />
             </GalleryGridCell>
           ))}

@@ -6,10 +6,7 @@
     "**/*"
   ],
   "exclude": [
-    "dist",
-    "src/components/aaron.astro",
-    "src/components/mundo.astro",
-    "src/components/richard.astro"
+    "dist"
   ],
   "compilerOptions": {
     "jsx": "react-jsx",

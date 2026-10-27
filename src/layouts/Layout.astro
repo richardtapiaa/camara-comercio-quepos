@@ -1,26 +1,105 @@
 ---
 import "../styles/global.css";
 
+import { getImage } from "astro:assets";
 import logo from "../assets/compartido/logo-camara.webp";
+import letrasQuepos from "../assets/quepos/quepos-foto.webp";
+import Navbar from "../components/home/Navbar.astro";
+import { nombreSitio } from "../lib/sitio";
 //import PiePagina from "../components/home/pie_pagina.astro";
+
+interface Props {
+  /** Nombre de la página para la pestaña y Google. Se le agrega " | Cámara de Comercio de Quepos" (salvo en el inicio) */
+  titulo: string;
+  /** Resumen de la página para Google y al compartirla en redes (unos 120-160 caracteres) */
+  descripcion: string;
+  /**
+   * Imagen que se muestra al compartir la página en WhatsApp, Facebook, X, etc. Se recorta a 1200×630;
+   * `posicion` elige qué parte se conserva (como object-position). Por defecto, las letras de Quepos.
+   */
+  imagen?: { src: ImageMetadata; alt: string; posicion?: string };
+  /** false en páginas que Google no debe mostrar (la 404): sin URL canónica y con noindex */
+  indexar?: boolean;
+}
+
+const { titulo, descripcion, imagen, indexar = true } = Astro.props;
+
+// Íconos chicos (el logo original pesa 31 KB y el navegador lo pedía en cada página nueva)
+const favicon = await getImage({ src: logo, width: 64, format: "png" });
+const iconoApple = await getImage({ src: logo, width: 180, format: "png" });
+
+const tituloCompleto = titulo === nombreSitio ? titulo : `${titulo} | Cámara de Comercio de Quepos`;
+// Con `site` en astro.config.mjs (el dominio del sitio) se agregan la URL canónica y la de redes sociales
+const urlCanonica = Astro.site && indexar ? new URL(Astro.url.pathname, Astro.site).href : undefined;
+
+// En JPG, que todas las redes leen. Las letras están en la parte de abajo de la foto
+const imagenRedes = imagen ?? {
+  src: letrasQuepos,
+  alt: "Letras gigantes de colores con el nombre de Quepos bajo el cielo",
+  posicion: "bottom",
+};
+const fotoRedes = await getImage({
+  src: imagenRedes.src,
+  width: 1200,
+  height: 630,
+  fit: "cover",
+  position: imagenRedes.posicion ?? "center",
+  format: "jpg",
+  quality: 80,
+});
+const urlImagenRedes = Astro.site ? new URL(fotoRedes.src, Astro.site).href : undefined;
 ---
-
-
 
 <!doctype html>
 <html lang="es">
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/webp" href={logo.src} />
-		<link rel="apple-touch-icon" href={logo.src} />
-		<link rel="preload" href="/fonts/poppins-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{tituloCompleto}</title>
+		<meta name="description" content={descripcion} />
+		{urlCanonica && <link rel="canonical" href={urlCanonica} />}
+		{!indexar && <meta name="robots" content="noindex" />}
+
+		<meta property="og:type" content="website" />
+		<meta property="og:locale" content="es_CR" />
+		<meta property="og:site_name" content={nombreSitio} />
+		<meta property="og:title" content={tituloCompleto} />
+		<meta property="og:description" content={descripcion} />
+		{urlCanonica && <meta property="og:url" content={urlCanonica} />}
+		{
+			urlImagenRedes && (
+				<>
+					<meta property="og:image" content={urlImagenRedes} />
+					<meta property="og:image:type" content="image/jpeg" />
+					<meta property="og:image:width" content="1200" />
+					<meta property="og:image:height" content="630" />
+					<meta property="og:image:alt" content={imagenRedes.alt} />
+				</>
+			)
+		}
+		<!-- X (Twitter) toma el título, la descripción y la imagen de las etiquetas og: -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="theme-color" content="#ffffff" />
+
+		<link rel="icon" type="image/png" href={favicon.src} />
+		<link rel="apple-touch-icon" href={iconoApple.src} />
+		<!-- Pesos de Poppins del texto normal y de los títulos: precargados para que no cambie la letra al aparecer -->
+		<link rel="preload" href="/fonts/poppins-400-latin.woff2" as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href="/fonts/poppins-700-latin.woff2" as="font" type="font/woff2" crossorigin />
 		<slot name="head" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Camara Comercio Quepos.</title>
 	</head>
 	<body id="top">
-		<slot />
+		<a
+			href="#contenido"
+			class="sr-only z-[100] rounded-full bg-white px-5 py-3 font-semibold text-slate-900 shadow-lg focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+		>
+			Saltar al contenido
+		</a>
+		<Navbar />
+		<main id="contenido">
+			<slot />
+		</main>
 		<!-- <PiePagina /> -->
 		<script src="../scripts/compartido/videos.ts"></script>
 	</body>

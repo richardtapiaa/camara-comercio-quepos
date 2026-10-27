@@ -1,14 +1,13 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Navbar from "../components/home/Navbar.astro";
-
 import FormularioContacto from "../components/ContactoComponentes/FormularioContacto.astro";
-
 import FraseCelebre from "../components/AfiliadosComponentes/FraseCelebre.astro";
 ---
 
-<Layout>
-  <Navbar />
+<Layout
+  titulo="Contacto"
+  descripcion="Contáctanos: escribe a la Cámara de Comercio, Industria y Turismo de Quepos por el formulario, correo o teléfono y te ayudamos con tu consulta."
+>
   <FormularioContacto />
   <FraseCelebre />
 </Layout>

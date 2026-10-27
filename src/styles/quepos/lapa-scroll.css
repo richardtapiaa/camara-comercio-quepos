@@ -11,6 +11,7 @@
     }
     [data-lapa] {
       left: 0;
+      scale: -1 1;
       animation-name: lapa-vuelo;
       animation-timing-function: linear;
       animation-fill-mode: both;
@@ -58,73 +59,74 @@
   }
 }
 
+/* Vuela de derecha a izquierda (la imagen va volteada con scale: -1 1) */
 @keyframes lapa-vuelo {
   0% {
-    translate: -100% calc(5% - var(--subida, 200%) * 0.000);
-    rotate: -0.0deg;
+    translate: 100cqw calc(5% - var(--subida, 200%) * 0.000);
+    rotate: 0.0deg;
   }
   6.25% {
-    translate: calc(-100% + (100cqw + 100%) * 0.0625) calc(5% - var(--subida, 200%) * 0.084);
-    rotate: -8.9deg;
+    translate: calc(100cqw - (100cqw + 100%) * 0.0625) calc(5% - var(--subida, 200%) * 0.084);
+    rotate: 8.9deg;
   }
   12.5% {
-    translate: calc(-100% + (100cqw + 100%) * 0.125) calc(5% - var(--subida, 200%) * 0.309);
-    rotate: -14.8deg;
+    translate: calc(100cqw - (100cqw + 100%) * 0.125) calc(5% - var(--subida, 200%) * 0.309);
+    rotate: 14.8deg;
   }
   18.75% {
-    translate: calc(-100% + (100cqw + 100%) * 0.1875) calc(5% - var(--subida, 200%) * 0.598);
-    rotate: -15.7deg;
+    translate: calc(100cqw - (100cqw + 100%) * 0.1875) calc(5% - var(--subida, 200%) * 0.598);
+    rotate: 15.7deg;
   }
   25% {
-    translate: calc(-100% + (100cqw + 100%) * 0.25) calc(5% - var(--subida, 200%) * 0.854);
-    rotate: -11.3deg;
+    translate: calc(100cqw - (100cqw + 100%) * 0.25) calc(5% - var(--subida, 200%) * 0.854);
+    rotate: 11.3deg;
   }
   31.25% {
-    translate: calc(-100% + (100cqw + 100%) * 0.3125) calc(5% - var(--subida, 200%) * 0.990);
-    rotate: -3.1deg;
+    translate: calc(100cqw - (100cqw + 100%) * 0.3125) calc(5% - var(--subida, 200%) * 0.990);
+    rotate: 3.1deg;
   }
   37.5% {
-    translate: calc(-100% + (100cqw + 100%) * 0.375) calc(5% - var(--subida, 200%) * 0.962);
-    rotate: 6.1deg;
+    translate: calc(100cqw - (100cqw + 100%) * 0.375) calc(5% - var(--subida, 200%) * 0.962);
+    rotate: -6.1deg;
   }
   43.75% {
-    translate: calc(-100% + (100cqw + 100%) * 0.4375) calc(5% - var(--subida, 200%) * 0.778);
-    rotate: 13.3deg;
+    translate: calc(100cqw - (100cqw + 100%) * 0.4375) calc(5% - var(--subida, 200%) * 0.778);
+    rotate: -13.3deg;
   }
   50% {
-    translate: calc(-100% + (100cqw + 100%) * 0.5) calc(5% - var(--subida, 200%) * 0.500);
-    rotate: 16.0deg;
+    translate: calc(100cqw - (100cqw + 100%) * 0.5) calc(5% - var(--subida, 200%) * 0.500);
+    rotate: -16.0deg;
   }
   56.25% {
-    translate: calc(-100% + (100cqw + 100%) * 0.5625) calc(5% - var(--subida, 200%) * 0.222);
-    rotate: 13.3deg;
+    translate: calc(100cqw - (100cqw + 100%) * 0.5625) calc(5% - var(--subida, 200%) * 0.222);
+    rotate: -13.3deg;
   }
   62.5% {
-    translate: calc(-100% + (100cqw + 100%) * 0.625) calc(5% - var(--subida, 200%) * 0.038);
-    rotate: 6.1deg;
+    translate: calc(100cqw - (100cqw + 100%) * 0.625) calc(5% - var(--subida, 200%) * 0.038);
+    rotate: -6.1deg;
   }
   68.75% {
-    translate: calc(-100% + (100cqw + 100%) * 0.6875) calc(5% - var(--subida, 200%) * 0.010);
-    rotate: -3.1deg;
+    translate: calc(100cqw - (100cqw + 100%) * 0.6875) calc(5% - var(--subida, 200%) * 0.010);
+    rotate: 3.1deg;
   }
   75% {
-    translate: calc(-100% + (100cqw + 100%) * 0.75) calc(5% - var(--subida, 200%) * 0.146);
-    rotate: -11.3deg;
+    translate: calc(100cqw - (100cqw + 100%) * 0.75) calc(5% - var(--subida, 200%) * 0.146);
+    rotate: 11.3deg;
   }
   81.25% {
-    translate: calc(-100% + (100cqw + 100%) * 0.8125) calc(5% - var(--subida, 200%) * 0.402);
-    rotate: -15.7deg;
+    translate: calc(100cqw - (100cqw + 100%) * 0.8125) calc(5% - var(--subida, 200%) * 0.402);
+    rotate: 15.7deg;
   }
   87.5% {
-    translate: calc(-100% + (100cqw + 100%) * 0.875) calc(5% - var(--subida, 200%) * 0.691);
-    rotate: -14.8deg;
+    translate: calc(100cqw - (100cqw + 100%) * 0.875) calc(5% - var(--subida, 200%) * 0.691);
+    rotate: 14.8deg;
   }
   93.75% {
-    translate: calc(-100% + (100cqw + 100%) * 0.9375) calc(5% - var(--subida, 200%) * 0.916);
-    rotate: -8.9deg;
+    translate: calc(100cqw - (100cqw + 100%) * 0.9375) calc(5% - var(--subida, 200%) * 0.916);
+    rotate: 8.9deg;
   }
   100% {
-    translate: 100cqw calc(5% - var(--subida, 200%) * 1.000);
-    rotate: -0.0deg;
+    translate: -100% calc(5% - var(--subida, 200%) * 1.000);
+    rotate: 0.0deg;
   }
 }

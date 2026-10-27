@@ -68,7 +68,7 @@ const ObjetivoCard: React.FC<ObjetivoCardProps> = ({ position, objetivo, handleM
       }}
     >
       <div className="mb-4 flex h-14 w-12 items-center justify-center">
-        <img src={objetivo.icono.src} alt="" className="h-12 w-12 object-contain" aria-hidden="true" />
+        <img src={objetivo.icono.src} alt="" width={48} height={48} loading="lazy" className="h-12 w-12 object-contain" aria-hidden="true" />
       </div>
       <h3 className={cn("text-[15px] font-medium leading-snug sm:text-lg", isCenter ? "text-neutral-900" : "text-neutral-800")}>
         {objetivo.texto}

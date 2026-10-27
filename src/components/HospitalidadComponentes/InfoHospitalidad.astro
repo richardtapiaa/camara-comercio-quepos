@@ -1,64 +1,91 @@
 ---
 import { Image } from "astro:assets";
-import { Bus, HeartPulse, Landmark, Store } from "lucide-react";
-import imagen from "../../assets/hospitalidad/hospitalidad-1.webp";
-import "../../styles/hospitalidad/info-hospitalidad.css";
+import { ArrowRight, Bus, CarTaxiFront, Hospital, Plane, Stethoscope } from "lucide-react";
+import imagen from "../../assets/quepos/mision-seccion.jpg";
 
+// Tarjetas grandes (con íconos) y angostas (una línea con flecha) se van turnando, como pasos numerados
 const servicios = [
-  { titulo: "Salud", detalle: "Hospitales y centros médicos.", Icono: HeartPulse },
-  { titulo: "Banca", detalle: "Instituciones bancarias.", Icono: Landmark },
-  { titulo: "Transporte", detalle: "Servicio público y privado.", Icono: Bus },
-  { titulo: "Comercio", detalle: "Establecimientos que brindan comodidad durante la visita.", Icono: Store },
+  {
+    etiqueta: "Salud",
+    fondo: "bg-[#f1f2f6]",
+    iconos: [Hospital, Stethoscope],
+    texto: ["Hospitales y ", "centros médicos", " para cualquier emergencia."],
+  },
+  { etiqueta: "Comercio", fondo: "bg-[#f6dd9a]", texto: ["", "Bancos", " y tiendas"] },
+  {
+    etiqueta: "Transporte",
+    fondo: "bg-[#a3dde5]",
+    iconos: [Bus, CarTaxiFront, Plane],
+    texto: ["Transporte ", "público y privado", " para moverse por el cantón."],
+  },
 ];
 ---
 
-<section id="info-hospitalidad" class="bg-[#f9f7f3] lg:grid lg:min-h-[640px] lg:grid-cols-2">
-  <div class="flex items-center justify-center px-6 pt-14 sm:px-10 lg:px-12 lg:py-16 xl:px-20">
-    <div class="puerta relative w-full max-w-[34rem]">
-      <div class="puerta-marco rounded-t-[999px] p-[4%] pb-0">
-        <div class="puerta-vano relative aspect-[4/5] overflow-hidden rounded-t-[999px]">
-          <Image
-            src={imagen}
-            alt="Habitación de hotel en Quepos"
-            widths={[480, 720, 960, 1280]}
-            sizes="(min-width: 1024px) 34rem, 90vw"
-            quality={78}
-            class="absolute inset-0 size-full object-cover object-[62%_center]"
-            loading="lazy"
-          />
-        </div>
-      </div>
-      <div class="puerta-umbral -mx-[3%] h-3 rounded-sm sm:h-4"></div>
-    </div>
-  </div>
+<!-- Mismas medidas que un container + row g-4 + col-lg-6 de Bootstrap: 540/720/960/1140/1320 px, 12 px de
+     margen y 24 px entre columnas -->
+<section id="info-hospitalidad" class="bg-white py-16 sm:py-20">
+  <div
+    class="mx-auto w-full px-3 sm:max-md:max-w-[540px] md:max-lg:max-w-[720px] lg:max-xl:max-w-[960px] xl:max-[1399px]:max-w-[1140px] min-[1400px]:max-w-[1320px]"
+  >
+    <h2 class="text-[1.75rem] font-bold leading-tight text-neutral-900">La hospitalidad de Quepos</h2>
 
-  <div class="flex items-center px-6 py-14 sm:px-10 lg:px-16 lg:py-20 xl:px-24">
-    <div class="max-w-xl">
-      <h2 class="info-hosp-titulo text-[clamp(2.1rem,4.2vw,3.25rem)] leading-[1.1] text-[#a6844f]">
-        La hospitalidad de Quepos
-      </h2>
-      <p class="mt-5 text-lg font-bold text-neutral-900 sm:text-xl">
-        Quepos cuenta con una variedad de servicios públicos y privados que facilitan la estadía de sus visitantes.
-      </p>
-      <p class="mt-5 text-[15px] leading-relaxed text-neutral-700">
-        Entre ellos se encuentran los servicios de salud, como hospitales y centros médicos, instituciones bancarias,
-        transporte público y privado, así como otros establecimientos comerciales que contribuyen a brindar comodidad
-        durante la visita al destino.
-      </p>
-
-      <ul class="mt-6 grid gap-x-8 gap-y-3 sm:grid-cols-2">
+    <div class="mt-6 grid gap-6 lg:grid-cols-2">
+      <ol class="flex min-w-0 flex-col gap-5">
         {
-          servicios.map(({ titulo, detalle, Icono }) => (
-            <li class="flex items-start gap-3">
-              <Icono className="mt-0.5 size-5 shrink-0 text-[#a6844f]" strokeWidth={1.75} aria-hidden="true" />
-              <div>
-                <p class="text-sm font-bold text-neutral-900">{titulo}</p>
-                <p class="text-sm leading-snug text-neutral-600">{detalle}</p>
-              </div>
-            </li>
-          ))
+          servicios.map(({ etiqueta, fondo, iconos, texto: [antes, resaltado, despues] }, i) => {
+            const paso = (
+              <span class="flex shrink-0 items-center gap-3 text-lg text-neutral-800 sm:text-xl">
+                {etiqueta}
+                <span class="flex size-11 items-center justify-center rounded-full bg-black/[0.07]">{i + 1}</span>
+              </span>
+            );
+            return iconos ? (
+              <li class:list={["rounded-[40px] p-7 sm:p-9", fondo]}>
+                <div class="flex justify-end">{paso}</div>
+                <div class="mt-2 flex gap-5 text-neutral-900">
+                  {iconos.map((Icono) => (
+                    <Icono className="size-11 sm:size-12" strokeWidth={1.5} aria-hidden="true" />
+                  ))}
+                </div>
+                <p class="mt-4 text-[clamp(1.45rem,2.2vw,2.25rem)] leading-tight text-neutral-800">
+                  {antes}
+                  <strong class="font-semibold text-neutral-900">{resaltado}</strong>
+                  {despues}
+                </p>
+              </li>
+            ) : (
+              <li class:list={["flex items-center justify-between gap-4 rounded-[40px] px-7 py-6 sm:px-9", fondo]}>
+                <p class="flex min-w-0 items-center gap-3 text-[clamp(1.45rem,2.2vw,2.25rem)] leading-tight text-neutral-800">
+                  <span class="sm:whitespace-nowrap">
+                    {antes}
+                    <strong class="font-semibold text-neutral-900">{resaltado}</strong>
+                    {despues}
+                  </span>
+                  <ArrowRight className="size-8 shrink-0 max-sm:hidden" strokeWidth={1.5} aria-hidden="true" />
+                </p>
+                {paso}
+              </li>
+            );
+          })
         }
-      </ul>
+      </ol>
+
+      <div class="relative min-h-[420px] overflow-hidden rounded-[40px] sm:min-h-[520px] lg:min-h-0">
+        <Image
+          src={imagen}
+          alt="Vista aérea de Quepos con Marina Pez Vela y la costa"
+          widths={[480, 720, 960, 1280, 1600]}
+          sizes="(min-width: 1400px) 648px, (min-width: 1024px) 50vw, 100vw"
+          quality={78}
+          class="absolute inset-0 size-full object-cover"
+          loading="lazy"
+        />
+        <span
+          class="absolute bottom-5 right-5 rounded-full border-2 border-white/60 bg-[#0d3b3a]/45 px-5 py-2.5 text-base font-semibold text-white backdrop-blur-md sm:text-lg"
+        >
+          Quepos - Costa Rica
+        </span>
+      </div>
     </div>
   </div>
 </section>

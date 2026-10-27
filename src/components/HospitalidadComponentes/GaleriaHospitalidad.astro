@@ -7,31 +7,35 @@ import mercadoMunicipal from "../../assets/gastronomia/mercado-municipal.jpg";
 import centroComercio from "../../assets/hospitalidad/centro-comercio.jpg";
 import maleconLetras from "../../assets/hospitalidad/malecon-letras.jpg";
 import { variantesGaleria } from "../../lib/imagenes";
-import "../../styles/hospitalidad/galeria-hospitalidad.css";
 
+// Cada tarjeta muestra la foto con el lugar en cursiva abajo; al tocarla se ve en grande
 const fotos = [
-  { id: "habitacion", imagen: hotelHabitacion, alt: "Habitación de hotel en Quepos" },
-  { id: "piscina", imagen: hotelPiscina, alt: "Piscina infinita del hotel Makanda by the Sea, Manuel Antonio" },
-  { id: "villa-teca", imagen: hotelVillaTeca, alt: "Hotel Villa Teca rodeado de jardines en Manuel Antonio" },
-  { id: "mercado", imagen: mercadoMunicipal, alt: "Mercado municipal de Quepos" },
-  { id: "centro", imagen: centroComercio, alt: "Comercios en el centro de Quepos" },
-  { id: "malecon", imagen: maleconLetras, alt: "Letras de Quepos en el malecón" },
+  { id: "habitacion", imagen: hotelHabitacion, alt: "Habitación de hotel en Quepos", lugar: "Quepos" },
+  {
+    id: "piscina",
+    imagen: hotelPiscina,
+    alt: "Piscina infinita del hotel Makanda by the Sea, Manuel Antonio",
+    lugar: "Manuel Antonio",
+  },
+  {
+    id: "villa-teca",
+    imagen: hotelVillaTeca,
+    alt: "Hotel Villa Teca rodeado de jardines en Manuel Antonio",
+    lugar: "Manuel Antonio",
+  },
+  { id: "mercado", imagen: mercadoMunicipal, alt: "Mercado municipal de Quepos", lugar: "Centro de Quepos" },
+  { id: "centro", imagen: centroComercio, alt: "Comercios en el centro de Quepos", lugar: "Centro de Quepos" },
+  { id: "malecon", imagen: maleconLetras, alt: "Letras de Quepos en el malecón", lugar: "Malecón de Quepos" },
 ];
 
 const imagenes = await Promise.all(
-  fotos.map(async ({ id, imagen, alt }) => {
+  fotos.map(async ({ id, imagen, alt, lugar }) => {
     const { src, miniatura, srcSet } = await variantesGaleria(imagen);
-    return { id, alt, src, miniatura, srcSet };
+    return { id, alt, lugar, src, miniatura, srcSet };
   }),
 );
-
 ---
 
-<section id="galeria-hospitalidad" class="hospitalidad-galeria">
-  <div class="hospitalidad-galeria-contenido">
-    <h2 class="hospitalidad-galeria-titulo">Experiencias populares</h2>
-    <div class="hospitalidad-galeria-carrusel">
-      <ImagenesHoteles client:visible imagenes={imagenes} enMostrador />
-    </div>
-  </div>
+<section id="galeria-hospitalidad" class="bg-white py-16 sm:py-20">
+  <ImagenesHoteles client:visible titulo="Experiencias populares" imagenes={imagenes} />
 </section>

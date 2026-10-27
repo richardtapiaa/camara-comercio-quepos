@@ -11,6 +11,9 @@ const webmAv1 = 'video/webm; codecs="av01.0.08M.08, opus"';
 
 const clasesPalmera =
   "h-auto w-44 select-none sm:w-64 md:w-72 lg:w-80 xl:w-96 2xl:w-[28rem] [mask-image:linear-gradient(to_bottom,transparent,black_30%)]";
+// Los mismos anchos de clasesPalmera, para que el navegador elija la versión del tamaño justo
+const sizesPalmera =
+  "(min-width: 1536px) 448px, (min-width: 1280px) 384px, (min-width: 1024px) 320px, (min-width: 768px) 288px, (min-width: 640px) 256px, 176px";
 ---
 
 <section id="videos-quepos" class="relative overflow-x-clip bg-white px-6 pb-16 pt-32 sm:pb-24 sm:pt-44 md:pt-48 lg:pt-24">
@@ -18,6 +21,8 @@ const clasesPalmera =
     src={palmera}
     alt=""
     width={600}
+    widths={[300, 450, 600]}
+    sizes={sizesPalmera}
     class={`pointer-events-none absolute right-0 top-0 ${clasesPalmera}`}
     loading="lazy"
     fetchpriority="low"
@@ -28,6 +33,8 @@ const clasesPalmera =
     src={palmera}
     alt=""
     width={600}
+    widths={[300, 450, 600]}
+    sizes={sizesPalmera}
     class={`pointer-events-none absolute left-0 top-0 -scale-x-100 ${clasesPalmera}`}
     loading="lazy"
     fetchpriority="low"
@@ -43,8 +50,9 @@ const clasesPalmera =
       Conozca Quepos en movimiento: sus paisajes, su gente y su comercio.
     </p>
     <div class="mt-10 flex justify-center">
+      <!-- Se activa 600 px antes de verse: ahí empieza a bajar el video, para que su primer cuadro ya esté al llegar -->
       <VideoQueposIdiomas
-        client:visible
+        client:visible={{ rootMargin: "600px" }}
         fuentesEs={[{ src: videoEsWebm, type: webmAv1 }, { src: videoEs, type: "video/mp4" }]}
         fuentesEn={[{ src: videoEnWebm, type: webmAv1 }, { src: videoEn, type: "video/mp4" }]}
         size="lg"

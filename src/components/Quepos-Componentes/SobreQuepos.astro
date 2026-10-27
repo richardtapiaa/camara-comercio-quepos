@@ -1,64 +1,49 @@
 ---
 import { Image } from "astro:assets";
+import IconoUbicacion from "../../assets/icons-svg/quepos-icons/whypr.svg";
 import imagen from "../../assets/quepos/nose.webp";
-import mono from "../../assets/quepos/mono-sin-fondo.webp";
-import "../../styles/home/parallax-imagenes.css";
-import "../../styles/quepos/fondo-animales.css";
 ---
 
-<section id="sobre-quepos" class="fondo-animales relative overflow-x-clip py-16 sm:py-24">
-  <Image
-    src={mono}
-    alt="Mono cariblanco descansando en una rama"
-    width={600}
-    class="pointer-events-none absolute right-0 top-0 z-20 h-auto w-40 -scale-x-100 select-none sm:w-56 md:w-80"
-    loading="lazy"
-    draggable="false"
-  />
+<!-- Mismas medidas que un container + row g-4 de Bootstrap: 540/720/960/1140/1320 px y 12 px de margen -->
+<section id="sobre-quepos" class="bg-white py-16 sm:py-20">
+  <div
+    class="mx-auto grid w-full items-start gap-10 px-3 sm:max-md:max-w-[540px] md:max-lg:max-w-[720px] lg:max-xl:max-w-[960px] lg:grid-cols-2 lg:gap-12 xl:max-[1399px]:max-w-[1140px] min-[1400px]:max-w-[1320px]"
+  >
+    <div>
+      <div class="flex items-center gap-4">
+        <IconoUbicacion class="size-12 shrink-0" aria-hidden="true" />
+        <h2 class="text-2xl font-semibold leading-tight text-neutral-900 sm:text-[1.75rem]">¿Por qué visitar Quepos?</h2>
+      </div>
 
-  <div class="mx-auto grid max-w-6xl px-6 md:grid-cols-12">
-    <div class="relative z-10 -ml-[calc(max(0px,(100vw_-_72rem)/2)+1.5rem)] mb-8 aspect-[3/2] overflow-hidden rounded-2xl md:col-span-4 md:col-start-1 md:row-start-1 md:mt-24 md:self-start">
-      <Image
-        src={imagen}
-        alt="Letras de colores con el nombre de Quepos junto a un árbol, bajo el cielo"
-        widths={[640, 960, 1280]}
-        sizes="(min-width: 768px) 45vw, 100vw"
-        quality={75}
-        class="absolute inset-0 size-full object-cover object-bottom"
-      />
+      <div class="mt-6 space-y-6 text-base leading-relaxed text-neutral-600">
+        <p>
+          Quepos está en la costa del Pacífico central de Costa Rica, a unas 3 horas en carro desde San José. Es la puerta
+          de entrada al Parque Nacional Manuel Antonio, uno de los más visitados del país, con playas de arena blanca
+          rodeadas de bosque tropical.
+        </p>
+        <p>
+          En sus bosques viven monos, perezosos, iguanas y cientos de especies de aves. Puede caminar por los senderos del
+          parque, hacer rafting en los ríos Savegre y Naranjo, recorrer en kayak los manglares de Isla Damas o salir a pescar
+          desde Marina Pez Vela, reconocida por la pesca deportiva.
+        </p>
+        <p>
+          Su gente, su comida típica y una amplia oferta de hoteles, restaurantes y tours hacen de Quepos un destino para
+          cualquier época del año: la temporada seca va de diciembre a abril, y de mayo a noviembre la temporada verde llena
+          todo de vida.
+        </p>
+      </div>
     </div>
 
-    <div
-      class="-mr-[max(0px,(100vw_-_72rem)/2)] rounded-[2rem] bg-[#E8F4FA] py-12 pl-6 pr-[calc(max(0px,(100vw_-_72rem)/2)+1.5rem)] shadow-[0_12px_40px_rgb(100_155_190/0.25)] md:col-span-9 md:col-start-4 md:row-start-1 md:py-16 md:pl-[calc(100%/9+2rem)]"
-    >
-      <h2 class="text-4xl font-bold uppercase leading-tight tracking-tight text-neutral-700 sm:text-5xl">
-        Sobre Quepos
-      </h2>
-
-      <p class="mt-6 max-w-xl text-lg font-medium leading-relaxed text-neutral-800 sm:text-xl">
-        Quepos es el cantón número 6 de la provincia de Puntarenas, ubicado en la costa pacífica central de Costa Rica.
-      </p>
-
-      <div class="mt-8 grid gap-6 text-sm leading-relaxed text-neutral-700 lg:grid-cols-2">
-        <div class="space-y-4">
-          <p>
-            Posee una extensión de terreno de 547,77 km2 y divididos en tres distritos, limita al Norte con Tarrazú, Dota y Pérez Zeledón, al Oeste con Parrita, al Este con el cantón de Osa y al Sur con el Océano Pacífico y la cabecera es Quepos. Es un pueblo que tiene la categoría de ciudad y fue fundada el 30 de octubre 1948 con el nombre de Aguirre.
-          </p>
-          <p>
-            Esta ciudad debió su nombre inicial por dos características, en un primer lugar se dice que en dicha región habitó un grupo indígena entre los cuales el cacique tuvo como nombre Corrohore de la tribu Quepo y de ahí surgió el nombre Quepos y su nacimiento Aguirre por los años 1918-1948, dedicada al señor Rolando Aguirre Lobo quien fuese un hombre conocido por luchar siempre por las mejoras de ese pueblo como ciudadano ejemplar.
-          </p>
-        </div>
-        <div class="space-y-4">
-          <p>
-            Este nombre estuvo vigente desde Octubre de 1948, a seis meses de la muerte de Aguirre cuando se hizo oficial por decreto de la junta fundadora de la segunda república.
-          </p>
-          <p>
-            Sin embargo, por decreto de la asamblea legislativa y hasta febrero del 2015 por unanimidad cambió su nombre oficial quedando como Quepos cantón y cabecera el mismo nombre. Este cisma se da como homenaje a la etnia indígena que es una referencia histórica por el nacimiento de la comunidad y como homenaje a la tribu Huetar de los Quepo o Quepos la cual habitaron la zona en la época precolombina y colonial.
-          </p>
-        </div>
-      </div>
+    <div class="relative aspect-[624/320] overflow-hidden rounded-[40px] lg:mt-14">
+      <Image
+        src={imagen}
+        alt="Vista aérea del Parque Nacional Manuel Antonio y sus playas"
+        widths={[480, 720, 960, 1280]}
+        sizes="(min-width: 1400px) 642px, (min-width: 1024px) 50vw, 100vw"
+        quality={75}
+        class="absolute inset-0 size-full object-cover"
+        loading="lazy"
+      />
     </div>
   </div>
 </section>
-
-<script src="../../scripts/home/parallax-imagenes.ts"></script>

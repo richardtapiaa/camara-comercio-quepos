@@ -1,20 +1,15 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Navbar from "../components/home/Navbar.astro";
 import TextVelocityUnete from "../components/UneteComponentes/TextVelocityUnete.astro";
-
-
-
-import FraseCelebre from "../components/AfiliadosComponentes/FraseCelebre.astro";
 import FormularioUnete from "../components/UneteComponentes/FormularioUnete.astro";
+import FraseCelebre from "../components/AfiliadosComponentes/FraseCelebre.astro";
 ---
 
-<Layout>
-  <Navbar />
+<Layout
+  titulo="Únete"
+  descripcion="Afilia tu negocio a la Cámara de Comercio, Industria y Turismo de Quepos: conoce los beneficios para los afiliados y completa el formulario."
+>
   <TextVelocityUnete />
-
   <FormularioUnete />
-
   <FraseCelebre />
-
 </Layout>

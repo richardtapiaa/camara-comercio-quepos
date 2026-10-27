@@ -23,3 +23,14 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 src/assets/quepos/videos/*.mp4
+
+# cuadros de la animación del malecón (pesan mucho; se generan del video)
+public/malecon/
+public/malecon-mobile/
+public/malecon-2/
+public/malecon-2-mobile/
+
+# informes de pruebas y mediciones (npm test, npm run rendimiento)
+informes-lighthouse/
+informes-playwright/
+resultados-playwright/

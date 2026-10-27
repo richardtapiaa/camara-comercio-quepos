@@ -1,137 +1,89 @@
 import * as React from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Gallery, GalleryImage } from "../QUEPOS/GaleriaQuepos";
 
 export interface ImagenHotel {
   id: string;
   src: string;
   alt: string;
+  lugar: string;
   miniatura?: string;
   srcSet?: string;
 }
 
-interface Props {
-  imagenes: ImagenHotel[];
-  enMostrador?: boolean;
-}
+const TAMANOS = "(min-width: 1280px) 28.4vw, (min-width: 1024px) 31vw, (min-width: 640px) 46vw, 80vw";
 
+const flecha =
+  "flex size-11 items-center justify-center rounded-full bg-[#9cdeea] text-[#163746] transition-colors hover:bg-[#86d3e1] disabled:opacity-40";
 
-const COPIAS = 3;
+// Carrusel de tarjetas altas: al tocar una foto se abre en grande con el visor de la galería de Quepos
+export default function ImagenesHoteles({ titulo, imagenes }: { titulo: string; imagenes: ImagenHotel[] }) {
+  const filaRef = React.useRef<HTMLUListElement>(null);
+  const [extremos, setExtremos] = React.useState({ inicio: true, final: false });
 
-const TAMANOS_MOSTRADOR = "(min-width: 1250px) 400px, (max-width: 708px) 227px, 32vw";
-const TAMANOS_NORMAL = "(min-width: 1280px) 30vw, (min-width: 768px) 38vw, 85vw";
-
-
-export default function ImagenesHoteles({ imagenes, enMostrador = false }: Props) {
-  const filaRef = React.useRef<HTMLDivElement>(null);
-  const esperaScroll = React.useRef<number | undefined>(undefined);
-
-  const anchoCopia = () => {
+  // Las flechas se apagan en los extremos
+  const actualizar = React.useCallback(() => {
     const fila = filaRef.current;
-    const primera = fila?.children[0] as HTMLElement | undefined;
-    const siguienteCopia = fila?.children[imagenes.length] as
-      HTMLElement | undefined;
-    return primera && siguienteCopia
-      ? siguienteCopia.offsetLeft - primera.offsetLeft
-      : 0;
-  };
+    if (!fila) return;
+    setExtremos({
+      inicio: fila.scrollLeft <= 2,
+      final: fila.scrollLeft + fila.clientWidth >= fila.scrollWidth - 2,
+    });
+  }, []);
 
-  const recentrar = () => {
-    const fila = filaRef.current;
-    const ancho = anchoCopia();
-    if (!fila || !ancho) return;
-    if (fila.scrollLeft < ancho * 0.5) fila.scrollLeft += ancho;
-    else if (fila.scrollLeft > ancho * 1.5) fila.scrollLeft -= ancho;
-  };
+  React.useEffect(actualizar, [actualizar]);
 
+  // Avanza una tarjeta (su ancho más el espacio entre tarjetas)
   const mover = (direccion: 1 | -1) => {
     const fila = filaRef.current;
     const tarjeta = fila?.firstElementChild as HTMLElement | null;
     if (!fila || !tarjeta) return;
-    recentrar();
-    fila.scrollBy({
-      left: direccion * (tarjeta.offsetWidth + 32),
-      behavior: "smooth",
-    });
+    const espacio = parseFloat(getComputedStyle(fila).columnGap) || 0;
+    fila.scrollBy({ left: direccion * (tarjeta.offsetWidth + espacio), behavior: "smooth" });
   };
-
-  React.useEffect(() => {
-    const fila = filaRef.current;
-    if (fila) fila.scrollLeft = anchoCopia();
-  }, []);
-
-  const alDesplazar = () => {
-    window.clearTimeout(esperaScroll.current);
-    esperaScroll.current = window.setTimeout(recentrar, 150);
-  };
-
-  const flecha = enMostrador
-    ? "flex size-9 shrink-0 items-center justify-center rounded-full border border-white/25 text-white/80 transition-colors hover:bg-white/10 md:size-10"
-    : "flex size-10 shrink-0 items-center justify-center rounded-full border border-neutral-300 text-neutral-700 transition-colors hover:bg-neutral-100";
-  const fondo = enMostrador ? "#17140f" : "#ffffff";
 
   return (
     <Gallery images={imagenes}>
-      <div className={enMostrador ? "relative flex flex-col gap-3 py-5 md:gap-4 md:py-8" : "relative flex flex-col gap-6 py-12"}>
-        <div
-          className="pointer-events-none absolute inset-[0_auto_0_0] z-10 w-[12vw]"
-          style={{ background: `linear-gradient(90deg, ${fondo} ${enMostrador ? "10%" : "35%"}, transparent)` }}
-        />
-        <div
-          className="pointer-events-none absolute inset-[0_0_0_auto] z-10 w-[15vw]"
-          style={{ background: `linear-gradient(270deg, ${fondo} ${enMostrador ? "10%" : "35%"}, transparent)` }}
-        />
-
-        <div
-          ref={filaRef}
-          onScroll={alDesplazar}
-          className={`flex snap-x snap-mandatory scroll-px-8 gap-8 overflow-x-auto px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${enMostrador ? "pb-2" : "pb-6"}`}
-        >
-          {Array.from({ length: COPIAS }, (_, copia) =>
-            imagenes.map((foto) => (
-              <div
-                key={`${copia}-${foto.id}`}
-                className={
-                  enMostrador
-                    ? "aspect-[4/3] h-[clamp(170px,24vw,300px)] shrink-0 snap-start overflow-hidden rounded-2xl shadow-[0_10px_24px_rgb(0_0_0/0.6)]"
-                    : "aspect-square min-w-[85vw] snap-start overflow-hidden rounded-xl shadow-xl md:aspect-auto md:h-[min(70vh,640px)] md:min-w-[38vw] xl:min-w-[30vw]"
-                }
-              >
-                <GalleryImage
-                  id={foto.id}
-                  src={foto.src}
-                  alt={foto.alt}
-                  miniatura={foto.miniatura}
-                  srcSet={foto.srcSet}
-                  sizes={enMostrador ? TAMANOS_MOSTRADOR : TAMANOS_NORMAL}
-                  aspect="h-full"
-                  className={enMostrador ? "mb-0 rounded-2xl bg-transparent md:mb-0" : "mb-0 rounded-xl md:mb-0"}
-                  copia={copia === 1 ? undefined : copia + 1}
-                />
-              </div>
-            )),
-          )}
-        </div>
-
-        <div className={`relative z-20 flex justify-end gap-4 ${enMostrador ? "mx-5 md:mx-8" : "mx-8"}`}>
-          <button
-            type="button"
-            onClick={() => mover(-1)}
-            aria-label="Anterior"
-            className={flecha}
-          >
-            <ChevronLeft className="size-5" aria-hidden="true" />
+      <div className="mb-6 flex items-center justify-between gap-4 px-5 sm:px-6">
+        <h2 className="text-[1.75rem] font-bold leading-tight text-neutral-900 sm:text-[2rem]">{titulo}</h2>
+        <div className="flex shrink-0 gap-3">
+          <button type="button" className={flecha} onClick={() => mover(-1)} disabled={extremos.inicio} aria-label="Anterior">
+            <ArrowLeft className="size-5" aria-hidden="true" />
           </button>
-          <button
-            type="button"
-            onClick={() => mover(1)}
-            aria-label="Siguiente"
-            className={flecha}
-          >
-            <ChevronRight className="size-5" aria-hidden="true" />
+          <button type="button" className={flecha} onClick={() => mover(1)} disabled={extremos.final} aria-label="Siguiente">
+            <ArrowRight className="size-5" aria-hidden="true" />
           </button>
         </div>
       </div>
+
+      {/* Ocupa todo el ancho y deja ver un pedazo de la siguiente tarjeta, como un carrusel tipo Swiper */}
+      <ul
+        ref={filaRef}
+        onScroll={actualizar}
+        className="flex snap-x snap-mandatory scroll-px-5 gap-5 overflow-x-auto px-5 [scrollbar-width:none] sm:scroll-px-6 sm:gap-6 sm:px-6 [&::-webkit-scrollbar]:hidden"
+      >
+        {imagenes.map((foto) => (
+          <li
+            key={foto.id}
+            className="relative aspect-[343/466] w-[80vw] sm:aspect-[545/600] max-w-[545px] shrink-0 snap-start overflow-hidden rounded-[40px] bg-[#dcecf4] sm:w-[46vw] lg:w-[31vw] xl:w-[28.4vw]"
+          >
+            <GalleryImage
+              id={foto.id}
+              src={foto.src}
+              alt={foto.alt}
+              miniatura={foto.miniatura}
+              srcSet={foto.srcSet}
+              sizes={TAMANOS}
+              aspect="h-full"
+              className="mb-0 rounded-none md:mb-0"
+            />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-transparent via-35% to-transparent" />
+            <p className="pointer-events-none absolute inset-x-0 bottom-0 p-5 text-base italic text-[#dcff4f] sm:p-6 sm:text-lg">
+              {foto.lugar}
+            </p>
+          </li>
+        ))}
+      </ul>
     </Gallery>
   );
 }

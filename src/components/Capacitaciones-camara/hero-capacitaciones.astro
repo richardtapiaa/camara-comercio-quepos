@@ -9,15 +9,15 @@ const posterOptimizado = await getImage({ src: poster, format: "webp", quality: 
 ---
 
 <section class="relative isolate min-h-svh overflow-hidden text-white">
+  <!-- data-video-diferido: empieza a descargarse cuando la página terminó de cargar (scripts/compartido/videos.ts) -->
   <video
-    data-hero-capacitaciones-video
+    data-video-diferido
     poster={posterOptimizado.src}
     class="absolute inset-0 -z-20 size-full object-cover object-center"
-    autoplay
     muted
     loop
     playsinline
-    preload="auto"
+    preload="none"
     aria-hidden="true"
   >
     <source src={videoWebm} type='video/webm; codecs="av01.0.09M.08"' />
@@ -48,4 +48,4 @@ const posterOptimizado = await getImage({ src: poster, format: "webp", quality: 
   </div>
 </section>
 
-<script src="../../scripts/capacitaciones/hero-capacitaciones.ts"></script>
+
