@@ -183,6 +183,8 @@ const update = () => {
   while (siguiente && ["SCRIPT", "STYLE", "TEMPLATE", "LINK"].includes(siguiente.tagName)) {
     siguiente = siguiente.nextElementSibling;
   }
+  // Una isla de React (astro-island) no tiene caja propia (display: contents) y mide 0: se usa el final del hero
+  if (siguiente && siguiente.getClientRects().length === 0) siguiente = null;
   const heroEnd = heroRef
     ? (siguiente ?? heroRef).getBoundingClientRect()[siguiente ? "top" : "bottom"] + window.scrollY
     : 0;

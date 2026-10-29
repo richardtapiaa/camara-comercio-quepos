@@ -37,6 +37,7 @@ const afiliados = await Promise.all(
 ---
 
 <!-- relative z-0: los controles del mapa no quedan por encima del navbar ni de los menús -->
-<div class="relative z-0 h-dvh min-h-[480px] w-full overflow-hidden">
+<!-- data-lenis-prevent: la rueda del mouse hace zoom en el mapa en vez de mover la página (scripts/compartido/scroll-suave.ts) -->
+<div data-lenis-prevent class="relative z-0 h-dvh min-h-[480px] w-full overflow-hidden">
   <MapaAfiliadosMapcn client:only="react" afiliados={afiliados} />
 </div>

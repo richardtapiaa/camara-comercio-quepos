@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   ChevronLeft,
   ChevronRight,
@@ -40,25 +40,24 @@ interface ObjetivoCardProps {
   position: number;
   objetivo: ObjetivoEnLista;
   handleMove: (steps: number) => void;
-  cardSize: number;
 }
 
-const ObjetivoCard: React.FC<ObjetivoCardProps> = ({ position, objetivo, handleMove, cardSize }) => {
+const ObjetivoCard: React.FC<ObjetivoCardProps> = ({ position, objetivo, handleMove }) => {
   const isCenter = position === 0;
 
   return (
     <div
       onClick={() => handleMove(position)}
       className={cn(
-        "absolute left-1/2 top-1/2 cursor-pointer rounded-3xl bg-white p-8 transition-all duration-500 ease-in-out",
+        "absolute left-1/2 top-1/2 flex cursor-pointer flex-col justify-center rounded-3xl bg-white p-6 transition-all duration-500 ease-in-out sm:p-8",
         isCenter ? "z-10 text-neutral-900" : "z-0 text-neutral-700"
       )}
       style={{
-        width: cardSize,
-        height: cardSize,
+        width: "var(--card)",
+        height: "var(--card)",
         transform: `
           translate(-50%, -50%)
-          translateX(${(cardSize / 1.5) * position}px)
+          translateX(calc(var(--card) / 1.5 * ${position}))
           translateY(${isCenter ? -65 : position % 2 ? 15 : -15}px)
           rotate(${isCenter ? 0 : position % 2 ? 2.5 : -2.5}deg)
         `,
@@ -67,10 +66,10 @@ const ObjetivoCard: React.FC<ObjetivoCardProps> = ({ position, objetivo, handleM
           : "0 6px 16px -6px rgba(14, 59, 102, 0.12)",
       }}
     >
-      <div className="mb-4 flex h-14 w-12 items-center justify-center">
-        <img src={objetivo.icono.src} alt="" width={48} height={48} loading="lazy" className="h-12 w-12 object-contain" aria-hidden="true" />
+      <div className="mb-4 flex h-14 w-14 shrink-0 items-center justify-center sm:h-16 sm:w-16">
+        <img src={objetivo.icono.src} alt="" width={64} height={64} loading="lazy" className="h-full w-full object-contain" aria-hidden="true" />
       </div>
-      <h3 className={cn("text-[15px] font-medium leading-snug sm:text-lg", isCenter ? "text-neutral-900" : "text-neutral-800")}>
+      <h3 className={cn("text-base font-medium leading-snug sm:text-lg lg:text-xl", isCenter ? "text-neutral-900" : "text-neutral-800")}>
         {objetivo.texto}
       </h3>
     </div>
@@ -78,7 +77,6 @@ const ObjetivoCard: React.FC<ObjetivoCardProps> = ({ position, objetivo, handleM
 };
 
 export default function ObjetivosCards({ objetivos }: { objetivos: Objetivo[] }) {
-  const [cardSize, setCardSize] = useState(365);
   const [lista, setLista] = useState<ObjetivoEnLista[]>(() => {
     const items = objetivos.map((objetivo, i) => ({ ...objetivo, tempId: i, icono: iconos[i % iconos.length] }));
     const centro = items.length % 2 ? (items.length + 1) / 2 : items.length / 2;
@@ -103,17 +101,6 @@ export default function ObjetivosCards({ objetivos }: { objetivos: Objetivo[] })
     setLista(nuevaLista);
   };
 
-  useEffect(() => {
-    const updateSize = () => {
-      const { matches } = window.matchMedia("(min-width: 640px)");
-      setCardSize(matches ? 365 : 290);
-    };
-
-    updateSize();
-    window.addEventListener("resize", updateSize);
-    return () => window.removeEventListener("resize", updateSize);
-  }, []);
-
   const botonControl = cn(
     "flex h-14 w-14 items-center justify-center rounded-full text-2xl transition-colors",
     "border-2 border-neutral-300 bg-white text-neutral-800 hover:bg-neutral-900 hover:text-white",
@@ -121,7 +108,7 @@ export default function ObjetivosCards({ objetivos }: { objetivos: Objetivo[] })
   );
 
   return (
-    <div className="relative w-full overflow-hidden" style={{ height: 600 }} aria-label="Objetivos específicos">
+    <div className="relative w-full overflow-hidden" style={{ height: 600, "--card": "min(365px, calc(100vw - 48px))" } as React.CSSProperties} aria-label="Objetivos específicos">
       {lista.map((objetivo, index) => {
         const position = lista.length % 2 ? index - (lista.length + 1) / 2 : index - lista.length / 2;
         return (
@@ -130,7 +117,6 @@ export default function ObjetivosCards({ objetivos }: { objetivos: Objetivo[] })
             objetivo={objetivo}
             handleMove={handleMove}
             position={position}
-            cardSize={cardSize}
           />
         );
       })}

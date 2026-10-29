@@ -18,6 +18,8 @@ interface VelocityScrollProps {
   default_velocity?: number;
   className?: string;
   scrollReactive?: boolean;
+  // 2: dos líneas en direcciones opuestas; 1: una sola línea
+  filas?: 1 | 2;
 }
 
 interface ParallaxProps {
@@ -105,15 +107,17 @@ function ParallaxText({ children, baseVelocity = 100, className, scrollReactive 
   );
 }
 
-export function VelocityScroll({ text, default_velocity = 5, className, scrollReactive = true }: VelocityScrollProps) {
+export function VelocityScroll({ text, default_velocity = 5, className, scrollReactive = true, filas = 2 }: VelocityScrollProps) {
   return (
     <section className="relative w-full">
       <ParallaxText baseVelocity={default_velocity} className={className} scrollReactive={scrollReactive}>
         {text}
       </ParallaxText>
-      <ParallaxText baseVelocity={-default_velocity} className={className} scrollReactive={scrollReactive}>
-        {text}
-      </ParallaxText>
+      {filas === 2 && (
+        <ParallaxText baseVelocity={-default_velocity} className={className} scrollReactive={scrollReactive}>
+          {text}
+        </ParallaxText>
+      )}
     </section>
   );
 }

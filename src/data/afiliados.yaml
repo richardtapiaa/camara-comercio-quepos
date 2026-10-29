@@ -150,6 +150,12 @@
 
 # --- Sin datos de contacto todavía (completar cuando se tengan) ---
 
+- id: mutuo-legal
+  nombre: Mutuo Legal
+  categoria: Comercio
+  descripcion: Servicios legales
+  logo: ../assets/afiliados/logos/mutuo.jpg
+
 - id: 2-costa-rica-real-estate
   nombre: 2 Costa Rica Real Estate
   categoria: Comercio

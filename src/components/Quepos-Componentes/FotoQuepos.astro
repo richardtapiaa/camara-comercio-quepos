@@ -1,0 +1,29 @@
+---
+import { getImage } from "astro:assets";
+import foto from "../../assets/quepos/quepos-foto-prueba.jpg";
+import TextVelocity from "../compartidos/TextVelocity.astro";
+
+
+const fotoOptimizada = await getImage({ src: foto, width: foto.width, format: "webp", quality: 90 });
+---
+
+<section
+  data-foto-parallax
+  class="relative h-[50svh] min-h-[340px] w-full overflow-hidden bg-[#2b4a5c] md:h-[70svh] md:min-h-[480px]"
+  style={`--foto: url(${fotoOptimizada.src});`}
+  aria-label="Vista aérea de Quepos"
+  role="img"
+>
+  <div
+    data-foto-parallax-capa
+    class="absolute inset-x-0 -top-[8%] h-[116%] bg-[image:var(--foto)] bg-cover bg-center bg-no-repeat will-change-transform md:inset-0 md:h-full md:bg-fixed md:will-change-auto"
+  >
+  </div>
+  <div class="pointer-events-none absolute inset-0 bg-black/25" aria-hidden="true"></div>
+  <!-- Texto de contorno que corre solo a velocidad constante (no reacciona al scroll), encima de la foto -->
+  <div class="absolute inset-x-0 top-1/2 -translate-y-1/2">
+    <TextVelocity texto="Conozca Nuestro Canton" reaccionaScroll={false} espaciado="py-2" contorno />
+  </div>
+</section>
+
+<script src="../../scripts/quepos/foto-quepos.ts"></script>

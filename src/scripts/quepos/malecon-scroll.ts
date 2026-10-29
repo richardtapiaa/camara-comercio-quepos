@@ -91,7 +91,7 @@ document.querySelectorAll<HTMLElement>("[data-malecon-scroll]").forEach((seccion
   const medir = () => {
     const ancho = lienzo.clientWidth;
     const alto = lienzo.clientHeight;
-    // El contenedor mide 100svh: la altura de pantalla sin que cambie cuando se esconde la barra del navegador
+    // El lienzo mide 100lvh: la altura de pantalla sin que cambie cuando se esconde la barra del navegador
     pantalla = alto || window.innerHeight;
     let densidad = Math.min(window.devicePixelRatio || 1, 2);
     if (fuente) densidad = Math.min(densidad, 1 / Math.max(ancho / fuente.ancho, alto / fuente.alto));

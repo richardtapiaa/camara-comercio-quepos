@@ -1,107 +1,41 @@
 ---
-import { getImage } from "astro:assets";
-import foto from "../../assets/actividades/kayak-rio-ampliada.jpg";
-import primerPlano from "../../assets/actividades/kayakista-primer-plano-ampliada.webp";
+import { Image } from "astro:assets";
+import foto from "../../assets/actividades/hero-visitanos.jpg";
+import BordePincelada from "../compartidos/BordePincelada.astro";
+import "../../styles/compartido/etiqueta-papel.css";
+import "../../styles/compartido/hero-texto.css";
 
-// Antes era un componente React (client:load) con framer-motion: todo el hero llegaba invisible y no aparecía hasta
-// descargar y ejecutar React. La misma entrada hecha con CSS empieza en cuanto se pinta la página, sin JavaScript.
-const fotoOptimizada = await getImage({ src: foto, width: Math.min(foto.width, 2250), format: "webp", quality: 80 });
-const primerPlanoOptimizado = await getImage({ src: primerPlano, width: primerPlano.width, format: "webp", quality: 90 });
-const fotoAvif = await getImage({ src: foto, width: Math.min(foto.width, 2250), format: "avif", quality: 50 });
-const primerPlanoAvif = await getImage({ src: primerPlano, width: primerPlano.width, format: "avif", quality: 50 });
-
-const titulo = "Aventura";
-const boton = { texto: "Descubre las actividades", href: "#actividades" };
-
-const estiloTitulo = 'font-family: "Arial Black", "Helvetica Neue", Poppins, Arial, sans-serif; font-weight: 900;';
-const clasesTitulo =
-  "select-none whitespace-nowrap text-[min(15cqw,max(8.9cqw,18.8cqh))] uppercase leading-[0.8] tracking-[-0.02em] text-white md:text-[min(13cqw,max(8.9cqw,18.8cqh))]";
-const clasesBoton =
-  "items-center gap-2 rounded-full bg-white px-6 py-3 text-xs font-bold uppercase tracking-wide text-[#1e2a5a] shadow-lg transition-colors hover:bg-white/85 md:px-8 md:py-4 md:text-sm";
-const fundidoArriba = "[mask-image:linear-gradient(to_bottom,transparent,black_16%)] md:[mask-image:none]";
+// Mismo hero que el de Hospitalidad (HospitalidadComponentes/Hero.astro)
 ---
 
-<section
-  class="relative isolate h-svh min-h-[560px] w-full overflow-hidden bg-[#0b0f0a] [container-type:size]"
-  aria-label="Aventura en Quepos"
->
-  <div
-    class="entrada absolute left-1/2 [--alto-foto:0.78] [--foco-x:45%] [--foco-y:1] [translate:calc(-1*var(--foco-x))_0] md:[--alto-foto:1] md:[--foco-x:50%] md:[--foco-y:0.5]"
-    style={`width: max(100cqw, calc(100cqh * var(--alto-foto) * ${foto.width} / ${foto.height})); aspect-ratio: ${foto.width} / ${foto.height}; top: calc((100cqh - max(100cqw * ${foto.height} / ${foto.width}, 100cqh * var(--alto-foto))) * var(--foco-y));`}
-  >
-    <picture>
-      <source type="image/avif" srcset={fotoAvif.src} />
-      <img
-        src={fotoOptimizada.src}
-        alt="Kayakistas recorriendo un río entre selva y rocas en Quepos"
-        width={foto.width}
-        height={foto.height}
-        class:list={["absolute inset-0 size-full", fundidoArriba]}
-        draggable="false"
-        fetchpriority="high"
-      />
-    </picture>
-    <div class:list={["absolute inset-0 bg-black/15", fundidoArriba]} aria-hidden="true"></div>
+<!-- id="hero": el navbar se ve transparente mientras está sobre esta sección -->
+<section id="hero" class="relative isolate flex h-[78svh] min-h-[520px] items-end overflow-hidden bg-[#2b4a3c]">
+  <Image
+    src={foto}
+    alt="Bahía de Manuel Antonio rodeada de bosque tropical, vista entre los árboles"
+    widths={[800, 1280, 1600]}
+    sizes="100vw"
+    quality={75}
+    class="absolute inset-0 -z-20 size-full object-cover"
+    loading="eager"
+    fetchpriority="high"
+  />
+  <div class="absolute inset-0 -z-10 bg-gradient-to-t from-black/55 via-black/10 to-black/30" aria-hidden="true"></div>
 
-    <div class="absolute bottom-[57%] left-[var(--foco-x)] -translate-x-1/2 md:bottom-[47.3%]">
-      <h1 class:list={["entrada", clasesTitulo]} style={`${estiloTitulo} --retraso: 0.3s;`}>{titulo}</h1>
-    </div>
-
-    <picture>
-      <source type="image/avif" srcset={primerPlanoAvif.src} />
-      <img
-        src={primerPlanoOptimizado.src}
-        alt=""
-        width={primerPlano.width}
-        height={primerPlano.height}
-        class:list={["absolute inset-0 size-full", fundidoArriba]}
-        draggable="false"
-        fetchpriority="high"
-        aria-hidden="true"
-      />
-    </picture>
-
-    <div
-      class="absolute left-[var(--foco-x)] top-[calc(52.7%_-_0.8*min(13cqw,max(8.9cqw,18.8cqh)))] hidden -translate-x-1/2 flex-col items-start md:flex"
+  <div class="hero-texto mx-auto w-full max-w-[1320px] px-6 pb-[clamp(5rem,12vh,8rem)] text-white sm:px-10">
+    <p class="hero-texto-kicker">Quepos · Costa Rica</p>
+    <h1 class="hero-texto-titulo">Aventura</h1>
+    <a
+      href="#actividades"
+      class="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-xs font-bold uppercase tracking-wide text-[#1e2a5a] shadow-lg transition-colors hover:bg-white/85 md:px-8 md:py-4 md:text-sm"
     >
-      <span class:list={[clasesTitulo, "invisible"]} style={estiloTitulo} aria-hidden="true">{titulo}</span>
-      <a href={boton.href} class:list={["entrada", clasesBoton, "mt-8 inline-flex"]} style="--retraso: 0.7s;">
-        {boton.texto}
-        <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
-        </svg>
-      </a>
-    </div>
+      Descubre las actividades
+      <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+      </svg>
+    </a>
   </div>
 
-  <a
-    href={boton.href}
-    class:list={["entrada", clasesBoton, "absolute inset-x-0 bottom-8 z-10 mx-auto flex w-max md:hidden"]}
-    style="--retraso: 0.7s;"
-  >
-    {boton.texto}
-    <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
-    </svg>
-  </a>
+  <!-- Del gris de la sección de abajo (InformacionActividades) -->
+  <BordePincelada color="text-[#f6f6f7]" />
 </section>
-
-<style>
-  /* Entrada: sube 40px y aparece en 1 s (igual que la versión con framer-motion), con un retraso por elemento */
-  .entrada {
-    animation: entrada 1s cubic-bezier(0.22, 1, 0.36, 1) var(--retraso, 0s) both;
-  }
-
-  @keyframes entrada {
-    from {
-      opacity: 0;
-      transform: translateY(40px);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .entrada {
-      animation: none;
-    }
-  }
-</style>

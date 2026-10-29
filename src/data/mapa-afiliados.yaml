@@ -139,6 +139,11 @@
   foto: ../assets/afiliados/lugares-afiliados/mini-price-store.jpg
   info: Abarrotes, frutas y verduras, carnes, panadería, vinos y cervezas, además de productos importados.
 
+- id: mutuo-legal
+  ubicacion: { lat: 9.428872, lng: -84.159438 }
+  foto: ../assets/afiliados/lugares-afiliados/mutuo-legal-oficina.jpg
+  info: Oficina de servicios legales en el centro de Quepos.
+
 - id: palma-tica
   # Aproximada: centro del terreno de Palma Tica - División Quepos, en Damas. Cambiarla por la entrada de las oficinas
   ubicacion: { lat: 9.494761, lng: -84.213914 }
