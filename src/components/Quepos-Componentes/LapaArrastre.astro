@@ -1,0 +1,45 @@
+---
+// Lapa que baja por SobreBiodiversidadQuepos y jala NahomiScroll hacia arriba (scripts/quepos/lapa-arrastre.ts).
+// Va entre las dos secciones, en el borde de arriba de NahomiScroll: el ancla se mueve con el scroll como el resto de
+// la página, así la tira queda pegada al borde aunque el JavaScript vaya atrasado (en Android se notaba el salto).
+import { getImage } from "astro:assets";
+import lapa from "../../assets/quepos/lapa-sin-fondo.webp";
+import "../../styles/quepos/lapa-arrastre.css";
+import "../../styles/compartido/etiqueta-papel.css";
+
+// Mismo srcset y sizes que la lapa de LapasJS para que el navegador descargue un solo archivo
+const lapaChicas = await Promise.all(
+  [320, 480].map(async (ancho) => `${(await getImage({ src: lapa, width: ancho, format: "webp", quality: 85 })).src} ${ancho}w`),
+);
+const srcsetLapa = [...lapaChicas, `${lapa.src} ${lapa.width}w`].join(", ");
+const sizesLapa = "(min-width: 768px) min(30vw, 448px), min(50vw, 448px)";
+---
+
+<div data-lapa-ancla class="lapa-ancla pointer-events-none relative z-20 h-0" aria-hidden="true">
+  <!-- Mide las pantallas de scroll que dura la bajada, justo encima del borde: su paso por la pantalla es el
+       recorrido completo de la animación -->
+  <div data-lapa-pista class="lapa-pista"></div>
+  <div data-lapa-grupo class="lapa-grupo">
+    <!-- Tira de papel amarrada a la pata; la cinta de la punta la pega al borde mientras la lapa jala -->
+    <div data-lapa-tira class="lapa-tira">
+      <div class="etiqueta-papel size-full"></div>
+      <span data-tira-pegada class="etiqueta-cinta" style="right: -14px; width: 30px; height: 170%; rotate: 8deg;"></span>
+      <span class="etiqueta-cinta" style="left: -8px; width: 20px; height: 140%; rotate: -10deg;"></span>
+    </div>
+    <img
+      data-lapa-arrastre
+      src={lapa.src}
+      srcset={srcsetLapa}
+      sizes={sizesLapa}
+      width={lapa.width}
+      height={lapa.height}
+      alt=""
+      class="lapa-arrastre"
+      loading="lazy"
+      decoding="async"
+      draggable="false"
+    />
+  </div>
+</div>
+
+<script src="../../scripts/quepos/lapa-arrastre.ts"></script>

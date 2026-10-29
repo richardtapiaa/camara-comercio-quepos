@@ -8,6 +8,7 @@ import InfoGastronomia from "../components/GastronomiaComponentes/InfoGastronomi
 import GaleriaComida from "../components/GastronomiaComponentes/GaleriaComida.astro";
 import TextVelocity from "../components/compartidos/TextVelocity.astro";
 import vistaHotel from "../assets/hospitalidad/vista-hotel-manuel-antonio.jpg";
+import FAQ from "../components/Quepos-Componentes/FAQ.astro";
 ---
 
 <Layout
@@ -18,8 +19,10 @@ import vistaHotel from "../assets/hospitalidad/vista-hotel-manuel-antonio.jpg";
   <Hero />
   <InfoHospitalidad />
   <GaleriaHospitalidad />
-  <BusetaScroll />
   <InfoGastronomia />
   <TextVelocity texto="COMIDAS TÍPICAS" reaccionaScroll={false} espaciado="py-2" />
   <GaleriaComida />
+  <BusetaScroll />
+  <FAQ/>
+
 </Layout>

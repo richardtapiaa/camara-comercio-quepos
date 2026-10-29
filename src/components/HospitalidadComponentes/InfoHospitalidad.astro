@@ -1,9 +1,9 @@
 ---
 import { Image } from "astro:assets";
-import { ArrowRight, Bus, CarTaxiFront, Hospital, Plane, Stethoscope } from "lucide-react";
+import { Bus, CarTaxiFront, Hospital, Landmark, Plane, Stethoscope, Store } from "lucide-react";
 import imagen from "../../assets/quepos/mision-seccion.jpg";
 
-// Tarjetas grandes (con íconos) y angostas (una línea con flecha) se van turnando, como pasos numerados
+// Tarjetas con íconos, como pasos numerados
 const servicios = [
   {
     etiqueta: "Salud",
@@ -11,7 +11,12 @@ const servicios = [
     iconos: [Hospital, Stethoscope],
     texto: ["Hospitales y ", "centros médicos", " para cualquier emergencia."],
   },
-  { etiqueta: "Comercio", fondo: "bg-[#f6dd9a]", texto: ["", "Bancos", " y tiendas"] },
+  {
+    etiqueta: "Comercio",
+    fondo: "bg-[#f6dd9a]",
+    iconos: [Landmark, Store],
+    texto: ["", "Bancos", " y tiendas"],
+  },
   {
     etiqueta: "Transporte",
     fondo: "bg-[#a3dde5]",
@@ -39,7 +44,7 @@ const servicios = [
                 <span class="flex size-11 items-center justify-center rounded-full bg-black/[0.07]">{i + 1}</span>
               </span>
             );
-            return iconos ? (
+            return (
               <li class:list={["rounded-[40px] p-7 sm:p-9", fondo]}>
                 <div class="flex justify-end">{paso}</div>
                 <div class="mt-2 flex gap-5 text-neutral-900">
@@ -52,18 +57,6 @@ const servicios = [
                   <strong class="font-semibold text-neutral-900">{resaltado}</strong>
                   {despues}
                 </p>
-              </li>
-            ) : (
-              <li class:list={["flex items-center justify-between gap-4 rounded-[40px] px-7 py-6 sm:px-9", fondo]}>
-                <p class="flex min-w-0 items-center gap-3 text-[clamp(1.45rem,2.2vw,2.25rem)] leading-tight text-neutral-800">
-                  <span class="sm:whitespace-nowrap">
-                    {antes}
-                    <strong class="font-semibold text-neutral-900">{resaltado}</strong>
-                    {despues}
-                  </span>
-                  <ArrowRight className="size-8 shrink-0 max-sm:hidden" strokeWidth={1.5} aria-hidden="true" />
-                </p>
-                {paso}
               </li>
             );
           })

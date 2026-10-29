@@ -6,7 +6,6 @@ import { MagicText } from "../ReactComponentes/QUEPOS/ScrollReveal";
 import "../../styles/quepos/lapa-scroll.css";
 import "../../styles/compartido/cielo-sol.css";
 import "../../styles/quepos/lapas.css";
-import "../../styles/compartido/etiqueta-papel.css";
 
 // Versiones más chicas para pantallas angostas; la más grande es el archivo original. Las dos <img> de la lapa usan
 // el mismo srcset y sizes para que el navegador descargue un solo archivo
@@ -23,8 +22,6 @@ const frase =
 
 <section
   data-lapa-scroll
-  data-lapa-destino="#malecon-paseo"
-  data-lapa-arrastre="#malecon-lateral"
   class="lapas-recuadro relative isolate flex min-h-[48svh] flex-col overflow-hidden bg-[#E8F4FA] md:min-h-[70svh]"
   aria-label="Lapa roja volando sobre Quepos"
 >
@@ -100,31 +97,5 @@ const frase =
   <div class="selva-capa selva-capa-atras pointer-events-none absolute -inset-x-32 bottom-0 z-[1] h-[4.5rem] suelo-pasto md:h-[max(6rem,7vw)]" aria-hidden="true"></div>
   <div class="selva-capa selva-capa-frente pointer-events-none absolute -inset-x-32 bottom-0 z-[1] h-14 suelo-tierra md:h-[max(5rem,6vw)]" aria-hidden="true"></div>
 </section>
-
-<!-- Copia fija de la lapa: cruza biodiversidad y vuelve a aparecer en el malecón (scripts/quepos/lapa-scroll.ts) -->
-<img
-  data-lapa-viajera
-  src={lapa.src}
-  srcset={srcsetLapa}
-  sizes={sizesLapa}
-  width={lapa.width}
-  height={lapa.height}
-  alt=""
-  aria-hidden="true"
-  class="pointer-events-none invisible fixed left-0 top-0 z-40 w-[50%] max-w-md will-change-transform md:w-[30%]"
-  decoding="async"
-  draggable="false"
-/>
-
-<!-- Tira de papel amarrada a la pata de la lapa y pegada al borde del segundo malecón mientras lo trae -->
-<div
-  data-lapa-tira
-  class="pointer-events-none invisible fixed left-0 top-0 z-[39] h-7 origin-left will-change-transform md:h-9"
-  aria-hidden="true"
->
-  <div class="etiqueta-papel size-full"></div>
-  <span data-tira-pegada class="etiqueta-cinta" style="right: -14px; width: 30px; height: 170%; rotate: 8deg;"></span>
-  <span class="etiqueta-cinta" style="left: -8px; width: 20px; height: 140%; rotate: -10deg;"></span>
-</div>
 
 <script src="../../scripts/quepos/lapa-scroll.ts"></script>

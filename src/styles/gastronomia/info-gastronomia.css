@@ -16,35 +16,6 @@
   font-weight: 700;
 }
 
-.marco-madera {
-  background-color: #8a5a32;
-  background-image:
-    linear-gradient(to bottom, rgb(255 255 255 / 0.12), transparent 40%, rgb(0 0 0 / 0.15)),
-    repeating-linear-gradient(
-      92deg,
-      rgb(60 35 15 / 0) 0 6px,
-      rgb(60 35 15 / 0.18) 6px 7px,
-      rgb(60 35 15 / 0) 7px 15px,
-      rgb(255 230 190 / 0.08) 15px 17px
-    ),
-    linear-gradient(90deg, #7a4b26, #9a6a3c 30%, #845530 60%, #a0703f);
-}
-
-.mesa-tablero {
-  transform: perspective(200cqw) rotateX(38deg);
-  transform-origin: bottom center;
-  box-shadow: 0 2px 0 rgb(0 0 0 / 0.15);
-}
-.mesa-canto {
-  box-shadow:
-    inset 0 2px 0 rgb(255 255 255 / 0.15),
-    0 6px 10px -4px rgb(40 25 10 / 0.5);
-}
-.mesa-pata {
-  filter: brightness(0.75);
-  border-radius: 0 0 3px 3px;
-}
-
 .pizarra-tiza {
   font-family: "Caveat", "Comic Sans MS", cursive;
   font-weight: 700;

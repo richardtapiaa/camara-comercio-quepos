@@ -5,11 +5,12 @@ import imagen from "../../assets/actividades/actividades-1.jpg";
 ---
 
 <!-- Mismo diseño que SobreQuepos: container de Bootstrap (540/720/960/1140/1320 px) con 12 px de margen -->
-<!-- Se queda fija (como Vision en el inicio) y NahomiScroll sube por encima; ver scripts/home/paneles.ts -->
+<!-- Se queda fija (como Vision en el inicio) y NahomiScroll sube por encima; ver scripts/home/paneles.ts
+     Ocupa al menos toda la pantalla: NahomiScroll no asoma mientras se lee -->
 <section
   id="biodiversidad-quepos"
   data-panel-sticky
-  class="panel sticky top-[min(0px,calc(100svh_-_var(--alto-panel,100svh)))] overflow-x-clip bg-white py-16 sm:py-20"
+  class="panel sticky top-[min(0px,calc(100svh_-_var(--alto-panel,100svh)))] flex min-h-svh items-center overflow-x-clip bg-white py-16 sm:py-20"
 >
   <div
     class="mx-auto grid w-full items-start gap-10 px-3 sm:max-md:max-w-[540px] md:max-lg:max-w-[720px] lg:max-xl:max-w-[960px] lg:grid-cols-2 lg:gap-12 xl:max-[1399px]:max-w-[1140px] min-[1400px]:max-w-[1320px]"
