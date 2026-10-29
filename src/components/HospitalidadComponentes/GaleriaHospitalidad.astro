@@ -1,31 +1,42 @@
 ---
 import ImagenesHoteles from "../ReactComponentes/HospitalidadComponentes/ImagenesHoteles";
-import hotelHabitacion from "../../assets/hospitalidad/hospitalidad-1.webp";
-import hotelPiscina from "../../assets/hospitalidad/hotel-piscina.jpg";
-import hotelVillaTeca from "../../assets/hospitalidad/hotel-villa-teca.jpg";
-import mercadoMunicipal from "../../assets/gastronomia/mercado-municipal.jpg";
-import centroComercio from "../../assets/hospitalidad/centro-comercio.jpg";
-import maleconLetras from "../../assets/hospitalidad/malecon-letras.jpg";
+import piscinaCafe from "../../assets/hospitalidad/piscina-cafe-manuel-antonio.webp";
+import hotelRancho from "../../assets/hospitalidad/hotel-rancho-piscina.webp";
+import sillaColgante from "../../assets/hospitalidad/silla-colgante-vista-mar.webp";
+import piscinaAtardecer from "../../assets/hospitalidad/piscina-infinita-atardecer.webp";
+import columpioPlaya from "../../assets/hospitalidad/columpio-playa.webp";
+import marinaPezVela from "../../assets/hospitalidad/marina-pez-vela-aerea.webp";
 import { variantesGaleria } from "../../lib/imagenes";
 
 // Cada tarjeta muestra la foto con el lugar en cursiva abajo; al tocarla se ve en grande
+// Fotos de "Fotografias de la Zona de Quepos" (Manuel-Antonio-Quepos-119, 132, 131-2, 147, 133 y 4-2), en WebP
 const fotos = [
-  { id: "habitacion", imagen: hotelHabitacion, alt: "Habitación de hotel en Quepos", lugar: "Quepos" },
   {
-    id: "piscina",
-    imagen: hotelPiscina,
-    alt: "Piscina infinita del hotel Makanda by the Sea, Manuel Antonio",
+    id: "piscina-cafe",
+    imagen: piscinaCafe,
+    alt: "Café junto a una piscina infinita con vista al bosque y al mar",
     lugar: "Manuel Antonio",
   },
   {
-    id: "villa-teca",
-    imagen: hotelVillaTeca,
-    alt: "Hotel Villa Teca rodeado de jardines en Manuel Antonio",
+    id: "rancho-piscina",
+    imagen: hotelRancho,
+    alt: "Hotel con rancho de paja y piscina entre la selva, frente al mar",
     lugar: "Manuel Antonio",
   },
-  { id: "mercado", imagen: mercadoMunicipal, alt: "Mercado municipal de Quepos", lugar: "Centro de Quepos" },
-  { id: "centro", imagen: centroComercio, alt: "Comercios en el centro de Quepos", lugar: "Centro de Quepos" },
-  { id: "malecon", imagen: maleconLetras, alt: "Letras de Quepos en el malecón", lugar: "Malecón de Quepos" },
+  {
+    id: "silla-colgante",
+    imagen: sillaColgante,
+    alt: "Silla colgante en una terraza con vista al Pacífico",
+    lugar: "Manuel Antonio",
+  },
+  {
+    id: "piscina-atardecer",
+    imagen: piscinaAtardecer,
+    alt: "Piscina infinita al atardecer, con una isla al fondo",
+    lugar: "Manuel Antonio",
+  },
+  { id: "columpio", imagen: columpioPlaya, alt: "Columpio de madera en la playa, frente a las olas", lugar: "Playa Manuel Antonio" },
+  { id: "marina", imagen: marinaPezVela, alt: "Vista aérea de Marina Pez Vela con sus muelles y yates", lugar: "Marina Pez Vela" },
 ];
 
 const imagenes = await Promise.all(

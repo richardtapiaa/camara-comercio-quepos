@@ -1,7 +1,9 @@
 ---
 import { getCollection, getEntry } from "astro:content";
-import MapaAfiliadosMapcn from "@/components/ReactComponentes/MAPA/MapaAfiliadosMapcn";
+import { getImage } from "astro:assets";
 import { optimizarImagen } from "@/lib/imagenes";
+import mapaEscritorio from "@/assets/mapa/mapa-escritorio.webp";
+import mapaMovil from "@/assets/mapa/mapa-movil.webp";
 
 // Alto del logo en el mapa (h-12 menos el padding), al doble para pantallas retina
 const ALTO_LOGO = 36 * 2;
@@ -38,6 +40,32 @@ const afiliados = await Promise.all(
 
 <!-- relative z-0: los controles del mapa no quedan por encima del navbar ni de los menús -->
 <!-- data-lenis-prevent: la rueda del mouse hace zoom en el mapa en vez de mover la página (scripts/compartido/scroll-suave.ts) -->
-<div data-lenis-prevent class="relative z-0 h-dvh min-h-[480px] w-full overflow-hidden">
-  <MapaAfiliadosMapcn client:only="react" afiliados={afiliados} />
+<!-- El mapa interactivo (MapLibre + React) bloquea el celular ~1,7 s al arrancar. Mientras tanto se ve una imagen fija
+     del cantón (las mismas teselas de CARTO, sin marcadores, encuadradas igual que el mapa) y el mapa se carga con la
+     primera interacción: mover el mouse, tocar, hacer scroll o usar el teclado (scripts/mapa/cargar-mapa.ts) -->
+<div data-lenis-prevent data-mapa-afiliados class="relative z-0 h-dvh min-h-[480px] w-full overflow-hidden bg-[#eef3ea]">
+  <picture>
+    <source media="(max-width: 767px)" srcset={(await getImage({ src: mapaMovil, format: "webp" })).src} />
+    <img
+      src={(await getImage({ src: mapaEscritorio, format: "webp" })).src}
+      alt=""
+      class="absolute inset-0 size-full object-cover"
+      fetchpriority="high"
+      aria-hidden="true"
+    />
+  </picture>
+  <p data-mapa-aviso class="absolute inset-x-0 bottom-8 z-30 flex justify-center">
+    <button
+      type="button"
+      data-mapa-cargar
+      class="rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-800 shadow-lg ring-1 ring-black/5 transition-colors hover:bg-slate-50"
+    >
+      Explorar el mapa de afiliados
+    </button>
+  </p>
+  <p class="absolute bottom-1 right-2 text-[10px] text-slate-500">© OpenStreetMap contributors © CARTO</p>
+  <div data-mapa-montaje class="absolute inset-0 z-20"></div>
+  <script type="application/json" data-mapa-datos set:html={JSON.stringify(afiliados).replace(/</g, "\\u003c")} />
 </div>
+
+<script src="../../scripts/mapa/cargar-mapa.ts"></script>

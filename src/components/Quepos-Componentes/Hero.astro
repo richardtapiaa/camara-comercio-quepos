@@ -5,9 +5,12 @@ import foto from "../../assets/quepos/isla-quepos.jpg";
 import primerPlano from "../../assets/quepos/isla-quepos-primer-plano.webp";
 import "../../styles/quepos/hero.css";
 
+// AVIF (pesa ~40 % menos que WebP con la misma calidad) y WebP para los navegadores que no lo leen
 const fotoOptimizada = await variantesCapa(foto, [800, 1200, 1600], 80);
+const fotoAvif = await variantesCapa(foto, [800, 1200, 1600], 50, "avif");
 const sizes = sizesCubrePantalla(foto);
 const primerPlanoOptimizado = await variantesCapa(primerPlano, [800, 1200, 1600], 85);
+const primerPlanoAvif = await variantesCapa(primerPlano, [800, 1200, 1600], 55, "avif");
 
 const letrasArchivos = import.meta.glob<{ default: ImageMetadata }>("../../assets/quepos/letras-quepos/*.webp", {
   eager: true,
@@ -28,7 +31,8 @@ const letras = await Promise.all(
 );
 ---
 
-<section class="hero-isla relative isolate h-lvh min-h-[560px] w-full overflow-hidden bg-[#cfe3f1]" aria-label="Quepos">
+<!-- id="hero": el navbar se ve transparente (con el logo en blanco) mientras está sobre esta sección -->
+<section id="hero" class="hero-isla relative isolate h-lvh min-h-[560px] w-full overflow-hidden bg-[#cfe3f1]" aria-label="Quepos">
   <div
     class="hero-isla-recuadro absolute left-1/2"
     style={{
@@ -37,15 +41,18 @@ const letras = await Promise.all(
       top: `calc((100cqh - max(100cqw * ${foto.height} / ${foto.width}, 100cqh)) * 0.5)`,
     }}
   >
-    <img
-      src={fotoOptimizada.src}
-      srcset={fotoOptimizada.srcSet}
-      sizes={sizes}
-      alt="Isla frente a la playa de Manuel Antonio, en Quepos, con surfistas en el mar"
-      class="hero-isla-foto absolute inset-0 size-full"
-      draggable="false"
-      fetchpriority="high"
-    />
+    <picture>
+      <source type="image/avif" srcset={fotoAvif.srcSet} sizes={sizes} />
+      <img
+        src={fotoOptimizada.src}
+        srcset={fotoOptimizada.srcSet}
+        sizes={sizes}
+        alt="Isla frente a la playa de Manuel Antonio, en Quepos, con surfistas en el mar"
+        class="hero-isla-foto absolute inset-0 size-full"
+        draggable="false"
+        fetchpriority="high"
+      />
+    </picture>
 
     <div
       data-hero-isla-titulo
@@ -67,15 +74,18 @@ const letras = await Promise.all(
       </h1>
     </div>
 
-    <img
-      src={primerPlanoOptimizado.src}
-      srcset={primerPlanoOptimizado.srcSet}
-      sizes={sizes}
-      alt=""
-      class="hero-isla-foto absolute inset-0 size-full"
-      draggable="false"
-      aria-hidden="true"
-    />
+    <picture>
+      <source type="image/avif" srcset={primerPlanoAvif.srcSet} sizes={sizes} />
+      <img
+        src={primerPlanoOptimizado.src}
+        srcset={primerPlanoOptimizado.srcSet}
+        sizes={sizes}
+        alt=""
+        class="hero-isla-foto absolute inset-0 size-full"
+        draggable="false"
+        aria-hidden="true"
+      />
+    </picture>
   </div>
 </section>
 

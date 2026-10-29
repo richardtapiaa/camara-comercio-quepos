@@ -1,4 +1,4 @@
-// Animaciones e interacciones: el menú, el video del inicio, las animaciones del malecón y el FAQ.
+// Animaciones e interacciones: el menú, el video del inicio, la animación del malecón, el mapa y el FAQ.
 // No compara píxel a píxel: comprueba que cada animación arranca, avanza al hacer scroll y respeta "reducir movimiento".
 import { expect, test, type Page } from "@playwright/test";
 
@@ -105,25 +105,24 @@ test.describe("malecón (página Quepos)", () => {
     });
     await page.goto("/quepos/", { waitUntil: "load" });
 
-    // Primer malecón: se dibuja un cuadro y al seguir bajando se dibuja otro distinto
+    // Se dibuja un cuadro y al seguir bajando se dibuja otro distinto
     await bajarA(page, "#malecon-paseo", 0.2);
     await expect.poll(() => firmaLienzo(page, "#malecon-paseo"), { timeout: 15_000 }).toBeGreaterThan(0);
     const antes = await firmaLienzo(page, "#malecon-paseo");
     await bajarA(page, "#malecon-paseo", 0.6);
     await expect.poll(() => firmaLienzo(page, "#malecon-paseo"), { timeout: 15_000 }).not.toBe(antes);
 
-    // Segundo malecón: llega hasta su último cuadro
-    await bajarA(page, "#malecon-lateral", 1);
-    await expect.poll(() => firmaLienzo(page, "#malecon-lateral"), { timeout: 15_000 }).toBeGreaterThan(0);
-    const carpeta = esCelular(test.info().project.name) ? "malecon-2-mobile" : "malecon-2";
-    await expect.poll(() => cuadros.includes(`/${carpeta}/frame_143.avif`), { timeout: 30_000 }).toBe(true);
+    // Al llegar al final se descarga hasta su último cuadro
+    await bajarA(page, "#malecon-paseo", 1);
+    const carpeta = esCelular(test.info().project.name) ? "malecon-mobile" : "malecon";
+    await expect.poll(() => cuadros.includes(`/${carpeta}/frame_144.avif`), { timeout: 30_000 }).toBe(true);
 
     // Chrome lee AVIF: no debe pedir los WebP de respaldo
     expect(cuadros.filter((c) => c.endsWith(".webp"))).toEqual([]);
     expect(rotos).toEqual([]);
   });
 
-  test("con reducir movimiento solo descarga el primer cuadro de cada animación", async ({ page }) => {
+  test("con reducir movimiento solo descarga el primer cuadro", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     const cuadros: string[] = [];
     page.on("request", (r) => /^\/malecon/.test(new URL(r.url()).pathname) && cuadros.push(new URL(r.url()).pathname));
@@ -132,7 +131,7 @@ test.describe("malecón (página Quepos)", () => {
     await expect.poll(() => firmaLienzo(page, "#malecon-paseo"), { timeout: 15_000 }).toBeGreaterThan(0);
     await page.waitForTimeout(1000);
     expect(cuadros.every((c) => c.endsWith("/frame_001.avif"))).toBe(true);
-    expect(cuadros).toHaveLength(2);
+    expect(cuadros).toHaveLength(1);
   });
 });
 
@@ -159,10 +158,22 @@ test("el video de la galería no se descarga al abrir la página y carga al acer
   await expect(reproductor.getByRole("slider", { name: "Volumen" })).toBeAttached();
 });
 
-test("el mapa de afiliados se dibuja con el worker de MapLibre del propio sitio", async ({ page, baseURL }) => {
+test("el mapa de afiliados carga con la primera interacción y usa el worker de MapLibre del propio sitio", async ({
+  page,
+  baseURL,
+}) => {
   const workers: string[] = [];
   page.on("request", (r) => /maplibre-gl-worker/.test(r.url()) && workers.push(r.url()));
-  await page.goto("/mapa-afiliados/");
+  await page.goto("/mapa-afiliados/", { waitUntil: "load" });
+
+  // Al abrir se ve la imagen fija: el mapa (MapLibre + React) no se carga hasta que la persona interactúa
+  await page.waitForTimeout(1000);
+  await expect(page.locator("canvas.maplibregl-canvas")).toHaveCount(0);
+  expect(workers, "no debe cargar MapLibre al abrir la página").toEqual([]);
+
+  // Con solo mover el mouse empieza a cargar (y el botón "Explorar el mapa de afiliados" desaparece)
+  await expect(page.getByRole("button", { name: "Explorar el mapa de afiliados" })).toBeVisible();
+  await page.mouse.move(200, 400);
   await expect(page.locator("canvas.maplibregl-canvas")).toBeVisible({ timeout: 15_000 });
   // Los marcadores de los afiliados aparecen sobre el mapa
   await expect(page.locator(".maplibregl-marker").first()).toBeVisible({ timeout: 15_000 });

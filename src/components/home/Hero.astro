@@ -1,5 +1,5 @@
 ---
-import { getImage } from "astro:assets";
+import { Picture } from "astro:assets";
 import fondo from "../../assets/inicio/hero-quepos-inicio-poster.jpg";
 import videoHero from "../../assets/inicio/hero-quepos-inicio.mp4";
 import videoHeroMovil from "../../assets/inicio/hero-quepos-inicio-movil.mp4";
@@ -7,14 +7,26 @@ import videoHeroWebm from "../../assets/inicio/hero-quepos-inicio.webm";
 import videoHeroMovilWebm from "../../assets/inicio/hero-quepos-inicio-movil.webm";
 import "../../styles/home/hero.css";
 
-const poster = await getImage({ src: fondo, width: fondo.width, format: "webp", quality: 70 });
 ---
 
 <section id="hero" data-end-pin="#mision" data-pin-desktop class="panel pinned sticky top-0 isolate md:relative h-svh w-full overflow-hidden bg-black">
+  <!-- El primer cuadro del video como imagen normal debajo del video (en vez de su póster): carga de inmediato con
+       prioridad alta y cuenta como LCP, que un póster no. El video se ve encima cuando empieza a reproducirse -->
+  <Picture
+    src={fondo}
+    formats={["avif", "webp"]}
+    widths={[800, 1280, 1920]}
+    sizes="max(100vw, 192vh)"
+    quality={50}
+    alt=""
+    class="absolute inset-0 -z-30 h-full w-full object-cover object-left-bottom"
+    loading="eager"
+    fetchpriority="high"
+    aria-hidden="true"
+  />
   <!-- data-video-diferido: empieza a descargarse cuando la página terminó de cargar (scripts/compartido/videos.ts) -->
   <video
     data-video-diferido
-    poster={poster.src}
     class="absolute inset-0 -z-20 h-full w-full object-cover object-left-bottom"
     muted
     loop
