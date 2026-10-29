@@ -1,5 +1,5 @@
 ---
-import { Image } from "astro:assets";
+import { Picture } from "astro:assets";
 import foto from "../../assets/actividades/hero-visitanos.jpg";
 import BordePincelada from "../compartidos/BordePincelada.astro";
 import "../../styles/compartido/etiqueta-papel.css";
@@ -10,12 +10,14 @@ import "../../styles/compartido/hero-texto.css";
 
 <!-- id="hero": el navbar se ve transparente mientras está sobre esta sección -->
 <section id="hero" class="relative isolate flex h-[78svh] min-h-[520px] items-end overflow-hidden bg-[#2b4a3c]">
-  <Image
+  <!-- AVIF (pesa ~40 % menos que WebP con la misma calidad) y WebP para los navegadores que no lo leen -->
+  <Picture
     src={foto}
+    formats={["avif", "webp"]}
     alt="Bahía de Manuel Antonio rodeada de bosque tropical, vista entre los árboles"
     widths={[800, 1280, 1600]}
     sizes="100vw"
-    quality={75}
+    quality={50}
     class="absolute inset-0 -z-20 size-full object-cover"
     loading="eager"
     fetchpriority="high"

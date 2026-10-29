@@ -2,28 +2,7 @@
 import { Image } from "astro:assets";
 import { variantesGaleria } from "../../../lib/imagenes";
 import GaleriaQuepos from "../../ReactComponentes/QUEPOS/GaleriaQuepos";
-import beneficios from "../../../assets/quepos/beneficios-seccion.jpg";
-import checkout from "../../../assets/quepos/seccion-checkout.jpg";
-import ejemplo from "../../../assets/quepos/seccion-ejemplo.jpg";
-import fondo from "../../../assets/quepos/fondo-inicio-queposx.webp";
-import hero from "../../../assets/quepos/quepos-foto.webp";
-import mision from "../../../assets/quepos/mision-seccion.jpg";
-import vision from "../../../assets/quepos/vision-seccion.jpg";
 import palmera from "../../../assets/quepos/palmera-sin-fondo.webp";
-import perezoso from "../../../assets/actividades/actividades-1.jpg";
-import rafting from "../../../assets/actividades/actividades-2.jpg";
-import catamaran from "../../../assets/actividades/actividades-3.jpg";
-import rappel from "../../../assets/actividades/actividades-4.jpg";
-import manglares from "../../../assets/actividades/actividades-5.jpg";
-import pesca from "../../../assets/actividades/actividades-6.jpeg";
-import bahia from "../../../assets/actividades/hero-visitanos.jpg";
-import isla from "../../../assets/quepos/isla-quepos.jpg";
-import malecon from "../../../assets/hospitalidad/malecon-letras.jpg";
-import mercado from "../../../assets/gastronomia/mercado-municipal.jpg";
-import hotelPiscina from "../../../assets/hospitalidad/hotel-piscina.jpg";
-import hotelVillaTeca from "../../../assets/hospitalidad/hotel-villa-teca.jpg";
-import centro from "../../../assets/hospitalidad/centro-comercio.jpg";
-import habitacion from "../../../assets/hospitalidad/hospitalidad-1.webp";
 
 const clasesPalmera =
   "h-auto w-44 select-none sm:w-64 md:w-72 lg:w-80 xl:w-96 2xl:w-[28rem] [mask-image:linear-gradient(to_bottom,transparent,black_30%)]";
@@ -31,29 +10,46 @@ const clasesPalmera =
 const sizesPalmera =
   "(min-width: 1536px) 448px, (min-width: 1280px) 384px, (min-width: 1024px) 320px, (min-width: 768px) 288px, (min-width: 640px) 256px, 176px";
 
-const items = [
-  { id: 1, ...(await variantesGaleria(hero)), alt: "Paisaje de Quepos" },
-  { id: 2, ...(await variantesGaleria(fondo)), alt: "Naturaleza de Quepos" },
-  { id: 3, ...(await variantesGaleria(mision)), alt: "Misión de la Cámara" },
-  { id: 4, ...(await variantesGaleria(vision)), alt: "Visión de la Cámara" },
-  { id: 5, ...(await variantesGaleria(beneficios)), alt: "Beneficios para afiliados" },
-  { id: 6, ...(await variantesGaleria(checkout)), alt: "Costa de Quepos" },
-  { id: 7, ...(await variantesGaleria(ejemplo)), alt: "Ejemplo de emprendimiento local" },
-  { id: 8, ...(await variantesGaleria(isla)), alt: "Isla frente a la playa de Manuel Antonio, con surfistas en el mar" },
-  { id: 9, ...(await variantesGaleria(perezoso)), alt: "Perezoso colgado de una rama en el bosque" },
-  { id: 10, ...(await variantesGaleria(bahia)), alt: "Bahía rodeada de bosque tropical vista desde lo alto" },
-  { id: 11, ...(await variantesGaleria(rafting)), alt: "Grupo haciendo rafting en el río" },
-  { id: 12, ...(await variantesGaleria(malecon)), alt: "Letras de colores de Quepos en el malecón" },
-  { id: 13, ...(await variantesGaleria(catamaran)), alt: "Catamarán navegando al atardecer" },
-  { id: 14, ...(await variantesGaleria(manglares)), alt: "Kayaks entre los manglares" },
-  { id: 15, ...(await variantesGaleria(mercado)), alt: "Jardines frente al mercado municipal de Quepos" },
-  { id: 16, ...(await variantesGaleria(rappel)), alt: "Turista haciendo rappel en el bosque" },
-  { id: 17, ...(await variantesGaleria(hotelPiscina)), alt: "Piscina de un hotel con hamacas y vista al bosque" },
-  { id: 18, ...(await variantesGaleria(pesca)), alt: "Marlín saltando en el mar" },
-  { id: 19, ...(await variantesGaleria(hotelVillaTeca)), alt: "Cabañas de un hotel entre jardines tropicales" },
-  { id: 20, ...(await variantesGaleria(centro)), alt: "Calle del centro de Quepos" },
-  { id: 21, ...(await variantesGaleria(habitacion)), alt: "Habitación de hotel en Quepos" },
+// Fotos de "Fotografias de la Zona de Quepos" (sesión profesional), guardadas en WebP en src/assets/galeria/.
+// Astro genera de cada una varias versiones (360, 600 y 900 px para la cuadrícula y 1600 px para verla en grande) y el
+// navegador baja solo la que necesita. El orden es el de la cuadrícula: se mezclan paisajes, fauna, cultura y
+// aventura para que ninguna columna quede con fotos parecidas
+const archivos = import.meta.glob<{ default: ImageMetadata }>("../../../assets/galeria/*.webp", { eager: true });
+const foto = (nombre: string) => archivos[`../../../assets/galeria/${nombre}.webp`].default;
+const fotos: [nombre: string, alt: string][] = [
+  ["letras-quepos", "Letras de colores de Quepos frente al mar"],
+  ["playa-manuel-antonio-aerea", "Vista aérea de una playa de Manuel Antonio con una isla cubierta de bosque"],
+  ["mono-carablanca", "Mono carablanca sobre una rama"],
+  ["marina-pez-vela", "Marina Pez Vela vista desde el aire, con sus muelles y la playa"],
+  ["lapa-roja", "Lapa roja posada en una rama"],
+  ["catarata-bosque", "Catarata entre el bosque tropical"],
+  ["baile-folclorico", "Bailarina con traje típico costarricense en un desfile"],
+  ["delfin", "Delfín nadando en el mar azul"],
+  ["atardecer-playa", "Atardecer en la playa con islas en el horizonte"],
+  ["kayak-rio", "Grupo en kayak por un río entre la selva"],
+  ["mariposa-morpho", "Mariposa morpho azul sobre la mano de una persona"],
+  ["artesano-carreta", "Artesano pintando una carreta típica"],
+  ["catarata-nauyaca", "Catarata de dos caídas con una poza al pie"],
+  ["festival-marina", "Festival nocturno en Marina Pez Vela con luces y público"],
+  ["tortuga-bebe", "Tortuga bebé caminando en la arena hacia el mar"],
+  ["puente-colgante", "Puente colgante en medio del bosque"],
+  ["cocina-tipica", "Cocineros sonrientes junto a un fogón de leña con chorizos"],
+  ["rocas-playa-aerea", "Vista aérea de rocas con bosque y olas en la playa"],
+  ["pez-vela", "Pez vela junto a la lancha durante la pesca deportiva"],
+  ["caballo", "Caballo con montura en el campo"],
+  ["iglesia", "Iglesia blanca de madera en medio de la neblina"],
+  ["sandias-mercado", "Vendedor de sandías en un camión, con una sandía partida al frente"],
+  ["fogata-playa", "Amigos tocando guitarra junto a una fogata en la playa al atardecer"],
+  ["isla-olas", "Isla rocosa iluminada por el sol frente a las olas"],
+  ["yoga-playa", "Mujer haciendo yoga en la orilla de la playa"],
+  ["nina-cara-pintada", "Niña con la bandera de Costa Rica pintada en la cara"],
+  ["rio-aereo", "Río que serpentea entre el valle y las montañas, visto desde el aire"],
+  ["palmeras-atardecer", "Pareja entre siluetas de palmeras al atardecer"],
 ];
+
+const items = await Promise.all(
+  fotos.map(async ([nombre, alt], i) => ({ id: i + 1, ...(await variantesGaleria(foto(nombre))), alt })),
+);
 ---
 
 <section id="galeria-completa" class="relative w-full self-start overflow-x-clip bg-white">

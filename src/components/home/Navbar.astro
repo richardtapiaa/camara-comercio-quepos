@@ -1,6 +1,7 @@
 ---
-import { Image } from "astro:assets";
+import { Picture } from "astro:assets";
 import logo from "../../assets/compartido/logo-camara.webp";
+import logoBlanco from "../../assets/compartido/logo-camara-blanco.webp";
 import { contacto } from "../../lib/sitio";
 
 type Enlace = { label: string; href: string };
@@ -76,15 +77,31 @@ const claseLink =
   </div>
 
   <nav class="mx-auto flex h-24 max-w-7xl items-center gap-6 px-6" aria-label="Principal">
-    <a href="/" class="shrink-0" aria-label="Cámara de Comercio, Industria y Turismo de Quepos">
-      <Image
+    <a href="/" class="relative shrink-0" aria-label="Cámara de Comercio, Industria y Turismo de Quepos">
+      <!-- Sobre la foto del hero (barra transparente) se ve la versión con las letras en blanco; con la barra blanca, el
+           logo normal. Se cruzan con un fundido. AVIF: 9 KB en vez de 16 KB del WebP, y el logo es el LCP de varias
+           páginas en celular -->
+      <Picture
         src={logo}
+        formats={["avif", "webp"]}
+        quality={60}
         alt="Cámara de Comercio, Industria y Turismo - Quepos Costa Rica"
-        widths={[200, 400]}
+        widths={[200, 300, 400]}
         sizes="194px"
-        class="h-23 w-auto"
+        class="h-23 w-auto transition-opacity duration-300 group-data-[solid=false]/nav:opacity-0"
         loading="eager"
         fetchpriority="high"
+      />
+      <Picture
+        src={logoBlanco}
+        formats={["avif", "webp"]}
+        quality={60}
+        alt=""
+        widths={[200, 300, 400]}
+        sizes="194px"
+        class="pointer-events-none absolute inset-0 h-23 w-auto opacity-0 transition-opacity duration-300 group-data-[solid=false]/nav:opacity-100"
+        loading="eager"
+        aria-hidden="true"
       />
     </a>
 
@@ -109,7 +126,7 @@ const claseLink =
     >
       <div class="flex items-center justify-between px-6 pb-5 pt-6 md:hidden">
         <a href="/" class="rounded-2xl bg-white px-3 py-1.5" aria-label="Cámara de Comercio, Industria y Turismo de Quepos">
-          <Image src={logo} alt="Cámara de Comercio, Industria y Turismo - Quepos Costa Rica" widths={[200, 400]} sizes="118px" class="h-14 w-auto" loading="lazy" />
+          <Picture src={logo} formats={["avif", "webp"]} quality={60} alt="Cámara de Comercio, Industria y Turismo - Quepos Costa Rica" widths={[200, 400]} sizes="118px" class="h-14 w-auto" loading="lazy" />
         </a>
         <button id="nav-close" type="button" aria-label="Cerrar menú" class="rounded-full p-2 text-white/70 transition-colors hover:text-white">
           <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">

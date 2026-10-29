@@ -335,26 +335,42 @@ const PROPORCIONES = ["aspect-[3/5]", "aspect-[16/10]", "aspect-[2/3]", "aspect-
 
 const TAMANOS_MINIATURA = "(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw";
 
-const GaleriaQuepos = ({ items, className }: { items: GaleriaItem[]; className?: string }) => (
-  <Gallery images={items.map((item) => ({ id: String(item.id), src: item.src, alt: item.alt }))}>
-    <GalleryGrid className={className}>
-      {items.map((item, index) => (
-        <GalleryImage
-          key={item.id}
-          id={String(item.id)}
-          src={item.src}
-          alt={item.alt}
-          miniatura={item.miniatura}
-          srcSet={item.srcSet}
-          sizes={TAMANOS_MINIATURA}
-          ancho={item.ancho}
-          alto={item.alto}
-          loading="lazy"
-          aspect={item.ancho && item.alto ? undefined : PROPORCIONES[index % PROPORCIONES.length]}
-        />
-      ))}
-    </GalleryGrid>
-  </Gallery>
-);
+// La cuadrícula usa columnas de CSS (2, 3 o 4 según la pantalla), que se llenan de arriba hacia abajo: las fotos que
+// se ven al abrir la página son las primeras de cada columna. Esas se piden de inmediato (una de ellas es el LCP de la
+// página) y el resto se carga al acercarse. Sin fetchpriority="high": Chrome ya les sube la prioridad a las que quedan
+// en pantalla, y forzarla en todas hacía que compitieran entre ellas y la del LCP llegara más tarde
+const primerasDeColumna = (total: number) => {
+  const indices = new Set([0, 1]);
+  for (const columnas of [2, 3, 4]) {
+    const porColumna = Math.ceil(total / columnas);
+    for (let c = 0; c < columnas; c++) indices.add(c * porColumna);
+  }
+  return indices;
+};
+
+const GaleriaQuepos = ({ items, className }: { items: GaleriaItem[]; className?: string }) => {
+  const visiblesAlAbrir = primerasDeColumna(items.length);
+  return (
+    <Gallery images={items.map((item) => ({ id: String(item.id), src: item.src, alt: item.alt }))}>
+      <GalleryGrid className={className}>
+        {items.map((item, index) => (
+          <GalleryImage
+            key={item.id}
+            id={String(item.id)}
+            src={item.src}
+            alt={item.alt}
+            miniatura={item.miniatura}
+            srcSet={item.srcSet}
+            sizes={TAMANOS_MINIATURA}
+            ancho={item.ancho}
+            alto={item.alto}
+            loading={visiblesAlAbrir.has(index) ? "eager" : "lazy"}
+            aspect={item.ancho && item.alto ? undefined : PROPORCIONES[index % PROPORCIONES.length]}
+          />
+        ))}
+      </GalleryGrid>
+    </Gallery>
+  );
+};
 
 export default GaleriaQuepos;

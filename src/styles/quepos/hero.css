@@ -36,17 +36,10 @@
     drop-shadow(0.012em 0.012em 0 var(--canto)) drop-shadow(0 0.04em 0.06em rgb(16 42 67 / 0.35));
 }
 
+/* La foto no tiene fundido de entrada: así se ve desde el primer momento y cuenta como LCP */
 @media (prefers-reduced-motion: no-preference) {
-  .hero-isla-foto {
-    animation: hero-isla-aparece 1s ease-out both;
-  }
   .hero-isla-entrada {
     animation: hero-isla-sube 1s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
-  }
-}
-@keyframes hero-isla-aparece {
-  from {
-    opacity: 0;
   }
 }
 @keyframes hero-isla-sube {
