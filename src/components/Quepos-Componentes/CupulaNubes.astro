@@ -1,0 +1,177 @@
+---
+// Cúpula de FraseCelebre volteada, pegada debajo de NahomiScroll: plana arriba, donde cuelgan las nubes de LapasJS, y
+// con la curva abajo (mismas esquinas que FraseCelebre). Es un cielo: azul más intenso arriba y más claro abajo, como
+// hacia el horizonte, sin llegar a blanco para que la curva se siga viendo contra la página.
+// En el centro vuela la lapa de LapaArrastre: de su pata cuelga la misma tira de papel, que sostiene un letrero que
+// lleva a la galería. Entra volando desde la derecha con el scroll (donde hay animation-timeline) y se queda flotando;
+// con movimiento reducido o sin soporte queda quieta en su lugar.
+// Las nubes se mecen y se corren con el scroll igual que en LapasJS: por eso lleva data-lapa-scroll y lapas-recuadro,
+// con los estilos y el script de allá. El script además marca data-a-la-vista, que pausa todo fuera de pantalla.
+import { ArrowRight } from "lucide-react";
+import Nubes from "./Nubes.astro";
+import { lapaImagen } from "./lapa-imagen";
+import "../../styles/quepos/lapa-scroll.css";
+import "../../styles/quepos/lapas.css";
+import "../../styles/compartido/etiqueta-papel.css";
+---
+
+<!-- El alto tiene un mínimo en rem para que en pantallas bajas (celular acostado) la lapa y el letrero sigan cabiendo -->
+<div
+  data-lapa-scroll
+  class="lapas-recuadro relative isolate min-h-[max(60svh,28rem)] overflow-hidden rounded-b-[11rem] bg-gradient-to-b from-[#4aa8e3] to-[#b4e1f8] md:min-h-[max(70svh,32rem)] md:rounded-b-[38rem]"
+>
+  <Nubes />
+
+  <!-- Todo el conjunto es el enlace y su nombre es el texto del letrero (la lapa es decorativa). Va detrás de las nubes,
+       que no reciben clics, para que al entrar salga de entre ellas -->
+  <a
+    href="/queposgaleria"
+    class="lapa-galeria group absolute left-1/2 top-[56%] z-[5] -translate-x-1/2 -translate-y-1/2 outline-hidden"
+  >
+    <span class="vuelo flex flex-col items-center">
+      <span class="flotar flex flex-col items-center">
+        <!-- Volteada para mirar a la izquierda; translate-x-[3%] deja la pata (al 47 % del ancho) en el centro -->
+        <img
+          src={lapaImagen.src}
+          srcset={lapaImagen.srcset}
+          sizes={lapaImagen.sizes}
+          width={lapaImagen.width}
+          height={lapaImagen.height}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          draggable="false"
+          class="lapa relative z-[1] max-w-none translate-x-[3%] -scale-x-100 select-none"
+        />
+        <!-- La tira y el letrero cuelgan de la pata y se mecen desde ahí -->
+        <span class="colgante flex flex-col items-center">
+          <span class="tira relative block">
+            <span class="tira-papel etiqueta-papel absolute left-1/2 top-1/2 block -translate-x-1/2 -translate-y-1/2 rotate-90"></span>
+          </span>
+          <span
+            class="letrero relative -mt-1.5 flex items-center gap-2 rounded-md px-5 py-2.5 group-focus-visible:outline-3 group-focus-visible:outline-offset-4 group-focus-visible:outline-[#0b2f4f] motion-safe:transition-transform motion-safe:duration-200 motion-safe:group-hover:-translate-y-0.5 motion-safe:group-hover:-rotate-2 md:gap-3 md:px-7 md:py-3.5"
+          >
+            <span class="etiqueta-papel absolute inset-0"></span>
+            <span class="etiqueta-cinta cinta-letrero"></span>
+            <span class="relative whitespace-nowrap text-lg font-black uppercase tracking-[0.12em] text-[#2f1d0e] md:text-2xl">
+              Ver galería
+            </span>
+            <ArrowRight
+              className="relative size-5 shrink-0 text-[#2f1d0e] motion-safe:transition-transform motion-safe:duration-200 motion-safe:group-hover:translate-x-1 md:size-6"
+              strokeWidth={2.75}
+              aria-hidden="true"
+            />
+          </span>
+        </span>
+      </span>
+    </span>
+  </a>
+</div>
+
+<script src="../../scripts/quepos/lapa-scroll.ts"></script>
+
+<style>
+  .lapa-galeria {
+    /* Mismo ancho de lapa y grosor de tira que LapaArrastre (lapa-arrastre.css) */
+    --ancho-lapa: min(40vw, 358px);
+    --grosor-tira: 1.75rem;
+    /* Largo de la tira: la parte escondida detrás de la lapa (ver .tira) más lo que se ve */
+    --largo-tira: calc(var(--ancho-lapa) * 0.36 + 0.75rem);
+  }
+  @media (min-width: 768px) {
+    .lapa-galeria {
+      --ancho-lapa: min(21vw, 314px);
+      --grosor-tira: 2.25rem;
+    }
+  }
+
+  .lapa {
+    width: var(--ancho-lapa);
+  }
+
+  /* La pata está al 75 % del alto de la foto (639×360), a 0.141 anchos de su borde de abajo: la tira sube esa
+     distancia para arrancar justo en la pata, escondida detrás de la lapa */
+  .tira {
+    width: var(--grosor-tira);
+    height: var(--largo-tira);
+    margin-top: calc(var(--ancho-lapa) * -0.141);
+  }
+  /* El papel es una tira horizontal girada, como en LapaArrastre: así los bordes rasgados quedan a los lados */
+  .tira-papel {
+    width: var(--largo-tira);
+    height: var(--grosor-tira);
+  }
+
+  /* Cinta sobre la unión de la tira con el letrero (gana a la posición por defecto de .etiqueta-cinta) */
+  .cinta-letrero {
+    top: 0;
+    left: 50%;
+    width: calc(var(--grosor-tira) + 1.25rem);
+    height: 1.4rem;
+    translate: -50% -55%;
+    rotate: -5deg;
+  }
+
+  /* lapas.css le pone sombra a los svg del recuadro (las nubes); a la flecha del letrero no */
+  .lapa-galeria .letrero :global(svg) {
+    filter: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* Flota y el letrero se mece desde la pata; fuera de pantalla se pausan (data-a-la-vista, de lapa-scroll.ts) */
+    .flotar {
+      animation: lapa-galeria-flotar 2.8s ease-in-out infinite alternate;
+    }
+    .colgante {
+      transform-origin: 50% 0;
+      animation: lapa-galeria-mecer 3.6s ease-in-out infinite alternate;
+    }
+    [data-lapa-scroll]:not([data-a-la-vista]) .flotar,
+    [data-lapa-scroll]:not([data-a-la-vista]) .colgante,
+    /* Con el mouse encima o el foco del teclado se queda quieta, para leer el letrero y tocarlo sin que se mueva */
+    .lapa-galeria:hover .flotar,
+    .lapa-galeria:hover .colgante,
+    .lapa-galeria:focus-visible .flotar,
+    .lapa-galeria:focus-visible .colgante {
+      animation-play-state: paused;
+    }
+  }
+
+  /* Llega volando desde arriba a la derecha (de entre las nubes) mientras la cúpula entra en la pantalla, con el pico
+     hacia abajo, y se endereza al llegar. Usa la línea de tiempo de la cúpula (--lapa-vuelo, de lapa-scroll.css) */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .vuelo {
+        animation-name: lapa-galeria-llegar;
+        animation-timing-function: ease-out;
+        animation-fill-mode: both;
+        animation-timeline: --lapa-vuelo;
+        animation-range: entry 0% entry 100%;
+      }
+    }
+  }
+
+  @keyframes lapa-galeria-llegar {
+    from {
+      translate: 62cqw -9rem;
+      rotate: -14deg;
+    }
+    to {
+      translate: 0 0;
+      rotate: 0deg;
+    }
+  }
+  @keyframes lapa-galeria-flotar {
+    to {
+      translate: 0 -8px;
+    }
+  }
+  @keyframes lapa-galeria-mecer {
+    from {
+      rotate: -2deg;
+    }
+    to {
+      rotate: 2deg;
+    }
+  }
+</style>

@@ -1,5 +1,5 @@
 ---
-import { VelocityScroll } from '../ReactComponentes/QUEPOS/ScrollVelocity.tsx';
+import { VelocityScroll, type Decoracion } from '../ReactComponentes/QUEPOS/ScrollVelocity.tsx';
 
 interface Props {
   texto?: string;
@@ -9,6 +9,11 @@ interface Props {
   overlay?: boolean;
   // Letras de contorno blanco en una sola línea, sin fondo, para ir encima de una foto (p. ej. FotoQuepos)
   contorno?: boolean;
+  // Imágenes encima de letras del texto (ver Decoracion en ScrollVelocity.tsx)
+  decoraciones?: Decoracion[];
+  // Las letras se desvanecen hacia abajo: la fila de arriba se lee entera y la de abajo se va difuminando (en
+  // Hospitalidad pasa por detrás de las fotos de GaleriaComida y en Galería por detrás de las palmeras)
+  difuminado?: boolean;
 }
 
 const {
@@ -17,6 +22,8 @@ const {
   espaciado = "pb-8 pt-28 sm:pb-12 sm:pt-32",
   overlay = false,
   contorno = false,
+  decoraciones,
+  difuminado = false,
 } = Astro.props;
 
 const clasesTexto = contorno
@@ -24,14 +31,20 @@ const clasesTexto = contorno
   : "font-serif text-5xl font-bold uppercase tracking-[0.12em] text-black sm:text-7xl lg:text-8xl";
 ---
 
-<section class:list={["relative overflow-hidden", !contorno && "bg-white", espaciado]}>
-  <VelocityScroll
-    client:visible
-    text={texto}
-    default_velocity={contorno ? 3 : 5}
-    scrollReactive={reaccionaScroll}
-    filas={contorno ? 1 : 2}
-    className={clasesTexto}
-  />
+<!-- Con decoraciones solo se recorta a los lados, para que las imágenes sobresalgan por arriba -->
+<section class:list={["relative", decoraciones?.length ? "overflow-x-clip" : "overflow-hidden", !contorno && "bg-white", espaciado]}>
+  <!-- El difuminado va en este contenedor, que mide justo las filas: así empieza siempre al final de la fila de arriba,
+       sin importar el espaciado de la sección (en Galería tiene mucho más espacio arriba que en Hospitalidad) -->
+  <div class:list={[difuminado && "[mask-image:linear-gradient(to_bottom,black_50%,transparent_96%)]"]}>
+    <VelocityScroll
+      client:visible
+      text={texto}
+      default_velocity={contorno ? 3 : 5}
+      scrollReactive={reaccionaScroll}
+      filas={contorno ? 1 : 2}
+      className={clasesTexto}
+      decoraciones={decoraciones}
+    />
+  </div>
   {overlay && <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent to-white/25" aria-hidden="true"></div>}
 </section>

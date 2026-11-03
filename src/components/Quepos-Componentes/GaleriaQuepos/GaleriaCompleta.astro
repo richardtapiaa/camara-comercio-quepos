@@ -53,13 +53,16 @@ const items = await Promise.all(
 ---
 
 <section id="galeria-completa" class="relative w-full self-start overflow-x-clip bg-white">
+  <!-- Palmeras en las esquinas, delante del texto "GALERIA" (TextVelocityGaleria, justo antes): con bottom-full su borde
+       de abajo queda en el de arriba de esta sección y suben sobre el texto, que corre por detrás. Van delante porque
+       esta sección viene después en la página. overflow-x-clip solo recorta a los lados, así que no las corta arriba -->
   <Image
     src={palmera}
     alt=""
     width={600}
     widths={[300, 450, 600]}
     sizes={sizesPalmera}
-    class={`pointer-events-none absolute right-0 top-0 ${clasesPalmera}`}
+    class={`pointer-events-none absolute bottom-full right-0 ${clasesPalmera}`}
     loading="lazy"
     fetchpriority="low"
     draggable="false"
@@ -71,14 +74,14 @@ const items = await Promise.all(
     width={600}
     widths={[300, 450, 600]}
     sizes={sizesPalmera}
-    class={`pointer-events-none absolute left-0 top-0 -scale-x-100 ${clasesPalmera}`}
+    class={`pointer-events-none absolute bottom-full left-0 -scale-x-100 ${clasesPalmera}`}
     loading="lazy"
     fetchpriority="low"
     draggable="false"
     aria-hidden="true"
   />
 
-  <div class="relative mx-auto max-w-7xl px-4 pb-24 pt-32 sm:px-6 sm:pt-44 md:pt-48 lg:pt-52 xl:pt-60 2xl:pt-72">
+  <div class="relative mx-auto max-w-7xl px-4 pb-24 pt-10 sm:px-6 sm:pt-12">
     <GaleriaQuepos client:visible items={items} />
   </div>
 </section>

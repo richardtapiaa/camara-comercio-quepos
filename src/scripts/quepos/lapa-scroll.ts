@@ -25,37 +25,38 @@ if (conCss && !sinMovimiento) {
 
 if (!conCss && !sinMovimiento) {
   document.querySelectorAll<HTMLElement>("[data-lapa-scroll]").forEach((recuadro) => {
+    // La lapa es opcional: CupulaNubes solo tiene nubes
     const lapa = recuadro.querySelector<HTMLElement>("[data-lapa]");
-    if (!lapa) return;
+    if (lapa) {
+      lapa.style.left = "0";
+      lapa.style.translate = "none";
 
-    lapa.style.left = "0";
-    lapa.style.translate = "none";
-
-    const PUNTOS = 16;
-    const punto = (i: number) => {
-      const t = i / PUNTOS;
-      const altura = 0.5 - 0.5 * Math.cos(3 * Math.PI * t);
-      // De derecha a izquierda, con la imagen volteada
-      return {
-        x: () => recuadro.offsetWidth * (1 - t),
-        xPercent: -100 * t,
-        y: () => lapa.offsetHeight * 0.05 - medirSubida(recuadro, lapa) * altura,
-        rotate: 16 * Math.sin(3 * Math.PI * t),
-        scaleX: -1,
+      const PUNTOS = 16;
+      const punto = (i: number) => {
+        const t = i / PUNTOS;
+        const altura = 0.5 - 0.5 * Math.cos(3 * Math.PI * t);
+        // De derecha a izquierda, con la imagen volteada
+        return {
+          x: () => recuadro.offsetWidth * (1 - t),
+          xPercent: -100 * t,
+          y: () => lapa.offsetHeight * 0.05 - medirSubida(recuadro, lapa) * altura,
+          rotate: 16 * Math.sin(3 * Math.PI * t),
+          scaleX: -1,
+        };
       };
-    };
-    const vuelo = gsap.timeline({
-      defaults: { ease: "none" },
-      scrollTrigger: {
-        trigger: recuadro,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true,
-        invalidateOnRefresh: true,
-      },
-    });
-    gsap.set(lapa, punto(0));
-    for (let i = 1; i <= PUNTOS; i++) vuelo.to(lapa, { ...punto(i), duration: 1 });
+      const vuelo = gsap.timeline({
+        defaults: { ease: "none" },
+        scrollTrigger: {
+          trigger: recuadro,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+          invalidateOnRefresh: true,
+        },
+      });
+      gsap.set(lapa, punto(0));
+      for (let i = 1; i <= PUNTOS; i++) vuelo.to(lapa, { ...punto(i), duration: 1 });
+    }
 
     recuadro.querySelectorAll<Element>(".nube-capa, .selva-capa").forEach((capa) => {
       const estilo = getComputedStyle(capa);
@@ -73,4 +74,14 @@ if (!conCss && !sinMovimiento) {
       );
     });
   });
+}
+
+// Las nubes se mecen solas (lapas.css) solo mientras su recuadro está cerca de la pantalla (data-a-la-vista): fuera de
+// ella no tiene sentido recalcularlas en cada cuadro
+if (!sinMovimiento) {
+  const visibles = new IntersectionObserver(
+    (entradas) => entradas.forEach(({ target, isIntersecting }) => target.toggleAttribute("data-a-la-vista", isIntersecting)),
+    { rootMargin: "100px 0px" },
+  );
+  document.querySelectorAll<HTMLElement>("[data-lapa-scroll]").forEach((recuadro) => visibles.observe(recuadro));
 }
