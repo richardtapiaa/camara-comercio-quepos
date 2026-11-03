@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 440">
+  <!-- Silueta tenue de un perezoso abrazado a un tronco (mismo estilo grunge que mono-rama.svg).
+       Verde oliva #4d5b2c, como el resto del sitio; la opacidad va en el grupo para que las partes que se cruzan no se oscurezcan -->
+  <defs>
+    <filter id="perezoso-rama-grunge" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" result="ruido"/>
+      <feDisplacementMap in="SourceGraphic" in2="ruido" scale="8" xChannelSelector="R" yChannelSelector="G" result="borde"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="2" seed="23" result="manchas"/>
+      <feColorMatrix in="manchas" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  16 0 0 0 -11.6" result="huecos"/>
+      <feComposite in="borde" in2="huecos" operator="out"/>
+    </filter>
+  </defs>
+  <g opacity="0.11" fill="#4d5b2c" stroke="#4d5b2c" stroke-linecap="round" stroke-linejoin="round" filter="url(#perezoso-rama-grunge)">
+    <!-- Tronco casi vertical con una ramita -->
+    <path d="M96 -20 C112 120 122 300 150 460" fill="none" stroke-width="40"/>
+    <path d="M104 120 C84 104 66 100 46 104" fill="none" stroke-width="10"/>
+    <path d="M46 104 C26 92 16 116 32 124 C42 128 50 118 46 104 Z" stroke="none"/>
+    <!-- Cuerpo peludo a la derecha del tronco -->
+    <ellipse cx="206" cy="298" rx="82" ry="108" transform="rotate(-14 206 298)" stroke="none"/>
+    <path d="M278 236 C290 238 290 248 284 252 C296 256 294 268 286 270 C296 276 292 288 282 288 C290 296 284 308 274 306 C280 316 272 326 262 322 C264 334 254 340 246 334 L230 340 Z" stroke="none"/>
+    <!-- Brazo de arriba, estirado hasta el tronco -->
+    <path d="M196 222 C168 164 140 104 110 62" fill="none" stroke-width="40"/>
+    <!-- Brazo de abajo, rodeando el tronco -->
+    <path d="M180 292 C156 278 130 266 104 258" fill="none" stroke-width="36"/>
+    <!-- Pierna agarrada abajo -->
+    <path d="M220 384 C200 400 172 410 142 412" fill="none" stroke-width="40"/>
+    <!-- Garras sobre el lado izquierdo del tronco -->
+    <path d="M100 52 C82 50 74 62 80 72 M104 66 C86 66 80 78 86 86" fill="none" stroke-width="6"/>
+    <path d="M100 248 C82 246 74 258 80 268 M102 262 C84 262 78 274 84 282" fill="none" stroke-width="6"/>
+    <path d="M140 402 C122 400 114 412 120 422 M142 416 C124 416 118 428 124 436" fill="none" stroke-width="6"/>
+    <!-- Cabeza lisa, sin cara (igual que el mono de mono-rama.svg), con pelo arriba -->
+    <circle cx="232" cy="166" r="60" stroke="none"/>
+    <path d="M186 128 C184 118 194 116 198 122 C200 110 212 110 214 118 C220 108 232 108 236 116 C242 108 254 110 256 120 C262 114 272 118 270 128 Z" stroke="none"/>
+    <!-- Salpicaduras sueltas alrededor -->
+    <circle cx="310" cy="90" r="5" stroke="none"/>
+    <circle cx="40" cy="220" r="4" stroke="none"/>
+    <circle cx="60" cy="360" r="6" stroke="none"/>
+    <circle cx="312" cy="400" r="4.5" stroke="none"/>
+    <circle cx="160" cy="30" r="3.5" stroke="none"/>
+  </g>
+</svg>

@@ -8,7 +8,7 @@ import poster from "../../assets/afiliados/hero-afiliados-poster.jpg";
 const posterOptimizado = await getImage({ src: poster, width: 1920, format: "webp", quality: 70 });
 ---
 
-<section data-parallax-afiliados class="relative isolate flex h-svh min-h-[560px] w-full items-center justify-center overflow-hidden bg-black">
+<section data-parallax-afiliados class="relative isolate flex h-lvh min-h-[560px] w-full items-center justify-center pb-[calc(100lvh-100svh)] overflow-hidden bg-black">
   <!-- data-video-diferido: empieza a descargarse cuando la página terminó de cargar (scripts/compartido/videos.ts) -->
   <video
     data-video-diferido

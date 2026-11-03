@@ -2,7 +2,13 @@
 import { getImage } from "astro:assets";
 import foto from "../../assets/quepos/quepos-foto-prueba.jpg";
 import TextVelocity from "../compartidos/TextVelocity.astro";
-
+import iconoLapa from "../../assets/quepos/icono-lapa-color.svg";
+import iconoMono from "../../assets/quepos/icono-mono-color.svg";
+import iconoPerezoso from "../../assets/quepos/icono-perezoso-color.svg";
+import hojas from "../../assets/quepos/hojas-tropicales.svg";
+// Bordes de papel rasgado (blancos, como las secciones de arriba y abajo). Los genera herramientas/bordes-rasgados.mjs
+import bordeArriba from "../../assets/quepos/borde-rasgado-arriba.svg";
+import bordeAbajo from "../../assets/quepos/borde-rasgado-abajo.svg";
 
 const fotoOptimizada = await getImage({ src: foto, width: foto.width, format: "webp", quality: 90 });
 ---
@@ -16,13 +22,48 @@ const fotoOptimizada = await getImage({ src: foto, width: foto.width, format: "w
 >
   <div
     data-foto-parallax-capa
-    class="absolute inset-x-0 -top-[8%] h-[116%] bg-[image:var(--foto)] bg-cover bg-center bg-no-repeat will-change-transform md:inset-0 md:h-full md:bg-fixed md:will-change-auto"
+    class="absolute inset-x-0 -top-[25%] h-[150%] bg-[image:var(--foto)] bg-cover bg-center bg-no-repeat will-change-transform md:inset-0 md:h-full md:bg-fixed md:will-change-auto"
   >
   </div>
   <div class="pointer-events-none absolute inset-0 bg-black/25" aria-hidden="true"></div>
-  <!-- Texto de contorno que corre solo a velocidad constante (no reacciona al scroll), encima de la foto -->
+  <!-- Bordes de papel rasgado arriba y abajo, con una sombra suave sobre la foto. Miden al menos 1100px de ancho y van
+       centrados: en móvil se ve solo el centro y las ondas no se aprietan -->
+  <img
+    src={bordeArriba.src}
+    width={bordeArriba.width}
+    height={bordeArriba.height}
+    alt=""
+    loading="lazy"
+    decoding="async"
+    class="pointer-events-none absolute left-1/2 top-0 z-10 h-12 w-full min-w-[1100px] max-w-none -translate-x-1/2 [filter:drop-shadow(0_3px_5px_rgb(0_0_0/0.22))] md:h-16 lg:h-20"
+  />
+  <img
+    src={bordeAbajo.src}
+    width={bordeAbajo.width}
+    height={bordeAbajo.height}
+    alt=""
+    loading="lazy"
+    decoding="async"
+    class="pointer-events-none absolute bottom-0 left-1/2 z-10 h-12 w-full min-w-[1100px] max-w-none -translate-x-1/2 [filter:drop-shadow(0_-3px_5px_rgb(0_0_0/0.22))] md:h-16 lg:h-20"
+  />
+  <!-- Texto de contorno que corre solo a velocidad constante (no reacciona al scroll), encima de la foto.
+       Letras decoradas estilo tropical: lapa posada sobre la C de "Conozca", mono sentado sobre la N de "Nuestro",
+       perezoso colgado de la C de "Canton", y un ramito de hojas y flores en la base de cada una -->
   <div class="absolute inset-x-0 top-1/2 -translate-y-1/2">
-    <TextVelocity texto="Conozca Nuestro Canton" reaccionaScroll={false} espaciado="py-2" contorno />
+    <TextVelocity
+      texto="Conozca Nuestro Canton"
+      reaccionaScroll={false}
+      espaciado="py-2"
+      contorno
+      decoraciones={[
+        { indice: 0, src: iconoLapa.src, clase: "bottom-[62%] left-[28%] h-[0.95em] -rotate-6" },
+        { indice: 0, src: hojas.src, clase: "bottom-[6%] -left-[24%] h-[0.55em] -rotate-12" },
+        { indice: 8, src: iconoMono.src, clase: "bottom-[64%] -left-[8%] h-[0.85em]" },
+        { indice: 8, src: hojas.src, clase: "bottom-[6%] -left-[26%] h-[0.5em] -rotate-6" },
+        { indice: 16, src: iconoPerezoso.src, clase: "top-[10%] left-[4%] h-[0.66em]" },
+        { indice: 16, src: hojas.src, clase: "bottom-[2%] -left-[40%] h-[0.45em] -rotate-12" },
+      ]}
+    />
   </div>
 </section>
 

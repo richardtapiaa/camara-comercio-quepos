@@ -24,9 +24,9 @@ gsap.matchMedia().add(
           { backgroundPosition: () => `50% ${-innerHeight / 2}px`, ease: "none", scrollTrigger },
         );
       } else {
-        // La capa mide 116 % de la sección: baja de −8 % a +8 % de la sección (6,9 % de la capa). Es más corto que en
-        // escritorio para que la foto (de solo 1600 px) se amplíe lo menos posible
-        gsap.fromTo(capa, { yPercent: -6.9 }, { yPercent: 6.9, ease: "none", scrollTrigger });
+        // La capa mide 150 % de la sección: baja de −25 % a +25 % de la sección (16,7 % de la capa). Con menos recorrido
+        // el movimiento no se nota en celular (la sección mide ~340 px); a cambio la foto de 1600 px se amplía un poco
+        gsap.fromTo(capa, { yPercent: -16.7 }, { yPercent: 16.7, ease: "none", scrollTrigger });
       }
     });
   },

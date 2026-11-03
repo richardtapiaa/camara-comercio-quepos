@@ -13,6 +13,18 @@ import {
 
 import { cn } from "@/lib/utils";
 
+// Imagen encima de una letra del texto (p. ej. un animal sobre la C), que se mueve con ella
+export interface Decoracion {
+  // Posición de la letra en el texto, contando espacios y desde 0
+  indice: number;
+  src: string;
+  // Clases de posición y tamaño (en em, crecen con la letra). Sin ella va centrada encima de la letra.
+  // Una misma letra puede tener varias decoraciones (p. ej. un animal arriba y hojas en la base)
+  clase?: string;
+}
+
+const POSICION_POR_DEFECTO = "bottom-[78%] left-1/2 h-[0.9em] -translate-x-1/2";
+
 interface VelocityScrollProps {
   text: string;
   default_velocity?: number;
@@ -20,6 +32,7 @@ interface VelocityScrollProps {
   scrollReactive?: boolean;
   // 2: dos líneas en direcciones opuestas; 1: una sola línea
   filas?: 1 | 2;
+  decoraciones?: Decoracion[];
 }
 
 interface ParallaxProps {
@@ -27,6 +40,34 @@ interface ParallaxProps {
   baseVelocity: number;
   className?: string;
   scrollReactive?: boolean;
+  decoraciones?: Decoracion[];
+}
+
+// El texto letra por letra; las letras con decoración llevan su imagen encima (tamaño en em: crece con la letra)
+function textoConDecoraciones(texto: string, decoraciones: Decoracion[]) {
+  return Array.from(texto).map((letra, i) => {
+    const deLaLetra = decoraciones.filter((d) => d.indice === i);
+    if (!deLaLetra.length) return letra;
+    return (
+      <span key={i} className="relative inline-block">
+        {letra}
+        {deLaLetra.map((decoracion, j) => (
+          <img
+            key={j}
+            src={decoracion.src}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            draggable={false}
+            className={cn(
+              "pointer-events-none absolute w-auto max-w-none select-none",
+              decoracion.clase ?? POSICION_POR_DEFECTO,
+            )}
+          />
+        ))}
+      </span>
+    );
+  });
 }
 
 export const wrap = (min: number, max: number, v: number) => {
@@ -34,7 +75,7 @@ export const wrap = (min: number, max: number, v: number) => {
   return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min;
 };
 
-function ParallaxText({ children, baseVelocity = 100, className, scrollReactive = true }: ParallaxProps) {
+function ParallaxText({ children, baseVelocity = 100, className, scrollReactive = true, decoraciones }: ParallaxProps) {
   const baseX = useMotionValue(0);
   const x = useMotionValue("0%");
   const { scrollY } = useScroll();
@@ -95,11 +136,12 @@ function ParallaxText({ children, baseVelocity = 100, className, scrollReactive 
   });
 
   return (
-    <div className="w-full overflow-hidden whitespace-nowrap" ref={containerRef}>
+    // Con decoraciones solo se recorta a los lados: las imágenes sobresalen por arriba de las letras
+    <div className={cn("w-full whitespace-nowrap", decoraciones?.length ? "overflow-x-clip" : "overflow-hidden")} ref={containerRef}>
       <motion.div className={cn("inline-block", className)} style={{ x }}>
         {Array.from({ length: repetitions }).map((_, i) => (
           <span key={i} ref={i === 0 ? textRef : null}>
-            {children}{" "}
+            {decoraciones?.length ? textoConDecoraciones(children, decoraciones) : children}{" "}
           </span>
         ))}
       </motion.div>
@@ -107,14 +149,26 @@ function ParallaxText({ children, baseVelocity = 100, className, scrollReactive 
   );
 }
 
-export function VelocityScroll({ text, default_velocity = 5, className, scrollReactive = true, filas = 2 }: VelocityScrollProps) {
+export function VelocityScroll({
+  text,
+  default_velocity = 5,
+  className,
+  scrollReactive = true,
+  filas = 2,
+  decoraciones,
+}: VelocityScrollProps) {
   return (
     <section className="relative w-full">
-      <ParallaxText baseVelocity={default_velocity} className={className} scrollReactive={scrollReactive}>
+      <ParallaxText baseVelocity={default_velocity} className={className} scrollReactive={scrollReactive} decoraciones={decoraciones}>
         {text}
       </ParallaxText>
       {filas === 2 && (
-        <ParallaxText baseVelocity={-default_velocity} className={className} scrollReactive={scrollReactive}>
+        <ParallaxText
+          baseVelocity={-default_velocity}
+          className={className}
+          scrollReactive={scrollReactive}
+          decoraciones={decoraciones}
+        >
           {text}
         </ParallaxText>
       )}

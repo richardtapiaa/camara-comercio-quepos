@@ -2,12 +2,24 @@
 import { Image } from "astro:assets";
 import IconoUbicacion from "../../assets/icons-svg/quepos-icons/whypr.svg";
 import imagen from "../../assets/quepos/nose.webp";
+import siluetaMono from "../../assets/quepos/mono-rama.svg";
 ---
 
 <!-- Mismas medidas que un container + row g-4 de Bootstrap: 540/720/960/1140/1320 px y 12 px de margen -->
-<section id="sobre-quepos" class="bg-white py-16 sm:py-20">
+<section id="sobre-quepos" class="relative overflow-hidden bg-white py-16 sm:py-20">
+  <!-- Abajo a la izquierda: silueta grande y tenue de un mono colgado de una rama, cortada por el borde (va detrás del texto).
+       En móvil la foto queda abajo y la taparía, así que ahí va más pequeña, detrás del texto y saliendo por la derecha -->
+  <img
+    src={siluetaMono.src}
+    width={siluetaMono.width}
+    height={siluetaMono.height}
+    alt=""
+    loading="lazy"
+    decoding="async"
+    class="pointer-events-none absolute -right-6 top-[24%] h-auto w-[270px] sm:w-[340px] lg:-bottom-4 lg:-left-4 lg:right-auto lg:top-auto lg:w-[460px]"
+  />
   <div
-    class="mx-auto grid w-full items-start gap-10 px-3 sm:max-md:max-w-[540px] md:max-lg:max-w-[720px] lg:max-xl:max-w-[960px] lg:grid-cols-2 lg:gap-12 xl:max-[1399px]:max-w-[1140px] min-[1400px]:max-w-[1320px]"
+    class="relative mx-auto grid w-full items-start gap-10 px-3 sm:max-md:max-w-[540px] md:max-lg:max-w-[720px] lg:max-xl:max-w-[960px] lg:grid-cols-2 lg:gap-12 xl:max-[1399px]:max-w-[1140px] min-[1400px]:max-w-[1320px]"
   >
     <div>
       <div class="flex items-center gap-4">

@@ -9,7 +9,7 @@ import "../../styles/home/hero.css";
 
 ---
 
-<section id="hero" data-end-pin="#mision" data-pin-desktop class="panel pinned sticky top-0 isolate md:relative h-svh w-full overflow-hidden bg-black">
+<section id="hero" data-end-pin="#mision" data-pin-desktop class="panel pinned sticky top-0 isolate md:relative h-lvh w-full overflow-hidden bg-black">
   <!-- El primer cuadro del video como imagen normal debajo del video (en vez de su póster): carga de inmediato con
        prioridad alta y cuenta como LCP, que un póster no. El video se ve encima cuando empieza a reproducirse -->
   <Picture
@@ -32,7 +32,7 @@ import "../../styles/home/hero.css";
     loop
     playsinline
     preload="none"
-    aria-hidden="true"
+    aria-hidden="true"  
   >
     <source src={videoHeroMovilWebm} type='video/webm; codecs="av01.0.05M.08"' media="(max-width: 767px)" />
     <source src={videoHeroMovil} type="video/mp4" media="(max-width: 767px)" />

@@ -1,0 +1,41 @@
+---
+// Nubes colgando del borde de arriba, a la izquierda y a la derecha (esa volteada), con tres capas. Se mecen solas con
+// lapas.css y, dentro de un recuadro con data-lapa-scroll, se corren con el scroll (lapa-scroll.css y lapa-scroll.ts):
+// quien las usa importa esos estilos y ese script.
+// Las usan LapasJS y CupulaNubes
+---
+
+{
+  ["left-0", "right-0 -scale-x-100"].map((lado) => (
+    <svg
+      class={`nube-svg pointer-events-none absolute top-0 z-10 w-[88%] max-w-xl md:w-[42%] ${lado}`}
+      viewBox="0 0 420 180"
+      preserveAspectRatio="xMinYMin meet"
+      aria-hidden="true"
+    >
+      <g class="nube-capa nube-capa-atras">
+        <path
+          class="nube-ola nube-ola-atras"
+          fill="#ffffff"
+          fill-opacity="0.6"
+          d="M-20 0H430C430 42 392 58 360 46C348 82 298 94 270 74C256 108 206 120 178 98C164 134 114 148 88 126C74 160 24 176 -20 160Z"
+        />
+      </g>
+      <g class="nube-capa nube-capa-medio">
+        <path
+          class="nube-ola nube-ola-medio"
+          fill="#ffffff"
+          fill-opacity="0.85"
+          d="M-20 0H370C370 34 338 48 312 38C300 68 258 78 236 62C222 92 180 100 158 82C144 112 104 122 82 104C68 132 28 144 -20 132Z"
+        />
+      </g>
+      <g class="nube-capa nube-capa-frente">
+        <path
+          class="nube-ola nube-ola-frente"
+          fill="#ffffff"
+          d="M-20 0H300C300 26 276 38 254 30C244 54 210 62 192 50C180 74 146 80 128 66C116 90 82 98 64 84C52 106 18 114 -20 104Z"
+        />
+      </g>
+    </svg>
+  ))
+}

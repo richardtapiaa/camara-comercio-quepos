@@ -12,7 +12,8 @@
     "astro": "astro",
     "test": "astro build && playwright test",
     "rendimiento": "node herramientas/medir-rendimiento.mjs",
-    "cuadros": "bash herramientas/cuadros-malecon.sh"
+    "cuadros": "bash herramientas/cuadros-malecon.sh",
+    "bordes": "node herramientas/bordes-rasgados.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^7.1.1",

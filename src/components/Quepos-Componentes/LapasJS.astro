@@ -1,20 +1,10 @@
 ---
-import { getImage } from "astro:assets";
-import lapa from "../../assets/quepos/lapa-sin-fondo.webp";
-
+import { lapaImagen } from "./lapa-imagen";
+import Nubes from "./Nubes.astro";
 import { MagicText } from "../ReactComponentes/QUEPOS/ScrollReveal";
 import "../../styles/quepos/lapa-scroll.css";
 import "../../styles/compartido/cielo-sol.css";
 import "../../styles/quepos/lapas.css";
-
-// Versiones más chicas para pantallas angostas; la más grande es el archivo original. Las dos <img> de la lapa usan
-// el mismo srcset y sizes para que el navegador descargue un solo archivo
-const lapaChicas = await Promise.all(
-  [320, 480].map(async (ancho) => `${(await getImage({ src: lapa, width: ancho, format: "webp", quality: 85 })).src} ${ancho}w`),
-);
-const srcsetLapa = [...lapaChicas, `${lapa.src} ${lapa.width}w`].join(", ");
-// w-[50%] en celular y md:w-[30%] con max-w-md (448 px)
-const sizesLapa = "(min-width: 768px) min(30vw, 448px), min(50vw, 448px)";
 
 const frase =
   "“En Quepos las lapas rojas cruzan el cielo entre la selva y el mar: una señal de que aquí la naturaleza sigue viva.”";
@@ -47,11 +37,11 @@ const frase =
 
   <img
     data-lapa
-    src={lapa.src}
-    srcset={srcsetLapa}
-    sizes={sizesLapa}
-    width={lapa.width}
-    height={lapa.height}
+    src={lapaImagen.src}
+    srcset={lapaImagen.srcset}
+    sizes={lapaImagen.sizes}
+    width={lapaImagen.width}
+    height={lapaImagen.height}
     alt="Lapa roja en vuelo"
     class="absolute bottom-[12%] z-[3] w-[50%] max-w-md md:bottom-[14%] md:w-[30%]"
     loading="lazy"
@@ -59,40 +49,7 @@ const frase =
     draggable="false"
   />
 
-  {
-    ["left-0", "right-0 -scale-x-100"].map((lado) => (
-      <svg
-        class={`nube-svg pointer-events-none absolute top-0 z-10 w-[88%] max-w-xl md:w-[42%] ${lado}`}
-        viewBox="0 0 420 180"
-        preserveAspectRatio="xMinYMin meet"
-        aria-hidden="true"
-      >
-        <g class="nube-capa nube-capa-atras">
-          <path
-            class="nube-ola nube-ola-atras"
-            fill="#ffffff"
-            fill-opacity="0.6"
-            d="M-20 0H430C430 42 392 58 360 46C348 82 298 94 270 74C256 108 206 120 178 98C164 134 114 148 88 126C74 160 24 176 -20 160Z"
-          />
-        </g>
-        <g class="nube-capa nube-capa-medio">
-          <path
-            class="nube-ola nube-ola-medio"
-            fill="#ffffff"
-            fill-opacity="0.85"
-            d="M-20 0H370C370 34 338 48 312 38C300 68 258 78 236 62C222 92 180 100 158 82C144 112 104 122 82 104C68 132 28 144 -20 132Z"
-          />
-        </g>
-        <g class="nube-capa nube-capa-frente">
-          <path
-            class="nube-ola nube-ola-frente"
-            fill="#ffffff"
-            d="M-20 0H300C300 26 276 38 254 30C244 54 210 62 192 50C180 74 146 80 128 66C116 90 82 98 64 84C52 106 18 114 -20 104Z"
-          />
-        </g>
-      </svg>
-    ))
-  }
+  <Nubes />
 
   <div class="selva-capa selva-capa-atras pointer-events-none absolute -inset-x-32 bottom-0 z-[1] h-[4.5rem] suelo-pasto md:h-[max(6rem,7vw)]" aria-hidden="true"></div>
   <div class="selva-capa selva-capa-frente pointer-events-none absolute -inset-x-32 bottom-0 z-[1] h-14 suelo-tierra md:h-[max(5rem,6vw)]" aria-hidden="true"></div>
