@@ -55,6 +55,7 @@ const VerticalLinearStepper = ({ onSubmit }: Props) => {
   const [enviado, setEnviado] = React.useState(false);
   const [enviando, setEnviando] = React.useState(false);
   const previousActiveStepRef = React.useRef(activeStep);
+  const isInitialRenderRef = React.useRef(true);
   const continueButtonRef = React.useRef<HTMLButtonElement>(null);
   const backButtonRef = React.useRef<HTMLButtonElement>(null);
   const resetButtonRef = React.useRef<HTMLButtonElement>(null);
@@ -131,6 +132,11 @@ const VerticalLinearStepper = ({ onSubmit }: Props) => {
   };
 
   React.useEffect(() => {
+    if (isInitialRenderRef.current) {
+      isInitialRenderRef.current = false;
+      return;
+    }
+
     const previousActiveStep = previousActiveStepRef.current;
     previousActiveStepRef.current = activeStep;
 
