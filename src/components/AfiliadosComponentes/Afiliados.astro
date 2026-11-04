@@ -15,9 +15,10 @@ import {
   ShoppingBag,
   TreePalm,
 } from "lucide-react";
-import FondoAfiliacion from "./FondoAfiliacion.astro";
 import { categoriasAfiliados } from "../../content.config";
 import logo from "../../assets/compartido/logo-camara.webp";
+// Logo en estilo sello, el mismo del fondo de Noticias y del 404 (se genera con herramientas/logo-sello.mjs)
+import logoSello from "../../assets/compartido/logo-camara-sello.webp";
 import "../../styles/afiliados/afiliados.css";
 
 const afiliados = (await getCollection("afiliados")).sort((a, b) =>
@@ -47,8 +48,23 @@ const claseIcono = "mt-0.5 size-4 shrink-0 text-[#2780c9]";
 const dominio = (url: string) => new URL(url).hostname.replace(/^www\./, "");
 ---
 
-<section id="afiliados" data-afiliados class="relative isolate scroll-mt-12 overflow-hidden bg-[#E8F4FA] px-4 py-16 sm:px-6 sm:py-24">
-  <FondoAfiliacion id="afiliados-fondo" color="#2780c9" opacidad={0.16} />
+<!-- overflow-x-clip y no overflow-hidden: overflow-hidden rompe el position: sticky del fondo -->
+<section id="afiliados" data-afiliados class="relative isolate scroll-mt-12 overflow-x-clip bg-[#E8F4FA] px-4 py-16 sm:px-6 sm:py-24">
+  <!-- Fondo decorativo (aria-hidden): el sello del logo se queda fijo en la pantalla mientras se recorre todo el
+       directorio, igual que en Noticias. Solo CSS, sin JavaScript -->
+  <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10">
+    <div class="sticky top-0 flex h-svh items-center justify-end overflow-hidden">
+      <img
+        src={logoSello.src}
+        width={logoSello.width}
+        height={logoSello.height}
+        alt=""
+        decoding="async"
+        draggable="false"
+        class="-mr-24 h-auto w-[380px] max-w-none rotate-6 select-none opacity-[0.10] sm:w-[540px] lg:-mr-28 lg:w-[780px]"
+      />
+    </div>
+  </div>
 
   <div class="mx-auto max-w-7xl">
     <div class="mx-auto max-w-3xl text-center">

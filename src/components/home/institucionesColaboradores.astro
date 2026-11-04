@@ -1,0 +1,40 @@
+---
+// Instituciones que colaboran con la Cámara, en un carrusel infinito de logos.
+// Los logos se preparan con herramientas/logos-colaboradores.mjs (sin margen transparente y en WebP).
+// MarqueeColaboradores va sin client:* a propósito: la animación es solo CSS, sale como HTML puro sin JavaScript.
+import { MarqueeColaboradores } from "../ReactComponentes/Home/MarqueeColaboradores";
+import canatur from "../../assets/inicio/colaboradores/canatur-logo.webp";
+import ict from "../../assets/inicio/colaboradores/ict-logo.webp";
+import ina from "../../assets/inicio/colaboradores/ina-logo.webp";
+import manuelAntonio from "../../assets/inicio/colaboradores/manuel-antonio-park.webp";
+
+// gradiente: tonos claros de los colores de cada logo, para el efecto al pasar el mouse o tocar
+const logos = [
+  {
+    imagen: ict,
+    alt: "Instituto Costarricense de Turismo (ICT)",
+    gradiente: { desde: "#d4efcb", medio: "#fff1d6", hasta: "#cfe8f7" },
+  },
+  {
+    imagen: ina,
+    alt: "Instituto Nacional de Aprendizaje (INA)",
+    gradiente: { desde: "#ffe2a8", medio: "#fff6e0", hasta: "#fde3bf" },
+  },
+  {
+    imagen: canatur,
+    alt: "Cámara Nacional de Turismo (Canatur)",
+    gradiente: { desde: "#c9ebcd", medio: "#eef8ef", hasta: "#f1dcbc" },
+  },
+  {
+    imagen: manuelAntonio,
+    alt: "Parque Nacional Manuel Antonio",
+    gradiente: { desde: "#dcebc8", medio: "#f4f1e6", hasta: "#e6d8c3" },
+  },
+].map(({ imagen, alt, gradiente }) => ({ src: imagen.src, width: imagen.width, height: imagen.height, alt, gradiente }));
+---
+
+<MarqueeColaboradores
+  titulo="Instituciones aliadas"
+  descripcion="Trabajamos junto a instituciones nacionales y locales para impulsar el desarrollo de Quepos."
+  logos={logos}
+/>

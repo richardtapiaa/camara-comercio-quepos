@@ -1,13 +1,23 @@
 ---
 import fotoInicio from "../../assets/inicio/foto_inicio.jpg";
 import logoBlanco from "../../assets/compartido/logo-camara-blanco.webp";
+// @font-face de Anton, la letra de los títulos de los heroes
+import "../../styles/compartido/etiqueta-papel.css";
+
+// Cifras de la Cámara. Los años se calculan en cada build, así que se actualizan solos
+const ANIO_FUNDACION = 1995;
+const cifras = [
+  { valor: "43", texto: "empresas afiliadas" },
+  { valor: String(new Date().getFullYear() - ANIO_FUNDACION), texto: `años, desde ${ANIO_FUNDACION}` },
+  { valor: "3", texto: "sectores productivos" },
+];
 ---
 
 <section
   data-foto-parallax
   class="foto-inicio"
   style={`--foto-inicio: url(${fotoInicio.src});`}
-  aria-label="Lapa roja de Quepos"
+  aria-label="La Cámara en cifras"
 >
   <img
     data-foto-parallax-capa
@@ -19,13 +29,28 @@ import logoBlanco from "../../assets/compartido/logo-camara-blanco.webp";
     aria-hidden="true"
   />
   <div class="foto-inicio__overlay" aria-hidden="true"></div>
-  <img
-    class="foto-inicio__logo"
-    src={logoBlanco.src}
-    alt="Cámara de Comercio, Industria y Turismo de Quepos"
-    loading="lazy"
-    decoding="async"
-  />
+  <!-- Cifras y logo: a la derecha sobre el follaje (no tapan la lapa); en celular, abajo al centro -->
+  <div class="foto-inicio__contenido">
+    <!-- dl: cada cifra con su descripción. El dt (descripción) va primero en el HTML para los lectores de pantalla,
+         pero se muestra debajo del número (flex-direction: column-reverse) -->
+    <dl class="foto-inicio__cifras">
+      {
+        cifras.map(({ valor, texto }) => (
+          <div class="foto-inicio__cifra">
+            <dt>{texto}</dt>
+            <dd>{valor}</dd>
+          </div>
+        ))
+      }
+    </dl>
+    <img
+      class="foto-inicio__logo"
+      src={logoBlanco.src}
+      alt="Cámara de Comercio, Industria y Turismo de Quepos"
+      loading="lazy"
+      decoding="async"
+    />
+  </div>
 </section>
 
 <script src="../../scripts/quepos/foto-quepos.ts"></script>
@@ -64,12 +89,59 @@ import logoBlanco from "../../assets/compartido/logo-camara-blanco.webp";
       linear-gradient(0deg, rgb(20 12 10 / 38%), transparent 42%, rgb(20 12 10 / 22%));
   }
 
-  .foto-inicio__logo {
+  .foto-inicio__contenido {
     position: absolute;
     z-index: 2;
-    right: 22%;
-    bottom: 1.5rem;
-    width: clamp(7rem, 10vw, 9.5rem);
+    top: 50%;
+    right: 6%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(0.75rem, 2vw, 1.75rem);
+    transform: translateY(-50%);
+    color: #fff;
+    text-shadow: 0 2px 12px rgb(0 0 0 / 45%);
+  }
+
+  .foto-inicio__cifras {
+    display: flex;
+    margin: 0;
+  }
+
+  .foto-inicio__cifra {
+    display: flex;
+    flex-direction: column-reverse;
+    /* En column-reverse, flex-end es arriba: los números quedan a la misma altura aunque las etiquetas midan distinto */
+    justify-content: flex-end;
+    align-items: center;
+    max-width: 10rem;
+    padding-inline: clamp(0.75rem, 2vw, 1.75rem);
+    text-align: center;
+  }
+
+  /* Línea fina entre cifras */
+  .foto-inicio__cifra + .foto-inicio__cifra {
+    border-left: 1px solid rgb(255 255 255 / 45%);
+  }
+
+  .foto-inicio__cifra dd {
+    margin: 0;
+    font-family: "Anton", "Impact", "Arial Narrow", sans-serif;
+    font-size: clamp(2.25rem, 4.5vw, 4.25rem);
+    line-height: 1;
+  }
+
+  .foto-inicio__cifra dt {
+    margin-top: 0.35rem;
+    font-size: clamp(0.7rem, 0.95vw, 0.875rem);
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .foto-inicio__logo {
+    width: clamp(6rem, 9vw, 9rem);
     height: auto;
     object-fit: contain;
     filter: brightness(0) invert(1);
@@ -95,12 +167,37 @@ import logoBlanco from "../../assets/compartido/logo-camara-blanco.webp";
       object-position: 34% center;
     }
 
+    /* Logo abajo al centro; las cifras, en el centro de la pantalla (la sección mide lo mismo que la pantalla) */
+    .foto-inicio__contenido {
+      inset: 0 1rem 3rem;
+      justify-content: flex-end;
+      transform: none;
+    }
+
+    .foto-inicio__cifras {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      left: 0;
+      transform: translateY(-50%);
+    }
+
+    .foto-inicio__cifra {
+      flex: 1;
+      padding-inline: 0.5rem;
+    }
+
+    .foto-inicio__cifra dd {
+      font-size: 2.75rem;
+    }
+
+    .foto-inicio__cifra dt {
+      font-size: 0.7rem;
+    }
+
     .foto-inicio__logo {
-      right: auto;
-      bottom: 3rem;
-      left: 50%;
       width: 20rem;
-      transform: translateX(-50%);
+      max-width: 100%;
     }
   }
 </style>

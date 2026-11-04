@@ -4,7 +4,11 @@ import Hero from "../components/home/Hero.astro";
 import Mision from "../components/home/Mision.astro";
 import Vision from "../components/home/Vision.astro";
 import CTA from "../components/home/CTA.astro";
-import ObjetivosEspecificos from "../components/home/ObjetivosEspecificos.astro";
+import InstitucionesColaboradores from "../components/home/institucionesColaboradores.astro";
+import MapaQuepos from "../components/ReactComponentes/Home/MapaQuepos.astro";
+import UltimasNoticias from "../components/home/UltimasNoticias.astro";
+import Lazo from "../components/home/Lazo.astro";
+import PorQueAfiliarse from "../components/home/PorQueAfiliarse.astro";
 import FraseCelebre from "../components/AfiliadosComponentes/FraseCelebre.astro";
 import DatosOrganizacion from "../components/compartidos/DatosOrganizacion.astro";
 ---
@@ -20,10 +24,17 @@ import DatosOrganizacion from "../components/compartidos/DatosOrganizacion.astro
   </div>
   <div>
     <Vision />
-    <ObjetivosEspecificos />
   </div>
+    <Lazo />
+    <PorQueAfiliarse />
+  <UltimasNoticias />
+  <MapaQuepos />
+  <InstitucionesColaboradores />
   <CTA />
-  <FraseCelebre />
+
+
+ 
+  
 
   <script src="../scripts/home/paneles.ts"></script>
 </Layout>

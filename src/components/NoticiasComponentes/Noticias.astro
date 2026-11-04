@@ -1,0 +1,11 @@
+---
+// Las publicaciones se descargan durante el build. Noticias.tsx va sin client:* a propósito:
+// sale como HTML puro, sin JavaScript en el navegador.
+import Noticias from "../ReactComponentes/NoticiasComponentes/Noticias";
+import { obtenerPostsFacebook } from "../../lib/facebook";
+import { contacto } from "../../lib/sitio";
+
+const posts = await obtenerPostsFacebook(10);
+---
+
+<Noticias posts={posts} urlFacebook={contacto.facebook} />

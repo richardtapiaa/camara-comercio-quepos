@@ -1,18 +1,25 @@
 ---
-import { getImage, Image } from "astro:assets";
-import logo from "../../assets/compartido/logo-camara.webp";
+import { getImage } from "astro:assets";
 import video from "../../assets/afiliados/hero-afiliados.mp4";
 import videoWebm from "../../assets/afiliados/hero-afiliados.webm";
 import poster from "../../assets/afiliados/hero-afiliados-poster.jpg";
+import BordePincelada from "../compartidos/BordePincelada.astro";
+// etiqueta-papel.css trae el @font-face de Anton; hero-texto.css, los estilos del título
+import "../../styles/compartido/etiqueta-papel.css";
+import "../../styles/compartido/hero-texto.css";
 
 const posterOptimizado = await getImage({ src: poster, width: 1920, format: "webp", quality: 70 });
 ---
 
-<section data-parallax-afiliados class="relative isolate flex h-lvh min-h-[560px] w-full items-center justify-center pb-[calc(100lvh-100svh)] overflow-hidden bg-black">
-  <!-- data-video-diferido: empieza a descargarse cuando la página terminó de cargar (scripts/compartido/videos.ts) -->
+<section
+  id="hero"
+  aria-labelledby="titulo-afiliados"
+  class="relative isolate flex h-[78svh] min-h-[520px] items-end overflow-hidden bg-[#2b4a5c]"
+>
+  <!-- Video decorativo. data-video-diferido: muestra el póster y empieza a descargarse cuando la página terminó de
+       cargar; con "reducir movimiento" se queda en el póster (scripts/compartido/videos.ts) -->
   <video
     data-video-diferido
-    data-parallax-fondo
     poster={posterOptimizado.src}
     class="absolute inset-0 -z-20 size-full object-cover"
     muted
@@ -24,28 +31,13 @@ const posterOptimizado = await getImage({ src: poster, width: 1920, format: "web
     <source src={videoWebm} type='video/webm; codecs="av01.0.08M.08"' />
     <source src={video} type="video/mp4" />
   </video>
+  <div class="absolute inset-0 -z-10 bg-gradient-to-t from-black/75 via-black/40 to-black/45" aria-hidden="true"></div>
 
-  <div class="pointer-events-none absolute inset-0 -z-10 bg-black/35" aria-hidden="true"></div>
-  <div
-    class="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-black/30 via-transparent to-black/25"
-    aria-hidden="true"
-  ></div>
-  <div data-parallax-oscuro class="pointer-events-none absolute inset-0 -z-10 bg-black opacity-0" aria-hidden="true"></div>
-
-  <div data-parallax-contenido class="px-6 text-center text-white">
-    <h1 class="text-5xl font-bold uppercase tracking-tight drop-shadow-[0_4px_24px_rgba(0,0,0,0.45)] sm:text-6xl md:text-8xl">
-      Afiliados
-    </h1>
-    <Image
-      src={logo}
-      alt="Cámara de Comercio, Industria y Turismo de Quepos"
-      class="mx-auto mt-8 h-36 w-auto drop-shadow-[0_4px_24px_rgba(0,0,0,0.45)] sm:h-40 md:mt-10 md:h-48"
-      loading="eager"
-    />
-    <slot />
+  <div class="mx-auto w-full max-w-[1320px] px-6 pb-[clamp(5rem,12vh,8rem)] text-white sm:px-10">
+    <p class="hero-texto-kicker">Cámara de Comercio de Quepos</p>
+    <h1 id="titulo-afiliados" class="hero-texto-titulo">Afiliados</h1>
   </div>
+
+  <!-- Del color de la sección de abajo (el directorio de afiliados) -->
+  <BordePincelada color="text-[#E8F4FA]" />
 </section>
-
-<script src="../../scripts/afiliados/parallax.ts"></script>
-
-
