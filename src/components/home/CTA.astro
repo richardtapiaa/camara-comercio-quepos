@@ -5,6 +5,7 @@ import actividades1 from "../../assets/actividades/actividades-1.jpg";
 import actividades2 from "../../assets/actividades/actividades-2.jpg";
 import actividades3 from "../../assets/actividades/actividades-3.jpg";
 import actividades4 from "../../assets/actividades/actividades-4.jpg";
+import Imagen from "./imagen.astro";
 
 // Cada foto se muestra a 148-268 px de ancho: 300 y 600 alcanzan para casi todas las pantallas, 900 para las de alta densidad
 const anchos = [300, 600, 900];
@@ -16,4 +17,5 @@ const imagenesVisitantes = [
 ];
 ---
 
+<Imagen />
 <CTAVisitantes client:visible imagenes={imagenesVisitantes} />

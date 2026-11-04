@@ -1,0 +1,106 @@
+---
+import fotoInicio from "../../assets/inicio/foto_inicio.jpg";
+import logoBlanco from "../../assets/compartido/logo-camara-blanco.webp";
+---
+
+<section
+  data-foto-parallax
+  class="foto-inicio"
+  style={`--foto-inicio: url(${fotoInicio.src});`}
+  aria-label="Lapa roja de Quepos"
+>
+  <img
+    data-foto-parallax-capa
+    class="foto-inicio__foto"
+    src={fotoInicio.src}
+    alt=""
+    loading="lazy"
+    decoding="async"
+    aria-hidden="true"
+  />
+  <div class="foto-inicio__overlay" aria-hidden="true"></div>
+  <img
+    class="foto-inicio__logo"
+    src={logoBlanco.src}
+    alt="Cámara de Comercio, Industria y Turismo de Quepos"
+    loading="lazy"
+    decoding="async"
+  />
+</section>
+
+<script src="../../scripts/quepos/foto-quepos.ts"></script>
+
+<style>
+  .foto-inicio {
+    position: relative;
+    isolation: isolate;
+    width: 100%;
+    height: clamp(14rem, 28vw, 26rem);
+    overflow: hidden;
+    background: #251b19;
+  }
+
+  .foto-inicio__foto,
+  .foto-inicio__overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .foto-inicio__foto {
+    display: block;
+    top: -25%;
+    height: 150%;
+    object-fit: cover;
+    object-position: center 20%;
+    will-change: transform;
+  }
+
+  .foto-inicio__overlay {
+    z-index: 1;
+    background:
+      linear-gradient(90deg, rgb(20 12 10 / 42%), transparent 48%, rgb(20 12 10 / 34%)),
+      linear-gradient(0deg, rgb(20 12 10 / 38%), transparent 42%, rgb(20 12 10 / 22%));
+  }
+
+  .foto-inicio__logo {
+    position: absolute;
+    z-index: 2;
+    right: 22%;
+    bottom: 1.5rem;
+    width: clamp(7rem, 10vw, 9.5rem);
+    height: auto;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+  }
+
+  @media (min-width: 768px) {
+    .foto-inicio__foto {
+      top: 0;
+      height: 100%;
+      will-change: auto;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .foto-inicio {
+      height: 100svh;
+      min-height: 100vh;
+    }
+
+    .foto-inicio__foto {
+      top: -12.5%;
+      height: 125%;
+      object-position: 34% center;
+    }
+
+    .foto-inicio__logo {
+      right: auto;
+      bottom: 3rem;
+      left: 50%;
+      width: 20rem;
+      transform: translateX(-50%);
+    }
+  }
+</style>
