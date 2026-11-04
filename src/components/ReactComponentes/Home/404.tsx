@@ -1,8 +1,10 @@
-'use client';
+  'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { FlowButton } from '@/components/ui/flow-button';
 import logoCamara from '@/assets/compartido/logo-camara.webp';
+// Logo en estilo "sello" (como el mono de SobreQuepos); se genera con herramientas/logo-sello.mjs
+import logoSello from '@/assets/compartido/logo-camara-sello.webp';
 
 const containerVariants = {
   hidden: {
@@ -102,7 +104,19 @@ const ghostVariants = {
 
 export function NotFound() {
   return (
-    <div className="flex min-h-svh flex-col items-center justify-center bg-white px-4">
+    <div className="relative isolate flex min-h-svh flex-col items-center justify-center overflow-hidden bg-white px-4">
+      {/* Fondo decorativo (alt vacío y aria-hidden): logo grande y tenue, girado y cortado por el borde de abajo a la
+          derecha, detrás del contenido. En móvil va más pequeño para no tapar el texto */}
+      <img
+        src={logoSello.src}
+        width={logoSello.width}
+        height={logoSello.height}
+        alt=""
+        aria-hidden="true"
+        decoding="async"
+        draggable={false}
+        className="pointer-events-none absolute -bottom-6 -right-28 -z-10 h-auto w-[520px] max-w-none -rotate-6 select-none opacity-[0.18] md:-bottom-24 md:-right-32 md:w-[720px] lg:w-[820px]"
+      />
       <AnimatePresence mode="wait">
         <motion.div
           className="relative z-10 text-center"

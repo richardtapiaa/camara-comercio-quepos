@@ -1,0 +1,88 @@
+---
+// "¿Por qué afiliarse?": logo de la Cámara al centro, una frase, un párrafo y cuatro beneficios en tarjetas con un
+// ícono. Astro puro: sin JavaScript.
+// Los beneficios son 4 de los objetivos específicos de la Cámara, con sus mismos íconos.
+import { Image } from "astro:assets";
+import { ArrowRight } from "lucide-react";
+import logo from "../../assets/compartido/logo-camara.webp";
+import FondoSello from "../compartidos/FondoSello";
+import iconoDialogo from "../../assets/icons-svg/inicio-icons/dialogo.svg";
+import iconoManos from "../../assets/icons-svg/inicio-icons/manos.svg";
+import iconoCanton from "../../assets/icons-svg/inicio-icons/canton.svg";
+import iconoMejoras from "../../assets/icons-svg/inicio-icons/mejoraras.svg";
+
+const beneficios = [
+  {
+    icono: iconoDialogo,
+    titulo: "Diálogo y consenso",
+    texto: "Buscamos el mayor nivel de consenso mediante el diálogo con los sectores de toda la sociedad.",
+  },
+  {
+    icono: iconoManos,
+    titulo: "Apoyo al gobierno local",
+    texto: "Apoyamos la toma de decisiones del gobierno local para un mayor desarrollo socioeconómico.",
+  },
+  {
+    icono: iconoCanton,
+    titulo: "Promoción del cantón",
+    texto: "Promovemos a Quepos a nivel nacional e internacional.",
+  },
+  {
+    icono: iconoMejoras,
+    titulo: "Personas preparadas",
+    texto: "Mejoramos las aptitudes y actitudes de las personas del cantón para que nuestros visitantes se sientan como en casa.",
+  },
+];
+---
+
+<!-- relative isolate overflow-x-clip: los necesita el sello de fondo (ver compartidos/FondoSello.tsx) -->
+<section
+  aria-labelledby="titulo-por-que-afiliarse"
+  class="relative isolate overflow-x-clip bg-white px-6 py-20 sm:px-10 sm:py-24"
+>
+  <FondoSello lado="izquierda" />
+  <div class="mx-auto max-w-6xl text-center">
+    <h2 id="titulo-por-que-afiliarse" class="text-2xl font-semibold text-slate-900 sm:text-3xl">¿Por qué afiliarse?</h2>
+
+    <!-- El logo se muestra a 300 px en celular y 460 px desde tablet. El original mide 506 px de ancho, así que no se
+         generan versiones más grandes (agrandarlo solo lo vería borroso) -->
+    <Image
+      src={logo}
+      alt="Cámara de Comercio, Industria y Turismo de Quepos"
+      widths={[300, 460, logo.width]}
+      sizes="(min-width: 640px) 460px, 300px"
+      loading="lazy"
+      class="mx-auto mt-10 h-auto w-[300px] sm:w-[460px]"
+    />
+
+    <p class="mt-10 text-2xl font-medium text-slate-900 sm:text-3xl">Juntos hacemos crecer a Quepos</p>
+    <p class="mx-auto mt-4 max-w-[62ch] text-lg leading-relaxed text-slate-600">
+      La Cámara reúne a los comercios, las empresas turísticas y las industrias del cantón. Como afiliado, su negocio gana
+      visibilidad, se capacita y forma parte de las decisiones que impulsan el desarrollo de Quepos.
+    </p>
+  </div>
+
+  <ul role="list" class="mx-auto mt-14 grid max-w-7xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    {
+      beneficios.map(({ icono, titulo, texto }) => (
+        <li class="flex flex-col rounded-[2rem] bg-[#f3f5f8] p-7">
+          <!-- Ícono decorativo (alt vacío): el título de la tarjeta ya dice de qué trata. Como <img> y no insertado en el
+               HTML: los cuatro pesan 28 KB, así solo se descargan al llegar a la sección y quedan en caché -->
+          <img src={icono.src} alt="" width="56" height="56" loading="lazy" decoding="async" class="size-14" />
+          <h3 class="mt-auto pt-14 text-lg font-semibold text-slate-900">{titulo}</h3>
+          <p class="mt-2 leading-relaxed text-slate-600">{texto}</p>
+        </li>
+      ))
+    }
+  </ul>
+
+  <div class="mt-12 flex justify-center">
+    <a
+      href="/unete"
+      class="inline-flex items-center gap-2 rounded-full bg-[#2b4a5c] px-6 py-3.5 font-semibold text-white transition-colors hover:bg-[#1d3542] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#2b4a5c] motion-reduce:transition-none"
+    >
+      Quiero afiliarme
+      <ArrowRight className="size-4" aria-hidden="true" />
+    </a>
+  </div>
+</section>

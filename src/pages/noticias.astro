@@ -1,0 +1,15 @@
+---
+import Layout from '../layouts/Layout.astro';
+import logo from '../assets/compartido/logo-camara.webp';
+import Hero from '../components/NoticiasComponentes/Hero.astro';
+import Noticias from '../components/NoticiasComponentes/Noticias.astro';
+---
+
+<Layout
+  titulo="Noticias"
+  descripcion="Noticias de la Cámara de Comercio de Quepos"
+  imagen={{ src: logo, alt: 'Logo de la Cámara de Comercio de Quepos' }}
+>
+  <Hero />
+  <Noticias />
+</Layout>
