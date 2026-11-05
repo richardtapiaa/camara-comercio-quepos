@@ -2,7 +2,8 @@
 // El distrito Quepos es un enlace a /quepos. Los trazos salen de src/data/mapa-quepos.json (se genera con
 // herramientas/mapa-quepos.mjs).
 // Se usa SIN directiva client:* (ver MapaQuepos.astro): el enlace y el resaltado al pasar el mouse son HTML y CSS,
-// así que sale como SVG puro, sin JavaScript.
+// así que sale como SVG puro, sin React en el navegador. La animación al tocar Quepos es un script aparte en
+// MapaQuepos.astro, que encuentra el mapa y el distrito por los atributos data-mapa-quepos y data-distrito.
 import mapa from "../../../data/mapa-quepos.json";
 
 type IdDistrito = "quepos" | "savegre" | "naranjito";
@@ -28,6 +29,7 @@ const distritos = mapa.distritos.map((d) => {
 export default function MapaQuepos() {
   return (
     <svg
+      data-mapa-quepos=""
       viewBox={mapa.viewBox}
       className="h-auto w-full overflow-visible"
       role="group"
@@ -38,7 +40,7 @@ export default function MapaQuepos() {
           <path
             d={d.d}
             fill={d.color}
-            stroke="#f5f3ee"
+            stroke="#ffffff"
             strokeWidth={3}
             strokeLinejoin="round"
             className={
@@ -50,7 +52,7 @@ export default function MapaQuepos() {
         );
         return d.enlace ? (
           // Enlace dentro del SVG: funciona con clic, toque y teclado (Tab + Enter) sin JavaScript
-          <a key={d.id} href={d.enlace} aria-label={`Distrito ${d.nombre}: conozca Quepos`} className="group cursor-pointer outline-none">
+          <a key={d.id} href={d.enlace} data-distrito={d.id} aria-label={`Distrito ${d.nombre}: conozca Quepos`} className="group cursor-pointer outline-none">
             {forma}
             {/* Contorno visible al llegar con el teclado */}
             <path
@@ -73,6 +75,7 @@ export default function MapaQuepos() {
       {distritos.map((d) => (
         <text
           key={`n-${d.id}`}
+          data-distrito={d.id}
           x={d.etiqueta[0]}
           y={d.etiqueta[1]}
           textAnchor="middle"

@@ -6,19 +6,7 @@ import { gsap } from "gsap";
 import { setWorkerUrl } from "maplibre-gl";
 import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?url";
 import Supercluster, { type AnyProps, type ClusterFeature, type PointFeature } from "supercluster";
-import {
-  Factory,
-  IdCard,
-  Info,
-  MapPin,
-  Maximize2,
-  Search,
-  Shapes,
-  ShoppingBag,
-  TreePalm,
-  X,
-  type LucideIcon,
-} from "lucide-react";
+import { IdCard, Info, MapPin, Maximize2, Search, X } from "lucide-react";
 
 import {
   Map,
@@ -45,13 +33,6 @@ const CANTON_QUEPOS: [[number, number], [number, number]] = [
 
 // El padding superior deja libre el espacio del navbar fijo (h-24)
 const PADDING_CANTON = { top: 126, right: 30, bottom: 30, left: 30 };
-
-// Mismos íconos por categoría que la página de afiliados
-const iconosCategoria: Record<string, LucideIcon> = {
-  Comercio: ShoppingBag,
-  Turismo: TreePalm,
-  Industria: Factory,
-};
 
 export type AfiliadoMapa = {
   id: string;
@@ -556,8 +537,6 @@ function TarjetaAfiliado({
     return () => window.removeEventListener("keydown", alPresionar);
   }, [onCerrar]);
 
-  const IconoCategoria = iconosCategoria[afiliado.categoria] ?? Shapes;
-
 
   const enlace = afiliado.web
     ? { href: afiliado.web, texto: "Visitar sitio web" }
@@ -576,15 +555,11 @@ function TarjetaAfiliado({
     >
       <div className="flex items-center gap-3">
         <img src={afiliado.logo.src} alt="" className="h-10 w-auto max-w-40 object-contain" />
-        <span className="ml-auto inline-flex shrink-0 items-center gap-1.5 rounded-xl bg-[#a5e3ea] px-3 py-1.5 text-sm font-medium text-slate-900">
-          <IconoCategoria className="size-4" aria-hidden="true" />
-          {afiliado.categoria}
-        </span>
         <button
           type="button"
           onClick={onCerrar}
           aria-label="Cerrar"
-          className="flex size-9 shrink-0 items-center justify-center rounded-full border border-slate-300 text-slate-700 transition-colors hover:bg-white"
+          className="ml-auto flex size-9 shrink-0 items-center justify-center rounded-full border border-slate-300 text-slate-700 transition-colors hover:bg-white"
         >
           <X className="size-4" />
         </button>

@@ -1,74 +1,199 @@
 ---
-import { Image } from "astro:assets";
+// Pie de página: fondo negro carbón con un brillo crema muy suave arriba a la izquierda y el sello de la Cámara en
+// blanco, muy tenue, de fondo. Columnas con un título en crema y una línea fina debajo:
+//   1. Una frase sobre la Cámara y Quepos, y el contacto (correo, teléfono y ubicación) con íconos.
+//   2 y 3. Enlaces por grupos, los mismos del navbar: La Cámara y Cantón Quepos.
+//   4. Participe, redes sociales y, abajo, el logo de la Cámara (el del navbar, en un recuadro blanco para que sus
+//      letras oscuras se lean sobre el negro).
+// Al final, separada por una línea, la barra con el copyright. Los datos de contacto salen de lib/sitio.ts.
+// Astro puro: sin JavaScript.
+import { Picture } from "astro:assets";
+import { Mail, MapPin, Phone } from "lucide-react";
 import logo from "../../assets/compartido/logo-camara.webp";
-import footerImage from "../../assets/compartido/pie-pagina.webp";
-import { variantesCapa } from "../../lib/imagenes";
-import "../../styles/home/pie-pagina.css";
+import FondoSello from "../compartidos/FondoSello";
+import { contacto, nombreSitio } from "../../lib/sitio";
 
-const anchosDibujo = [footerImage.width];
-const dibujoAvif = await variantesCapa(footerImage, anchosDibujo, 55, "avif");
-const dibujoWebp = await variantesCapa(footerImage, anchosDibujo, 80);
-const dibujos = [
-  { clases: "absolute inset-0 z-0 hidden h-full w-full object-cover object-center sm:block", sizes: "100vw" },
-  { clases: "pie-dibujo absolute left-0 top-0 z-0 w-[220vw] max-w-none sm:hidden", sizes: "220vw" },
-  { clases: "pie-dibujo absolute bottom-0 right-0 z-0 w-[220vw] max-w-none sm:hidden", sizes: "220vw" },
+const grupos = [
+  {
+    titulo: "La Cámara",
+    enlaces: [
+      { label: "Inicio", href: "/" },
+      { label: "Afiliados", href: "/afiliados" },
+      { label: "Mapa de afiliados", href: "/mapa-afiliados" },
+      { label: "Capacitaciones", href: "/capacitaciones" },
+      { label: "Noticias", href: "/noticias" },
+    ],
+  },
+  {
+    titulo: "Cantón Quepos",
+    enlaces: [
+      { label: "Quepos", href: "/quepos" },
+      { label: "Hospitalidad & Gastronomía", href: "/hospitalidad" },
+      { label: "Visítenos", href: "/visitenos" },
+      { label: "Galería", href: "/queposgaleria" },
+    ],
+  },
 ];
 
-const links = [
-  { label: "Inicio", href: "/" },
-  { label: "Contacto", href: "/contacto" },
+const participe = [
   { label: "Únete", href: "/unete" },
+  { label: "Bolsa de empleo", href: "/bolsa-de-empleo" },
+  { label: "Contacto", href: "/contacto" },
 ];
 
-const socialLinks = {
-  facebook: "https://www.facebook.com/CCITQuepos",
-  instagram: "https://www.instagram.com/camaradequepos",
-};
+// El correo se puede partir después de la @ si la columna queda angosta
+const [usuarioCorreo, dominioCorreo] = contacto.email.split("@");
+const telefono = contacto.telefono.replace(/[^+\d]/g, "");
+
+const claseTitulo = "text-lg font-medium text-[#f1dcbc]";
+const claseLinea = "mt-4 block h-px w-full bg-white/20";
+const claseFoco = "rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f1dcbc]";
+const claseEnlace = `${claseFoco} text-[0.95rem] text-white/75 transition-colors hover:text-white motion-reduce:transition-none`;
+const claseContacto = `${claseFoco} flex items-start gap-3 text-[1.05rem] text-white/85 transition-colors hover:text-white motion-reduce:transition-none`;
+// Redes: el ícono (los mismos SVG del navbar) en un círculo y el nombre al lado
+const claseRed = `${claseFoco} group flex items-center gap-3 text-[0.95rem] text-white/75 transition-colors hover:text-white motion-reduce:transition-none`;
+const claseIconoRed =
+  "flex size-9 shrink-0 items-center justify-center rounded-full border border-white/20 text-[#f1dcbc] transition-colors group-hover:border-white/50 group-hover:text-white motion-reduce:transition-none";
 ---
 
-<footer class="relative isolate overflow-hidden bg-[#e5f8fc] text-[#087b8d]">
-  <picture>
-    <source type="image/avif" srcset={dibujoAvif.srcSet} sizes={dibujos[0].sizes} />
-    <img src={dibujoWebp.src} srcset={dibujoWebp.srcSet} sizes={dibujos[0].sizes} alt="" aria-hidden="true" class={dibujos[0].clases} loading="lazy" decoding="async" width={footerImage.width} height={footerImage.height} />
-  </picture>
-  {
-    dibujos.slice(1).map(({ clases, sizes }) => (
-      <picture>
-        <source type="image/avif" srcset={dibujoAvif.srcSet} sizes={sizes} />
-        <img src={dibujoWebp.src} srcset={dibujoWebp.srcSet} sizes={sizes} alt="" aria-hidden="true" class={clases} loading="lazy" decoding="async" width={footerImage.width} height={footerImage.height} />
-      </picture>
-    ))
-  }
+<footer class="relative isolate overflow-hidden bg-[#17191c] text-white">
+  <!-- Brillo crema muy suave arriba a la izquierda, para que el fondo no se vea plano -->
   <div
-    class="absolute inset-0 z-0 hidden bg-[radial-gradient(ellipse_34%_62%_at_center,rgb(229_248_252/0.85)_40%,rgb(229_248_252/0)_100%)] sm:block"
     aria-hidden="true"
-  ></div>
+    class="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(60rem_28rem_at_0%_0%,rgb(241_220_188/0.07),transparent_70%)]"
+  >
+  </div>
+  <!-- Sello de la Cámara: en blanco (el original es azul oscuro y no se vería), a la izquierda para no chocar con el
+       logo de la derecha, y centrado en el pie, no fijo en la pantalla, porque el pie es más bajo que ella -->
+  <FondoSello lado="izquierda" claro fijo={false} opacidad={0.06} />
 
-  <div class="pie-contenido relative z-10 mx-auto flex min-h-[175vw] max-w-7xl flex-col items-center justify-center px-5 py-14 text-center sm:min-h-[30rem] sm:px-10 sm:py-20">
-    <Image
-      src={logo}
-      alt="Cámara de Comercio, Industria y Turismo de Quepos"
-      class="pie-logo mb-6 h-28 w-auto sm:mb-8 sm:h-24"
-      loading="lazy"
-    />
-    <p class="footer-kicker mb-2 text-[11px] font-bold uppercase tracking-[0.3em] text-[#05485a] sm:text-sm sm:tracking-[0.38em]">Cámara de Comercio de Quepos</p>
-    <h2 class="footer-display text-[clamp(2.15rem,10vw,3.8rem)] font-black uppercase leading-[0.98] tracking-[-0.04em] text-[#07566b] sm:text-5xl md:text-6xl">Mantente en contacto</h2>
-    <p class="footer-description mt-4 max-w-[20rem] text-base font-semibold leading-relaxed text-[#05485a] sm:max-w-lg sm:text-lg">
-      Recibe noticias, oportunidades y experiencias de nuestro destino.
-    </p>
+  <div class="mx-auto max-w-7xl px-6 sm:px-10">
+    <div
+      class="grid grid-cols-2 gap-x-6 gap-y-14 py-16 sm:py-20 md:grid-cols-3 md:gap-x-10 lg:grid-cols-[1.5fr_1fr_1.15fr_1fr] lg:gap-x-12"
+    >
+      <!-- 1. Sobre la Cámara y contacto (fila propia en celular y tablet) -->
+      <div class="col-span-2 md:col-span-3 lg:col-span-1">
+        <p class="max-w-md text-[0.95rem] leading-relaxed text-white/70">
+          La Cámara de Comercio, Industria y Turismo de Quepos reúne a los comercios, las empresas turísticas y las
+          industrias del cantón, en el Pacífico central de Costa Rica: a unas 3 horas de San José y a minutos del Parque
+          Nacional Manuel Antonio.
+        </p>
 
-    <div class="mt-7 flex items-center gap-4 sm:mt-8">
-      <a href={socialLinks.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="footer-social">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 22v-8.2h2.8l.5-3.3h-3.3V8.4c0-.9.3-1.6 1.7-1.6h1.7V4a22 22 0 0 0-2.5-.1c-2.5 0-4.2 1.5-4.2 4.3v2.3H7.2v3.3H10V22h3.5Z" /></svg>
-      </a>
-      <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="footer-social">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" /></svg>
-      </a>
+        <h2 class={`mt-12 ${claseTitulo}`}>Contacto</h2>
+        <span aria-hidden="true" class={`${claseLinea} max-w-[21rem]`}></span>
+        <address class="mt-6 space-y-4 not-italic">
+          <a href={`mailto:${contacto.email}`} class={claseContacto}>
+            <Mail className="mt-1 size-5 shrink-0 text-[#f1dcbc]" aria-hidden="true" />
+            <span>Correo: {usuarioCorreo}@<wbr />{dominioCorreo}</span>
+          </a>
+          <a href={`tel:${telefono}`} class={claseContacto}>
+            <Phone className="mt-1 size-5 shrink-0 text-[#f1dcbc]" aria-hidden="true" />
+            <span>Teléfono: {contacto.telefono}</span>
+          </a>
+          <p class="flex items-start gap-3 text-[1.05rem] text-white/85">
+            <MapPin className="mt-1 size-5 shrink-0 text-[#f1dcbc]" aria-hidden="true" />
+            <span>Quepos, Puntarenas, Costa Rica</span>
+          </p>
+        </address>
+      </div>
+
+      <!-- 2 y 3. Enlaces por grupos -->
+      {
+        grupos.map(({ titulo, enlaces }) => (
+          <nav aria-label={titulo}>
+            <h2 class={claseTitulo}>{titulo}</h2>
+            <span aria-hidden="true" class={`${claseLinea} max-w-[12rem]`} />
+            <ul class="mt-6 space-y-4">
+              {enlaces.map(({ label, href }) => (
+                <li>
+                  <a href={href} class={claseEnlace}>
+                    {label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))
+      }
+
+      <!-- 4. Participe, redes y logo (a lo ancho en el celular) -->
+      <div class="col-span-2 flex flex-col md:col-span-1">
+        <nav aria-label="Participe">
+          <h2 class={claseTitulo}>Participe</h2>
+          <span aria-hidden="true" class={`${claseLinea} max-w-[12rem]`}></span>
+          <ul class="mt-6 space-y-4">
+            {
+              participe.map(({ label, href }) => (
+                <li>
+                  <a href={href} class={claseEnlace}>
+                    {label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+
+        <h2 class={`mt-12 ${claseTitulo}`}>Redes sociales</h2>
+        <span aria-hidden="true" class={`${claseLinea} max-w-[12rem]`}></span>
+        <ul class="mt-6 space-y-3">
+          <li>
+            <a href={contacto.facebook} target="_blank" rel="noopener noreferrer" class={claseRed}>
+              <span class={claseIconoRed}>
+                <svg viewBox="0 0 24 24" fill="currentColor" class="size-4" aria-hidden="true">
+                  <path
+                    d="M13.5 22v-8.2h2.8l.5-3.3h-3.3V8.4c0-.9.3-1.6 1.7-1.6h1.7V4a22 22 0 0 0-2.5-.1c-2.5 0-4.2 1.5-4.2 4.3v2.3H7.2v3.3H10V22h3.5Z"
+                  ></path>
+                </svg>
+              </span>
+              Facebook<span class="sr-only"> (se abre en otra pestaña)</span>
+            </a>
+          </li>
+          <li>
+            <a href={contacto.instagram} target="_blank" rel="noopener noreferrer" class={claseRed}>
+              <span class={claseIconoRed}>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="size-4"
+                  aria-hidden="true"
+                >
+                  <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+                  <circle cx="12" cy="12" r="4"></circle>
+                  <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle>
+                </svg>
+              </span>
+              Instagram<span class="sr-only"> (se abre en otra pestaña)</span>
+            </a>
+          </li>
+        </ul>
+
+        <!-- El logo del navbar, en un recuadro blanco para que sus letras oscuras se lean -->
+        <a
+          href="/"
+          class="mt-12 self-start rounded-2xl bg-white px-3 py-1.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f1dcbc]"
+        >
+          <Picture
+            src={logo}
+            formats={["avif", "webp"]}
+            quality={60}
+            alt={nombreSitio}
+            widths={[200, 400]}
+            sizes="168px"
+            class="h-20 w-auto"
+            loading="lazy"
+          />
+        </a>
+      </div>
     </div>
 
-    <nav class="mt-9 flex max-w-[19rem] flex-wrap justify-center gap-x-7 gap-y-3 text-xs font-bold uppercase tracking-[0.2em] sm:mt-10 sm:max-w-none sm:gap-x-10 sm:text-sm" aria-label="Enlaces secundarios">
-      {links.map((link) => <a href={link.href} class="footer-link">{link.label}</a>)}
-    </nav>
-    <p class="footer-copyright mt-8 max-w-[18rem] text-xs leading-relaxed tracking-wide text-[#05485a] sm:max-w-none sm:text-sm">© {new Date().getFullYear()} Cámara de Comercio, Industria y Turismo de Quepos</p>
+    <!-- Barra de abajo -->
+    <div class="border-t border-white/10 py-6">
+      <p class="text-sm text-white/60">© {new Date().getFullYear()} {nombreSitio}. Todos los derechos reservados.</p>
+    </div>
   </div>
 </footer>

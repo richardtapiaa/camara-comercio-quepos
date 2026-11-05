@@ -20,7 +20,8 @@ export interface LogoColaborador {
 
 interface MarqueeColaboradoresProps {
   titulo: string;
-  descripcion: string;
+  /** Texto opcional debajo del título */
+  descripcion?: string;
   logos: LogoColaborador[];
   velocidad?: "normal" | "lenta" | "rapida";
   className?: string;
@@ -56,10 +57,16 @@ export function MarqueeColaboradores({ titulo, descripcion, logos, velocidad = "
 
       {/* Encabezado centrado, como el de ¿Por qué afiliarse? y Últimas noticias */}
       <div className="mx-auto max-w-3xl px-6 text-center">
-        <h2 id="titulo-colaboradores" className="text-2xl font-semibold text-slate-900 sm:text-3xl">
-          {titulo}
+        {/* Una rayita decorativa a cada lado del título (ocultas para lectores de pantalla) */}
+        <h2
+          id="titulo-colaboradores"
+          className="flex items-center justify-center gap-3 text-2xl font-semibold text-slate-900 sm:gap-6 sm:text-3xl"
+        >
+          <span aria-hidden="true" className="h-0.5 w-6 shrink-0 rounded-full bg-[#2780c9] sm:w-16" />
+          <span className="text-balance sm:whitespace-nowrap">{titulo}</span>
+          <span aria-hidden="true" className="h-0.5 w-6 shrink-0 rounded-full bg-[#2780c9] sm:w-16" />
         </h2>
-        <p className="mx-auto mt-4 max-w-[62ch] text-lg leading-relaxed text-slate-600">{descripcion}</p>
+        {descripcion && <p className="mx-auto mt-4 max-w-[62ch] text-lg leading-relaxed text-slate-600">{descripcion}</p>}
       </div>
 
       <ul className="sr-only">
