@@ -142,30 +142,6 @@ document.querySelectorAll<HTMLElement>("[data-malecon-scroll]").forEach((seccion
   const empujada = seccion.dataset.entradaEmpuja
     ? document.querySelector(seccion.dataset.entradaEmpuja)?.querySelector<HTMLElement>("[data-malecon-lienzo]")?.parentElement
     : null;
-  // Frases del título que van cambiando con el scroll ([data-malecon-frase] apiladas en el mismo lugar; las que no son
-  // la primera arrancan escondidas con translate-y-10 opacity-0). Solo se tocan los estilos de las que cambiaron: en la
-  // mayor parte del recorrido no cambia ninguna
-  const frases = [...seccion.querySelectorAll<HTMLElement>("[data-malecon-frase]")];
-  const ultimos = frases.map(() => NaN);
-  const moverFrases = (progreso: number) => {
-    if (frases.length < 2) return;
-    const posicion = progreso * (frases.length - 1);
-    frases.forEach((frase, k) => {
-      const distancia = posicion - k;
-      // Se queda quieta cerca de su momento y cambia en la mitad del camino hacia la siguiente
-      const salida = Math.round(Math.min(1, Math.max(0, (Math.abs(distancia) - 0.25) / 0.5)) * 1000) / 1000;
-      // Ya pasada: sube y se desvanece. Por venir: entra desde abajo (el signo distingue las dos)
-      const desplazamiento = (distancia > 0 ? -1 : 1) * salida * 40;
-      if (desplazamiento === ultimos[k]) return;
-      ultimos[k] = desplazamiento;
-      const aparicion = (1 - salida).toFixed(3);
-      frase.style.opacity = aparicion;
-      frase.style.translate = `0 ${desplazamiento}px`;
-      // Sus animales crecen al llegar y el perezoso solo se mece mientras se ve (ver FraseDecorada.astro)
-      frase.style.setProperty("--aparicion", aparicion);
-      frase.style.setProperty("--animacion", salida < 1 ? "running" : "paused");
-    });
-  };
   let cuadro = 0;
   const alDesplazar = () => {
     cuadro = 0;
@@ -175,7 +151,6 @@ document.querySelectorAll<HTMLElement>("[data-malecon-scroll]").forEach((seccion
     const recorrido = rect.height - pantalla - entrada;
     const progreso = recorrido > 0 ? Math.min(1, Math.max(0, (-rect.top - entrada) / recorrido)) : 0;
     actual = Math.round(progreso * (total - 1));
-    moverFrases(progreso);
     dibujar(actual);
     preparar();
     if (lateral) {

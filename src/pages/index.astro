@@ -9,8 +9,10 @@ import MapaQuepos from "../components/ReactComponentes/Home/MapaQuepos.astro";
 import UltimasNoticias from "../components/home/UltimasNoticias.astro";
 import Lazo from "../components/home/Lazo.astro";
 import PorQueAfiliarse from "../components/home/PorQueAfiliarse.astro";
+import ActividadesCamara from "../components/home/ActividadesCamara.astro";
 import FraseCelebre from "../components/AfiliadosComponentes/FraseCelebre.astro";
 import DatosOrganizacion from "../components/compartidos/DatosOrganizacion.astro";
+import pie_pagina from "../components/home/pie_pagina.astro";
 ---
 
 <Layout
@@ -27,14 +29,17 @@ import DatosOrganizacion from "../components/compartidos/DatosOrganizacion.astro
   </div>
     <Lazo />
     <PorQueAfiliarse />
+    <ActividadesCamara />
   <UltimasNoticias />
   <MapaQuepos />
+  
   <InstitucionesColaboradores />
   <CTA />
 
 
  
   
+  <pie_pagina />
 
   <script src="../scripts/home/paneles.ts"></script>
 </Layout>

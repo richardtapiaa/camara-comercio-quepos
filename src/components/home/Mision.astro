@@ -1,31 +1,39 @@
 ---
+// Misión de la Cámara: texto a la izquierda e ilustración a la derecha (Vision.astro va al revés, alternando). En el
+// celular va primero el texto. Mismo estilo que el resto del inicio: fondo blanco y títulos como "¿Por qué afiliarse?"
+// (PorQueAfiliarse.astro).
+// Es el panel que sube sobre el video de la portada (Hero.astro deja de estar fijo cuando #mision llega arriba): por eso
+// lleva las esquinas redondeadas y la sombra hacia arriba. Sin padding de más abajo: Visión sigue justo después, también
+// en blanco, y entre las dos queda el mismo aire que entre las demás secciones.
 import ilustracion from "../../assets/inicio/mision-asociados.svg";
 ---
 
-<section id="mision" class="panel relative z-10 flex min-h-svh flex-col justify-center overflow-x-clip rounded-t-[40px] bg-[#E8F4FA] py-16 shadow-[0_-25px_40px_-25px_rgba(0,0,0,0.45),0_1px_0_#E8F4FA] sm:py-24">
-  <div class="mx-auto grid w-full max-w-6xl items-center gap-10 px-6 md:grid-cols-12 md:gap-y-16">
-    <div class="flex justify-center md:order-2 md:col-span-7 md:col-start-6">
-      <img
-        src={ilustracion.src}
-        width={ilustracion.width}
-        height={ilustracion.height}
-        alt="Asociados de la Cámara de Comercio de Quepos trabajando juntos"
-        class="h-auto w-full max-w-sm md:max-w-md"
-        loading="lazy"
-      />
-    </div>
-
-    <div class="md:order-1 md:col-span-5 md:col-start-1 md:pr-6">
-      <span class="text-xs font-semibold uppercase tracking-[0.25em] text-neutral-600">Nuestro propósito</span>
-      <h2 class="mt-3 text-4xl font-bold uppercase leading-tight tracking-tight text-neutral-700 sm:text-5xl">Misión</h2>
-    </div>
-
-  
-    <div class="md:order-4 md:col-span-6 md:col-start-6">
-      <p class="text-base font-medium leading-relaxed text-neutral-800 sm:text-lg">
-        La Misión de la <strong class="font-semibold text-neutral-900">Cámara de Comercio, Industria y Turismo de Quepos</strong> es fomentar el desarrollo socioeconómico del cantón.
+<section
+  id="mision"
+  aria-labelledby="titulo-mision"
+  class="panel relative z-10 overflow-x-clip rounded-t-[40px] bg-white px-6 pb-12 pt-20 shadow-[0_-25px_40px_-25px_rgba(0,0,0,0.45),0_1px_0_#fff] sm:px-10 sm:pb-16 sm:pt-24"
+>
+  <div class="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-2 lg:gap-20">
+    <div>
+      <h2
+        id="titulo-mision"
+        class="mt-2 text-2xl font-semibold text-slate-900 sm:text-3xl"
+      >
+        Misión
+      </h2>
+      <p class="mt-5 text-lg font-medium leading-relaxed text-slate-800 sm:text-xl">
+        La Misión de la <strong class="font-semibold text-slate-900">Cámara de Comercio, Industria y Turismo de Quepos</strong> es fomentar el
+        desarrollo socioeconómico del cantón.
       </p>
     </div>
-  </div>
 
+    <img
+      src={ilustracion.src}
+      width={ilustracion.width}
+      height={ilustracion.height}
+      alt="Asociados de la Cámara de Comercio de Quepos trabajando juntos"
+      class="mx-auto h-auto w-full max-w-xs sm:max-w-sm md:max-w-md"
+      loading="lazy"
+    />
+  </div>
 </section>

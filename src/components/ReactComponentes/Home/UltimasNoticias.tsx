@@ -21,7 +21,7 @@ function TarjetaNoticia({ post }: { post: PostFacebook }) {
 
   // Mismo estilo que las tarjetas de PorQueAfiliarse.astro: gris claro, muy redondeadas y sin sombra
   return (
-    <article className="group relative flex h-full flex-col rounded-[2rem] bg-[#f3f5f8] p-4 transition-colors duration-300 focus-within:ring-2 focus-within:ring-[#2780c9] hover:bg-[#eaeef3] motion-reduce:transition-none">
+    <article className="group relative flex h-full flex-col rounded-[2rem] bg-[#f3f5f8] p-5 transition-colors duration-300 focus-within:ring-2 focus-within:ring-[#2780c9] hover:bg-[#eaeef3] motion-reduce:transition-none">
       {/* Imagen: completa adelante (los afiches no se recortan) y la misma, difuminada, de fondo para llenar los
           costados. Misma URL: se descarga una sola vez. alt vacío: el título ya dice de qué trata */}
       <div className="relative isolate aspect-[4/3] overflow-hidden rounded-[1.5rem] bg-slate-200">
@@ -50,7 +50,7 @@ function TarjetaNoticia({ post }: { post: PostFacebook }) {
         )}
       </div>
 
-      <div className="flex flex-1 flex-col gap-2 px-3 pb-3 pt-6">
+      <div className="flex flex-1 flex-col gap-2.5 px-4 pb-4 pt-7">
         <p className="flex items-center gap-2 text-sm font-semibold text-slate-600">
           <Clock className="size-4 shrink-0 text-[#2780c9]" aria-hidden="true" />
           <time dateTime={post.fecha}>{formatoFecha.format(new Date(post.fecha))}</time>
@@ -102,7 +102,7 @@ export default function UltimasNoticias({ posts }: Props) {
         </div>
 
         {/* Celular: una debajo de otra, a todo el ancho. Desde tablet: las tres en fila */}
-        <ul role="list" className="mt-14 grid gap-6 md:grid-cols-3">
+        <ul role="list" className="mt-14 grid gap-6 md:grid-cols-3 lg:gap-8">
           {posts.map((post) => (
             <li key={post.id}>
               <TarjetaNoticia post={post} />

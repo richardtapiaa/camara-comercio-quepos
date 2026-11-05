@@ -1,12 +1,14 @@
 ---
 import "../styles/global.css";
+// Fundido suave al cambiar de página (todas las páginas usan este layout)
+import "../styles/compartido/transicion-paginas.css";
 
 import { getImage } from "astro:assets";
 import logo from "../assets/compartido/logo-camara.webp";
 import letrasQuepos from "../assets/quepos/quepos-foto.webp";
 import Navbar from "../components/home/Navbar.astro";
 import { nombreSitio } from "../lib/sitio";
-//import PiePagina from "../components/home/pie_pagina.astro";
+import PiePagina from "../components/home/pie_pagina.astro";
 
 interface Props {
   /** Nombre de la página para la pestaña y Google. Se le agrega " | Cámara de Comercio de Quepos" (salvo en el inicio) */
@@ -100,7 +102,7 @@ const urlImagenRedes = Astro.site ? new URL(fotoRedes.src, Astro.site).href : un
 		<main id="contenido">
 			<slot />
 		</main>
-		<!-- <PiePagina /> -->
+		<PiePagina />
 		<script src="../scripts/compartido/videos.ts"></script>
 		<script src="../scripts/compartido/scroll-suave.ts"></script>
 	</body>

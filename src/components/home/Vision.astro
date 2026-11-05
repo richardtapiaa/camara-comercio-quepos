@@ -1,38 +1,41 @@
 ---
+// Visión de la Cámara: ilustración a la izquierda y texto a la derecha (al revés que Mision.astro, alternando). En el
+// celular va primero el texto. Mismo estilo que el resto del inicio: fondo blanco y títulos como "¿Por qué afiliarse?"
+// (PorQueAfiliarse.astro). Menos padding arriba porque viene justo después de Misión, también en blanco.
 import ilustracion from "../../assets/inicio/vision-asociados.svg";
 ---
 
 <section
   id="vision"
+  aria-labelledby="titulo-vision"
   data-panel-sticky
-  class="panel sticky top-[min(0px,calc(100svh_-_var(--alto-panel,100svh)))] overflow-x-clip bg-[#E8F4FA] py-16 sm:py-24"
+  class="panel sticky top-[min(0px,calc(100svh_-_var(--alto-panel,100svh)))] overflow-x-clip bg-white px-6 pb-20 pt-12 sm:px-10 sm:pb-24 sm:pt-16"
 >
-  <div class="mx-auto grid max-w-6xl items-center gap-10 px-6 md:grid-cols-12 md:gap-y-16">
-    <div class="flex justify-center md:col-span-7">
-      <img
-        src={ilustracion.src}
-        width={ilustracion.width}
-        height={ilustracion.height}
-        alt="Visión de la Cámara de Comercio de Quepos"
-        class="h-auto w-full max-w-sm md:max-w-md"
-        loading="lazy"
-      />
-    </div>
-
-    <div class="md:col-span-5 md:pl-6">
-      <span class="text-xs font-semibold uppercase tracking-[0.25em] text-neutral-600">Hacia dónde vamos</span>
-      <h2 class="mt-3 text-4xl font-bold uppercase leading-tight tracking-tight text-neutral-700 sm:text-5xl">Visión</h2>
-      <p class="mt-8 text-base font-medium leading-relaxed text-neutral-800 sm:text-lg">
+  <div class="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-2 lg:gap-20">
+    <div class="md:order-2">
+      <h2
+        id="titulo-vision"
+        class="mt-2 text-2xl font-semibold text-slate-900 sm:text-3xl"
+      >
+        Visión
+      </h2>
+      <p class="mt-5 text-lg font-medium leading-relaxed text-slate-800 sm:text-xl">
         Convertir a Quepos en el cantón costero más desarrollado de Costa Rica y en armonía con el ambiente.
       </p>
-    </div>
-
-    <div class="md:col-span-6 md:col-start-2">
-      <p class="text-sm italic leading-relaxed text-neutral-700 sm:text-base">
-        Desarrollado en términos sociales y económicos, que brinde al visitante todos los servicios necesarios para sus necesidades y al ciudadano que vive en Quepos lo permee de ese desarrollo a través de su crecimiento personal y oportunidades reales, así como el crecimiento de las empresas privadas ubicadas en el cantón.
+      <p class="mt-4 text-lg leading-relaxed text-slate-600">
+        Desarrollado en términos sociales y económicos, que brinde al visitante todos los servicios necesarios para sus
+        necesidades y al ciudadano que vive en Quepos lo permee de ese desarrollo a través de su crecimiento personal y
+        oportunidades reales, así como el crecimiento de las empresas privadas ubicadas en el cantón.
       </p>
     </div>
 
-   
+    <img
+      src={ilustracion.src}
+      width={ilustracion.width}
+      height={ilustracion.height}
+      alt="Visión de la Cámara de Comercio de Quepos"
+      class="mx-auto h-auto w-full max-w-xs sm:max-w-sm md:order-1 md:max-w-md"
+      loading="lazy"
+    />
   </div>
 </section>

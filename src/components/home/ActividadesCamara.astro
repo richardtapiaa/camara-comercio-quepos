@@ -1,0 +1,87 @@
+---
+// "Lo que hacemos por su negocio": texto a la izquierda que se queda fijo y, a la derecha, tarjetas que al bajar se
+// van apilando una sobre otra como un mazo (cada una se pega un poco más abajo que la anterior, y solo queda a la vista
+// el título de las de atrás). Cada tarjeta nueva es un tono más oscuro del gris de las tarjetas del sitio (#f3f5f8, el de "¿Por qué afiliarse?" y las noticias), sin sombra.
+// Solo CSS (position: sticky), sin JavaScript. Ningún ancestro puede llevar overflow-hidden: rompe el sticky.
+// Los temas no repiten los de "¿Por qué afiliarse?": son actividades que la Cámara ya ofrece en el sitio.
+// Todas las tarjetas llevan el mismo ícono: un check en un círculo oscuro.
+import { ArrowRight } from "lucide-react";
+
+const actividades = [
+  {
+    titulo: "Capacitaciones",
+    texto: "Cursos y talleres coordinados con el ICT, el INA y profesionales del sector privado.",
+    fondo: "bg-[#f3f5f8]",
+  },
+  {
+    titulo: "Encuentros empresariales",
+    texto: "Espacios para conocer a otros afiliados, compartir experiencias y crear alianzas entre negocios.",
+    fondo: "bg-[#eceff4]",
+  },
+  {
+    titulo: "Bolsa de empleo",
+    texto: "Un lugar para que las empresas del cantón encuentren personal y las personas de Quepos, trabajo.",
+    fondo: "bg-[#e5e9ef]",
+  },
+  {
+    titulo: "Mapa de afiliados",
+    texto: "Su negocio aparece en el mapa de afiliados, para que visitantes y vecinos lo encuentren.",
+    fondo: "bg-[#dee3ea]",
+  },
+];
+---
+
+<section aria-labelledby="titulo-actividades" class="bg-white px-6 py-20 sm:px-10 sm:py-24">
+  <div class="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:gap-20">
+    <!-- Texto: fijo mientras pasan las tarjetas (solo desde lg, donde va al lado) -->
+    <div class="self-start lg:sticky lg:top-36">
+      <h2 id="titulo-actividades" class="mt-2 text-2xl font-semibold text-slate-900 sm:text-3xl">
+        Lo que hacemos por su negocio
+      </h2>
+      <p class="mt-4 max-w-[52ch] text-lg leading-relaxed text-slate-600">
+        Además de representar a los afiliados, la Cámara organiza actividades durante todo el año para que los negocios
+        de Quepos se capaciten, se conozcan y crezcan juntos.
+      </p>
+      <a
+        href="/capacitaciones"
+        class="mt-8 inline-flex items-center gap-2 rounded-full bg-[#2b4a5c] px-6 py-3.5 font-semibold text-white transition-colors hover:bg-[#1d3542] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#2b4a5c] motion-reduce:transition-none"
+      >
+        Ver capacitaciones
+        <ArrowRight className="size-4" aria-hidden="true" />
+      </a>
+    </div>
+
+    
+    <ul
+      class="flex flex-col gap-[22vh] pb-[6vh] [--arriba:7rem] [--paso:3.5rem] sm:[--paso:3.75rem] lg:[--arriba:9rem]"
+    >
+      {
+        actividades.map(({ titulo, texto, fondo }, i) => (
+          <li
+            class:list={[
+              "sticky rounded-3xl p-5 sm:p-6",
+              fondo,
+            ]}
+            style={`top: calc(var(--arriba) + ${i} * var(--paso))`}
+          >
+            <div class="flex items-center gap-3">
+              <!-- Check blanco dentro de un círculo oscuro (decorativo) -->
+              <svg viewBox="0 0 24 24" class="size-6 shrink-0" aria-hidden="true">
+                <circle cx="12" cy="12" r="11" fill="#171717"></circle>
+                <path
+                  d="m7.5 12.3 3 3 6-6.3"
+                  fill="none"
+                  stroke="#fff"
+                  stroke-width="2.4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"></path>
+              </svg>
+              <h3 class="text-base font-medium text-neutral-900 sm:text-lg">{titulo}</h3>
+            </div>
+            <p class="mt-3 text-[0.95rem] leading-relaxed text-neutral-700">{texto}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

@@ -1,46 +1,224 @@
 ---
-// Mapa del cantón de Quepos (sus 3 distritos), solo y centrado, con una nota escrita a mano que invita a tocarlo.
-// El distrito Quepos lleva a /quepos.
-// MapaQuepos.tsx va sin client:* a propósito: es un SVG con un enlace, no necesita JavaScript.
+// Sección "Descubra el cantón": texto a la izquierda y mapa del cantón de Quepos (sus 3 distritos) a la derecha, con
+// una nota escrita a mano que invita a tocarlo. En celular y tablet va primero el texto y debajo el mapa.
+// El distrito Quepos lleva a /quepos, con una animación que acerca el mapa a Quepos (el <script> del final).
+// MapaQuepos.tsx va sin client:* a propósito: es un SVG con un enlace, no necesita React en el navegador. Si el script
+// no carga, el enlace funciona igual, sin animación.
 import MapaQuepos from "./MapaQuepos";
 import mapa from "../../../data/mapa-quepos.json";
+import FondoSello from "../../compartidos/FondoSello";
+import FondoTopografico from "../../compartidos/FondoTopografico.astro";
 
 // Proporción del mapa (ancho / alto): con ella se calcula el ancho máximo para que entre completo a lo alto
 const [, , anchoMapa, altoMapa] = mapa.viewBox.split(" ").map(Number);
 const proporcion = (anchoMapa / altoMapa).toFixed(4);
 ---
 
-<section aria-labelledby="titulo-mapa-quepos" class="overflow-x-clip bg-[#f5f3ee] px-3 py-16 sm:px-10 sm:py-20">
-  <!-- Título solo para lectores de pantalla: la sección no muestra texto, pero necesita un nombre -->
-  <h2 id="titulo-mapa-quepos" class="sr-only">Mapa del cantón de Quepos</h2>
+<!-- relative isolate overflow-x-clip: los necesita el sello de fondo (ver compartidos/FondoSello.tsx) -->
+<section
+  aria-labelledby="titulo-mapa-quepos"
+  class="relative isolate overflow-x-clip bg-white px-6 py-16 sm:px-10 sm:py-20"
+>
+  <!-- Fondo: curvas de nivel suaves y el sello muy tenue, corrido a la izquierda para que sus letras no choquen con el
+       texto -->
+  <FondoTopografico />
+  <FondoSello lado="izquierda" corrido opacidad={0.05} />
+  <div class="mx-auto grid max-w-[96rem] items-center gap-12 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-12">
+    <!-- Texto -->
+    <div class="max-w-xl">
+      <h2
+        id="titulo-mapa-quepos"
+        class="text-4xl font-extrabold uppercase leading-none tracking-tight text-slate-900 sm:text-5xl"
+      >
+        Descubra el cantón
+      </h2>
+      <p class="mt-6 text-lg leading-relaxed text-slate-500">
+        Desde las playas y la selva de Manuel Antonio hasta los ríos y montañas de Savegre y los paisajes rurales de
+        Naranjito, el cantón de Quepos está lleno de experiencias que no decepcionan. Toque el mapa para conocer cada
+        distrito.
+      </p>
+      <a
+        href="/quepos"
+        class="group mt-8 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.15em] text-[#3f8a82] transition-colors hover:text-[#2b4a5c] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#2b4a5c] motion-reduce:transition-none"
+      >
+        Explore Quepos
+        <svg
+          viewBox="0 0 24 24"
+          class="h-4 w-4 transition-transform group-hover:translate-x-1 motion-reduce:transition-none"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M5 12h14M13 6l6 6-6 6"></path>
+        </svg>
+      </a>
+    </div>
 
-  <!-- Ancho del mapa: lo más grande posible hasta 1100 px, sin pasarse del alto de la pantalla (11rem: el navbar, la
-       nota y algo de aire), para que se vea completo sin tener que bajar -->
-  <div
-    class="relative mx-auto lg:pt-16"
-    style={`width: min(100%, 1100px, calc((100svh - 11rem) * ${proporcion}))`}
-  >
-    <!-- Nota escrita a mano con flecha. En pantallas grandes va arriba a la izquierda y la flecha apunta a Quepos;
-         en celular y tablet, centrada encima del mapa y sin flecha -->
-    <p
-      class="mb-4 px-4 text-center font-['Caveat','Comic_Sans_MS',cursive] text-2xl font-bold leading-tight text-slate-800 lg:absolute lg:left-0 lg:top-0 lg:mb-0 lg:w-56 lg:-rotate-3 lg:px-0 lg:text-left"
+    <!-- Mapa: lo más grande que permita su columna, sin pasarse del alto de la pantalla (11rem: el navbar, la nota y
+         algo de aire), para que se vea completo sin tener que bajar -->
+    <div
+      class="relative mx-auto lg:mr-0 lg:pt-16"
+      style={`width: min(100%, calc((100svh - 11rem) * ${proporcion}))`}
     >
-      ¡Toque el mapa para explorar Quepos!
-    </p>
-    <svg
-      viewBox="0 0 70 50"
-      class="absolute left-44 top-5 hidden w-16 rotate-12 text-slate-800 lg:block"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="3"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M4 6c14 2 30 10 44 30"></path>
-      <path d="M34 34l14 3 2-14"></path>
-    </svg>
+      <!-- Nota escrita a mano con flecha. En pantallas grandes va arriba a la izquierda y la flecha apunta a Quepos;
+           en celular y tablet, centrada encima del mapa y sin flecha -->
+      <p
+        class="mb-4 px-4 text-center font-['Caveat','Comic_Sans_MS',cursive] text-2xl font-bold leading-tight text-slate-800 lg:absolute lg:left-0 lg:top-0 lg:mb-0 lg:w-56 lg:-rotate-3 lg:px-0 lg:text-left"
+      >
+        ¡Toque el mapa para explorar Quepos!
+      </p>
+      <svg
+        viewBox="0 0 70 50"
+        class="absolute left-44 top-5 hidden w-16 rotate-12 text-slate-800 lg:block"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="3"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M4 6c14 2 30 10 44 30"></path>
+        <path d="M34 34l14 3 2-14"></path>
+      </svg>
 
-    <MapaQuepos />
+      <MapaQuepos />
+    </div>
   </div>
 </section>
+
+<script>
+  // Al tocar el distrito Quepos, el mapa "lo lleva" a /quepos: Quepos se desliza al centro de la pantalla y se acerca
+  // mientras el resto de la página se funde con el fondo. Al terminar se abre /quepos, que aparece con el fundido entre
+  // páginas del sitio (styles/compartido/transicion-paginas.css).
+  // Rendimiento: solo se animan transform y opacity (no obligan al navegador a recalcular ni repintar la página) y se
+  // copia solo el distrito Quepos, no el mapa entero. /quepos se precarga cuando el mouse se detiene sobre Quepos, para
+  // que abra enseguida al terminar la animación.
+  // Accesibilidad: el enlace sigue siendo un enlace normal (teclado, lector de pantalla). Sin animación si la persona
+  // pidió reducir el movimiento en su sistema o si abre el enlace en otra pestaña (Ctrl/Cmd/Shift o clic del medio).
+
+  const DURACION = 750; // ms del acercamiento
+  const ESPERA_PRECARGA = 80; // ms con el mouse encima antes de precargar (pasar de largo no descarga nada)
+
+  const mapa = document.querySelector<SVGSVGElement>("[data-mapa-quepos]");
+  const enlace = mapa?.querySelector<SVGAElement>("a[data-distrito='quepos']");
+  if (mapa && enlace) activarAcercamiento(mapa, enlace);
+
+  function activarAcercamiento(mapa: SVGSVGElement, enlace: SVGAElement) {
+    const destino = enlace.getAttribute("href") ?? "/quepos";
+    const sinMovimiento = matchMedia("(prefers-reduced-motion: reduce)");
+    let capa: HTMLDivElement | null = null;
+    let respaldo = 0;
+
+    // Precarga del HTML de /quepos, una sola vez. No se hace con "ahorro de datos" ni en conexiones 2G
+    let precargado = false;
+    let esperaPrecarga = 0;
+    const precargar = () => {
+      clearTimeout(esperaPrecarga);
+      if (precargado) return;
+      precargado = true;
+      const conexion = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } })
+        .connection;
+      if (conexion?.saveData || conexion?.effectiveType?.includes("2g")) return;
+      document.head.append(Object.assign(document.createElement("link"), { rel: "prefetch", href: destino }));
+    };
+    enlace.addEventListener("pointerenter", (e) => {
+      // Con el dedo, tocar ya es la intención de entrar: se precarga de una vez
+      if (e.pointerType === "mouse") esperaPrecarga = window.setTimeout(precargar, ESPERA_PRECARGA);
+      else precargar();
+    });
+    enlace.addEventListener("pointerleave", () => clearTimeout(esperaPrecarga));
+    enlace.addEventListener("focus", precargar);
+
+    enlace.addEventListener("click", (e) => {
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || sinMovimiento.matches) return;
+      e.preventDefault();
+      if (capa) return; // ya va en camino (doble clic)
+      precargar();
+      acercar();
+    });
+
+    // Al volver con "Atrás", el navegador puede mostrar la página tal como quedó (acercada): se deja como estaba
+    addEventListener("pageshow", (e) => {
+      if (e.persisted) limpiar();
+    });
+
+    function limpiar() {
+      clearTimeout(respaldo);
+      capa?.remove();
+      capa = null;
+    }
+
+    function acercar() {
+      // 1. Medidas (todas las lecturas antes de tocar la página, para no forzar cálculos de diseño de más)
+      const forma = enlace.querySelector("path")!;
+      const nombre = mapa.querySelector("text[data-distrito='quepos']");
+      const caja = forma.getBBox(); // en unidades del mapa
+      const vb = mapa.viewBox.baseVal;
+      const rm = mapa.getBoundingClientRect();
+      // Unidades del mapa → píxeles de la pantalla (el SVG se ajusta centrado dentro de su caja)
+      const k = Math.min(rm.width / vb.width, rm.height / vb.height);
+      const x = rm.left + (rm.width - vb.width * k) / 2 + (caja.x - vb.x) * k;
+      const y = rm.top + (rm.height - vb.height * k) / 2 + (caja.y - vb.y) * k;
+      const ancho = caja.width * k;
+      const alto = caja.height * k;
+      const pantallaAncho = document.documentElement.clientWidth;
+      // Espacio libre: debajo del navbar fijo (si está escondido al bajar, su borde queda arriba de 0 y no cuenta)
+      const arriba = Math.max(0, document.getElementById("site-header")?.getBoundingClientRect().bottom ?? 0);
+      const pantallaAlto = document.documentElement.clientHeight - arriba;
+      const fondo = getComputedStyle(mapa.closest("section") ?? document.body).backgroundColor;
+      const letra = getComputedStyle(mapa).fontFamily;
+      const filtro = getComputedStyle(forma).filter; // si está oscurecido por el hover, la copia sigue igual
+
+      // Hasta dónde se mueve y cuánto crece: Quepos queda al centro del espacio libre y casi lo llena, entre 1,3 y 2,4
+      // veces su tamaño
+      const dx = pantallaAncho / 2 - (x + ancho / 2);
+      const dy = arriba + pantallaAlto / 2 - (y + alto / 2);
+      const escala = Math.min(2.4, Math.max(1.3, 0.9 * Math.min(pantallaAncho / ancho, pantallaAlto / alto)));
+
+      // 2. Capa fija sobre la página, debajo del navbar (z-50): un velo del color del fondo y la copia de Quepos
+      //    justo encima del original. Oculta para lectores de pantalla: es solo decorativa
+      capa = document.createElement("div");
+      capa.setAttribute("aria-hidden", "true");
+      Object.assign(capa.style, { position: "fixed", inset: "0", zIndex: "40", overflow: "hidden" });
+
+      const velo = document.createElement("div");
+      Object.assign(velo.style, { position: "absolute", inset: "0", background: fondo, opacity: "0" });
+
+      const copia = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      copia.setAttribute("viewBox", `${caja.x} ${caja.y} ${caja.width} ${caja.height}`);
+      Object.assign(copia.style, {
+        position: "absolute",
+        left: `${x}px`,
+        top: `${y}px`,
+        width: `${ancho}px`,
+        height: `${alto}px`,
+        overflow: "visible", // el borde y el nombre pueden salirse un poco de la caja del distrito
+        fontFamily: letra,
+      });
+      const formaCopia = forma.cloneNode() as SVGPathElement;
+      formaCopia.removeAttribute("class");
+      formaCopia.style.filter = filtro;
+      copia.append(formaCopia);
+      if (nombre) copia.append(nombre.cloneNode(true));
+
+      capa.append(velo, copia);
+      document.body.append(capa);
+
+      // 3. Animación: el velo tapa el resto de la página y Quepos viaja al centro mientras crece
+      velo.animate({ opacity: [0, 1] }, { duration: DURACION * 0.7, easing: "ease-out", fill: "forwards" });
+      copia
+        .animate(
+          { transform: ["none", `translate(${dx}px, ${dy}px) scale(${escala})`] },
+          { duration: DURACION, easing: "cubic-bezier(0.65, 0, 0.35, 1)", fill: "forwards" },
+        )
+        .finished.then(() => {
+          location.assign(destino);
+          // Si la carga se cancela (por ejemplo con Esc), la página no se queda tapada
+          respaldo = window.setTimeout(limpiar, 5000);
+        });
+    }
+  }
+</script>

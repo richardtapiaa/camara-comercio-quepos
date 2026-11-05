@@ -1,0 +1,16 @@
+/* Fundido suave al cambiar de página en todo el sitio (View Transitions entre páginas). Lo importa Layout.astro, así
+   que lo tienen todas las páginas: el fundido solo ocurre si la página de salida y la de llegada tienen esta regla.
+   Al tocar Quepos en el mapa del inicio, la imagen del mapa acercado se funde con la portada de /quepos (ver el
+   script de MapaQuepos.astro).
+   Los navegadores que no lo soportan cambian de página como siempre. Sin fundido si la persona pidió reducir el
+   movimiento en su sistema. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.45s;
+  }
+}
