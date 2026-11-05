@@ -1,7 +1,13 @@
 // Publicaciones de la página de Facebook mediante la Graph API de Meta.
 // Se ejecuta en el servidor/build: FB_PAGE_TOKEN no lleva prefijo PUBLIC_, así que nunca llega al navegador.
+// Astro carga estas variables desde el .env ubicado en la raíz del proyecto.
+
+import { setDefaultResultOrder } from "node:dns";
 
 const VERSION_API = "v23.0";
+
+// En algunas redes, la ruta IPv6 hacia graph.facebook.com expira antes de intentar IPv4.
+setDefaultResultOrder("ipv4first");
 
 export interface PostFacebook {
   id: string;
