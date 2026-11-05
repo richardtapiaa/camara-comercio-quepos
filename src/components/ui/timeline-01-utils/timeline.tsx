@@ -39,6 +39,7 @@ function useAnimacionTimeline(ref: React.RefObject<HTMLDivElement | null>) {
       { fondo: "[data-linea-tronco]", viajero: "[data-linea-perezoso]", desde: 0, hasta: 1 },
       { fondo: "[data-linea-agua]", viajero: "[data-linea-kayak]", desde: 1, hasta: 3 },
       { fondo: "[data-linea-cable]", viajero: "[data-linea-canopy]", desde: 3, hasta: 4 },
+      { fondo: "[data-linea-agua-pesca]", viajero: "[data-linea-pescado]", desde: 4, hasta: marcadores.length - 1 },
     ]
       .map((t) => ({
         ...t,
@@ -158,11 +159,13 @@ export default function Timeline({
   perezoso,
   kayak,
   canopy,
+  pescado,
 }: {
   items: TimelineItem[];
   perezoso?: string;
   kayak?: string;
   canopy?: string;
+  pescado?: string;
 }) {
   const ref = React.useRef<HTMLDivElement>(null);
   useAnimacionTimeline(ref);
@@ -222,6 +225,20 @@ export default function Timeline({
             </div>
           </div>
         )}
+
+        {pescado && (
+          <div data-linea-pescado className="invisible absolute left-0 top-0 z-20 opacity-0 will-change-transform">
+            <img
+              src={pescado}
+              alt=""
+              width={1024}
+              height={1024}
+              className="-ml-10 -mt-8 h-auto w-20 max-w-none rotate-90 select-none motion-reduce:rotate-90 md:-ml-16 md:-mt-12 md:w-32"
+              draggable={false}
+              loading="lazy"
+            />
+          </div>
+        )}
       </div>
 
       {perezoso && (
@@ -265,6 +282,14 @@ export default function Timeline({
         </div>
       )}
 
+      {pescado && (
+        <div
+          data-linea-agua-pesca
+          className="agua-linea pointer-events-none absolute left-3 w-6 -translate-x-1/2 md:left-1/2 md:w-9"
+          aria-hidden="true"
+        />
+      )}
+
       <ol>
         {items.map((item, i) => {
           const tarjetaIzquierda = i % 2 === 0;
@@ -306,7 +331,7 @@ export default function Timeline({
 
                   <div className="p-6 md:p-8">
                     <h3 className="text-xl font-bold tracking-tight text-[#102a43] md:text-2xl">{item.title}</h3>
-                    <p className="mt-4 text-sm leading-relaxed text-slate-600 md:text-[15px] md:leading-[1.75]">
+                    <p className="mt-4 whitespace-pre-line text-sm leading-relaxed text-slate-600 md:text-[15px] md:leading-[1.75]">
                       {item.description}
                     </p>
                   </div>

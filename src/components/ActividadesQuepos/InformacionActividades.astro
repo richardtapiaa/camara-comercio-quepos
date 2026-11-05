@@ -10,16 +10,20 @@ import actividades3 from "../../assets/actividades/actividades-3.jpg";
 import actividades4 from "../../assets/actividades/actividades-4.jpg";
 import actividades5 from "../../assets/actividades/actividades-5.jpg";
 import actividades6 from "../../assets/actividades/actividades-6.jpeg";
+import actividad7 from "../../assets/actividades/actividad7.jpg";
+import actividad8 from "../../assets/actividades/actividad8.jpg";
+import pescadoLinea from "../../assets/actividades/Pescado.webp";
 
 // Las fotos se muestran a 256-480 px de ancho (340 en celular): 400 y 700 para la mayoría de pantallas, 1000 para las de alta densidad
 const anchosFotos = [400, 700, 1000];
 const imagenes = [
   { ...(await variantesCapa(actividades1, anchosFotos, 75)), alt: "Perezoso en el Parque Nacional Manuel Antonio" },
+  { ...(await variantesCapa(actividades5, anchosFotos, 75)), alt: "Personas practicando kayak en los manglares" },
   { ...(await variantesCapa(actividades2, anchosFotos, 75)), alt: "Grupo haciendo rafting en el río" },
-  { ...(await variantesCapa(actividades3, anchosFotos, 75)), alt: "Catamarán navegando al atardecer" },
   { ...(await variantesCapa(actividades4, anchosFotos, 75)), alt: "Turista haciendo rappel en el bosque" },
-  { ...(await variantesCapa(actividades5, anchosFotos, 75)), alt: "Kayaks entre los manglares" },
   { ...(await variantesCapa(actividades6, anchosFotos, 75)), alt: "Marlín saltando en el mar" },
+  { ...(await variantesCapa(actividad7, anchosFotos, 75)), alt: "Personas disfrutando una experiencia de ocio junto al mar" },
+  { ...(await variantesCapa(actividad8, anchosFotos, 75)), alt: "Molienda artesanal para preparar alimentos tradicionales" },
 ];
 ---
 
@@ -29,4 +33,5 @@ const imagenes = [
   perezoso={await optimizarImagen(perezosoLinea, 256, 80)}
   kayak={await optimizarImagen(kayakLinea, 160, 80)}
   canopy={await optimizarImagen(canopyLinea, 192, 85)}
+  pescado={await optimizarImagen(pescadoLinea, 192, 80)}
 />

@@ -5,40 +5,78 @@ import { Badge } from "@/components/ui/badge";
 
 const actividades = [
   {
-    title: "Parque Nacional Manuel Antonio",
-    description:
-      "Recorre senderos entre bosque tropical y playas de arena blanca mientras observas perezosos, monos cariblancos, iguanas y aves. Las entradas se compran en línea por anticipado.",
-    date: "Naturaleza",
+    title: "Naturaleza y Observación de Fauna",
+    description: `• Tour avistamiento de ballenas y delfines
+• Tour de Mariposarios
+• Parque Nacional Manuel Antonio
+• Tour de avistamiento de aves
+• Tour de observación de perezosos
+• Tour fotográfico de naturaleza
+• Senderismo en el Refugio de Vida Silvestre
+• Tour de observación de ranas y reptiles`,
+    date: "",
   },
   {
-    title: "Rafting en los ríos Naranjo y Savegre",
-    description:
-      "Descensos en balsa con guías certificados para todos los niveles, rodeados de montañas y bosque. Una de las aventuras más emocionantes de la zona.",
-    date: "Aventura",
+    title: "Aventuras Acuáticas y Marítimas",
+    description: `• Clases y práctica de Surf
+• Snorkel y buceo de superficie en Playa Biesanz
+• Paseos en jet ski`,
+    date: "",
   },
   {
-    title: "Tour en catamarán al atardecer",
-    description:
-      "Navega por la costa del Pacífico, haz snorkel, avista delfines y, en temporada, ballenas jorobadas, y despide el día con uno de los atardeceres más bonitos del país.",
-    date: "Mar",
+    title: "Tours en Manglares y Ríos",
+    description: `• Tour en Kayak
+• Tour Rafting
+• Tours en manglares
+• Tour de manglares en bote eléctrico o solar
+• Excursiones de paddleboard en manglares y playas
+• Excursiones guiadas de bioluminiscencia
+• Tour de tubbing en ríos locales`,
+    date: "",
   },
   {
-    title: "Canopy y rappel",
-    description:
-      "Vuela entre las copas de los árboles en tirolesas y desciende en rappel junto a cascadas y paredes de roca, con todo el equipo de seguridad incluido.",
-    date: "Adrenalina",
+    title: "Aventura y Adrenalina Terrestre",
+    description: `• Canopy
+• Caminatas nocturnas en la selva
+• Excursiones en Cuatrimotos / Off-road
+• Cabalgatas por la montaña y cataratas
+• Visita a Parques y Reservas Privadas
+• Visita a cascadas locales
+• Excursiones de canopy nocturno
+• Vuelos en ultraligero o paracaidismo sobre la costa`,
+    date: "",
   },
   {
-    title: "Kayak en los manglares de Isla Damas",
-    description:
-      "Rema en aguas tranquilas entre los canales del manglar y descubre su fauna: aves, cangrejos, monos y, con suerte, algún cocodrilo tomando el sol.",
-    date: "Ecoturismo",
+    title: "Pesca y Navegación",
+    description: `• Tour Catamarán
+• Tour Buceo
+• Vuelos - Charters
+• Torneos de pesca deportiva internacional y nacionales
+• Cruceros
+• Visita a la Marina Pez Vela
+• Tour de pesca costera o en bote artesanal`,
+    date: "",
   },
   {
-    title: "Pesca deportiva",
-    description:
-      "Quepos es uno de los mejores destinos del mundo para la pesca de pez vela y marlín. Salidas desde la Marina Pez Vela con tripulaciones expertas y pesca de captura y liberación.",
-    date: "Pesca",
+    title: "Bienestar, Relax y Ocio",
+    description: `• BODAS
+• SPA
+• Playas
+• Experiencias de bienestar y yoga en la playa`,
+    date: "",
+  },
+  {
+    title: "Cultura, Gastronomía y Comunidad",
+    description: `• Turismo rural
+• Villas rurales
+• Emprendurismo artesanal
+• Patrimonio cultural
+• Tours de café, chocolate y vainilla
+• Clases de cocina costarricense
+• Visita a mercados artesanales locales
+• Talleres de arte y artesanía indígena
+• Excursiones a reservas ecológicas comunitarias`,
+    date: "",
   },
 ];
 
@@ -47,9 +85,10 @@ type InformacionActividadesProps = {
   perezoso?: string;
   kayak?: string;
   canopy?: string;
+  pescado?: string;
 };
 
-const InformacionActividades = ({ imagenes, perezoso, kayak, canopy }: InformacionActividadesProps) => {
+const InformacionActividades = ({ imagenes, perezoso, kayak, canopy, pescado }: InformacionActividadesProps) => {
   const timelineData = actividades.slice(0, imagenes.length).map((actividad, i) => ({
     ...actividad,
     image: imagenes[i].src,
@@ -72,7 +111,7 @@ const InformacionActividades = ({ imagenes, perezoso, kayak, canopy }: Informaci
             </p>
           </div>
         </div>
-        <Timeline items={timelineData} perezoso={perezoso} kayak={kayak} canopy={canopy} />
+        <Timeline items={timelineData} perezoso={perezoso} kayak={kayak} canopy={canopy} pescado={pescado} />
       </div>
     </section>
   );
