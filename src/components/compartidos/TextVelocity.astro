@@ -9,6 +9,8 @@ interface Props {
   contorno?: boolean;
   decoraciones?: Decoracion[];
   difuminado?: boolean;
+  filas?: 1 | 2;
+  claseTexto?: string;
 }
 
 const {
@@ -19,6 +21,8 @@ const {
   contorno = false,
   decoraciones,
   difuminado = false,
+  filas = contorno ? 1 : 2,
+  claseTexto,
 } = Astro.props;
 
 const clasesTexto = contorno
@@ -33,8 +37,8 @@ const clasesTexto = contorno
       text={texto}
       default_velocity={contorno ? 3 : 5}
       scrollReactive={reaccionaScroll}
-      filas={contorno ? 1 : 2}
-      className={clasesTexto}
+      filas={filas}
+      className={claseTexto ? `${clasesTexto} ${claseTexto}` : clasesTexto}
       decoraciones={decoraciones}
     />
   </div>

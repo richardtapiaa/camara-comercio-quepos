@@ -14,7 +14,7 @@ const servicios = [
     etiqueta: "Comercio",
     fondo: "bg-[#f6dd9a]",
     iconos: [Landmark, Store],
-    texto: ["", "Bancos", " y tiendas"],
+    texto: ["", "Bancos y tiendas", " para sus trámites y compras del día a día."],
   },
   {
     etiqueta: "Transporte",
@@ -26,56 +26,56 @@ const servicios = [
 ---
 
 <section id="info-hospitalidad" class="bg-white py-16 sm:py-20">
-  <div
-    class="mx-auto w-full px-3 sm:max-md:max-w-[540px] md:max-lg:max-w-[720px] lg:max-xl:max-w-[960px] xl:max-[1399px]:max-w-[1140px] min-[1400px]:max-w-[1320px]"
-  >
-    <h2 class="text-[1.75rem] font-bold leading-tight text-neutral-900">La hospitalidad de Quepos</h2>
-
-    <div class="mt-6 grid gap-6 lg:grid-cols-2">
-      <ol class="flex min-w-0 flex-col gap-5">
-        {
-          servicios.map(({ etiqueta, fondo, iconos, texto: [antes, resaltado, despues] }, i) => {
-            const paso = (
-              <span class="flex shrink-0 items-center gap-3 text-lg text-neutral-800 sm:text-xl">
-                {etiqueta}
-                <span class="flex size-11 items-center justify-center rounded-full bg-black/[0.07]">{i + 1}</span>
-              </span>
-            );
-            return (
-              <li class:list={["rounded-[40px] p-7 sm:p-9", fondo]}>
-                <div class="flex justify-end">{paso}</div>
-                <div class="mt-2 flex gap-5 text-neutral-900">
-                  {iconos.map((Icono) => (
-                    <Icono className="size-11 sm:size-12" strokeWidth={1.5} aria-hidden="true" />
-                  ))}
-                </div>
-                <p class="mt-4 text-[clamp(1.45rem,2.2vw,2.25rem)] leading-tight text-neutral-800">
-                  {antes}
-                  <strong class="font-semibold text-neutral-900">{resaltado}</strong>
-                  {despues}
-                </p>
-              </li>
-            );
-          })
-        }
-      </ol>
-
-      <div class="relative min-h-[420px] overflow-hidden rounded-[40px] sm:min-h-[520px] lg:min-h-0">
-        <Image
-          src={imagen}
-          alt="Piscina infinita con vista al bosque y al mar de Manuel Antonio"
-          widths={[480, 720, 960, 1280, 1600]}
-          sizes="(min-width: 1400px) 648px, (min-width: 1024px) 50vw, 100vw"
-          quality={78}
-          class="absolute inset-0 size-full object-cover"
-          loading="lazy"
-        />
-        <span
-          class="absolute bottom-5 right-5 rounded-full border-2 border-white/60 bg-[#0d3b3a]/45 px-5 py-2.5 text-base font-semibold text-white backdrop-blur-md sm:text-lg"
-        >
-          Quepos - Costa Rica
-        </span>
-      </div>
+  <div class="mx-auto w-full max-w-[1800px] px-3 sm:px-6 lg:px-10">
+    <div class="max-w-2xl">
+      <h2 class="text-[1.75rem] font-bold leading-tight text-neutral-900 sm:text-[2rem]">La hospitalidad de Quepos</h2>
+      <p class="mt-3 text-base leading-relaxed text-neutral-600 sm:text-lg">
+        Todo lo que necesita durante su estadía: salud, comercio y transporte.
+      </p>
     </div>
+
+    <div class="relative mt-8 aspect-[16/9] overflow-hidden rounded-[40px] sm:aspect-[2/1] lg:aspect-[5/2]">
+      <Image
+        src={imagen}
+        alt="Piscina infinita con vista al bosque y al mar de Manuel Antonio"
+        widths={[640, 960, 1280, 1600]}
+        sizes="(min-width: 1800px) 1720px, 100vw"
+        quality={78}
+        class="absolute inset-0 size-full object-cover object-[center_35%]"
+        loading="lazy"
+      />
+      <span
+        class="absolute bottom-4 right-4 rounded-full border-2 border-white/60 bg-[#0d3b3a]/45 px-4 py-2 text-sm font-semibold text-white backdrop-blur-md sm:bottom-5 sm:right-5 sm:px-5 sm:py-2.5 sm:text-lg"
+      >
+        Quepos - Costa Rica
+      </span>
+    </div>
+
+    <ol class="mt-6 grid gap-5 lg:grid-cols-3 lg:gap-6">
+      {
+        servicios.map(({ etiqueta, fondo, iconos, texto: [antes, resaltado, despues] }, i) => (
+          <li class:list={["rounded-[40px] p-7 sm:p-9 lg:p-7 xl:p-9", fondo]}>
+            <p class="flex items-center gap-3 text-lg font-medium text-neutral-800 sm:text-xl">
+              <span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-black/[0.07] text-base">
+                {i + 1}
+              </span>
+              {etiqueta}
+            </p>
+            <div class="mt-5 flex flex-wrap gap-3 text-neutral-900">
+              {iconos.map((Icono) => (
+                <span class="flex size-12 items-center justify-center rounded-full bg-white/70 sm:size-14">
+                  <Icono className="size-6 sm:size-7" strokeWidth={1.75} aria-hidden="true" />
+                </span>
+              ))}
+            </div>
+            <p class="mt-5 text-[clamp(1.35rem,1.6vw,1.75rem)] leading-tight text-neutral-800">
+              {antes}
+              <strong class="font-semibold text-neutral-900">{resaltado}</strong>
+              {despues}
+            </p>
+          </li>
+        ))
+      }
+    </ol>
   </div>
 </section>

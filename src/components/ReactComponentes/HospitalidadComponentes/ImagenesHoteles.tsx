@@ -6,7 +6,6 @@ export interface ImagenHotel {
   id: string;
   src: string;
   alt: string;
-  lugar: string;
   miniatura?: string;
   srcSet?: string;
 }
@@ -41,7 +40,7 @@ export default function ImagenesHoteles({ titulo, imagenes }: { titulo: string; 
 
   return (
     <Gallery images={imagenes}>
-      <div className="mb-6 flex items-center justify-between gap-4 px-5 sm:px-6">
+      <div className="mx-auto mb-6 flex w-full max-w-[1800px] items-center justify-between gap-4 px-3 sm:px-6 lg:px-10">
         <h2 className="text-[1.75rem] font-bold leading-tight text-neutral-900 sm:text-[2rem]">{titulo}</h2>
         <div className="flex shrink-0 gap-3">
           <button type="button" className={flecha} onClick={() => mover(-1)} disabled={extremos.inicio} aria-label="Anterior">
@@ -56,7 +55,7 @@ export default function ImagenesHoteles({ titulo, imagenes }: { titulo: string; 
       <ul
         ref={filaRef}
         onScroll={actualizar}
-        className="flex snap-x snap-mandatory scroll-px-5 gap-5 overflow-x-auto px-5 [scrollbar-width:none] sm:scroll-px-6 sm:gap-6 sm:px-6 [&::-webkit-scrollbar]:hidden"
+        className="mx-auto flex w-full max-w-[1800px] snap-x snap-mandatory scroll-px-3 gap-5 overflow-x-auto px-3 [scrollbar-width:none] sm:scroll-px-6 sm:gap-6 sm:px-6 lg:scroll-px-10 lg:px-10 [&::-webkit-scrollbar]:hidden"
       >
         {imagenes.map((foto) => (
           <li
@@ -74,9 +73,6 @@ export default function ImagenesHoteles({ titulo, imagenes }: { titulo: string; 
               className="mb-0 rounded-none md:mb-0"
             />
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-transparent via-35% to-transparent" />
-            <p className="pointer-events-none absolute inset-x-0 bottom-0 p-5 text-base italic text-[#dcff4f] sm:p-6 sm:text-lg">
-              {foto.lugar}
-            </p>
           </li>
         ))}
       </ul>
