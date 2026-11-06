@@ -34,6 +34,11 @@ const CANTON_QUEPOS: [[number, number], [number, number]] = [
 // El padding superior deja libre el espacio del navbar fijo (h-24)
 const PADDING_CANTON = { top: 126, right: 30, bottom: 30, left: 30 };
 
+// En celular (pantalla angosta) el cantón, más ancho que alto, quedaba chiquito en una franja con montaña hasta
+// Cartago arriba y mar abajo: ahí se encuadran los afiliados, que están en la costa. Arriba deja libres el navbar y el
+// buscador; a los lados, medio logo; abajo, los botones de zoom
+const PADDING_CELULAR = { top: 180, right: 56, bottom: 90, left: 56 };
+
 export type AfiliadoMapa = {
   id: string;
   nombre: string;
@@ -83,14 +88,30 @@ export default function MapaAfiliadosMapcn({ afiliados }: { afiliados: AfiliadoM
   }, []);
   const cerrarTarjeta = useCallback(() => setCerrando(true), []);
 
+  // Encuadre inicial: el cantón en compu y los afiliados en celular (ver PADDING_CELULAR). Se decide una sola vez, al
+  // montar: el mapa solo existe en el navegador (lo carga scripts/mapa/cargar-mapa.ts)
+  const encuadre = useMemo(() => {
+    const celular = window.matchMedia("(max-width: 767px)").matches;
+    if (!celular || afiliados.length === 0) return { limites: CANTON_QUEPOS, padding: PADDING_CANTON };
+    const lngs = afiliados.map((afiliado) => afiliado.lng);
+    const lats = afiliados.map((afiliado) => afiliado.lat);
+    const limites: [[number, number], [number, number]] = [
+      [Math.min(...lngs), Math.min(...lats)],
+      [Math.max(...lngs), Math.max(...lats)],
+    ];
+    return { limites, padding: PADDING_CELULAR };
+  }, [afiliados]);
+
   return (
     <Map
       theme="light"
       styles={{
-        light: `https://basemaps.cartocdn.com/gl/positron-gl-style/style.json?key=${CARTO_KEY}`,
+        // "voyager": la versión a color del estilo de CARTO (calles principales en amarillo, construcciones en tonos
+        // cálidos); ColoresMapa le da los verdes, la arena y el azul
+        light: `https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json?key=${CARTO_KEY}`,
       }}
-      bounds={CANTON_QUEPOS}
-      fitBoundsOptions={{ padding: PADDING_CANTON }}
+      bounds={encuadre.limites}
+      fitBoundsOptions={{ padding: encuadre.padding }}
       attributionControl={{ compact: false }}
     >
       <ColoresMapa />
@@ -115,17 +136,30 @@ export default function MapaAfiliadosMapcn({ afiliados }: { afiliados: AfiliadoM
   );
 }
 
-// Tiñe el mapa base de CARTO (que viene casi blanco): tierra verde claro, vegetación y parques en verde y el mar
-// en celeste. Los nombres son las capas del estilo "positron" de CARTO
-const COLORES_MAPA: Record<string, [propiedad: "background-color" | "fill-color", color: string]> = {
-  background: ["background-color", "#edf5e6"],
-  landcover: ["fill-color", "#d5eacb"],
-  landuse: ["fill-color", "#d5eacb"],
-  park_nature_reserve: ["fill-color", "#c9e3bc"],
-  park_national_park: ["fill-color", "#b9dca8"],
-  landuse_residential: ["fill-color", "#e6ece1"],
-  water: ["fill-color", "#b7d9e8"],
+// Colores del mapa base: tierra verde claro, vegetación y parques en verdes más intensos (el Parque Nacional Manuel
+// Antonio, el más oscuro), los pueblos en arena y el mar y los ríos en azul. Los nombres son las capas del estilo
+// "voyager" de CARTO. El mar que se ve es "water_shadow": va encima de "water" corrida 1 px hacia abajo, así que
+// "water" solo asoma como un borde más oscuro en la costa
+const COLORES_MAPA: Record<string, [propiedad: "background-color" | "fill-color" | "line-color", color: string]> = {
+  background: ["background-color", "#e8f1d9"],
+  landcover: ["fill-color", "#bfe0a3"],
+  landuse: ["fill-color", "#cfe6bd"],
+  park_nature_reserve: ["fill-color", "#acd790"],
+  park_national_park: ["fill-color", "#98cf7c"],
+  landuse_residential: ["fill-color", "#f2e6cc"],
+  water: ["fill-color", "#5fadd8"],
+  water_shadow: ["fill-color", "#86c5e6"],
+  waterway: ["line-color", "#86c5e6"],
 };
+
+// Terrenos que vienen en los datos (capa "landuse" de las teselas) pero que el estilo no dibuja: cultivos (sobre todo
+// las plantaciones de palma), manglares y playas. Van sobre los parques (el Parque Nacional Manuel Antonio incluye
+// playas) y debajo de los ríos, el mar y las calles
+const TERRENOS_EXTRA = [
+  { id: "cultivos", tipo: "farmland", color: "#dbe8b4" },
+  { id: "manglares", tipo: "wetland", color: "#9cd3bd" },
+  { id: "playas", tipo: "beach", color: "#f6dd97" },
+];
 
 function ColoresMapa() {
   // isLoaded se pone en true cuando ya cargaron el mapa y el estilo (y otra vez al recargar el estilo). No se usa
@@ -136,6 +170,22 @@ function ColoresMapa() {
     if (!map || !isLoaded) return;
     for (const [capa, [propiedad, color]] of Object.entries(COLORES_MAPA)) {
       if (map.getLayer(capa)) map.setPaintProperty(capa, propiedad, color);
+    }
+    // "protomaps" es la fuente de teselas del estilo de CARTO
+    if (!map.getSource("protomaps")) return;
+    for (const { id, tipo, color } of TERRENOS_EXTRA) {
+      if (map.getLayer(id)) continue;
+      map.addLayer(
+        {
+          id,
+          type: "fill",
+          source: "protomaps",
+          "source-layer": "landuse",
+          filter: ["==", ["get", "kind"], tipo],
+          paint: { "fill-color": color },
+        },
+        map.getLayer("waterway") ? "waterway" : undefined,
+      );
     }
   }, [map, isLoaded]);
 
@@ -365,7 +415,7 @@ function BuscadorAfiliados({
         <ul
           id="resultados-mapa"
           role="listbox"
-          className="mt-2 max-h-72 overflow-y-auto rounded-2xl border border-white/70 bg-white/90 p-1.5 shadow-[0_24px_60px_-24px_rgba(15,23,42,0.5)] backdrop-blur-xl"
+          className="mt-2 max-h-72 overflow-y-auto overscroll-contain rounded-2xl border border-white/70 bg-white/90 p-1.5 shadow-[0_24px_60px_-24px_rgba(15,23,42,0.5)] backdrop-blur-xl"
         >
           {resultados.length === 0 && <li className="px-3 py-3 text-sm text-slate-500">No hay afiliados con ese nombre</li>}
           {resultados.map((afiliado, indice) => (
@@ -505,8 +555,29 @@ function TarjetaAfiliado({
   onCerrada: () => void;
 }) {
   const tarjeta = useRef<HTMLDivElement>(null);
+  const contenido = useRef<HTMLDivElement>(null);
   const foto = useRef<HTMLImageElement>(null);
   const [fotoAbierta, setFotoAbierta] = useState(false);
+  // Si no cabe todo, lo de arriba (foto, datos y enlaces) se desplaza por dentro y el botón al sitio del negocio
+  // queda fijo abajo, siempre a la vista. La barra de desplazamiento va escondida (con sus flechas se veía como una
+  // raya en las esquinas redondeadas) y en su lugar un degradado encima del botón avisa que hay más, mientras lo haya
+  const [hayMas, setHayMas] = useState(false);
+
+  useEffect(() => {
+    const caja = contenido.current;
+    if (!caja) return;
+    const revisar = () => setHayMas(caja.scrollTop + caja.clientHeight < caja.scrollHeight - 4);
+    revisar();
+    caja.addEventListener("scroll", revisar, { passive: true });
+    // Cambia al girar el celular o achicar la ventana (la tarjeta) y si algo del contenido cambia de alto
+    const observador = new ResizeObserver(revisar);
+    observador.observe(caja);
+    for (const hijo of caja.children) observador.observe(hijo);
+    return () => {
+      caja.removeEventListener("scroll", revisar);
+      observador.disconnect();
+    };
+  }, []);
 
   // Entrada: la tarjeta sube desde abajo
   useLayoutEffect(() => {
@@ -551,86 +622,109 @@ function TarjetaAfiliado({
       ref={tarjeta}
       role="dialog"
       aria-label={afiliado.nombre}
-      className="absolute inset-x-3 bottom-3 z-20 max-h-[75%] overflow-y-auto rounded-[32px] border border-white/70 bg-white/80 p-5 shadow-[0_30px_80px_-30px_rgba(15,23,42,0.5)] backdrop-blur-xl md:inset-x-auto md:bottom-auto md:left-8 md:top-32 md:max-h-[calc(100%-10rem)] md:w-[420px] md:p-8"
+      // Columna: arriba lo que se desplaza y abajo, fijo, el botón al sitio del negocio. bottom con safe-area: en
+      // iPhone no queda debajo de la barra de inicio
+      className="absolute inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-20 flex max-h-[75%] flex-col overflow-hidden rounded-[32px] border border-white/70 bg-white/80 shadow-[0_30px_80px_-30px_rgba(15,23,42,0.5)] backdrop-blur-xl md:inset-x-auto md:bottom-auto md:left-8 md:top-32 md:max-h-[calc(100%-10rem)] md:w-[420px]"
     >
-      <div className="flex items-center gap-3">
-        <img src={afiliado.logo.src} alt="" className="h-10 w-auto max-w-40 object-contain" />
-        <button
-          type="button"
-          onClick={onCerrar}
-          aria-label="Cerrar"
-          className="ml-auto flex size-9 shrink-0 items-center justify-center rounded-full border border-slate-300 text-slate-700 transition-colors hover:bg-white"
-        >
-          <X className="size-4" />
-        </button>
-      </div>
-
-      <div className="relative mt-5 aspect-[4/3] overflow-hidden rounded-2xl bg-gradient-to-br from-[#2780c9] to-[#0f3d63]">
-        {afiliado.foto && (
-          <img ref={foto} src={afiliado.foto} alt={`Foto de ${afiliado.nombre}`} className="size-full object-cover" />
+      {/* Lo que se desplaza. overscroll-contain: al llegar al final, el dedo no arrastra la página de atrás (iPhone).
+          Barra escondida: scrollbar-width en Chrome y Firefox, ::-webkit-scrollbar en Safari */}
+      <div
+        ref={contenido}
+        className={cn(
+          "min-h-0 overflow-y-auto overscroll-contain px-5 pt-5 [scrollbar-width:none] md:px-8 md:pt-8 [&::-webkit-scrollbar]:hidden",
+          enlace ? "pb-6" : "pb-5 md:pb-8",
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-        <div className="absolute inset-x-5 bottom-4 text-white">
-          <h3 className="text-xl font-semibold leading-tight">{afiliado.nombre}</h3>
-          {afiliado.descripcion && <p className="mt-0.5 text-sm text-white/85">{afiliado.descripcion}</p>}
-        </div>
-        {afiliado.foto && (
+      >
+        <div className="flex items-center gap-3">
+          <img src={afiliado.logo.src} alt="" className="h-10 w-auto max-w-40 object-contain" />
           <button
             type="button"
-            onClick={() => setFotoAbierta(true)}
-            aria-label="Ver la foto en grande"
-            className="group absolute inset-0 cursor-zoom-in"
+            onClick={onCerrar}
+            aria-label="Cerrar"
+            className="ml-auto flex size-9 shrink-0 items-center justify-center rounded-full border border-slate-300 text-slate-700 transition-colors hover:bg-white"
           >
-            <span className="absolute right-3 top-3 flex size-9 items-center justify-center rounded-full bg-black/35 text-white backdrop-blur-sm transition-colors group-hover:bg-black/55">
-              <Maximize2 className="size-4" aria-hidden="true" />
-            </span>
+            <X className="size-4" />
           </button>
+        </div>
+
+        <div className="relative mt-5 aspect-[4/3] overflow-hidden rounded-2xl bg-gradient-to-br from-[#2780c9] to-[#0f3d63]">
+          {afiliado.foto && (
+            <img ref={foto} src={afiliado.foto} alt={`Foto de ${afiliado.nombre}`} className="size-full object-cover" />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+          <div className="absolute inset-x-5 bottom-4 text-white">
+            <h3 className="text-xl font-semibold leading-tight">{afiliado.nombre}</h3>
+            {afiliado.descripcion && <p className="mt-0.5 text-sm text-white/85">{afiliado.descripcion}</p>}
+          </div>
+          {afiliado.foto && (
+            <button
+              type="button"
+              onClick={() => setFotoAbierta(true)}
+              aria-label="Ver la foto en grande"
+              className="group absolute inset-0 cursor-zoom-in"
+            >
+              <span className="absolute right-3 top-3 flex size-9 items-center justify-center rounded-full bg-black/35 text-white backdrop-blur-sm transition-colors group-hover:bg-black/55">
+                <Maximize2 className="size-4" aria-hidden="true" />
+              </span>
+            </button>
+          )}
+        </div>
+
+        {afiliado.foto && fotoAbierta && (
+          <ModalFoto
+            src={afiliado.foto}
+            alt={`Foto de ${afiliado.nombre}`}
+            origen={foto.current}
+            onCerrada={() => setFotoAbierta(false)}
+          />
         )}
+
+        <div className="mt-4 grid gap-3 text-sm leading-snug text-slate-800">
+          {afiliado.info && (
+            <p className="flex items-start gap-2.5 rounded-xl bg-white px-4 py-3 leading-relaxed shadow-sm">
+              <Info className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
+              {afiliado.info}
+            </p>
+          )}
+          {/* Abre la ficha del negocio en Google Maps: horario, reseñas, fotos y cómo llegar */}
+          <a
+            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${afiliado.nombre} Quepos Costa Rica`)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={claseDato}
+          >
+            <MapPin className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
+            Ver el lugar en Google Maps
+          </a>
+          {/* Lleva a la tarjeta del afiliado en la página de afiliados, con todos sus contactos */}
+          <a href={`/afiliados#${afiliado.id}`} className={claseDato}>
+            <IdCard className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
+            Ver más información
+          </a>
+        </div>
       </div>
 
-      {afiliado.foto && fotoAbierta && (
-        <ModalFoto
-          src={afiliado.foto}
-          alt={`Foto de ${afiliado.nombre}`}
-          origen={foto.current}
-          onCerrada={() => setFotoAbierta(false)}
+      {/* Abajo y fijo: el botón al sitio del negocio (si tiene) y, encima, un degradado que avisa que hay más arriba
+          (decorativo; se desvanece al llegar al final). Nunca tapa el botón */}
+      <div className={cn("relative shrink-0", enlace && "px-5 pb-5 md:px-8 md:pb-8")}>
+        <div
+          aria-hidden="true"
+          className={cn(
+            "pointer-events-none absolute inset-x-0 bottom-full h-12 bg-gradient-to-t from-white/90 to-transparent transition-opacity duration-200 motion-reduce:transition-none",
+            hayMas ? "opacity-100" : "opacity-0",
+          )}
         />
-      )}
-
-      <div className="mt-4 grid gap-3 text-sm leading-snug text-slate-800">
-        {afiliado.info && (
-          <p className="flex items-start gap-2.5 rounded-xl bg-white px-4 py-3 leading-relaxed shadow-sm">
-            <Info className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
-            {afiliado.info}
-          </p>
+        {enlace && (
+          <a
+            href={enlace.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex h-14 w-full items-center justify-center rounded-full bg-neutral-800 text-lg text-white transition-colors hover:bg-neutral-700 md:h-16"
+          >
+            {enlace.texto} →
+          </a>
         )}
-        {/* Abre la ficha del negocio en Google Maps: horario, reseñas, fotos y cómo llegar */}
-        <a
-          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${afiliado.nombre} Quepos Costa Rica`)}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={claseDato}
-        >
-          <MapPin className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
-          Ver el lugar en Google Maps
-        </a>
-        {/* Lleva a la tarjeta del afiliado en la página de afiliados, con todos sus contactos */}
-        <a href={`/afiliados#${afiliado.id}`} className={claseDato}>
-          <IdCard className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
-          Ver más información
-        </a>
       </div>
-
-      {enlace && (
-        <a
-          href={enlace.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-6 flex h-14 w-full items-center justify-center rounded-full bg-neutral-800 text-lg text-white transition-colors hover:bg-neutral-700 md:h-16"
-        >
-          {enlace.texto} →
-        </a>
-      )}
     </div>
   );
 }

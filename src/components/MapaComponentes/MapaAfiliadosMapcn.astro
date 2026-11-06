@@ -43,7 +43,7 @@ const afiliados = await Promise.all(
 <!-- El mapa interactivo (MapLibre + React) bloquea el celular ~1,7 s al arrancar. Mientras tanto se ve una imagen fija
      del cantón (las mismas teselas de CARTO, sin marcadores, encuadradas igual que el mapa) y el mapa se carga con la
      primera interacción: mover el mouse, tocar, hacer scroll o usar el teclado (scripts/mapa/cargar-mapa.ts) -->
-<div data-lenis-prevent data-mapa-afiliados class="relative z-0 h-dvh min-h-[480px] w-full overflow-hidden bg-[#eef3ea]">
+<div data-lenis-prevent data-mapa-afiliados class="relative z-0 h-dvh min-h-[480px] w-full overflow-hidden bg-[#e8f1d9]">
   <picture>
     <source media="(max-width: 767px)" srcset={(await getImage({ src: mapaMovil, format: "webp" })).src} />
     <img
