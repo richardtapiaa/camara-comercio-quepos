@@ -19,20 +19,18 @@ import {
 } from "@/components/ui/map";
 import { cn } from "@/lib/utils";
 
-// Sirve el worker de MapLibre desde el propio sitio; si no, mapcn lo descarga de unpkg
 setWorkerUrl(workerUrl);
 
-// Clave gratuita de CARTO Basemaps: https://carto.com/basemaps/apikey
 const CARTO_KEY = import.meta.env.PUBLIC_CARTO_KEY ?? "";
 
-// Límites del cantón de Quepos según OpenStreetMap: de Damas hasta el río Barú
 const CANTON_QUEPOS: [[number, number], [number, number]] = [
   [-84.2542, 9.2535],
   [-83.839, 9.572],
 ];
 
-// El padding superior deja libre el espacio del navbar fijo (h-24)
 const PADDING_CANTON = { top: 126, right: 30, bottom: 30, left: 30 };
+
+const PADDING_CELULAR = { top: 180, right: 56, bottom: 90, left: 56 };
 
 export type AfiliadoMapa = {
   id: string;
@@ -54,7 +52,6 @@ type Punto = PointFeature<AfiliadoMapa>;
 
 const esGrupo = (marcador: Grupo | Punto): marcador is Grupo => "cluster" in marcador.properties;
 
-// Hasta este zoom los logos que quedarían encimados se juntan en un círculo con el número; más cerca salen todos
 const ZOOM_MAXIMO_GRUPOS = 18;
 
 export default function MapaAfiliadosMapcn({ afiliados }: { afiliados: AfiliadoMapa[] }) {
@@ -70,7 +67,6 @@ export default function MapaAfiliadosMapcn({ afiliados }: { afiliados: AfiliadoM
     [afiliados],
   );
   const [seleccionado, setSeleccionado] = useState<AfiliadoMapa | null>(null);
-  // Mientras "cerrando" es true la tarjeta sigue montada para que se vea la animación de salida
   const [cerrando, setCerrando] = useState(false);
 
   const seleccionar = useCallback((afiliado: AfiliadoMapa) => {
@@ -83,14 +79,26 @@ export default function MapaAfiliadosMapcn({ afiliados }: { afiliados: AfiliadoM
   }, []);
   const cerrarTarjeta = useCallback(() => setCerrando(true), []);
 
+  const encuadre = useMemo(() => {
+    const celular = window.matchMedia("(max-width: 767px)").matches;
+    if (!celular || afiliados.length === 0) return { limites: CANTON_QUEPOS, padding: PADDING_CANTON };
+    const lngs = afiliados.map((afiliado) => afiliado.lng);
+    const lats = afiliados.map((afiliado) => afiliado.lat);
+    const limites: [[number, number], [number, number]] = [
+      [Math.min(...lngs), Math.min(...lats)],
+      [Math.max(...lngs), Math.max(...lats)],
+    ];
+    return { limites, padding: PADDING_CELULAR };
+  }, [afiliados]);
+
   return (
     <Map
       theme="light"
       styles={{
-        light: `https://basemaps.cartocdn.com/gl/positron-gl-style/style.json?key=${CARTO_KEY}`,
+        light: `https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json?key=${CARTO_KEY}`,
       }}
-      bounds={CANTON_QUEPOS}
-      fitBoundsOptions={{ padding: PADDING_CANTON }}
+      bounds={encuadre.limites}
+      fitBoundsOptions={{ padding: encuadre.padding }}
       attributionControl={{ compact: false }}
     >
       <ColoresMapa />
@@ -115,21 +123,25 @@ export default function MapaAfiliadosMapcn({ afiliados }: { afiliados: AfiliadoM
   );
 }
 
-// Tiñe el mapa base de CARTO (que viene casi blanco): tierra verde claro, vegetación y parques en verde y el mar
-// en celeste. Los nombres son las capas del estilo "positron" de CARTO
-const COLORES_MAPA: Record<string, [propiedad: "background-color" | "fill-color", color: string]> = {
-  background: ["background-color", "#edf5e6"],
-  landcover: ["fill-color", "#d5eacb"],
-  landuse: ["fill-color", "#d5eacb"],
-  park_nature_reserve: ["fill-color", "#c9e3bc"],
-  park_national_park: ["fill-color", "#b9dca8"],
-  landuse_residential: ["fill-color", "#e6ece1"],
-  water: ["fill-color", "#b7d9e8"],
+const COLORES_MAPA: Record<string, [propiedad: "background-color" | "fill-color" | "line-color", color: string]> = {
+  background: ["background-color", "#e8f1d9"],
+  landcover: ["fill-color", "#bfe0a3"],
+  landuse: ["fill-color", "#cfe6bd"],
+  park_nature_reserve: ["fill-color", "#acd790"],
+  park_national_park: ["fill-color", "#98cf7c"],
+  landuse_residential: ["fill-color", "#f2e6cc"],
+  water: ["fill-color", "#5fadd8"],
+  water_shadow: ["fill-color", "#86c5e6"],
+  waterway: ["line-color", "#86c5e6"],
 };
 
+const TERRENOS_EXTRA = [
+  { id: "cultivos", tipo: "farmland", color: "#dbe8b4" },
+  { id: "manglares", tipo: "wetland", color: "#9cd3bd" },
+  { id: "playas", tipo: "beach", color: "#f6dd97" },
+];
+
 function ColoresMapa() {
-  // isLoaded se pone en true cuando ya cargaron el mapa y el estilo (y otra vez al recargar el estilo). No se usa
-  // map.isStyleLoaded(): en iPhone a veces da false aunque el estilo ya esté, y el mapa se quedaba blanco
   const { map, isLoaded } = useMap();
 
   useEffect(() => {
@@ -137,12 +149,26 @@ function ColoresMapa() {
     for (const [capa, [propiedad, color]] of Object.entries(COLORES_MAPA)) {
       if (map.getLayer(capa)) map.setPaintProperty(capa, propiedad, color);
     }
+    if (!map.getSource("protomaps")) return;
+    for (const { id, tipo, color } of TERRENOS_EXTRA) {
+      if (map.getLayer(id)) continue;
+      map.addLayer(
+        {
+          id,
+          type: "fill",
+          source: "protomaps",
+          "source-layer": "landuse",
+          filter: ["==", ["get", "kind"], tipo],
+          paint: { "fill-color": color },
+        },
+        map.getLayer("waterway") ? "waterway" : undefined,
+      );
+    }
   }, [map, isLoaded]);
 
   return null;
 }
 
-// Junta en un círculo con el número los logos que quedarían encimados; al acercar el mapa se separan
 function MarcadoresAfiliados({
   indice,
   seleccionado,
@@ -186,7 +212,6 @@ function MarcadoresAfiliados({
           onClick={() => map.easeTo({ center: [lng, lat], zoom: indice.getClusterExpansionZoom(cluster_id) })}
         >
           <MarkerContent>
-            {/* #2578bd: el azul de la marca un 6 % más oscuro, para que el número blanco se lea bien (contraste 4,7:1) */}
             <span className="flex size-11 items-center justify-center rounded-full bg-[#2578bd] motion-safe:animate-aparecer-marcador text-sm font-semibold text-white shadow-lg ring-4 ring-white/80 transition-transform hover:scale-110">
               {point_count}
             </span>
@@ -229,20 +254,14 @@ function MarcadoresAfiliados({
   });
 }
 
-// Centra el negocio en la parte del mapa que no tapa la tarjeta. En compu la tarjeta ocupa los primeros
-// 452 px de la izquierda (left-8 + 420 px) y el navbar los primeros 96 px de arriba; en celular la tarjeta
-// sale abajo, así que el negocio se sube
 function mostrarJuntoATarjeta(map: MapRef, centro: [number, number]) {
   const compu = window.matchMedia("(min-width: 768px)").matches;
   map.easeTo({ center: centro, offset: compu ? [226, 48] : [0, -170], duration: 600 });
 }
 
-// Sin tildes ni mayúsculas, igual que el buscador de la página de afiliados
 const normalizar = (texto: string) =>
   texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
-// Primer zoom (desde 16) en el que el afiliado sale con su logo y no dentro de un círculo con el número. Los que
-// están a pocos metros de otro, como los de Marina Pez Vela, necesitan acercarse más
 function zoomParaVerLogo(indice: Supercluster<AfiliadoMapa>, afiliado: AfiliadoMapa) {
   const alrededor: [number, number, number, number] = [
     afiliado.lng - 0.001,
@@ -259,7 +278,6 @@ function zoomParaVerLogo(indice: Supercluster<AfiliadoMapa>, afiliado: AfiliadoM
   return ZOOM_MAXIMO_GRUPOS + 1;
 }
 
-// Arriba a la derecha en compu (la tarjeta va a la izquierda) y arriba a lo ancho en celular
 function BuscadorAfiliados({
   afiliados,
   indice,
@@ -277,8 +295,6 @@ function BuscadorAfiliados({
   const [activo, setActivo] = useState(0);
   const campo = useRef<HTMLInputElement>(null);
 
-  // Al abrir un afiliado se cierra el teclado y la lista; si no, en iPhone el buscador quedaba trabado
-  // detrás de la tarjeta
   useEffect(() => {
     if (!oculto) return;
     campo.current?.blur();
@@ -295,12 +311,8 @@ function BuscadorAfiliados({
 
   const elegir = (afiliado: AfiliadoMapa) => {
     if (!map) return;
-    // En compu se abre la tarjeta; en celular solo se lleva al logo (la tarjeta taparía casi todo el mapa)
     const compu = window.matchMedia("(min-width: 768px)").matches;
     if (compu) onSeleccionar(afiliado);
-    // flyTo se aleja un poco y vuelve a acercarse en arco, más fluido que un desplazamiento recto. Se acerca lo
-    // necesario para que el logo salga solo y no haya que tocar el círculo con el número. En celular, el offset
-    // deja el logo centrado en lo que no tapan el navbar y el buscador
     map.flyTo({
       center: [afiliado.lng, afiliado.lat],
       zoom: Math.max(map.getZoom(), zoomParaVerLogo(indice, afiliado)),
@@ -311,7 +323,6 @@ function BuscadorAfiliados({
     });
     setTexto("");
     setAbierto(false);
-    // Cierra el teclado del celular para que se vea el mapa
     campo.current?.blur();
   };
 
@@ -323,7 +334,6 @@ function BuscadorAfiliados({
     } else if (evento.key === "Enter" && resultados[activo]) {
       elegir(resultados[activo]);
     } else if (evento.key === "Escape") {
-      // Que Esc limpie el buscador sin cerrar la tarjeta abierta
       evento.stopPropagation();
       setTexto("");
       setAbierto(false);
@@ -331,7 +341,6 @@ function BuscadorAfiliados({
   };
 
   return (
-    // En celular se esconde mientras hay una tarjeta abierta y vuelve a bajar cuando empieza a cerrarse
     <div
       className={cn(
         "absolute inset-x-3 top-28 z-20 transition-[opacity,translate] duration-300 ease-out md:inset-x-auto md:right-8 md:top-32 md:w-80",
@@ -365,14 +374,13 @@ function BuscadorAfiliados({
         <ul
           id="resultados-mapa"
           role="listbox"
-          className="mt-2 max-h-72 overflow-y-auto rounded-2xl border border-white/70 bg-white/90 p-1.5 shadow-[0_24px_60px_-24px_rgba(15,23,42,0.5)] backdrop-blur-xl"
+          className="mt-2 max-h-72 overflow-y-auto overscroll-contain rounded-2xl border border-white/70 bg-white/90 p-1.5 shadow-[0_24px_60px_-24px_rgba(15,23,42,0.5)] backdrop-blur-xl"
         >
           {resultados.length === 0 && <li className="px-3 py-3 text-sm text-slate-500">No hay afiliados con ese nombre</li>}
           {resultados.map((afiliado, indice) => (
             <li key={afiliado.id} role="option" aria-selected={indice === activo}>
               <button
                 type="button"
-                // mousedown antes que el blur del input, para que la lista no se cierre antes del clic
                 onMouseDown={(evento) => evento.preventDefault()}
                 onClick={() => elegir(afiliado)}
                 onMouseEnter={() => setActivo(indice)}
@@ -397,8 +405,6 @@ function BuscadorAfiliados({
   );
 }
 
-// Foto en pantalla completa. Se monta en <body> con un portal para que el mapa no la recorte ni mueva el
-// layout; al abrir crece desde la foto de la tarjeta y al cerrar vuelve a ella
 function ModalFoto({
   src,
   alt,
@@ -414,7 +420,6 @@ function ModalFoto({
   const imagen = useRef<HTMLImageElement>(null);
   const cerrando = useRef(false);
 
-  // Cuánto hay que mover y achicar la foto grande para que calce sobre la de la tarjeta
   const sobreOrigen = () => {
     const desde = origen?.getBoundingClientRect();
     const hasta = imagen.current?.getBoundingClientRect();
@@ -446,7 +451,6 @@ function ModalFoto({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Esc cierra solo la foto, no la tarjeta que está debajo
   useEffect(() => {
     const alPresionar = (evento: KeyboardEvent) => {
       if (evento.key !== "Escape") return;
@@ -492,7 +496,6 @@ function ModalFoto({
 const claseDato =
   "flex items-start gap-2.5 rounded-xl bg-white px-4 py-3 shadow-sm transition-colors hover:bg-slate-50";
 
-// Logo y categoría arriba, la foto con el nombre al centro, dos datos y el botón al sitio del negocio
 function TarjetaAfiliado({
   afiliado,
   cerrando,
@@ -505,10 +508,26 @@ function TarjetaAfiliado({
   onCerrada: () => void;
 }) {
   const tarjeta = useRef<HTMLDivElement>(null);
+  const contenido = useRef<HTMLDivElement>(null);
   const foto = useRef<HTMLImageElement>(null);
   const [fotoAbierta, setFotoAbierta] = useState(false);
+  const [hayMas, setHayMas] = useState(false);
 
-  // Entrada: la tarjeta sube desde abajo
+  useEffect(() => {
+    const caja = contenido.current;
+    if (!caja) return;
+    const revisar = () => setHayMas(caja.scrollTop + caja.clientHeight < caja.scrollHeight - 4);
+    revisar();
+    caja.addEventListener("scroll", revisar, { passive: true });
+    const observador = new ResizeObserver(revisar);
+    observador.observe(caja);
+    for (const hijo of caja.children) observador.observe(hijo);
+    return () => {
+      caja.removeEventListener("scroll", revisar);
+      observador.disconnect();
+    };
+  }, []);
+
   useLayoutEffect(() => {
     const entrada = gsap
       .timeline()
@@ -518,7 +537,6 @@ function TarjetaAfiliado({
     };
   }, []);
 
-  // Salida: baja y se desvanece; al terminar se quita del mapa
   useEffect(() => {
     if (!cerrando) return;
     const salida = gsap
@@ -551,86 +569,101 @@ function TarjetaAfiliado({
       ref={tarjeta}
       role="dialog"
       aria-label={afiliado.nombre}
-      className="absolute inset-x-3 bottom-3 z-20 max-h-[75%] overflow-y-auto rounded-[32px] border border-white/70 bg-white/80 p-5 shadow-[0_30px_80px_-30px_rgba(15,23,42,0.5)] backdrop-blur-xl md:inset-x-auto md:bottom-auto md:left-8 md:top-32 md:max-h-[calc(100%-10rem)] md:w-[420px] md:p-8"
+      className="absolute inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-20 flex max-h-[75%] flex-col overflow-hidden rounded-[32px] border border-white/70 bg-white/80 shadow-[0_30px_80px_-30px_rgba(15,23,42,0.5)] backdrop-blur-xl md:inset-x-auto md:bottom-auto md:left-8 md:top-32 md:max-h-[calc(100%-10rem)] md:w-[420px]"
     >
-      <div className="flex items-center gap-3">
-        <img src={afiliado.logo.src} alt="" className="h-10 w-auto max-w-40 object-contain" />
-        <button
-          type="button"
-          onClick={onCerrar}
-          aria-label="Cerrar"
-          className="ml-auto flex size-9 shrink-0 items-center justify-center rounded-full border border-slate-300 text-slate-700 transition-colors hover:bg-white"
-        >
-          <X className="size-4" />
-        </button>
-      </div>
-
-      <div className="relative mt-5 aspect-[4/3] overflow-hidden rounded-2xl bg-gradient-to-br from-[#2780c9] to-[#0f3d63]">
-        {afiliado.foto && (
-          <img ref={foto} src={afiliado.foto} alt={`Foto de ${afiliado.nombre}`} className="size-full object-cover" />
+      <div
+        ref={contenido}
+        className={cn(
+          "min-h-0 overflow-y-auto overscroll-contain px-5 pt-5 [scrollbar-width:none] md:px-8 md:pt-8 [&::-webkit-scrollbar]:hidden",
+          enlace ? "pb-6" : "pb-5 md:pb-8",
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-        <div className="absolute inset-x-5 bottom-4 text-white">
-          <h3 className="text-xl font-semibold leading-tight">{afiliado.nombre}</h3>
-          {afiliado.descripcion && <p className="mt-0.5 text-sm text-white/85">{afiliado.descripcion}</p>}
-        </div>
-        {afiliado.foto && (
+      >
+        <div className="flex items-center gap-3">
+          <img src={afiliado.logo.src} alt="" className="h-10 w-auto max-w-40 object-contain" />
           <button
             type="button"
-            onClick={() => setFotoAbierta(true)}
-            aria-label="Ver la foto en grande"
-            className="group absolute inset-0 cursor-zoom-in"
+            onClick={onCerrar}
+            aria-label="Cerrar"
+            className="ml-auto flex size-9 shrink-0 items-center justify-center rounded-full border border-slate-300 text-slate-700 transition-colors hover:bg-white"
           >
-            <span className="absolute right-3 top-3 flex size-9 items-center justify-center rounded-full bg-black/35 text-white backdrop-blur-sm transition-colors group-hover:bg-black/55">
-              <Maximize2 className="size-4" aria-hidden="true" />
-            </span>
+            <X className="size-4" />
           </button>
+        </div>
+
+        <div className="relative mt-5 aspect-[4/3] overflow-hidden rounded-2xl bg-gradient-to-br from-[#2780c9] to-[#0f3d63]">
+          {afiliado.foto && (
+            <img ref={foto} src={afiliado.foto} alt={`Foto de ${afiliado.nombre}`} className="size-full object-cover" />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+          <div className="absolute inset-x-5 bottom-4 text-white">
+            <h3 className="text-xl font-semibold leading-tight">{afiliado.nombre}</h3>
+            {afiliado.descripcion && <p className="mt-0.5 text-sm text-white/85">{afiliado.descripcion}</p>}
+          </div>
+          {afiliado.foto && (
+            <button
+              type="button"
+              onClick={() => setFotoAbierta(true)}
+              aria-label="Ver la foto en grande"
+              className="group absolute inset-0 cursor-zoom-in"
+            >
+              <span className="absolute right-3 top-3 flex size-9 items-center justify-center rounded-full bg-black/35 text-white backdrop-blur-sm transition-colors group-hover:bg-black/55">
+                <Maximize2 className="size-4" aria-hidden="true" />
+              </span>
+            </button>
+          )}
+        </div>
+
+        {afiliado.foto && fotoAbierta && (
+          <ModalFoto
+            src={afiliado.foto}
+            alt={`Foto de ${afiliado.nombre}`}
+            origen={foto.current}
+            onCerrada={() => setFotoAbierta(false)}
+          />
         )}
+
+        <div className="mt-4 grid gap-3 text-sm leading-snug text-slate-800">
+          {afiliado.info && (
+            <p className="flex items-start gap-2.5 rounded-xl bg-white px-4 py-3 leading-relaxed shadow-sm">
+              <Info className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
+              {afiliado.info}
+            </p>
+          )}
+          <a
+            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${afiliado.nombre} Quepos Costa Rica`)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={claseDato}
+          >
+            <MapPin className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
+            Ver el lugar en Google Maps
+          </a>
+          <a href={`/afiliados#${afiliado.id}`} className={claseDato}>
+            <IdCard className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
+            Ver más información
+          </a>
+        </div>
       </div>
 
-      {afiliado.foto && fotoAbierta && (
-        <ModalFoto
-          src={afiliado.foto}
-          alt={`Foto de ${afiliado.nombre}`}
-          origen={foto.current}
-          onCerrada={() => setFotoAbierta(false)}
+      <div className={cn("relative shrink-0", enlace && "px-5 pb-5 md:px-8 md:pb-8")}>
+        <div
+          aria-hidden="true"
+          className={cn(
+            "pointer-events-none absolute inset-x-0 bottom-full h-12 bg-gradient-to-t from-white/90 to-transparent transition-opacity duration-200 motion-reduce:transition-none",
+            hayMas ? "opacity-100" : "opacity-0",
+          )}
         />
-      )}
-
-      <div className="mt-4 grid gap-3 text-sm leading-snug text-slate-800">
-        {afiliado.info && (
-          <p className="flex items-start gap-2.5 rounded-xl bg-white px-4 py-3 leading-relaxed shadow-sm">
-            <Info className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
-            {afiliado.info}
-          </p>
+        {enlace && (
+          <a
+            href={enlace.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex h-14 w-full items-center justify-center rounded-full bg-neutral-800 text-lg text-white transition-colors hover:bg-neutral-700 md:h-16"
+          >
+            {enlace.texto} →
+          </a>
         )}
-        {/* Abre la ficha del negocio en Google Maps: horario, reseñas, fotos y cómo llegar */}
-        <a
-          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${afiliado.nombre} Quepos Costa Rica`)}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={claseDato}
-        >
-          <MapPin className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
-          Ver el lugar en Google Maps
-        </a>
-        {/* Lleva a la tarjeta del afiliado en la página de afiliados, con todos sus contactos */}
-        <a href={`/afiliados#${afiliado.id}`} className={claseDato}>
-          <IdCard className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
-          Ver más información
-        </a>
       </div>
-
-      {enlace && (
-        <a
-          href={enlace.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-6 flex h-14 w-full items-center justify-center rounded-full bg-neutral-800 text-lg text-white transition-colors hover:bg-neutral-700 md:h-16"
-        >
-          {enlace.texto} →
-        </a>
-      )}
     </div>
   );
 }

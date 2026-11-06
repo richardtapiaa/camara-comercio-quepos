@@ -1,23 +1,14 @@
-// Mapa del cantón de Quepos con sus 3 distritos (Quepos, Savegre y Naranjito), con el nombre de cada uno encima.
-// El distrito Quepos es un enlace a /quepos. Los trazos salen de src/data/mapa-quepos.json (se genera con
-// herramientas/mapa-quepos.mjs).
-// Se usa SIN directiva client:* (ver MapaQuepos.astro): el enlace y el resaltado al pasar el mouse son HTML y CSS,
-// así que sale como SVG puro, sin React en el navegador. La animación al tocar Quepos es un script aparte en
-// MapaQuepos.astro, que encuentra el mapa y el distrito por los atributos data-mapa-quepos y data-distrito.
 import mapa from "../../../data/mapa-quepos.json";
 
 type IdDistrito = "quepos" | "savegre" | "naranjito";
 
-// Colores suaves, como tierra y vegetación
 const estilo: Record<IdDistrito, { color: string; etiqueta?: [number, number]; enlace?: string }> = {
   quepos: {
     color: "#6fa9a2",
-    // El centro del polígono queda pegado al borde con Naranjito: el nombre va más adentro
     etiqueta: [315, 395],
     enlace: "/quepos",
   },
   savegre: { color: "#93a77f" },
-  // El centro del polígono está en la parte angosta: el nombre va en la parte ancha
   naranjito: { color: "#cf8f5f", etiqueta: [380, 222] },
 };
 
@@ -51,10 +42,8 @@ export default function MapaQuepos() {
           />
         );
         return d.enlace ? (
-          // Enlace dentro del SVG: funciona con clic, toque y teclado (Tab + Enter) sin JavaScript
           <a key={d.id} href={d.enlace} data-distrito={d.id} aria-label={`Distrito ${d.nombre}: conozca Quepos`} className="group cursor-pointer outline-none">
             {forma}
-            {/* Contorno visible al llegar con el teclado */}
             <path
               d={d.d}
               fill="none"
@@ -71,7 +60,6 @@ export default function MapaQuepos() {
         );
       })}
 
-      {/* Nombres en mayúsculas encima de cada distrito (decorativos: cada distrito ya tiene su aria-label) */}
       {distritos.map((d) => (
         <text
           key={`n-${d.id}`}

@@ -1,5 +1,3 @@
-// Carga el mapa interactivo de afiliados (components/MapaComponentes/MapaAfiliadosMapcn.astro) con la primera
-// interacción, en vez de al abrir la página: así su JavaScript no bloquea la carga en el celular
 const contenedor = document.querySelector<HTMLElement>("[data-mapa-afiliados]");
 const montaje = contenedor?.querySelector<HTMLElement>("[data-mapa-montaje]");
 const datos = contenedor?.querySelector<HTMLScriptElement>("[data-mapa-datos]");
@@ -14,8 +12,6 @@ if (contenedor && montaje && datos) {
     eventos.forEach((evento) => window.removeEventListener(evento, cargar));
     contenedor.querySelector("[data-mapa-aviso]")?.remove();
 
-    // En desarrollo, @vitejs/plugin-react necesita su preámbulo de Fast Refresh, que Astro solo agrega a las páginas
-    // con islas de React (esta ya no tiene). En el build no hace falta
     if (import.meta.env.DEV) {
       const { default: refresco } = await import(/* @vite-ignore */ "/@react-refresh");
       refresco.injectIntoGlobalHook(window);

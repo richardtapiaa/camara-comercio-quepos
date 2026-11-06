@@ -1,10 +1,8 @@
 ---
 import fotoInicio from "../../assets/inicio/foto_inicio.jpg";
 import logoBlanco from "../../assets/compartido/logo-camara-blanco.webp";
-// @font-face de Anton, la letra de los títulos de los heroes
 import "../../styles/compartido/etiqueta-papel.css";
 
-// Cifras de la Cámara. Los años se calculan en cada build, así que se actualizan solos
 const ANIO_FUNDACION = 1995;
 const cifras = [
   { valor: "43", texto: "empresas afiliadas" },
@@ -29,10 +27,7 @@ const cifras = [
     aria-hidden="true"
   />
   <div class="foto-inicio__overlay" aria-hidden="true"></div>
-  <!-- Cifras y logo: a la derecha sobre el follaje (no tapan la lapa); en celular, abajo al centro -->
   <div class="foto-inicio__contenido">
-    <!-- dl: cada cifra con su descripción. El dt (descripción) va primero en el HTML para los lectores de pantalla,
-         pero se muestra debajo del número (flex-direction: column-reverse) -->
     <dl class="foto-inicio__cifras">
       {
         cifras.map(({ valor, texto }) => (
@@ -111,7 +106,6 @@ const cifras = [
   .foto-inicio__cifra {
     display: flex;
     flex-direction: column-reverse;
-    /* En column-reverse, flex-end es arriba: los números quedan a la misma altura aunque las etiquetas midan distinto */
     justify-content: flex-end;
     align-items: center;
     max-width: 10rem;
@@ -119,7 +113,6 @@ const cifras = [
     text-align: center;
   }
 
-  /* Línea fina entre cifras */
   .foto-inicio__cifra + .foto-inicio__cifra {
     border-left: 1px solid rgb(255 255 255 / 45%);
   }
@@ -167,7 +160,6 @@ const cifras = [
       object-position: 34% center;
     }
 
-    /* Logo abajo al centro; las cifras, en el centro de la pantalla (la sección mide lo mismo que la pantalla) */
     .foto-inicio__contenido {
       inset: 0 1rem 3rem;
       justify-content: flex-end;

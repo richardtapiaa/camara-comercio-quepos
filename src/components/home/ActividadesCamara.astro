@@ -1,10 +1,4 @@
 ---
-// "Lo que hacemos por su negocio": texto a la izquierda que se queda fijo y, a la derecha, tarjetas que al bajar se
-// van apilando una sobre otra como un mazo (cada una se pega un poco más abajo que la anterior, y solo queda a la vista
-// el título de las de atrás). Cada tarjeta nueva es un tono más oscuro del gris de las tarjetas del sitio (#f3f5f8, el de "¿Por qué afiliarse?" y las noticias), sin sombra.
-// Solo CSS (position: sticky), sin JavaScript. Ningún ancestro puede llevar overflow-hidden: rompe el sticky.
-// Los temas no repiten los de "¿Por qué afiliarse?": son actividades que la Cámara ya ofrece en el sitio.
-// Todas las tarjetas llevan el mismo ícono: un check en un círculo oscuro.
 import { ArrowRight } from "lucide-react";
 
 const actividades = [
@@ -33,7 +27,6 @@ const actividades = [
 
 <section aria-labelledby="titulo-actividades" class="bg-white px-6 py-20 sm:px-10 sm:py-24">
   <div class="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:gap-20">
-    <!-- Texto: fijo mientras pasan las tarjetas (solo desde lg, donde va al lado) -->
     <div class="self-start lg:sticky lg:top-36">
       <h2 id="titulo-actividades" class="mt-2 text-2xl font-semibold text-slate-900 sm:text-3xl">
         Lo que hacemos por su negocio
@@ -65,7 +58,6 @@ const actividades = [
             style={`top: calc(var(--arriba) + ${i} * var(--paso))`}
           >
             <div class="flex items-center gap-3">
-              <!-- Check blanco dentro de un círculo oscuro (decorativo) -->
               <svg viewBox="0 0 24 24" class="size-6 shrink-0" aria-hidden="true">
                 <circle cx="12" cy="12" r="11" fill="#171717"></circle>
                 <path

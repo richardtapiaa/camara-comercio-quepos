@@ -10,8 +10,6 @@ import "../../styles/home/hero.css";
 ---
 
 <section id="hero" data-end-pin="#mision" data-pin-desktop class="panel pinned sticky top-0 isolate md:relative h-lvh w-full overflow-hidden bg-black">
-  <!-- El primer cuadro del video como imagen normal debajo del video (en vez de su póster): carga de inmediato con
-       prioridad alta y cuenta como LCP, que un póster no. El video se ve encima cuando empieza a reproducirse -->
   <Picture
     src={fondo}
     formats={["avif", "webp"]}
@@ -24,7 +22,6 @@ import "../../styles/home/hero.css";
     fetchpriority="high"
     aria-hidden="true"
   />
-  <!-- data-video-diferido: empieza a descargarse cuando la página terminó de cargar (scripts/compartido/videos.ts) -->
   <video
     data-video-diferido
     class="absolute inset-0 -z-20 h-full w-full object-cover object-left-bottom"

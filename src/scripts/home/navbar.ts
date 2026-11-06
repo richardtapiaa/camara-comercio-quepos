@@ -50,11 +50,8 @@ const setDropdownOpen = (dropdown: Dropdown, open: boolean, immediate = false) =
 
 let tl: gsap.core.Timeline | null = null;
 let menuOpen = false;
-// Ancho del panel, medido antes de tocar atributos para no forzar un recálculo del layout a mitad de la animación
 let anchoMenu = 0;
 
-// El scroll de la página no se bloquea con overflow: hidden (eso recalcula el layout de toda la página justo al
-// empezar la animación): el fondo oscuro tiene touch-none y el panel overscroll-contain
 const openMenu = () => {
   if (!tl) return;
   const ancho = menu?.offsetWidth ?? 0;
@@ -114,7 +111,6 @@ mm.add("(max-width: 767px)", () => {
     .to(menu, { xPercent: 0, duration: 0.38, ease: "power3.inOut" }, 0)
     .to(pagina, { x: () => -anchoMenu, duration: 0.38, ease: "power3.inOut" }, 0);
 
-  // Al tocar el botón (antes del click) el navegador ya empieza a preparar las capas que se van a mover
   const prepararCapas = () => {
     if (!menuOpen) gsap.set([menu, ...pagina], { willChange: "transform" });
   };
@@ -183,20 +179,17 @@ const update = () => {
   while (siguiente && ["SCRIPT", "STYLE", "TEMPLATE", "LINK"].includes(siguiente.tagName)) {
     siguiente = siguiente.nextElementSibling;
   }
-  // Una isla de React (astro-island) no tiene caja propia (display: contents) y mide 0: se usa el final del hero
   if (siguiente && siguiente.getClientRects().length === 0) siguiente = null;
   const heroEnd = heroRef
     ? (siguiente ?? heroRef).getBoundingClientRect()[siguiente ? "top" : "bottom"] + window.scrollY
     : 0;
   const pastHero = y >= heroEnd - header.offsetHeight;
 
-  // Solo se escribe si cambió: reescribir el mismo valor igual obliga al navegador a recalcular estilos
   const solid = pastHero ? "true" : "false";
   if (header.dataset.solid !== solid) header.dataset.solid = solid;
   if (header.dataset.hidden !== "false") header.dataset.hidden = "false";
 };
 
-// Una vez por cuadro como máximo (el scroll puede disparar varios eventos por cuadro)
 let cuadroPendiente = 0;
 window.addEventListener(
   "scroll",

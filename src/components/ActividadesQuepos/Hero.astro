@@ -5,12 +5,9 @@ import BordePincelada from "../compartidos/BordePincelada.astro";
 import "../../styles/compartido/etiqueta-papel.css";
 import "../../styles/compartido/hero-texto.css";
 
-// Mismo hero que el de Hospitalidad (HospitalidadComponentes/Hero.astro)
 ---
 
-<!-- id="hero": el navbar se ve transparente mientras está sobre esta sección -->
 <section id="hero" class="relative isolate flex h-[78svh] min-h-[520px] items-end overflow-hidden bg-[#2b4a3c]">
-  <!-- AVIF (pesa ~40 % menos que WebP con la misma calidad) y WebP para los navegadores que no lo leen -->
   <Picture
     src={foto}
     formats={["avif", "webp"]}
@@ -38,6 +35,5 @@ import "../../styles/compartido/hero-texto.css";
     </a>
   </div>
 
-  <!-- Del gris de la sección de abajo (InformacionActividades) -->
   <BordePincelada color="text-[#f6f6f7]" />
 </section>

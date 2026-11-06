@@ -1,11 +1,4 @@
 ---
-// Texto con animales u hojas encima de algunas letras (se arman con lapa(), mono()… de decoraciones.ts).
-// Cada palabra va sin cortes, así la línea solo se parte entre palabras.
-// Es solo visual: quien lo usa pone el texto para lectores de pantalla y esconde este con aria-hidden (las letras
-// decoradas se leerían separadas del resto de la palabra).
-// Se anima desde afuera con variables CSS que se heredan:
-//   --aparicion (0 a 1): las decoraciones crecen desde su punto de apoyo (por defecto 1, tamaño completo)
-//   --animacion (running | paused): pausa el vaivén de las que se mecen mientras el texto no se ve
 import type { Decoracion } from "./decoraciones";
 
 interface Props {
@@ -15,19 +8,17 @@ interface Props {
 
 const { texto, decoraciones = [] } = Astro.props;
 
-// Palabras → letras, cada una con sus decoraciones
 let indice = 0;
 const palabras = texto.split(" ").map((palabra) => {
   const letras = Array.from(palabra, (letra) => {
     const i = indice++;
     return { letra, decoraciones: decoraciones.filter((d) => d.letra === i) };
   });
-  indice++; // el espacio entre palabras
+  indice++;
   return letras;
 });
 ---
 
-{/* Las etiquetas de una palabra van pegadas: un salto de línea entre ellas se volvería un espacio dentro de la palabra */}
 {
   palabras.map((letras, i) => (
     <Fragment>{i > 0 && " "}<span class="whitespace-nowrap">{
@@ -60,7 +51,6 @@ const palabras = texto.split(" ").map((palabra) => {
 }
 
 <style>
-  /* Crecen desde su punto de apoyo con --aparicion: empiezan cuando el texto ya va por la mitad */
   .decoracion {
     scale: clamp(0, calc((var(--aparicion, 1) - 0.4) / 0.6), 1);
   }

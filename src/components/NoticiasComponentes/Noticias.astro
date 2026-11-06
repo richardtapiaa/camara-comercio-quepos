@@ -1,6 +1,4 @@
 ---
-// Las publicaciones se descargan durante el build. Noticias.tsx va sin client:* a propósito:
-// sale como HTML puro, sin JavaScript en el navegador.
 import Noticias from "../ReactComponentes/NoticiasComponentes/Noticias";
 import { obtenerPostsFacebook } from "../../lib/facebook";
 import { contacto } from "../../lib/sitio";
@@ -11,19 +9,15 @@ const posts = await obtenerPostsFacebook(10);
 <Noticias posts={posts} urlFacebook={contacto.facebook} />
 
 <script>
-  // Buscador, temas y filtro por mes de las noticias (ver Noticias.tsx): solo muestra u oculta las que ya están en la página.
-  // Los controles salen escondidos y se muestran aquí: sin este script no aparecen y se ve la lista completa.
   const filtros = document.querySelector<HTMLElement>("[data-filtros-noticias]");
   if (filtros) {
     const buscar = filtros.querySelector<HTMLInputElement>("[data-buscar-noticia]")!;
-    // El filtro por mes solo existe si hay publicaciones de más de un mes
     const mes = filtros.querySelector<HTMLSelectElement>("[data-filtrar-mes]");
     const chips = [...filtros.querySelectorAll<HTMLButtonElement>("[data-tema]")];
     let tema = "";
     const conteo = filtros.querySelector<HTMLElement>("[data-conteo-noticias]")!;
     const noticias = [...document.querySelectorAll<HTMLElement>("[data-noticia]")];
     const sinResultados = document.querySelector<HTMLElement>("[data-sin-resultados]");
-    // Igual que en Noticias.tsx: minúsculas y sin tildes, así "camara" encuentra "Cámara"
     const normalizar = (texto: string) =>
       texto
         .toLowerCase()
@@ -31,7 +25,6 @@ const posts = await obtenerPostsFacebook(10);
         .replace(/[\u0300-\u036f]/g, "");
 
     const aplicar = () => {
-      // Cada palabra escrita tiene que aparecer en la noticia, en cualquier orden
       const palabras = normalizar(buscar.value).split(/\s+/).filter(Boolean);
       let visibles = 0;
       for (const noticia of noticias) {
@@ -43,7 +36,6 @@ const posts = await obtenerPostsFacebook(10);
         if (coincide) visibles++;
       }
       if (sinResultados) sinResultados.hidden = visibles > 0;
-      // El conteo se anuncia a los lectores de pantalla (aria-live) solo mientras hay un filtro puesto
       conteo.textContent = palabras.length || mes?.value || tema ? `${visibles} de ${noticias.length} noticias` : "";
     };
 
@@ -63,7 +55,6 @@ const posts = await obtenerPostsFacebook(10);
       elegirTema("");
       buscar.focus();
     });
-    // Por si el navegador recordó lo escrito al volver con "Atrás"
     aplicar();
   }
 </script>

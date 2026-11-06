@@ -1,6 +1,3 @@
-/* Lapa que jala NahomiScroll (components/Quepos-Componentes/LapaArrastre.astro, scripts/quepos/lapa-arrastre.ts) */
-
-/* overflow-x: clip corta la lapa cuando entra por la derecha sin crear scroll horizontal y deja ver lo de arriba */
 .lapa-ancla {
   overflow-x: clip;
 }
@@ -12,7 +9,6 @@
   height: 35svh;
 }
 
-/* El grupo está en la pata de la lapa: el script lo mueve y la lapa y la tira cuelgan de ese punto */
 .lapa-grupo {
   --ancho-lapa: min(40vw, 358px);
   position: absolute;
@@ -27,8 +23,6 @@
   }
 }
 
-/* La pata está en el 53 % del ancho y el 75 % del alto de la imagen (639×360): se pone en el origen y se gira y voltea
-   alrededor de ella */
 .lapa-arrastre {
   position: absolute;
   left: calc(var(--ancho-lapa) * -0.53);

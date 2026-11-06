@@ -1,6 +1,3 @@
-// Sirve dist/ (el sitio ya compilado con `npm run build`) como lo haría un hosting: con gzip y con la 404 propia.
-// Lo usan herramientas/medir-rendimiento.mjs y las pruebas de Playwright (playwright.config.ts).
-// Uso directo: node herramientas/servidor-estatico.mjs [puerto]
 import { createServer } from "node:http";
 import { readFile, stat } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
@@ -27,12 +24,10 @@ const TIPOS = {
   ".mp4": "video/mp4",
   ".webm": "video/webm",
 };
-// Lo que un hosting comprime (las imágenes, fuentes y videos ya vienen comprimidos)
 const COMPRIMIBLE = new Set([".html", ".js", ".mjs", ".css", ".json", ".xml", ".txt", ".svg"]);
 
 const existe = (ruta) => stat(ruta).then((s) => s, () => null);
 
-// /quepos/ → dist/quepos/index.html; /quepos → redirige a /quepos/ (como Netlify, Vercel o GitHub Pages)
 const resolver = async (pathname) => {
   const ruta = normalize(join(DIST, decodeURIComponent(pathname)));
   if (!ruta.startsWith(DIST)) return null;
@@ -62,7 +57,6 @@ export const iniciarServidor = (puerto = 4330) =>
         cuerpo = gzipSync(cuerpo);
         cabeceras["Content-Encoding"] = "gzip";
       }
-      // Los archivos de _astro/ llevan un hash en el nombre: se pueden guardar en caché para siempre
       if (pathname.startsWith("/_astro/")) cabeceras["Cache-Control"] = "public, max-age=31536000, immutable";
       respuesta.writeHead(encontrado ? 200 : 404, cabeceras).end(cuerpo);
     });

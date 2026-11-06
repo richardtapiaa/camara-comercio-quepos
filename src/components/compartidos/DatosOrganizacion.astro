@@ -1,12 +1,9 @@
 ---
-// Datos estructurados (JSON-LD) para Google: quién es la Cámara, su logo y cómo contactarla. Van en el inicio
-// (pages/index.astro), que es donde Google los busca. Se pueden revisar en https://search.google.com/test/rich-results
 import { getImage } from "astro:assets";
 import logo from "../../assets/compartido/logo-camara.webp";
 import { contacto, nombreSitio } from "../../lib/sitio";
 
 const sitio = Astro.site!.href;
-// Google pide el logo en PNG, JPG o WebP de al menos 112 px
 const logoGoogle = await getImage({ src: logo, width: logo.width, format: "png" });
 
 const datos = {

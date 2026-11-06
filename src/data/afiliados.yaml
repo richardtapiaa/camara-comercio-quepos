@@ -153,7 +153,7 @@
 - id: mutuo-legal
   nombre: Mutuo Legal
   categoria: Comercio
-  descripcion: Servicios legales
+  descripcion: Comercio
   logo: ../assets/afiliados/logos/mutuo.jpg
 
 - id: 2-costa-rica-real-estate

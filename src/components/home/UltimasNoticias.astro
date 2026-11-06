@@ -1,7 +1,4 @@
 ---
-// Las 3 publicaciones más recientes de Facebook, de la misma fuente que la página de Noticias (pages/noticias.astro).
-// Se pide la misma cantidad que allá (10) para que el caché de lib/facebook.ts haga una sola petición por build.
-// UltimasNoticias.tsx va sin client:* a propósito: sale como HTML puro, sin JavaScript en el navegador.
 import UltimasNoticias from "../ReactComponentes/Home/UltimasNoticias";
 import { obtenerPostsFacebook } from "../../lib/facebook";
 

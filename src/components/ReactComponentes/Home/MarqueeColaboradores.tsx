@@ -1,26 +1,16 @@
-// Carrusel infinito de logos (instituciones colaboradoras del inicio). Solo CSS: se usa SIN directiva client:*
-// (ver home/institucionesColaboradores.astro), así que sale como HTML puro, sin JavaScript.
-// - Se pausa al pasar el mouse y se queda quieto con "reducir movimiento".
-// - Al pasar el mouse o tocar un logo, su tarjeta se llena con un degradado de sus colores (:hover y :active; el
-//   cursor-pointer hace que Safari en iPhone reconozca el toque sin JavaScript).
-// - Los lectores de pantalla leen la lista de instituciones una sola vez (sr-only); la cinta animada, con los logos
-//   repetidos para que el ciclo no tenga huecos, está oculta para ellos (aria-hidden).
 import type * as React from "react";
 import { cn } from "@/lib/utils";
 
 export interface LogoColaborador {
   src: string;
-  /** Nombre de la institución (texto alternativo y lista para lectores de pantalla) */
   alt: string;
   width: number;
   height: number;
-  /** Colores del degradado que aparece al pasar el mouse o tocar el logo (tonos suaves, para que el logo se lea) */
   gradiente: { desde: string; medio: string; hasta: string };
 }
 
 interface MarqueeColaboradoresProps {
   titulo: string;
-  /** Texto opcional debajo del título */
   descripcion?: string;
   logos: LogoColaborador[];
   velocidad?: "normal" | "lenta" | "rapida";
@@ -29,9 +19,7 @@ interface MarqueeColaboradoresProps {
 
 const duraciones = { normal: "40s", lenta: "70s", rapida: "20s" };
 
-// Cada mitad de la cinta tiene que ser más ancha que la pantalla más grande (~2560 px) para que el ciclo (que mueve
-// la cinta media vuelta) no deje huecos. Con pocos logos se repiten las veces que haga falta
-const ANCHO_LOGO = 224; // w-48 (192 px) + gap-8 (32 px)
+const ANCHO_LOGO = 224;
 const ANCHO_MINIMO_MITAD = 2600;
 
 const estilos = `
@@ -55,9 +43,7 @@ export function MarqueeColaboradores({ titulo, descripcion, logos, velocidad = "
     >
       <style>{estilos}</style>
 
-      {/* Encabezado centrado, como el de ¿Por qué afiliarse? y Últimas noticias */}
       <div className="mx-auto max-w-3xl px-6 text-center">
-        {/* Una rayita decorativa a cada lado del título (ocultas para lectores de pantalla) */}
         <h2
           id="titulo-colaboradores"
           className="flex items-center justify-center gap-3 text-2xl font-semibold text-slate-900 sm:gap-6 sm:text-3xl"
@@ -75,7 +61,6 @@ export function MarqueeColaboradores({ titulo, descripcion, logos, velocidad = "
         ))}
       </ul>
 
-      {/* Bordes que se desvanecen a los lados */}
       <div
         aria-hidden="true"
         className="mt-12 w-full overflow-hidden"
@@ -90,7 +75,6 @@ export function MarqueeColaboradores({ titulo, descripcion, logos, velocidad = "
               key={i}
               className="group relative isolate flex h-28 w-48 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-[1.5rem] bg-[#f3f5f8] px-6"
             >
-              {/* Degradado que aparece al pasar el mouse o tocar: crece desde afuera hacia la tarjeta */}
               <div
                 style={
                   {

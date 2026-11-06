@@ -8,7 +8,6 @@ import sitemap from "@astrojs/sitemap";
 
 
 export default defineConfig({
-  // Dominio del sitio: con él se generan la URL canónica, las de redes sociales (Layout.astro) y el sitemap
   site: "https://camaraquepos.com",
 
   devToolbar: {
@@ -25,6 +24,5 @@ export default defineConfig({
     ],
   },
 
-  // sitemap-index.xml para Google y Bing (robots.txt apunta a él)
   integrations: [react(), sitemap({ filter: (pagina) => !pagina.endsWith("/404/") })],
 });

@@ -24,7 +24,6 @@
   }
 }
 
-/* Fuera de pantalla no se mecen: lapa-scroll.ts marca el recuadro con data-a-la-vista mientras se ve */
 [data-lapa-scroll]:not([data-a-la-vista]) .nube-ola {
   animation-play-state: paused;
 }

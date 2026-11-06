@@ -1,5 +1,3 @@
-// Datos de la Cámara que se repiten en el sitio: el navbar, las etiquetas para redes (Layout.astro) y los datos
-// estructurados para Google (components/compartidos/DatosOrganizacion.astro)
 export const nombreSitio = "Cámara de Comercio, Industria y Turismo de Quepos";
 
 export const contacto = {
