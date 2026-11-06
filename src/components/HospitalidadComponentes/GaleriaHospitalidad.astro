@@ -13,38 +13,34 @@ const fotos = [
     id: "piscina-cafe",
     imagen: piscinaCafe,
     alt: "Café junto a una piscina infinita con vista al bosque y al mar",
-    lugar: "Manuel Antonio",
   },
   {
     id: "rancho-piscina",
     imagen: hotelRancho,
     alt: "Hotel con rancho de paja y piscina entre la selva, frente al mar",
-    lugar: "Manuel Antonio",
   },
   {
     id: "silla-colgante",
     imagen: sillaColgante,
     alt: "Silla colgante en una terraza con vista al Pacífico",
-    lugar: "Manuel Antonio",
   },
   {
     id: "piscina-atardecer",
     imagen: piscinaAtardecer,
     alt: "Piscina infinita al atardecer, con una isla al fondo",
-    lugar: "Manuel Antonio",
   },
-  { id: "columpio", imagen: columpioPlaya, alt: "Columpio de madera en la playa, frente a las olas", lugar: "Playa Manuel Antonio" },
-  { id: "marina", imagen: marinaPezVela, alt: "Vista aérea de Marina Pez Vela con sus muelles y yates", lugar: "Marina Pez Vela" },
+  { id: "columpio", imagen: columpioPlaya, alt: "Columpio de madera en la playa, frente a las olas" },
+  { id: "marina", imagen: marinaPezVela, alt: "Vista aérea de Marina Pez Vela con sus muelles y yates" },
 ];
 
 const imagenes = await Promise.all(
-  fotos.map(async ({ id, imagen, alt, lugar }) => {
+  fotos.map(async ({ id, imagen, alt }) => {
     const { src, miniatura, srcSet } = await variantesGaleria(imagen);
-    return { id, alt, lugar, src, miniatura, srcSet };
+    return { id, alt, src, miniatura, srcSet };
   }),
 );
 ---
 
-<section id="galeria-hospitalidad" class="bg-white py-16 sm:py-20">
-  <ImagenesHoteles client:visible titulo="Experiencias populares" imagenes={imagenes} />
+<section id="galeria-hospitalidad" class="bg-white pb-16 sm:pb-20">
+  <ImagenesHoteles client:visible titulo="Galería de Hospitalidad" imagenes={imagenes} />
 </section>
