@@ -1,18 +1,11 @@
 ---
-// Fondo decorativo: curvas de nivel finas, como un mapa de relieve. Las curvas se calculan aquí al compilar (no hay
-// JavaScript en el navegador) y siempre salen iguales porque usan una semilla fija.
-// La sección que lo contiene necesita "relative isolate" para que quede detrás del contenido.
-
 interface Props {
-  /** Color de las líneas */
   color?: string;
-  /** Opacidad de las líneas. Baja porque queda detrás de texto */
   opacidad?: number;
 }
 
 const { color = "#2b4a5c", opacidad = 0.09 } = Astro.props;
 
-// Generador de números pseudoaleatorios con semilla (mulberry32): mismas curvas en cada compilación
 function aleatorio(semilla: number) {
   return () => {
     semilla = (semilla + 0x6d2b79f5) | 0;
@@ -22,18 +15,16 @@ function aleatorio(semilla: number) {
   };
 }
 
-// Un "cerro": anillos irregulares uno dentro de otro alrededor de (cx, cy)
 function cerro(cx: number, cy: number, anillos: number, paso: number, semilla: number) {
   const rnd = aleatorio(semilla);
   const ondas = [2, 3, 4, 6].map((f) => ({ f, a: (0.05 + rnd() * 0.1) / (f / 2), p: rnd() * Math.PI * 2 }));
-  const estirar = 1.1 + rnd() * 0.4; // un poco más ancho que alto
+  const estirar = 1.1 + rnd() * 0.4;
   const caminos: string[] = [];
   for (let k = 0; k < anillos; k++) {
     const r = paso * (k + 1);
     const puntos: string[] = [];
     for (let i = 0; i < 120; i++) {
       const t = (i / 120) * Math.PI * 2;
-      // La forma cambia un poco de un anillo al siguiente, como en un mapa real
       const factor = 1 + ondas.reduce((s, o) => s + o.a * Math.sin(o.f * t + o.p + k * 0.25), 0);
       puntos.push(`${(cx + r * factor * estirar * Math.cos(t)).toFixed(1)},${(cy + r * factor * Math.sin(t)).toFixed(1)}`);
     }

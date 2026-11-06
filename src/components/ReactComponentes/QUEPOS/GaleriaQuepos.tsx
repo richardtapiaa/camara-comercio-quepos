@@ -335,10 +335,6 @@ const PROPORCIONES = ["aspect-[3/5]", "aspect-[16/10]", "aspect-[2/3]", "aspect-
 
 const TAMANOS_MINIATURA = "(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw";
 
-// La cuadrícula usa columnas de CSS (2, 3 o 4 según la pantalla), que se llenan de arriba hacia abajo: las fotos que
-// se ven al abrir la página son las primeras de cada columna. Esas se piden de inmediato (una de ellas es el LCP de la
-// página) y el resto se carga al acercarse. Sin fetchpriority="high": Chrome ya les sube la prioridad a las que quedan
-// en pantalla, y forzarla en todas hacía que compitieran entre ellas y la del LCP llegara más tarde
 const primerasDeColumna = (total: number) => {
   const indices = new Set([0, 1]);
   for (const columnas of [2, 3, 4]) {

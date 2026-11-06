@@ -1,8 +1,3 @@
-// Últimas noticias del inicio: las publicaciones más recientes de Facebook en tarjetas (imagen, fecha, título y resumen).
-// Cada tarjeta lleva a esa publicación dentro de /noticias. Los datos son los mismos de la página de Noticias
-// (lib/facebook.ts y lib/noticias.ts).
-// Se usa SIN directiva client:* (ver home/UltimasNoticias.astro): sale como HTML puro, sin JavaScript. En celular las
-// tarjetas van una debajo de otra; desde tablet, las tres en fila.
 import { ArrowRight, Clock } from "lucide-react";
 import type { PostFacebook } from "../../../lib/facebook";
 import { formatoFecha, idNoticia, recortar, separarTitulo } from "../../../lib/noticias";
@@ -19,11 +14,8 @@ function TarjetaNoticia({ post }: { post: PostFacebook }) {
   const resumen = cuerpo ? recortar(cuerpo.replace(/\s+/g, " "), LARGO_RESUMEN) : "";
   const resumenCompleto = cuerpo.length <= LARGO_RESUMEN ? cuerpo.replace(/\s+/g, " ") : resumen;
 
-  // Mismo estilo que las tarjetas de PorQueAfiliarse.astro: gris claro, muy redondeadas y sin sombra
   return (
     <article className="group relative flex h-full flex-col rounded-[2rem] bg-[#f3f5f8] p-5 transition-colors duration-300 focus-within:ring-2 focus-within:ring-[#2780c9] hover:bg-[#eaeef3] motion-reduce:transition-none">
-      {/* Imagen: completa adelante (los afiches no se recortan) y la misma, difuminada, de fondo para llenar los
-          costados. Misma URL: se descarga una sola vez. alt vacío: el título ya dice de qué trata */}
       <div className="relative isolate aspect-[4/3] overflow-hidden rounded-[1.5rem] bg-slate-200">
         {post.imagen && (
           <>
@@ -56,8 +48,6 @@ function TarjetaNoticia({ post }: { post: PostFacebook }) {
           <time dateTime={post.fecha}>{formatoFecha.format(new Date(post.fecha))}</time>
         </p>
 
-        {/* El enlace del título cubre toda la tarjeta (after:inset-0): se puede hacer clic en cualquier parte, pero
-            para el teclado y los lectores de pantalla es un solo enlace con el título como texto */}
         <h3 className="mt-1 text-lg font-semibold leading-snug text-slate-900">
           <a
             href={`/noticias#${idNoticia(post.id)}`}
@@ -84,14 +74,10 @@ export default function UltimasNoticias({ posts }: Props) {
   return (
     <section
       aria-labelledby="titulo-ultimas-noticias"
-      // relative z-10: al mismo nivel que los paneles del inicio (z-10), así su fondo tapa la sombra de un panel
-      // vecino, que si no se derrama como una raya sobre el borde de esta sección.
-      // isolate overflow-x-clip: los necesita el sello de fondo (ver compartidos/FondoSello.tsx)
       className="relative isolate z-10 overflow-x-clip bg-white py-20 sm:py-24"
     >
       <FondoSello />
       <div className="mx-auto max-w-7xl px-6 sm:px-10">
-        {/* Encabezado centrado, como el de PorQueAfiliarse.astro */}
         <div className="mx-auto max-w-3xl text-center">
           <h2 id="titulo-ultimas-noticias" className="text-2xl font-semibold text-slate-900 sm:text-3xl">
             Últimas noticias
@@ -101,7 +87,6 @@ export default function UltimasNoticias({ posts }: Props) {
           </p>
         </div>
 
-        {/* Celular: una debajo de otra, a todo el ancho. Desde tablet: las tres en fila */}
         <ul role="list" className="mt-14 grid gap-6 md:grid-cols-3 lg:gap-8">
           {posts.map((post) => (
             <li key={post.id}>
@@ -110,7 +95,6 @@ export default function UltimasNoticias({ posts }: Props) {
           ))}
         </ul>
 
-        {/* Botón centrado al final, como "Quiero afiliarme" */}
         <div className="mt-12 flex justify-center">
           <a
             href="/noticias"

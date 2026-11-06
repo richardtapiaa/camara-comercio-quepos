@@ -5,17 +5,11 @@ import imagen from "../../assets/actividades/actividades-1.jpg";
 import siluetaPerezoso from "../../assets/quepos/perezoso-rama.svg";
 ---
 
-<!-- Mismo diseño que SobreQuepos: container de Bootstrap (540/720/960/1140/1320 px) con 12 px de margen -->
-<!-- Se queda fija (como Vision en el inicio) y NahomiScroll sube por encima; ver scripts/home/paneles.ts
-     Mide solo lo que su contenido: el borde de NahomiScroll asoma abajo e invita a seguir bajando -->
 <section
   id="biodiversidad-quepos"
   data-panel-sticky
   class="panel sticky top-[min(0px,calc(100svh_-_var(--alto-panel,100svh)))] overflow-x-clip bg-white py-12 sm:py-16"
 >
-  <!-- Fondo: silueta tenue de un perezoso abrazado a un tronco (mismo estilo que el mono de SobreQuepos), detrás del texto.
-       Va detrás del texto saliendo por la izquierda (a la derecha la taparía la foto).
-       El envoltorio recorta la silueta: la sección es sticky y solo recorta en horizontal -->
   <div class="pointer-events-none absolute inset-0 overflow-hidden">
     <img
       src={siluetaPerezoso.src}
@@ -32,7 +26,6 @@ import siluetaPerezoso from "../../assets/quepos/perezoso-rama.svg";
   >
     <div>
       <div class="flex items-center gap-4">
-        <!-- Mismo estilo que el ícono de ubicación de quepos-icons/whypr.svg -->
         <span class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#F8E39A]" aria-hidden="true">
           <Leaf className="size-6 text-neutral-900" strokeWidth={1.75} />
         </span>

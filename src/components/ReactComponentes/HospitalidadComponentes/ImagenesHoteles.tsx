@@ -16,12 +16,10 @@ const TAMANOS = "(min-width: 1280px) 28.4vw, (min-width: 1024px) 31vw, (min-widt
 const flecha =
   "flex size-11 items-center justify-center rounded-full bg-[#9cdeea] text-[#163746] transition-colors hover:bg-[#86d3e1] disabled:opacity-40";
 
-// Carrusel de tarjetas altas: al tocar una foto se abre en grande con el visor de la galería de Quepos
 export default function ImagenesHoteles({ titulo, imagenes }: { titulo: string; imagenes: ImagenHotel[] }) {
   const filaRef = React.useRef<HTMLUListElement>(null);
   const [extremos, setExtremos] = React.useState({ inicio: true, final: false });
 
-  // Las flechas se apagan en los extremos
   const actualizar = React.useCallback(() => {
     const fila = filaRef.current;
     if (!fila) return;
@@ -33,7 +31,6 @@ export default function ImagenesHoteles({ titulo, imagenes }: { titulo: string; 
 
   React.useEffect(actualizar, [actualizar]);
 
-  // Avanza una tarjeta (su ancho más el espacio entre tarjetas)
   const mover = (direccion: 1 | -1) => {
     const fila = filaRef.current;
     const tarjeta = fila?.firstElementChild as HTMLElement | null;
@@ -56,7 +53,6 @@ export default function ImagenesHoteles({ titulo, imagenes }: { titulo: string; 
         </div>
       </div>
 
-      {/* Ocupa todo el ancho y deja ver un pedazo de la siguiente tarjeta, como un carrusel tipo Swiper */}
       <ul
         ref={filaRef}
         onScroll={actualizar}

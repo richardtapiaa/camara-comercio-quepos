@@ -1,10 +1,3 @@
-// Mide todas las páginas de dist/ con Lighthouse (perfil de celular con red 4G lenta simulada, el mismo de PageSpeed
-// Insights) y avisa cuáles pasan los límites de Core Web Vitals. Son mediciones de laboratorio: los datos reales
-// de los visitantes (Search Console, CrUX) pueden ser distintos.
-// Uso: npm run build && npm run rendimiento [-- --repeticiones=3] [-- --paginas=/,/quepos/] [-- --red-real]
-// Con --red-real la red lenta se aplica de verdad en vez de estimarse: tarda más, pero el LCP se parece más al de un
-// celular real (la estimación de Lighthouse suele exagerarlo en páginas con muchas imágenes)
-// Los informes completos (HTML, se abren en el navegador) quedan en informes-lighthouse/.
 import { mkdir, readdir, writeFile } from "node:fs/promises";
 import { join, relative, sep } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -16,7 +9,6 @@ const PUERTO = 4331;
 const DIST = fileURLToPath(new URL("../dist/", import.meta.url));
 const INFORMES = fileURLToPath(new URL("../informes-lighthouse/", import.meta.url));
 
-// Límites de "bueno" de Google. TBT es la métrica de laboratorio que más se relaciona con INP
 const LIMITES = { lcp: 2500, cls: 0.1, tbt: 200 };
 
 const opcion = (nombre) => process.argv.find((a) => a.startsWith(`--${nombre}=`))?.split("=")[1];

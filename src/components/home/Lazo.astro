@@ -1,9 +1,5 @@
 ---
-// Dos cintas cruzadas en X con frases de la Cámara, que se desplazan en direcciones opuestas.
-// Lazo.tsx (InfiniteRibbon) va sin client:* a propósito: la animación es solo CSS, así que sale como HTML puro, sin
-// JavaScript. Con "reducir movimiento" las cintas se quedan quietas (lo maneja Lazo.tsx).
 import { InfiniteRibbon } from "../ReactComponentes/Home/Lazo";
-// @font-face de Anton, la letra de los títulos de los heroes
 import "../../styles/compartido/etiqueta-papel.css";
 
 const frasesCamara = [
@@ -22,19 +18,12 @@ const frasesAfiliados = [
   "Juntos por Quepos",
 ];
 
-// Las cintas giradas necesitan ser más anchas que la pantalla para que no se vean sus puntas
 const claseCinta =
   "-mx-[10%] w-[120%] max-w-none py-3 font-['Anton','Impact','Arial_Narrow',sans-serif] text-2xl uppercase tracking-wide shadow-[0_10px_30px_-12px_rgba(16,42,67,0.5)] sm:py-4 sm:text-3xl";
 ---
 
-<!-- Relleno según el ancho: girada 5°, cada punta de una cinta del 120 % de ancho sube o baja ~5 % del ancho de la
-     pantalla (unos 75 px en 1440 px y 100 px en 1920 px); así no se monta sobre las secciones vecinas.
-     relative z-10: al mismo nivel que los paneles del inicio (z-10), para que su fondo tape la sombra de un panel vecino.
-     Fondo blanco, el mismo de "Últimas noticias" y "¿Por qué afiliarse?": las cintas cruzan sobre un fondo continuo,
-     sin corte de color entre secciones -->
 <section aria-label="La Cámara de Comercio de Quepos" class="relative z-10 overflow-x-clip bg-white py-14 md:py-20 xl:py-28">
   <div class="relative grid place-items-center">
-    <!-- Cinta de atrás: azul oscuro, hacia la derecha -->
     <InfiniteRibbon
       rotation={5}
       reverse
@@ -50,7 +39,6 @@ const claseCinta =
       ))}
     </InfiniteRibbon>
 
-    <!-- Cinta de adelante: crema (el de las etiquetas de papel) con letra azul oscuro, hacia la izquierda -->
     <InfiniteRibbon
       rotation={-5}
       duration={35}

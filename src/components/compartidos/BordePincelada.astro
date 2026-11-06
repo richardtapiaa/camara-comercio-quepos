@@ -1,10 +1,7 @@
 ---
-// Borde de pincelada para el pie de un hero (Hospitalidad y Visítenos). La sección debe ser relative.
-// color: clase de Tailwind con el color de la sección de abajo (por defecto blanco)
 const { color = "text-white" } = Astro.props;
 ---
 
-<!-- Borde blanco de pincelada: un trazo principal con dientes y pinceladas que se afinan en las puntas -->
 <svg
   class:list={["absolute inset-x-0 -bottom-px h-[clamp(40px,6vw,90px)] w-full", color]}
   viewBox="0 0 1440 100"

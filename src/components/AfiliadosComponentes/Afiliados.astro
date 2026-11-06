@@ -17,7 +17,6 @@ import {
 } from "lucide-react";
 import { categoriasAfiliados } from "../../content.config";
 import logo from "../../assets/compartido/logo-camara.webp";
-// Logo en estilo sello, el mismo del fondo de Noticias y del 404 (se genera con herramientas/logo-sello.mjs)
 import logoSello from "../../assets/compartido/logo-camara-sello.webp";
 import "../../styles/afiliados/afiliados.css";
 
@@ -48,10 +47,7 @@ const claseIcono = "mt-0.5 size-4 shrink-0 text-[#2780c9]";
 const dominio = (url: string) => new URL(url).hostname.replace(/^www\./, "");
 ---
 
-<!-- overflow-x-clip y no overflow-hidden: overflow-hidden rompe el position: sticky del fondo -->
 <section id="afiliados" data-afiliados class="relative isolate scroll-mt-12 overflow-x-clip bg-white px-4 py-16 sm:px-6 sm:py-24">
-  <!-- Fondo decorativo (aria-hidden): el sello del logo se queda fijo en la pantalla mientras se recorre todo el
-       directorio, igual que en Noticias. Solo CSS, sin JavaScript -->
   <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10">
     <div class="sticky top-0 flex h-svh items-center justify-end overflow-hidden">
       <img

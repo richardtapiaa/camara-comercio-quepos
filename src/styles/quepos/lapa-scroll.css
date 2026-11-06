@@ -59,7 +59,6 @@
   }
 }
 
-/* Vuela de derecha a izquierda (la imagen va volteada con scale: -1 1) */
 @keyframes lapa-vuelo {
   0% {
     translate: 100cqw calc(5% - var(--subida, 200%) * 0.000);

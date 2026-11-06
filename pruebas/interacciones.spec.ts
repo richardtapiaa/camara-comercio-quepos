@@ -1,15 +1,11 @@
-// Animaciones e interacciones: el menú, el video del inicio, la animación del malecón, el mapa y el FAQ.
-// No compara píxel a píxel: comprueba que cada animación arranca, avanza al hacer scroll y respeta "reducir movimiento".
 import { expect, test, type Page } from "@playwright/test";
 
 const esCelular = (nombre: string) => nombre === "celular";
 
-// Lleva el scroll a una fracción del recorrido de una sección (0 = su borde de arriba llega arriba, 1 = su final)
 const bajarA = (page: Page, selector: string, fraccion: number) =>
   page.evaluate(
     ([selector, fraccion]) => {
       const seccion = document.querySelector<HTMLElement>(selector)!;
-      // offsetTop acumulado: no lo afecta position: sticky
       let arriba = 0;
       for (let el: HTMLElement | null = seccion; el; el = el.offsetParent as HTMLElement | null) arriba += el.offsetTop;
       window.scrollTo(0, arriba + (seccion.offsetHeight - window.innerHeight) * fraccion);
@@ -17,7 +13,6 @@ const bajarA = (page: Page, selector: string, fraccion: number) =>
     [selector, fraccion] as const,
   );
 
-// Suma de algunos píxeles del lienzo: 0 mientras está vacío, cambia cuando se dibuja otro cuadro
 const firmaLienzo = (page: Page, selector: string) =>
   page.evaluate((selector) => {
     const lienzo = document.querySelector<HTMLCanvasElement>(`${selector} [data-malecon-lienzo]`)!;
@@ -105,19 +100,16 @@ test.describe("malecón (página Quepos)", () => {
     });
     await page.goto("/quepos/", { waitUntil: "load" });
 
-    // Se dibuja un cuadro y al seguir bajando se dibuja otro distinto
     await bajarA(page, "#malecon-paseo", 0.2);
     await expect.poll(() => firmaLienzo(page, "#malecon-paseo"), { timeout: 15_000 }).toBeGreaterThan(0);
     const antes = await firmaLienzo(page, "#malecon-paseo");
     await bajarA(page, "#malecon-paseo", 0.6);
     await expect.poll(() => firmaLienzo(page, "#malecon-paseo"), { timeout: 15_000 }).not.toBe(antes);
 
-    // Al llegar al final se descarga hasta su último cuadro
     await bajarA(page, "#malecon-paseo", 1);
     const carpeta = esCelular(test.info().project.name) ? "malecon-mobile" : "malecon";
     await expect.poll(() => cuadros.includes(`/${carpeta}/frame_144.avif`), { timeout: 30_000 }).toBe(true);
 
-    // Chrome lee AVIF: no debe pedir los WebP de respaldo
     expect(cuadros.filter((c) => c.endsWith(".webp"))).toEqual([]);
     expect(rotos).toEqual([]);
   });
@@ -144,13 +136,11 @@ test("el video de la galería no se descarga al abrir la página y carga al acer
 
   const reproductor = page.getByRole("group", { name: "Reproductor de video" });
   await reproductor.scrollIntoViewIfNeeded();
-  // Ya activo, baja lo suficiente para mostrar el primer cuadro y la duración
   await expect
     .poll(() => page.locator("#videos-quepos video").evaluate((v: HTMLVideoElement) => v.readyState), { timeout: 15_000 })
     .toBeGreaterThanOrEqual(1);
   await expect(page.locator("#videos-quepos video")).toHaveAttribute("preload", "metadata");
 
-  // Todos los controles tienen nombre para los lectores de pantalla
   for (const nombre of ["Reproducir", "Retroceder 10 segundos", "Adelantar 10 segundos", "Silenciar", "Pantalla completa"]) {
     await expect(reproductor.getByRole("button", { name: nombre }).first()).toBeAttached();
   }
@@ -166,16 +156,13 @@ test("el mapa de afiliados carga con la primera interacción y usa el worker de 
   page.on("request", (r) => /maplibre-gl-worker/.test(r.url()) && workers.push(r.url()));
   await page.goto("/mapa-afiliados/", { waitUntil: "load" });
 
-  // Al abrir se ve la imagen fija: el mapa (MapLibre + React) no se carga hasta que la persona interactúa
   await page.waitForTimeout(1000);
   await expect(page.locator("canvas.maplibregl-canvas")).toHaveCount(0);
   expect(workers, "no debe cargar MapLibre al abrir la página").toEqual([]);
 
-  // Con solo mover el mouse empieza a cargar (y el botón "Explorar el mapa de afiliados" desaparece)
   await expect(page.getByRole("button", { name: "Explorar el mapa de afiliados" })).toBeVisible();
   await page.mouse.move(200, 400);
   await expect(page.locator("canvas.maplibregl-canvas")).toBeVisible({ timeout: 15_000 });
-  // Los marcadores de los afiliados aparecen sobre el mapa
   await expect(page.locator(".maplibregl-marker").first()).toBeVisible({ timeout: 15_000 });
   expect(workers.length).toBeGreaterThan(0);
   expect(workers.every((url) => url.startsWith(baseURL!))).toBe(true);
@@ -185,7 +172,6 @@ test("el FAQ de Quepos abre y cierra las respuestas", async ({ page }) => {
   await page.goto("/quepos/");
   const pregunta = page.getByRole("button", { name: "¿Es seguro visitar Quepos?" });
   await pregunta.scrollIntoViewIfNeeded();
-  // Es un componente de React que se activa al verse (client:visible): se reintenta hasta que responde
   await expect(async () => {
     await pregunta.click();
     await expect(pregunta).toHaveAttribute("aria-expanded", "true", { timeout: 500 });

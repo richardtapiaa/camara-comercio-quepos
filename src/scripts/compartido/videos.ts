@@ -1,9 +1,3 @@
-// Videos de fondo:
-// - Los de los heroes (data-video-diferido) muestran su primer cuadro (como póster o como imagen debajo del video) y
-//   empiezan a descargarse cuando la página terminó de cargar, para no competir con lo que se ve primero (en 4G lento,
-//   3 MB de video retrasaban toda la página). Con "reducir movimiento" se quedan en ese cuadro.
-// - Si Safari elige el .webm (AV1) y no lo puede reproducir, se quita el .webm y se vuelve a cargar con el .mp4
-// - En modo de bajo consumo iOS bloquea la reproducción automática; se intenta de nuevo con el primer toque
 const sinMovimiento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const diferidos = document.querySelectorAll<HTMLVideoElement>("video[data-video-diferido]");
@@ -29,7 +23,6 @@ document.querySelectorAll<HTMLVideoElement>("video[autoplay], video[data-video-d
     video.load();
     if (video.autoplay) video.play().catch(() => {});
   };
-  // Los errores de <source> no burbujean, por eso se escucha en captura
   video.addEventListener("error", usarMp4, true);
 
   if (sinMovimiento) return;

@@ -1,7 +1,5 @@
 const sinMovimiento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-// Los cuadros están en AVIF (pesan ~4 veces menos) y en WebP para los navegadores que no leen AVIF (Safari antes de 16.4).
-// Se prueba con un AVIF de 2×2 píxeles. Los cuadros se generan con herramientas/cuadros-malecon.sh
 const formato = new Promise<"avif" | "webp">((listo) => {
   const prueba = new Image();
   prueba.onload = () => listo("avif");
@@ -16,12 +14,8 @@ document.querySelectorAll<HTMLElement>("[data-malecon-scroll]").forEach((seccion
   const primero = Number(seccion.dataset.primero);
   const ultimo = Number(seccion.dataset.ultimo);
   const total = ultimo - primero + 1;
-  // En móvil, cuadros más livianos de la carpeta "-mobile"
   const carpeta = seccion.dataset.carpeta! + (innerWidth < 768 ? "-mobile" : "");
   const ruta = (n: number, extension: string) => `${carpeta}/frame_${String(n).padStart(3, "0")}.${extension}`;
-  // Los cuadros se guardan comprimidos y solo se decodifican (fuera del hilo principal, con createImageBitmap) los
-  // cercanos al actual. Si se dibujara directo la imagen, el navegador la decodificaría en ese momento y en escritorio
-  // eso tarda 40-60 ms por cuadro: es lo que hacía que el scroll se pegara.
   const archivos: (Blob | null)[] = Array(total).fill(null);
   const decodificados = new Map<number, ImageBitmap>();
   const enCamino = new Set<number>();
@@ -31,9 +25,7 @@ document.querySelectorAll<HTMLElement>("[data-malecon-scroll]").forEach((seccion
   let fuente: { ancho: number; alto: number } | null = null;
   let pantalla = window.innerHeight;
 
-  // Dibuja el cuadro cubriendo el lienzo (como object-fit: cover)
   const dibujar = (i: number) => {
-    // Si ese cuadro todavía no está decodificado, usa el decodificado más cercano
     let elegido = -1;
     for (let d = 0; d < total && elegido < 0; d++) {
       if (decodificados.has(i - d)) elegido = i - d;
@@ -52,7 +44,6 @@ document.querySelectorAll<HTMLElement>("[data-malecon-scroll]").forEach((seccion
     enCamino.add(i);
     createImageBitmap(archivos[i]!)
       .then((img) => {
-        // Ya no hace falta si el scroll se fue lejos (salvo que sea lo único que hay para mostrar)
         if (Math.abs(i - actual) > RADIO * 2 && decodificados.size) return img.close();
         decodificados.set(i, img);
         if (!fuente) {
@@ -65,7 +56,6 @@ document.querySelectorAll<HTMLElement>("[data-malecon-scroll]").forEach((seccion
       .finally(() => enCamino.delete(i));
   };
 
-  // Decodifica los cuadros alrededor del actual y libera los que quedaron lejos (cada uno ocupa ~5 MB en escritorio)
   const preparar = () => {
     for (const [i, img] of decodificados) {
       if (Math.abs(i - actual) > RADIO * 2 && i !== dibujado) {
@@ -78,7 +68,6 @@ document.querySelectorAll<HTMLElement>("[data-malecon-scroll]").forEach((seccion
         if (archivos[i] && !decodificados.has(i) && !enCamino.has(i)) decodificar(i);
       }
     }
-    // Si todavía no llegó ningún cuadro cercano, mostrar el descargado más próximo para no dejar el lienzo vacío
     if (decodificados.size || enCamino.size) return;
     for (let d = 0; d < total; d++) {
       const i = archivos[actual - d] ? actual - d : archivos[actual + d] ? actual + d : -1;
@@ -86,12 +75,9 @@ document.querySelectorAll<HTMLElement>("[data-malecon-scroll]").forEach((seccion
     }
   };
 
-  // El lienzo solo tiene los píxeles que el video aporta: si la pantalla tiene más (celulares con densidad 2 o 3),
-  // el navegador lo estira con CSS. Así se ve igual de nítido y cada cuadro mueve 2-3 veces menos píxeles.
   const medir = () => {
     const ancho = lienzo.clientWidth;
     const alto = lienzo.clientHeight;
-    // El lienzo mide 100lvh: la altura de pantalla sin que cambie cuando se esconde la barra del navegador
     pantalla = alto || window.innerHeight;
     let densidad = Math.min(window.devicePixelRatio || 1, 2);
     if (fuente) densidad = Math.min(densidad, 1 / Math.max(ancho / fuente.ancho, alto / fuente.alto));
@@ -111,7 +97,6 @@ document.querySelectorAll<HTMLElement>("[data-malecon-scroll]").forEach((seccion
       })
       .catch(() => {});
 
-  // Primero un cuadro de cada 16, luego cada 8, 4, 2 y 1: se ve algo enseguida y se va afinando
   const cargarTodos = async () => {
     const orden: number[] = [];
     const vistos = new Set<number>();
@@ -131,14 +116,11 @@ document.querySelectorAll<HTMLElement>("[data-malecon-scroll]").forEach((seccion
   new ResizeObserver(medir).observe(lienzo);
 
   if (sinMovimiento) {
-    // Sin animación: solo el primer cuadro
     cargar(0);
     return;
   }
 
-  // Avance según cuánto se ha bajado dentro de la sección
   const lateral = "entradaLateral" in seccion.dataset ? lienzo.parentElement : null;
-  // data-entrada-empuja: la sección de abajo, que se corre hasta un 30 % a la izquierda mientras esta la va tapando
   const empujada = seccion.dataset.entradaEmpuja
     ? document.querySelector(seccion.dataset.entradaEmpuja)?.querySelector<HTMLElement>("[data-malecon-lienzo]")?.parentElement
     : null;
@@ -146,7 +128,6 @@ document.querySelectorAll<HTMLElement>("[data-malecon-scroll]").forEach((seccion
   const alDesplazar = () => {
     cuadro = 0;
     const rect = seccion.getBoundingClientRect();
-    // Con data-entrada-lateral="n", las primeras n pantallas de scroll son para entrar desde la derecha y luego avanza el video
     const entrada = lateral ? pantalla * (Number(seccion.dataset.entradaLateral) || 1) : 0;
     const recorrido = rect.height - pantalla - entrada;
     const progreso = recorrido > 0 ? Math.min(1, Math.max(0, (-rect.top - entrada) / recorrido)) : 0;
@@ -155,7 +136,6 @@ document.querySelectorAll<HTMLElement>("[data-malecon-scroll]").forEach((seccion
     preparar();
     if (lateral) {
       const e = Math.min(1, Math.max(0, -rect.top / entrada));
-      // data-entrada-holgura: cuánto más a la derecha arranca, en fracción del ancho (para que antes entre la lapa)
       const holgura = Number(seccion.dataset.entradaHolgura) || 0;
       lateral.style.transform = `translateX(${(1 - e) * (1 + holgura) * 100}%)`;
       lateral.style.borderRadius = `${40 * (1 - e)}px 0 0 ${40 * (1 - e)}px`;
@@ -167,7 +147,6 @@ document.querySelectorAll<HTMLElement>("[data-malecon-scroll]").forEach((seccion
   };
   window.addEventListener("scroll", () => (cuadro ||= requestAnimationFrame(alDesplazar)), { passive: true });
 
-  // Empieza a cargar cuando la sección está a una pantalla y media de distancia
   const observador = new IntersectionObserver(
     ([entrada]) => {
       if (!entrada.isIntersecting) return;

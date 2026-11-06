@@ -1,4 +1,3 @@
-// Cada página carga sin errores, sin recursos rotos, con su SEO básico y sin desbordarse a lo ancho
 import { expect, test } from "@playwright/test";
 
 const PAGINAS = [
@@ -36,7 +35,6 @@ for (const ruta of PAGINAS) {
       /^https:\/\/camaraquepos\.com\/_astro\/.+\.jpg$/,
     );
     await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
-    // Todas las imágenes con alt (vacío en las decorativas)
     await expect(page.locator("img:not([alt])")).toHaveCount(0);
 
     const desborde = await page.evaluate(

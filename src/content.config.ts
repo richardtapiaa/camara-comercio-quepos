@@ -22,7 +22,6 @@ const afiliados = defineCollection({
     }),
 });
 
-// Lo que solo usa el mapa de afiliados; cada id es el mismo que en afiliados.yaml
 const mapaAfiliados = defineCollection({
   loader: file("src/data/mapa-afiliados.yaml"),
   schema: ({ image }) =>

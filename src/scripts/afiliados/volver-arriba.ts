@@ -27,7 +27,6 @@ if (boton) {
   actualizar();
 
   boton.addEventListener("click", () => {
-    // Con el scroll suave de Lenis activo (scripts/compartido/scroll-suave.ts) se usa el suyo para que no choquen
     if (window.lenis) return window.lenis.scrollTo(destino ?? 0);
     const behavior = sinMovimiento.matches ? "auto" : "smooth";
     if (destino) destino.scrollIntoView({ behavior, block: "start" });

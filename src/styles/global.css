@@ -17,8 +17,6 @@ body {
   font-family: var(--font-sans);
 }
 
-/* En iPhone, si un campo tiene letra de menos de 16px, Safari hace zoom al tocarlo y la página queda
-   agrandada y descuadrada. Va fuera de las capas de Tailwind para ganarle a text-sm y similares */
 @media (pointer: coarse) {
   input:not([type="checkbox"], [type="radio"], [type="file"]),
   textarea,
@@ -93,7 +91,6 @@ body {
   src: url("/fonts/caveat-bold-latin.woff2") format("woff2");
 }
 
-/* mapcn (src/components/ui/map.tsx): colores de shadcn/ui que usan sus controles y tooltips */
 @theme {
   --color-background: #ffffff;
   --color-foreground: #0a0a0a;
@@ -105,8 +102,6 @@ body {
   --color-border: #e5e5e5;
   --color-ring: #a3a3a3;
 
-  /* Entrada de los logos y círculos del mapa. "backwards" (no "both") para que al terminar no bloquee el
-     hover:scale-110 */
   --animate-aparecer-marcador: aparecer-marcador 0.4s cubic-bezier(0.22, 1, 0.36, 1) backwards;
 
   @keyframes aparecer-marcador {
@@ -136,7 +131,6 @@ body {
   .maplibregl-ctrl-attrib-button {
     @apply bg-transparent!;
   }
-  /* El logo bajo el mouse pasa al frente; el tooltip queda por encima de todos */
   .maplibregl-marker:hover {
     z-index: 1;
   }

@@ -6,7 +6,6 @@ import iconoLapa from "../../assets/quepos/icono-lapa-color.svg";
 import iconoMono from "../../assets/quepos/icono-mono-color.svg";
 import iconoPerezoso from "../../assets/quepos/icono-perezoso-color.svg";
 import hojas from "../../assets/quepos/hojas-tropicales.svg";
-// Bordes de papel rasgado (blancos, como las secciones de arriba y abajo). Los genera herramientas/bordes-rasgados.mjs
 import bordeArriba from "../../assets/quepos/borde-rasgado-arriba.svg";
 import bordeAbajo from "../../assets/quepos/borde-rasgado-abajo.svg";
 
@@ -26,8 +25,6 @@ const fotoOptimizada = await getImage({ src: foto, width: foto.width, format: "w
   >
   </div>
   <div class="pointer-events-none absolute inset-0 bg-black/25" aria-hidden="true"></div>
-  <!-- Bordes de papel rasgado arriba y abajo, con una sombra suave sobre la foto. Miden al menos 1100px de ancho y van
-       centrados: en móvil se ve solo el centro y las ondas no se aprietan -->
   <img
     src={bordeArriba.src}
     width={bordeArriba.width}
@@ -46,9 +43,6 @@ const fotoOptimizada = await getImage({ src: foto, width: foto.width, format: "w
     decoding="async"
     class="pointer-events-none absolute bottom-0 left-1/2 z-10 h-12 w-full min-w-[1100px] max-w-none -translate-x-1/2 [filter:drop-shadow(0_-3px_5px_rgb(0_0_0/0.22))] md:h-16 lg:h-20"
   />
-  <!-- Texto de contorno que corre solo a velocidad constante (no reacciona al scroll), encima de la foto.
-       Letras decoradas estilo tropical: lapa posada sobre la C de "Conozca", mono sentado sobre la N de "Nuestro",
-       perezoso colgado de la C de "Canton", y un ramito de hojas y flores en la base de cada una -->
   <div class="absolute inset-x-0 top-1/2 -translate-y-1/2">
     <TextVelocity
       texto="Conozca Nuestro Canton"

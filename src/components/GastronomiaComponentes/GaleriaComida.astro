@@ -4,9 +4,6 @@ import quepos1 from "../../assets/gastronomia/platos/quepos-1.jpg";
 import quepos2 from "../../assets/gastronomia/platos/quepos-2.jpg";
 import quepos3 from "../../assets/gastronomia/platos/quepos-3.jpg";
 
-// Las fotos son horizontales (3:2): se recortan en vertical (2:3) centradas en el plato (foco).
-// Para llenar el alto de la tarjeta, la foto mide 2,25 veces el ancho de la tarjeta: sizes es ese ancho (no el de la
-// tarjeta), si no el navegador baja una versión chica y la estira
 const fotos = [
   { src: quepos1, foco: "22% 60%", alt: "Plato servido en una mesa de madera de un restaurante al aire libre, con luces colgantes de noche" },
   { src: quepos2, foco: "54% 70%", alt: "Mariscos a la parrilla con frutas y flores, junto a una copa de vino blanco" },
@@ -15,8 +12,6 @@ const fotos = [
 ---
 
 <section class="bg-white px-4 pb-16 pt-6 sm:px-6 md:pb-24" aria-label="Galería de gastronomía de Quepos">
-  <!-- Las fotos suben (margen negativo) hasta un tercio de la fila de abajo de "COMIDAS TÍPICAS", que va justo antes y
-       se desvanece detrás de ellas (TextVelocity con difuminado). Las filas miden lo que su letra: 48, 72 y 96 px -->
   <ul class="relative z-10 mx-auto -mt-16 grid max-w-[1180px] gap-6 sm:-mt-20 sm:grid-cols-3 md:gap-10 lg:-mt-24">
     {
       fotos.map(({ src, foco, alt }) => (

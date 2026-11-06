@@ -4,7 +4,6 @@ import video from "../../assets/capacitaciones/hero-capacitaciones.mp4";
 import videoWebm from "../../assets/capacitaciones/hero-capacitaciones.webm";
 import poster from "../../assets/capacitaciones/hero-capacitaciones.jpg";
 import BordePincelada from "../compartidos/BordePincelada.astro";
-// etiqueta-papel.css trae el @font-face de Anton; hero-texto.css, los estilos del título
 import "../../styles/compartido/etiqueta-papel.css";
 import "../../styles/compartido/hero-texto.css";
 
@@ -16,8 +15,6 @@ const posterOptimizado = await getImage({ src: poster, width: 1920, format: "web
   aria-labelledby="titulo-capacitaciones"
   class="relative isolate flex h-[78svh] min-h-[520px] items-end overflow-hidden bg-[#2b4a5c]"
 >
-  <!-- Video decorativo. data-video-diferido: muestra el póster y empieza a descargarse cuando la página terminó de
-       cargar; con "reducir movimiento" se queda en el póster (scripts/compartido/videos.ts) -->
   <video
     data-video-diferido
     poster={posterOptimizado.src}

@@ -13,13 +13,9 @@ import {
 
 import { cn } from "@/lib/utils";
 
-// Imagen encima de una letra del texto (p. ej. un animal sobre la C), que se mueve con ella
 export interface Decoracion {
-  // Posición de la letra en el texto, contando espacios y desde 0
   indice: number;
   src: string;
-  // Clases de posición y tamaño (en em, crecen con la letra). Sin ella va centrada encima de la letra.
-  // Una misma letra puede tener varias decoraciones (p. ej. un animal arriba y hojas en la base)
   clase?: string;
 }
 
@@ -30,7 +26,6 @@ interface VelocityScrollProps {
   default_velocity?: number;
   className?: string;
   scrollReactive?: boolean;
-  // 2: dos líneas en direcciones opuestas; 1: una sola línea
   filas?: 1 | 2;
   decoraciones?: Decoracion[];
 }
@@ -43,7 +38,6 @@ interface ParallaxProps {
   decoraciones?: Decoracion[];
 }
 
-// El texto letra por letra; las letras con decoración llevan su imagen encima (tamaño en em: crece con la letra)
 function textoConDecoraciones(texto: string, decoraciones: Decoracion[]) {
   return Array.from(texto).map((letra, i) => {
     const deLaLetra = decoraciones.filter((d) => d.indice === i);
@@ -93,7 +87,6 @@ function ParallaxText({ children, baseVelocity = 100, className, scrollReactive 
   const repetitionsRef = useRef(1);
   const containerRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLSpanElement>(null);
-  // Solo se mueve cerca de la pantalla: fuera de ella no tiene sentido recalcular un cuadro tras otro
   const enPantalla = useInView(containerRef, { margin: "200px 0px" });
   const sinMovimiento = useReducedMotion();
 
@@ -136,7 +129,6 @@ function ParallaxText({ children, baseVelocity = 100, className, scrollReactive 
   });
 
   return (
-    // Con decoraciones solo se recorta a los lados: las imágenes sobresalen por arriba de las letras
     <div className={cn("w-full whitespace-nowrap", decoraciones?.length ? "overflow-x-clip" : "overflow-hidden")} ref={containerRef}>
       <motion.div className={cn("inline-block", className)} style={{ x }}>
         {Array.from({ length: repetitions }).map((_, i) => (

@@ -62,8 +62,6 @@ const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
     },
     ref,
   ) => {
-    // El HTML del servidor sale con preload="none" y el `preload` pedido se aplica al montarse (la isla se activa al
-    // acercarse a la pantalla): si no, el navegador empieza a bajar el video al abrir la página y compite con las fotos
     const [montado, setMontado] = React.useState(false);
     React.useEffect(() => setMontado(true), []);
     const [isPlaying, setIsPlaying] = React.useState(false);
@@ -519,7 +517,6 @@ function VideoQueposIdiomas({ fuentesEs, fuentesEn, autoPlay, ...props }: VideoQ
             aria-pressed={idioma === valor}
             className={cn(
               "rounded-full px-5 py-2.5 text-sm font-semibold transition-colors sm:px-6",
-              // #2578bd: el azul de la marca (#2780c9) un 6 % más oscuro, para que el texto blanco se lea bien (contraste 4,7:1)
               idioma === valor ? "bg-[#2578bd] text-white shadow" : "text-slate-600 hover:text-slate-900",
             )}
           >

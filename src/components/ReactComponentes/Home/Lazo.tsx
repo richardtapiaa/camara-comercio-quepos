@@ -54,8 +54,6 @@ export function InfiniteRibbon({
   return (
     <div
       className={cn(
-        // Sin variantes dark: el sitio no tiene modo oscuro, y en un sistema en modo oscuro esas clases ganaban sobre
-        // los colores que le pasa quien la usa (las cintas salían amarillas)
         "w-full max-w-full overflow-hidden bg-yellow-400 py-1 text-black text-lg",
         className
       )}

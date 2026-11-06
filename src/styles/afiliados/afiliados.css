@@ -30,8 +30,6 @@
     transform: translateY(-4px);
   }
 }
-/* Al llegar desde el mapa (/afiliados#id), la tarjeta de ese afiliado se resalta unos segundos. Es un anillo de
-   sombra (y no outline) para que quede por debajo del círculo del logo; las otras dos sombras son las de la tarjeta */
 [data-afiliado]:target > article {
   animation: afiliado-destacado 3s ease-out 0.3s both;
 }

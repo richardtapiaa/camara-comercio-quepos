@@ -1,8 +1,3 @@
-// Prepara los logos de las instituciones colaboradoras (src/assets/inicio/*.png) para el carrusel del inicio:
-// les quita el margen transparente (traen mucho y de distinto tamaño, así que se veían desparejos) y los guarda en
-// WebP a 240 px de alto como máximo (se muestran a ~64 px: alcanza para pantallas de alta densidad).
-// Los PNG originales no se tocan. Solo hay que volver a correrlo si se agrega o cambia un logo.
-// Uso: node herramientas/logos-colaboradores.mjs
 import { mkdir } from "node:fs/promises";
 import sharp from "sharp";
 

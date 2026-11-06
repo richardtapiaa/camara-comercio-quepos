@@ -25,7 +25,6 @@ if (conCss && !sinMovimiento) {
 
 if (!conCss && !sinMovimiento) {
   document.querySelectorAll<HTMLElement>("[data-lapa-scroll]").forEach((recuadro) => {
-    // La lapa es opcional: CupulaNubes solo tiene nubes
     const lapa = recuadro.querySelector<HTMLElement>("[data-lapa]");
     if (lapa) {
       lapa.style.left = "0";
@@ -35,7 +34,6 @@ if (!conCss && !sinMovimiento) {
       const punto = (i: number) => {
         const t = i / PUNTOS;
         const altura = 0.5 - 0.5 * Math.cos(3 * Math.PI * t);
-        // De derecha a izquierda, con la imagen volteada
         return {
           x: () => recuadro.offsetWidth * (1 - t),
           xPercent: -100 * t,
@@ -76,8 +74,6 @@ if (!conCss && !sinMovimiento) {
   });
 }
 
-// Las nubes se mecen solas (lapas.css) solo mientras su recuadro está cerca de la pantalla (data-a-la-vista): fuera de
-// ella no tiene sentido recalcularlas en cada cuadro
 if (!sinMovimiento) {
   const visibles = new IntersectionObserver(
     (entradas) => entradas.forEach(({ target, isIntersecting }) => target.toggleAttribute("data-a-la-vista", isIntersecting)),

@@ -5,14 +5,9 @@ interface Props {
   texto?: string;
   reaccionaScroll?: boolean;
   espaciado?: string;
-  // Capa blanca semitransparente encima de las letras, para que queden más suaves (p. ej. detrás de otra sección)
   overlay?: boolean;
-  // Letras de contorno blanco en una sola línea, sin fondo, para ir encima de una foto (p. ej. FotoQuepos)
   contorno?: boolean;
-  // Imágenes encima de letras del texto (ver Decoracion en ScrollVelocity.tsx)
   decoraciones?: Decoracion[];
-  // Las letras se desvanecen hacia abajo: la fila de arriba se lee entera y la de abajo se va difuminando (en
-  // Hospitalidad pasa por detrás de las fotos de GaleriaComida y en Galería por detrás de las palmeras)
   difuminado?: boolean;
 }
 
@@ -31,10 +26,7 @@ const clasesTexto = contorno
   : "font-serif text-5xl font-bold uppercase tracking-[0.12em] text-black sm:text-7xl lg:text-8xl";
 ---
 
-<!-- Con decoraciones solo se recorta a los lados, para que las imágenes sobresalgan por arriba -->
 <section class:list={["relative", decoraciones?.length ? "overflow-x-clip" : "overflow-hidden", !contorno && "bg-white", espaciado]}>
-  <!-- El difuminado va en este contenedor, que mide justo las filas: así empieza siempre al final de la fila de arriba,
-       sin importar el espaciado de la sección (en Galería tiene mucho más espacio arriba que en Hospitalidad) -->
   <div class:list={[difuminado && "[mask-image:linear-gradient(to_bottom,black_50%,transparent_96%)]"]}>
     <VelocityScroll
       client:visible
