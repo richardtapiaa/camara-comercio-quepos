@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import { Bus, CarTaxiFront, Hospital, Landmark, Plane, Stethoscope, Store } from "lucide-react";
 import imagen from "../../assets/hospitalidad/piscina-infinita-manuel-antonio.webp";
+import siluetaHamaca from "../../assets/hospitalidad/hamaca-palmeras.svg";
 
 const servicios = [
   {
@@ -27,11 +28,22 @@ const servicios = [
 
 <section id="info-hospitalidad" class="bg-white py-16 sm:py-20">
   <div class="mx-auto w-full max-w-[1800px] px-3 sm:px-6 lg:px-10">
-    <div class="max-w-2xl">
-      <h2 class="text-[1.75rem] font-bold leading-tight text-neutral-900 sm:text-[2rem]">La hospitalidad de Quepos</h2>
-      <p class="mt-3 text-base leading-relaxed text-neutral-600 sm:text-lg">
-        Todo lo que necesita durante su estadía: salud, comercio y transporte.
-      </p>
+    <div class="relative">
+      <img
+        src={siluetaHamaca.src}
+        width={siluetaHamaca.width}
+        height={siluetaHamaca.height}
+        alt=""
+        loading="lazy"
+        decoding="async"
+        class="pointer-events-none absolute -bottom-8 -right-2 h-auto w-[200px] sm:right-0 sm:w-[260px] lg:right-[5%] lg:w-[330px]"
+      />
+      <div class="relative max-w-2xl">
+        <h2 class="text-[1.75rem] font-bold leading-tight text-neutral-900 sm:text-[2rem]">La hospitalidad de Quepos</h2>
+        <p class="mt-3 text-base leading-relaxed text-neutral-600 sm:text-lg">
+          Todo lo que necesita durante su estadía: salud, comercio y transporte.
+        </p>
+      </div>
     </div>
 
     <div class="relative mt-8 aspect-[16/9] overflow-hidden rounded-[40px] sm:aspect-[2/1] lg:aspect-[5/2]">

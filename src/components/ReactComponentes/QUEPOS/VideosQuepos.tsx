@@ -345,19 +345,19 @@ const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
                         e.stopPropagation();
                         handleSeek(e);
                       }}
-                      className="w-full h-1 bg-white/30 rounded-full appearance-none cursor-pointer
-                        [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 
-                        [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white 
+                      className="w-full h-6 bg-transparent appearance-none cursor-pointer
+                        [&::-webkit-slider-runnable-track]:h-1 [&::-webkit-slider-runnable-track]:rounded-full
+                        [&::-webkit-slider-runnable-track]:bg-[linear-gradient(to_right,#fff_var(--progreso),rgb(255_255_255/0.3)_var(--progreso))]
+                        [&::-moz-range-track]:h-1 [&::-moz-range-track]:rounded-full [&::-moz-range-track]:bg-white/30
+                        [&::-moz-range-progress]:h-1 [&::-moz-range-progress]:rounded-full [&::-moz-range-progress]:bg-white
+                        [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:-mt-1 [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3
+                        [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white
                         [&::-webkit-slider-thumb]:shadow-sm [&::-webkit-slider-thumb]:cursor-pointer
                         [&::-webkit-slider-thumb]:transition-all [&::-webkit-slider-thumb]:duration-200
+                        [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:rounded-full
+                        [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-white
                         group-hover/progress:[&::-webkit-slider-thumb]:scale-125"
-                      style={{
-                        background: `linear-gradient(to right, #ffffff 0%, #ffffff ${
-                          (currentTime / duration) * 100
-                        }%, rgba(255,255,255,0.3) ${
-                          (currentTime / duration) * 100
-                        }%, rgba(255,255,255,0.3) 100%)`,
-                      }}
+                      style={{ "--progreso": `${duration ? (currentTime / duration) * 100 : 0}%` } as React.CSSProperties}
                     />
                   </div>
                   <span className="min-w-0 text-xs font-mono">

@@ -3,6 +3,7 @@ import { Image } from "astro:assets";
 import IconoUbicacion from "../../assets/icons-svg/quepos-icons/whypr.svg";
 import imagen from "../../assets/quepos/nose.webp";
 import siluetaMono from "../../assets/quepos/mono-rama.svg";
+import siluetaMontanas from "../../assets/quepos/montanas-quepos.svg";
 ---
 
 <section id="sobre-quepos" class="relative overflow-hidden bg-white py-16 sm:py-20">
@@ -43,16 +44,27 @@ import siluetaMono from "../../assets/quepos/mono-rama.svg";
       </div>
     </div>
 
-    <div class="relative aspect-[624/320] overflow-hidden rounded-[40px] lg:mt-14">
-      <Image
-        src={imagen}
-        alt="Vista aérea del Parque Nacional Manuel Antonio y sus playas"
-        widths={[480, 720, 960, 1280]}
-        sizes="(min-width: 1400px) 642px, (min-width: 1024px) 50vw, 100vw"
-        quality={75}
-        class="absolute inset-0 size-full object-cover"
+    <div class="relative lg:static">
+      <img
+        src={siluetaMontanas.src}
+        width={siluetaMontanas.width}
+        height={siluetaMontanas.height}
+        alt=""
         loading="lazy"
+        decoding="async"
+        class="pointer-events-none absolute bottom-full right-3 w-[220px] sm:w-[280px] lg:bottom-[calc(100%-3.5rem)] lg:left-[calc(50%+4rem)] lg:right-auto lg:w-[400px]"
       />
+      <div class="relative aspect-[624/320] overflow-hidden rounded-[40px] lg:absolute lg:top-14 lg:bottom-0 lg:left-[calc(50%+1.5rem)] lg:right-[calc((100%-100vw)/2)] lg:aspect-auto lg:rounded-r-none">
+        <Image
+          src={imagen}
+          alt="Vista aérea del Parque Nacional Manuel Antonio y sus playas"
+          widths={[480, 720, 960, 1280]}
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          quality={75}
+          class="absolute inset-0 size-full object-cover"
+          loading="lazy"
+        />
+      </div>
     </div>
   </div>
 </section>

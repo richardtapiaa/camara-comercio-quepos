@@ -1,11 +1,20 @@
 ---
-import FAQs from "../ReactComponentes/QUEPOS/FAQ";
+import FAQs, { type Pregunta } from "../ReactComponentes/QUEPOS/FAQ";
 import "../../styles/quepos/fondo-animales.css";
 
 interface Props {
   fondoAnimales?: boolean;
+  transparente?: boolean;
+  preguntas?: Pregunta[];
+  descripcion?: string;
 }
-const { fondoAnimales = false } = Astro.props;
+const { fondoAnimales = false, transparente = false, preguntas, descripcion } = Astro.props;
 ---
 
-<FAQs client:visible fondoAnimales={fondoAnimales} />
+<FAQs
+  client:visible
+  fondoAnimales={fondoAnimales}
+  transparente={transparente}
+  preguntas={preguntas}
+  descripcion={descripcion}
+/>

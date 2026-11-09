@@ -584,7 +584,7 @@ function TarjetaAfiliado({
             type="button"
             onClick={onCerrar}
             aria-label="Cerrar"
-            className="ml-auto flex size-9 shrink-0 items-center justify-center rounded-full border border-slate-300 text-slate-700 transition-colors hover:bg-white"
+            className="ml-auto flex size-11 shrink-0 items-center justify-center rounded-full border border-slate-300 text-slate-700 transition-colors hover:bg-white"
           >
             <X className="size-4" />
           </button>
