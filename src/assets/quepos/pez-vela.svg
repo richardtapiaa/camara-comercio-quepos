@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 270">
+  <!-- Silueta tenue de un pez vela saltando del mar, por la pesca deportiva de Quepos (mismo estilo grunge que perezoso-rama.svg).
+       Verde oliva #4d5b2c, como el resto del sitio; la opacidad va en el grupo para que las partes que se cruzan no se oscurezcan -->
+  <defs>
+    <filter id="pez-vela-grunge" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="21" result="ruido"/>
+      <feDisplacementMap in="SourceGraphic" in2="ruido" scale="6" xChannelSelector="R" yChannelSelector="G" result="borde"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="2" seed="53" result="manchas"/>
+      <feColorMatrix in="manchas" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  16 0 0 0 -11.6" result="huecos"/>
+      <feComposite in="borde" in2="huecos" operator="out"/>
+    </filter>
+  </defs>
+  <g opacity="0.11" fill="#4d5b2c" stroke="#4d5b2c" stroke-linecap="round" stroke-linejoin="round" filter="url(#pez-vela-grunge)">
+    <!-- Vela (aleta dorsal) con sus radios marcados en blanco -->
+    <path d="M168 166 C172 112 198 70 236 52 C262 40 288 48 298 72 C302 84 304 94 302 104 Z" stroke="none"/>
+    <path d="M192 152 L214 82 M216 140 L240 66 M242 128 L264 58 M268 116 L286 66" fill="none" stroke="#fff" stroke-width="2.5"/>
+    <!-- Cuerpo alargado con el pico -->
+    <path d="M116 196 C160 168 230 128 300 98 C318 90 334 86 346 88 L426 48 L354 100 C348 116 332 128 312 136 C250 162 182 198 126 214 Z" stroke="none"/>
+    <!-- Aleta pectoral -->
+    <path d="M296 130 L270 164 L316 134 Z" stroke="none"/>
+    <!-- Cola en forma de horquilla -->
+    <path d="M132 206 L70 162 L98 210 L64 254 Z" stroke="none"/>
+    <!-- Ojo -->
+    <circle cx="334" cy="98" r="3.5" fill="#fff" stroke="none"/>
+    <!-- Salpicaduras del salto -->
+    <circle cx="70" cy="200" r="5" stroke="none"/>
+    <circle cx="56" cy="222" r="3.5" stroke="none"/>
+    <circle cx="96" cy="250" r="4" stroke="none"/>
+    <circle cx="140" cy="236" r="3" stroke="none"/>
+    <!-- Olas -->
+    <path d="M0 258 q25 -14 50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0" fill="none" stroke-width="6"/>
+    <!-- Salpicaduras sueltas -->
+    <circle cx="400" cy="140" r="4" stroke="none"/>
+    <circle cx="200" cy="30" r="3.5" stroke="none"/>
+  </g>
+</svg>

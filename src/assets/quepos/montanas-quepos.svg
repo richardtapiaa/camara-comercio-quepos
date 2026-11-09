@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 190">
+  <!-- Silueta tenue de la cordillera detrás de Quepos, con palmeras y lapas volando (mismo estilo grunge que perezoso-rama.svg).
+       Verde oliva #4d5b2c, como el resto del sitio; la opacidad va en el grupo para que las partes que se cruzan no se oscurezcan -->
+  <defs>
+    <filter id="montanas-quepos-grunge" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="9" result="ruido"/>
+      <feDisplacementMap in="SourceGraphic" in2="ruido" scale="6" xChannelSelector="R" yChannelSelector="G" result="borde"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="2" seed="27" result="manchas"/>
+      <feColorMatrix in="manchas" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  16 0 0 0 -11.6" result="huecos"/>
+      <feComposite in="borde" in2="huecos" operator="out"/>
+    </filter>
+    <!-- Palmera reutilizable: tronco y hojas, con la base en (0,0) -->
+    <g id="montanas-quepos-palmera">
+      <path d="M0 0 C-2 -16 -6 -30 -12 -42" fill="none" stroke-width="5"/>
+      <path d="M-12 -42 C-24 -50 -36 -48 -44 -38 C-34 -44 -22 -44 -12 -38 Z M-12 -42 C-18 -54 -28 -60 -38 -60 C-28 -56 -20 -48 -14 -38 Z M-12 -42 C-6 -54 4 -60 16 -60 C6 -54 -2 -48 -10 -38 Z M-12 -42 C0 -48 12 -44 18 -32 C10 -40 0 -42 -10 -38 Z"/>
+    </g>
+  </defs>
+  <g opacity="0.11" fill="#4d5b2c" stroke="#4d5b2c" stroke-linecap="round" stroke-linejoin="round" filter="url(#montanas-quepos-grunge)">
+    <!-- Cordillera del fondo, con picos -->
+    <path d="M0 192 L0 110 C20 104 40 96 56 82 C66 74 74 64 84 66 C96 68 104 52 116 40 C126 30 134 34 142 44 C152 56 162 62 176 54 C192 44 206 20 222 10 C232 4 240 10 250 22 C262 36 274 44 290 40 C304 36 314 48 326 60 C338 72 350 66 364 56 C378 46 390 50 404 62 C420 76 436 70 452 60 C466 52 480 60 494 74 C512 92 540 98 600 104 L600 192 Z" stroke="none"/>
+    <!-- Lomas del frente, separadas del fondo por una línea blanca -->
+    <path d="M-4 192 L-4 150 C50 140 90 118 140 122 C180 126 200 146 240 140 C290 132 320 104 370 110 C420 116 450 140 500 136 C540 132 570 118 604 124 L604 192 Z" stroke="#fff" stroke-width="5"/>
+    <!-- Palmeras sobre las lomas: primero un borde blanco y encima la palmera, para que se separen de la cordillera -->
+    <use href="#montanas-quepos-palmera" x="128" y="124" fill="#fff" stroke="#fff" stroke-width="7"/>
+    <use href="#montanas-quepos-palmera" x="128" y="124" stroke-width="0"/>
+    <use href="#montanas-quepos-palmera" x="384" y="112" fill="#fff" stroke="#fff" stroke-width="7"/>
+    <use href="#montanas-quepos-palmera" x="384" y="112" stroke-width="0"/>
+    <use href="#montanas-quepos-palmera" x="412" y="116" fill="#fff" stroke="#fff" stroke-width="7" transform="translate(824 0) scale(-1 1)"/>
+    <use href="#montanas-quepos-palmera" x="412" y="116" stroke-width="0" transform="translate(824 0) scale(-1 1)"/>
+    <!-- Sol -->
+    <circle cx="540" cy="34" r="17" stroke="none"/>
+    <!-- Lapas volando -->
+    <path d="M300 18 q8 -8 15 0 q7 -8 15 0 M340 6 q6 -6 12 0 q6 -6 12 0 M30 50 q5 -5 10 0 q5 -5 10 0" fill="none" stroke-width="3"/>
+  </g>
+</svg>

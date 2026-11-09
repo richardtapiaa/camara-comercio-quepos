@@ -9,7 +9,9 @@ import NahomiScroll from "../components/Quepos-Componentes/NahomiScroll.astro";
 import FAQ from "../components/Quepos-Componentes/FAQ.astro";
 import islaQuepos from "../assets/quepos/isla-quepos.jpg";
 import FotoQuepos from "../components/Quepos-Componentes/FotoQuepos.astro";
-import CupulaNubes from "../components/Quepos-Componentes/CupulaNubes.astro";
+import CierreConFoto from "../components/compartidos/CierreConFoto.astro";
+import bahiaManuelAntonio from "../assets/quepos/bahia-manuel-antonio.jpg";
+import siluetaPezVela from "../assets/quepos/pez-vela.svg";
 ---
 
 <Layout
@@ -28,9 +30,23 @@ import CupulaNubes from "../components/Quepos-Componentes/CupulaNubes.astro";
     <LapaArrastre />
     <NahomiScroll />
   </div>
-  <CupulaNubes />
 
-  <FAQ />
+  <CierreConFoto
+    foto={bahiaManuelAntonio}
+    alt="Vista desde el bosque hacia la bahía de Manuel Antonio y sus islas al atardecer"
+    claseFoto="object-[center_62%] max-sm:object-[40%_center]"
+  >
+    <img
+      src={siluetaPezVela.src}
+      width={siluetaPezVela.width}
+      height={siluetaPezVela.height}
+      alt=""
+      loading="lazy"
+      decoding="async"
+      class="pointer-events-none absolute right-2 top-8 -z-5 w-[130px] md:hidden lg:left-[max(1.5rem,calc(50%-38.5rem))] lg:right-auto lg:top-[23rem] lg:block lg:w-[400px]"
+    />
+    <FAQ transparente />
+  </CierreConFoto>
 
   <script src="../scripts/home/paneles.ts"></script>
 </Layout>

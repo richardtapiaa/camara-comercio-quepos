@@ -2,10 +2,6 @@
 import { getImage } from "astro:assets";
 import foto from "../../assets/quepos/quepos-foto-prueba.jpg";
 import TextVelocity from "../compartidos/TextVelocity.astro";
-import iconoLapa from "../../assets/quepos/icono-lapa-color.svg";
-import iconoMono from "../../assets/quepos/icono-mono-color.svg";
-import iconoPerezoso from "../../assets/quepos/icono-perezoso-color.svg";
-import hojas from "../../assets/quepos/hojas-tropicales.svg";
 import bordeArriba from "../../assets/quepos/borde-rasgado-arriba.svg";
 import bordeAbajo from "../../assets/quepos/borde-rasgado-abajo.svg";
 
@@ -49,14 +45,6 @@ const fotoOptimizada = await getImage({ src: foto, width: foto.width, format: "w
       reaccionaScroll={false}
       espaciado="py-2"
       contorno
-      decoraciones={[
-        { indice: 0, src: iconoLapa.src, clase: "bottom-[62%] left-[28%] h-[0.95em] -rotate-6" },
-        { indice: 0, src: hojas.src, clase: "bottom-[6%] -left-[24%] h-[0.55em] -rotate-12" },
-        { indice: 8, src: iconoMono.src, clase: "bottom-[64%] -left-[8%] h-[0.85em]" },
-        { indice: 8, src: hojas.src, clase: "bottom-[6%] -left-[26%] h-[0.5em] -rotate-6" },
-        { indice: 16, src: iconoPerezoso.src, clase: "top-[10%] left-[4%] h-[0.66em]" },
-        { indice: 16, src: hojas.src, clase: "bottom-[2%] -left-[40%] h-[0.45em] -rotate-12" },
-      ]}
     />
   </div>
 </section>

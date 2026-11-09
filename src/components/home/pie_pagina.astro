@@ -39,8 +39,8 @@ const telefono = contacto.telefono.replace(/[^+\d]/g, "");
 const claseTitulo = "text-lg font-medium text-[#f1dcbc]";
 const claseLinea = "mt-4 block h-px w-full bg-white/20";
 const claseFoco = "rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f1dcbc]";
-const claseEnlace = `${claseFoco} text-[0.95rem] text-white/75 transition-colors hover:text-white motion-reduce:transition-none`;
-const claseContacto = `${claseFoco} flex items-start gap-3 text-[1.05rem] text-white/85 transition-colors hover:text-white motion-reduce:transition-none`;
+const claseEnlace = `${claseFoco} -my-1.5 inline-block py-1.5 text-[0.95rem] text-white/75 transition-colors hover:text-white motion-reduce:transition-none`;
+const claseContacto = `${claseFoco} -my-1.5 flex items-start gap-3 py-1.5 text-[1.05rem] text-white/85 transition-colors hover:text-white motion-reduce:transition-none`;
 const claseRed = `${claseFoco} group flex items-center gap-3 text-[0.95rem] text-white/75 transition-colors hover:text-white motion-reduce:transition-none`;
 const claseIconoRed =
   "flex size-9 shrink-0 items-center justify-center rounded-full border border-white/20 text-[#f1dcbc] transition-colors group-hover:border-white/50 group-hover:text-white motion-reduce:transition-none";
@@ -167,7 +167,7 @@ const claseIconoRed =
             alt={nombreSitio}
             widths={[200, 400]}
             sizes="168px"
-            class="h-20 w-auto"
+            class="h-auto w-[170px] max-w-full"
             loading="lazy"
           />
         </a>

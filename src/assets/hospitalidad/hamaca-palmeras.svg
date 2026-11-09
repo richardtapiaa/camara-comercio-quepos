@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 270">
+  <!-- Silueta tenue de una hamaca colgada entre dos palmeras (mismo estilo grunge que quepos/perezoso-rama.svg).
+       Verde oliva #4d5b2c, como el resto del sitio; la opacidad va en el grupo para que las partes que se cruzan no se oscurezcan -->
+  <defs>
+    <filter id="hamaca-palmeras-grunge" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="5" result="ruido"/>
+      <feDisplacementMap in="SourceGraphic" in2="ruido" scale="6" xChannelSelector="R" yChannelSelector="G" result="borde"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="2" seed="17" result="manchas"/>
+      <feColorMatrix in="manchas" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  16 0 0 0 -11.6" result="huecos"/>
+      <feComposite in="borde" in2="huecos" operator="out"/>
+    </filter>
+  </defs>
+  <g opacity="0.11" fill="#4d5b2c" stroke="#4d5b2c" stroke-linecap="round" stroke-linejoin="round" filter="url(#hamaca-palmeras-grunge)">
+    <!-- Montículo de arena -->
+    <path d="M40 272 C150 248 340 248 460 272 Z" stroke="none"/>
+    <!-- Palmera izquierda: tronco curvo -->
+    <path d="M120 266 C118 220 104 140 82 72" fill="none" stroke-width="15"/>
+    <!-- Hojas de la palmera izquierda -->
+    <path d="M82 72 C56 56 26 60 4 88 C30 70 56 68 82 78 Z" stroke="none"/>
+    <path d="M82 72 C64 40 40 26 14 26 C40 36 62 50 80 76 Z" stroke="none"/>
+    <path d="M82 72 C86 40 100 18 124 6 C108 26 96 48 86 74 Z" stroke="none"/>
+    <path d="M82 72 C110 52 140 54 162 76 C138 66 110 66 84 78 Z" stroke="none"/>
+    <path d="M82 72 C104 80 120 100 124 130 C112 106 98 90 80 78 Z" stroke="none"/>
+    <path d="M82 72 C62 84 50 104 48 132 C58 108 68 92 84 78 Z" stroke="none"/>
+    <circle cx="77" cy="83" r="6" stroke="none"/>
+    <circle cx="89" cy="85" r="6" stroke="none"/>
+    <!-- Palmera derecha: tronco curvo -->
+    <path d="M370 266 C374 210 392 130 418 60" fill="none" stroke-width="15"/>
+    <!-- Hojas de la palmera derecha -->
+    <path d="M418 60 C444 44 474 50 496 78 C470 60 444 58 418 66 Z" stroke="none"/>
+    <path d="M418 60 C436 28 460 14 486 14 C460 24 438 38 420 64 Z" stroke="none"/>
+    <path d="M418 60 C412 30 398 10 374 2 C390 18 404 38 414 62 Z" stroke="none"/>
+    <path d="M418 60 C390 40 360 42 338 64 C362 54 390 54 416 66 Z" stroke="none"/>
+    <path d="M418 60 C396 68 380 88 376 118 C388 94 402 78 420 66 Z" stroke="none"/>
+    <path d="M418 60 C438 72 450 92 452 120 C442 96 432 80 416 66 Z" stroke="none"/>
+    <circle cx="413" cy="71" r="6" stroke="none"/>
+    <circle cx="425" cy="73" r="6" stroke="none"/>
+    <!-- Cuerdas de la hamaca -->
+    <path d="M106 160 L150 182 M388 160 L345 182" fill="none" stroke-width="4"/>
+    <!-- Hamaca colgando -->
+    <path d="M146 180 C200 238 300 238 350 180 C300 216 200 216 146 180 Z" stroke="none"/>
+    <!-- Flecos de la hamaca -->
+    <path d="M190 214 l-3 12 M220 222 l-2 12 M250 224 l0 12 M280 222 l2 12 M310 214 l3 12" fill="none" stroke-width="3"/>
+    <!-- Salpicaduras sueltas alrededor -->
+    <circle cx="250" cy="40" r="4" stroke="none"/>
+    <circle cx="200" cy="110" r="3.5" stroke="none"/>
+    <circle cx="300" cy="96" r="5" stroke="none"/>
+    <circle cx="24" cy="200" r="4" stroke="none"/>
+    <circle cx="480" cy="190" r="4.5" stroke="none"/>
+  </g>
+</svg>

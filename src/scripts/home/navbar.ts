@@ -15,7 +15,7 @@ const isOpen = (dropdown: Dropdown) => dropdown.toggle?.getAttribute("aria-expan
 
 const overlay = document.getElementById("nav-overlay");
 const closeBtn = document.getElementById("nav-close");
-const isMobile = () => window.matchMedia("(max-width: 767px)").matches;
+const isMobile = () => window.matchMedia("(max-width: 1023px)").matches;
 
 const setDropdownOpen = (dropdown: Dropdown, open: boolean, immediate = false) => {
   const { toggle: dropdownToggle, menu: dropdownMenu, icon: dropdownIcon } = dropdown;
@@ -78,7 +78,7 @@ const closeMenu = () => {
 };
 
 const mm = gsap.matchMedia();
-mm.add("(max-width: 767px)", () => {
+mm.add("(max-width: 1023px)", () => {
   if (!menu || !overlay) return;
 
   const lugarOriginal = document.createComment("nav-menu");
@@ -204,7 +204,7 @@ window.addEventListener(
 
 
 window.addEventListener("resize", () => {
-  if (window.innerWidth >= 768) closeMenu(); 
+  if (window.innerWidth >= 1024) closeMenu(); 
   update();
 });
 

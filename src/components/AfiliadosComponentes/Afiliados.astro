@@ -41,7 +41,7 @@ const normalizar = (texto: string) =>
 
 const soloDigitos = (telefono: string) => telefono.replace(/[^\d+]/g, "");
 
-const claseDato = "flex items-start gap-3 transition-colors hover:text-[#2780c9]";
+const claseDato = "-my-1 flex items-start gap-3 py-1 transition-colors hover:text-[#2780c9]";
 const claseIcono = "mt-0.5 size-4 shrink-0 text-[#2780c9]";
 
 const dominio = (url: string) => new URL(url).hostname.replace(/^www\./, "");

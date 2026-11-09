@@ -216,7 +216,7 @@ function VistaAmpliada({ imagen, direccion, navegado }: { imagen: ImageData; dir
   const posicion = images.findIndex((img) => img.id === imagen.id);
   const conVarias = images.length > 1;
   const botonClase =
-    "absolute z-50 p-2.5 bg-white/10 text-white rounded-full backdrop-blur-md hover:bg-white/20 transition-colors";
+    "absolute z-50 p-3 bg-white/10 text-white rounded-full backdrop-blur-md hover:bg-white/20 transition-colors";
 
   return (
     <div

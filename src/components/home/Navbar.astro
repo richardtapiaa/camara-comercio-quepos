@@ -35,7 +35,7 @@ const links: Array<Enlace | Desplegable> = [
 ];
 
 const claseLink =
-  "text-[15px] font-medium text-slate-800 transition-colors hover:text-sky-700 max-md:px-6 max-md:py-4 max-md:uppercase max-md:tracking-[0.12em] max-md:text-white max-md:hover:text-sky-300 md:group-data-[solid=false]/nav:text-white md:group-data-[solid=false]/nav:hover:text-sky-200";
+  "text-[15px] font-medium text-slate-800 transition-colors hover:text-sky-700 lg:py-3 max-lg:px-6 max-lg:py-4 max-lg:uppercase max-lg:tracking-[0.12em] max-lg:text-white max-lg:hover:text-sky-300 lg:group-data-[solid=false]/nav:text-white lg:group-data-[solid=false]/nav:hover:text-sky-200";
 ---
 
 <header
@@ -45,27 +45,27 @@ const claseLink =
 >
   <div class="grid grid-rows-[1fr] opacity-100 transition-[grid-template-rows,opacity] duration-500 ease-in-out group-data-[solid=true]/nav:grid-rows-[0fr] group-data-[solid=true]/nav:opacity-0">
     <div class="overflow-hidden border-b border-white/40 group-data-[solid=true]/nav:border-transparent">
-    <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-6 gap-y-1 px-6 py-2 text-xs font-medium text-white sm:justify-start sm:text-sm">
-      <a href={`mailto:${contacto.email}`} class="inline-flex items-center gap-2 transition-colors hover:text-sky-200">
+    <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-6 gap-y-2 px-6 py-2 text-xs font-medium text-white sm:justify-start sm:text-sm">
+      <a href={`mailto:${contacto.email}`} class="-my-1 inline-flex items-center gap-2 py-1 transition-colors hover:text-sky-200">
         <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <rect x="3" y="5" width="18" height="14" rx="2"></rect>
           <path d="m3 7 9 6 9-6"></path>
         </svg>
         {contacto.email}
       </a>
-      <a href={`tel:${contacto.telefono.replace(/[^+\d]/g, "")}`} class="inline-flex items-center gap-2 transition-colors hover:text-sky-200">
+      <a href={`tel:${contacto.telefono.replace(/[^+\d]/g, "")}`} class="-my-1 inline-flex items-center gap-2 py-1 transition-colors hover:text-sky-200">
         <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"></path>
         </svg>
         {contacto.telefono}
       </a>
       <div class="flex items-center gap-4 sm:ml-auto">
-        <a href={contacto.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="transition-colors hover:text-sky-200">
+        <a href={contacto.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="-m-1 p-1 transition-colors hover:text-sky-200">
           <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M13.5 22v-8.2h2.8l.5-3.3h-3.3V8.4c0-.9.3-1.6 1.7-1.6h1.7V4a22 22 0 0 0-2.5-.1c-2.5 0-4.2 1.5-4.2 4.3v2.3H7.2v3.3H10V22h3.5Z"></path>
           </svg>
         </a>
-        <a href={contacto.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="transition-colors hover:text-sky-200">
+        <a href={contacto.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="-m-1 p-1 transition-colors hover:text-sky-200">
           <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <rect x="3" y="3" width="18" height="18" rx="5"></rect>
             <circle cx="12" cy="12" r="4"></circle>
@@ -106,7 +106,7 @@ const claseLink =
     <button
       id="nav-toggle"
       type="button"
-      class="ml-auto rounded-xl p-2 text-slate-700 group-data-[solid=false]/nav:text-white md:hidden"
+      class="ml-auto rounded-xl p-2.5 text-slate-700 group-data-[solid=false]/nav:text-white lg:hidden"
       aria-label="Abrir menú"
       aria-expanded="false"
       aria-controls="nav-menu"
@@ -116,32 +116,32 @@ const claseLink =
       </svg>
     </button>
 
-    <div id="nav-overlay" class="invisible fixed inset-0 z-[55] touch-none bg-black/60 opacity-0 md:hidden" aria-hidden="true"></div>
+    <div id="nav-overlay" class="invisible fixed inset-0 z-[55] touch-none bg-black/60 opacity-0 lg:hidden" aria-hidden="true"></div>
 
     <div
       id="nav-menu"
-      class="invisible fixed inset-y-0 right-0 z-[60] flex h-dvh w-[86%] max-w-sm flex-col overflow-y-auto overscroll-contain bg-[#1c1c1e] text-white shadow-2xl md:visible md:static md:ml-10 md:h-auto md:w-auto md:max-w-none md:flex-1 md:flex-row md:items-center md:justify-end md:gap-10 md:overflow-visible md:bg-transparent md:p-0 md:text-inherit md:shadow-none"
+      class="invisible fixed inset-y-0 right-0 z-[60] flex h-dvh w-[86%] max-w-sm flex-col overflow-y-auto overscroll-contain bg-[#1c1c1e] text-white shadow-2xl lg:visible lg:static lg:ml-10 lg:h-auto lg:w-auto lg:max-w-none lg:flex-1 lg:flex-row lg:items-center lg:justify-end lg:gap-10 lg:overflow-visible lg:bg-transparent lg:p-0 lg:text-inherit lg:shadow-none"
     >
-      <div class="flex items-center justify-between px-6 pb-5 pt-6 md:hidden">
+      <div class="flex items-center justify-between px-6 pb-5 pt-6 lg:hidden">
         <a href="/" class="rounded-2xl bg-white px-3 py-1.5" aria-label="Cámara de Comercio, Industria y Turismo de Quepos">
           <Picture src={logo} formats={["avif", "webp"]} quality={60} alt="Cámara de Comercio, Industria y Turismo - Quepos Costa Rica" widths={[200, 400]} sizes="118px" class="h-14 w-auto" loading="lazy" />
         </a>
-        <button id="nav-close" type="button" aria-label="Cerrar menú" class="rounded-full p-2 text-white/70 transition-colors hover:text-white">
+        <button id="nav-close" type="button" aria-label="Cerrar menú" class="rounded-full p-2.5 text-white/70 transition-colors hover:text-white">
           <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
             <path d="M6 6l12 12M18 6 6 18"></path>
           </svg>
         </button>
       </div>
 
-      <ul class="flex flex-col gap-4 max-md:gap-0 max-md:border-t max-md:border-white/10 md:flex-row md:items-center md:gap-10">
+      <ul class="flex flex-col gap-4 max-lg:gap-0 max-lg:border-t max-lg:border-white/10 lg:flex-row lg:items-center lg:gap-10">
         {
           links.map((link) =>
             "submenu" in link ? (
-              <li class="relative max-md:border-b max-md:border-white/10" data-nav-dropdown>
+              <li class="relative max-lg:border-b max-lg:border-white/10" data-nav-dropdown>
                 <button
                   type="button"
                   data-nav-dropdown-toggle
-                  class={`flex items-center gap-1 max-md:w-full max-md:justify-between ${claseLink}`}
+                  class={`flex items-center gap-1 max-lg:w-full max-lg:justify-between ${claseLink}`}
                   aria-expanded="false"
                   aria-haspopup="true"
                   aria-controls={link.id}
@@ -154,11 +154,11 @@ const claseLink =
                 <ul
                   id={link.id}
                   data-nav-dropdown-menu
-                  class="absolute left-0 top-full z-10 mt-3 hidden min-w-44 rounded-xl bg-white p-2 text-slate-800 shadow-lg ring-1 ring-black/5 max-md:static max-md:mt-0 max-md:min-w-0 max-md:overflow-hidden max-md:rounded-none max-md:bg-black/20 max-md:px-6 max-md:py-0 max-md:text-white max-md:shadow-none max-md:ring-0"
+                  class="absolute left-0 top-full z-10 mt-3 hidden min-w-44 rounded-xl bg-white p-2 text-slate-800 shadow-lg ring-1 ring-black/5 max-lg:static max-lg:mt-0 max-lg:min-w-0 max-lg:overflow-hidden max-lg:rounded-none max-lg:bg-black/20 max-lg:px-6 max-lg:py-0 max-lg:text-white max-lg:shadow-none max-lg:ring-0"
                 >
                   {link.submenu.map((sub) => (
                     <li>
-                      <a href={sub.href} class="block whitespace-nowrap rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[#f4efe9] hover:text-sky-700 max-md:px-0 max-md:py-3 max-md:text-white/80 max-md:hover:bg-transparent max-md:hover:text-sky-300">
+                      <a href={sub.href} class="block whitespace-nowrap rounded-lg px-3 py-2 text-sm transition-colors hover:bg-[#f4efe9] hover:text-sky-700 max-lg:px-0 max-lg:py-3 max-lg:text-white/80 max-lg:hover:bg-transparent max-lg:hover:text-sky-300">
                         {sub.label}
                       </a>
                     </li>
@@ -166,8 +166,8 @@ const claseLink =
                 </ul>
               </li>
             ) : (
-              <li class="max-md:border-b max-md:border-white/10">
-                <a href={link.href} class={`max-md:block ${claseLink}`}>
+              <li class="max-lg:border-b max-lg:border-white/10">
+                <a href={link.href} class={`max-lg:block ${claseLink}`}>
                   {link.label}
                 </a>
               </li>
@@ -176,16 +176,16 @@ const claseLink =
         }
       </ul>
 
-      <div class="mt-auto flex flex-col gap-3 border-t border-white/10 px-6 py-6 text-sm text-white/70 md:hidden">
-        <a href={`mailto:${contacto.email}`} class="transition-colors hover:text-white">{contacto.email}</a>
-        <a href={`tel:${contacto.telefono.replace(/[^+\d]/g, "")}`} class="transition-colors hover:text-white">{contacto.telefono}</a>
+      <div class="mt-auto flex flex-col gap-3 border-t border-white/10 px-6 py-6 text-sm text-white/70 lg:hidden">
+        <a href={`mailto:${contacto.email}`} class="-my-1.5 py-1.5 transition-colors hover:text-white">{contacto.email}</a>
+        <a href={`tel:${contacto.telefono.replace(/[^+\d]/g, "")}`} class="-my-1.5 py-1.5 transition-colors hover:text-white">{contacto.telefono}</a>
         <div class="mt-1 flex items-center gap-5">
-          <a href={contacto.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="transition-colors hover:text-white">
+          <a href={contacto.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="-m-2 p-2 transition-colors hover:text-white">
             <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M13.5 22v-8.2h2.8l.5-3.3h-3.3V8.4c0-.9.3-1.6 1.7-1.6h1.7V4a22 22 0 0 0-2.5-.1c-2.5 0-4.2 1.5-4.2 4.3v2.3H7.2v3.3H10V22h3.5Z"></path>
             </svg>
           </a>
-          <a href={contacto.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="transition-colors hover:text-white">
+          <a href={contacto.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="-m-2 p-2 transition-colors hover:text-white">
             <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <rect x="3" y="3" width="18" height="18" rx="5"></rect>
               <circle cx="12" cy="12" r="4"></circle>

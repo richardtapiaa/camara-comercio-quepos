@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 180">
+  <!-- Silueta tenue de la cola de una ballena saliendo del mar, con una isla al fondo (mismo estilo grunge que perezoso-rama.svg).
+       Verde oliva #4d5b2c, como el resto del sitio; la opacidad va en el grupo para que las partes que se cruzan no se oscurezcan -->
+  <defs>
+    <filter id="ballena-cola-grunge" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="13" result="ruido"/>
+      <feDisplacementMap in="SourceGraphic" in2="ruido" scale="6" xChannelSelector="R" yChannelSelector="G" result="borde"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="2" seed="41" result="manchas"/>
+      <feColorMatrix in="manchas" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  16 0 0 0 -11.6" result="huecos"/>
+      <feComposite in="borde" in2="huecos" operator="out"/>
+    </filter>
+  </defs>
+  <g opacity="0.11" fill="#4d5b2c" stroke="#4d5b2c" stroke-linecap="round" stroke-linejoin="round" filter="url(#ballena-cola-grunge)">
+    <!-- Isla en el horizonte -->
+    <path d="M24 152 C40 132 66 124 90 130 C104 134 112 142 120 152 Z" stroke="none"/>
+    <!-- Cola de la ballena saliendo del agua -->
+    <path d="M214 152 C216 122 222 98 230 76" fill="none" stroke-width="26"/>
+    <path d="M232 78 C202 74 172 56 150 28 C176 42 204 46 226 48 C230 40 236 40 240 48 C262 44 290 38 316 22 C298 52 266 72 234 80 Z" stroke="none"/>
+    <!-- Gotas que caen de la cola -->
+    <circle cx="160" cy="58" r="3.5" stroke="none"/>
+    <circle cx="170" cy="78" r="3" stroke="none"/>
+    <circle cx="184" cy="96" r="2.5" stroke="none"/>
+    <circle cx="304" cy="54" r="3.5" stroke="none"/>
+    <circle cx="296" cy="76" r="3" stroke="none"/>
+    <circle cx="284" cy="96" r="2.5" stroke="none"/>
+    <!-- Espuma alrededor de la cola -->
+    <path d="M186 152 q8 -14 18 -6 M244 146 q10 -8 18 6" fill="none" stroke-width="4"/>
+    <!-- Olas -->
+    <path d="M0 158 q20 -12 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0" fill="none" stroke-width="6"/>
+    <path d="M30 176 q20 -10 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0" fill="none" stroke-width="4"/>
+    <!-- Salpicaduras sueltas -->
+    <circle cx="380" cy="60" r="4" stroke="none"/>
+    <circle cx="60" cy="70" r="3.5" stroke="none"/>
+  </g>
+</svg>

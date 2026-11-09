@@ -3,8 +3,20 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 
 
-export default function FAQs({ fondoAnimales = false }: { fondoAnimales?: boolean }) {
-  const faqItems = [
+export type Pregunta = { id: string; question: string; answer: string };
+
+export default function FAQs({
+  fondoAnimales = false,
+  transparente = false,
+  preguntas,
+  descripcion = 'Consultas que un turista necesita conocer sobre Quepos, Costa Rica.',
+}: {
+  fondoAnimales?: boolean;
+  transparente?: boolean;
+  preguntas?: Pregunta[];
+  descripcion?: string;
+}) {
+  const faqItems = preguntas ?? [
     {
       id: 'item-1',
       question: '¿Cómo llego a Quepos?',
@@ -44,7 +56,7 @@ export default function FAQs({ fondoAnimales = false }: { fondoAnimales?: boolea
 
 
   return (
-    <section className={`${fondoAnimales ? "fondo-animales" : "bg-white"} py-16 md:py-24`}>
+    <section className={`${fondoAnimales ? "fondo-animales" : transparente ? "" : "bg-white"} py-16 md:py-24`}>
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid gap-10 md:grid-cols-2 md:gap-16">
           <div>
@@ -52,7 +64,7 @@ export default function FAQs({ fondoAnimales = false }: { fondoAnimales?: boolea
               Preguntas frecuentes
             </h2>
             <p className="mt-6 max-w-md text-balance text-lg text-slate-700">
-              Consultas que un turista necesita conocer sobre Quepos, Costa Rica.
+              {descripcion}
             </p>
             <p className="mt-6 hidden text-slate-600 md:block">
               ¿No encuentras lo que buscas?{' '}

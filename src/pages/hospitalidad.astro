@@ -9,6 +9,53 @@ import GaleriaComida from "../components/GastronomiaComponentes/GaleriaComida.as
 import TextVelocity from "../components/compartidos/TextVelocity.astro";
 import vistaHotel from "../assets/hospitalidad/vista-hotel-manuel-antonio.jpg";
 import FAQ from "../components/Quepos-Componentes/FAQ.astro";
+import CierreConFoto from "../components/compartidos/CierreConFoto.astro";
+import eventoPlaya from "../assets/hospitalidad/evento-playa-manuel-antonio.jpg";
+
+const preguntas = [
+  {
+    id: "hospedaje",
+    question: "¿Qué tipos de hospedaje hay en Quepos?",
+    answer:
+      "Hay opciones para todos los presupuestos: hoteles boutique y resorts con vista al mar en la zona de Manuel Antonio, y hoteles, cabinas, hostales y casas de alquiler en el centro de Quepos.",
+  },
+  {
+    id: "reservar",
+    question: "¿Necesito reservar con anticipación?",
+    answer:
+      "En temporada alta, de diciembre a abril, y en feriados como Semana Santa, la ocupación es alta, así que conviene reservar con tiempo. En temporada verde suele haber más disponibilidad y mejores precios.",
+  },
+  {
+    id: "platillos",
+    question: "¿Qué platillos típicos debo probar?",
+    answer:
+      "El gallo pinto en el desayuno, el casado al almuerzo y, por estar frente al Pacífico, el ceviche y el pescado fresco. Para acompañar, pruebe un fresco natural de frutas tropicales.",
+  },
+  {
+    id: "soda",
+    question: "¿Qué es una soda?",
+    answer:
+      "Es un restaurante pequeño, por lo general familiar, que sirve comida costarricense casera a buen precio. Es la mejor forma de probar la cocina local.",
+  },
+  {
+    id: "tarjeta",
+    question: "¿Puedo pagar con tarjeta en hoteles y restaurantes?",
+    answer:
+      "La mayoría de hoteles y restaurantes aceptan tarjetas de crédito y débito. En sodas pequeñas y comercios locales es mejor llevar algo de efectivo, en colones o dólares.",
+  },
+  {
+    id: "servicio",
+    question: "¿La cuenta ya incluye el servicio?",
+    answer:
+      "Sí. En los restaurantes la cuenta suele incluir el impuesto y un 10 % de servicio, así que la propina adicional es opcional. Revise el detalle de la factura antes de pagar.",
+  },
+  {
+    id: "vegetariano",
+    question: "¿Hay opciones vegetarianas?",
+    answer:
+      "Sí. Muchos restaurantes de la zona ofrecen platos vegetarianos y veganos, y en las sodas puede pedir el casado o el gallo pinto sin carne.",
+  },
+];
 ---
 
 <Layout
@@ -22,7 +69,12 @@ import FAQ from "../components/Quepos-Componentes/FAQ.astro";
   <InfoGastronomia />
   <TextVelocity texto="COMIDAS TÍPICAS" reaccionaScroll={false} filas={1} claseTexto="pt-[0.2em]" espaciado="pt-2 pb-5 sm:pb-6 lg:pb-8" />
   <GaleriaComida />
-  <BusetaScroll />
-  <FAQ/>
+  <CierreConFoto
+    foto={eventoPlaya}
+    alt="Sillas de madera en círculo con pétalos sobre la arena, frente a una roca y una isla en la playa de Manuel Antonio"
+    claseFoto="object-bottom max-sm:object-[55%_bottom]"
+  >
+    <FAQ transparente preguntas={preguntas} descripcion="Lo que conviene saber sobre hospedaje y comida en Quepos." />
+  </CierreConFoto>
 
 </Layout>

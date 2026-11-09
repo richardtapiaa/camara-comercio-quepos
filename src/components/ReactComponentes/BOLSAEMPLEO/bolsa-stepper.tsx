@@ -168,9 +168,9 @@ const BolsaStepper = () => {
 
 type OpcionesProps = { nombre: string; valor: string; cambiar: (evento: React.ChangeEvent<HTMLInputElement>) => void };
 const Opciones = ({ nombre, valor, cambiar }: OpcionesProps) => (
-  <div className="flex items-center gap-4 py-2 text-sm">
-    <label className="inline-flex items-center gap-1"><input type="radio" name={nombre} value="si" checked={valor === "si"} onChange={cambiar} className="accent-[#2780c9]" /> Sí</label>
-    <label className="inline-flex items-center gap-1"><input type="radio" name={nombre} value="no" checked={valor === "no"} onChange={cambiar} className="accent-[#2780c9]" /> No</label>
+  <div className="flex items-center gap-2 text-base">
+    <label className="inline-flex min-h-11 cursor-pointer items-center gap-2 pr-4"><input type="radio" name={nombre} value="si" checked={valor === "si"} onChange={cambiar} className="size-5 accent-[#2780c9]" /> Sí</label>
+    <label className="inline-flex min-h-11 cursor-pointer items-center gap-2 pr-4"><input type="radio" name={nombre} value="no" checked={valor === "no"} onChange={cambiar} className="size-5 accent-[#2780c9]" /> No</label>
   </div>
 );
 
