@@ -1,27 +1,79 @@
 ---
-import avancemos from "../../assets/capacitaciones/avancemos.svg";
+import { Image } from "astro:assets";
+import FondoSello from "../compartidos/FondoSello";
+import ict from "../../assets/inicio/colaboradores/ict-logo.webp";
+import ina from "../../assets/inicio/colaboradores/ina-logo.webp";
+import canatur from "../../assets/inicio/colaboradores/canatur-logo.webp";
+import profesionales from "../../assets/capacitaciones/profesionales-capa.svg";
+
+// `alto` es la altura en píxeles con la que se genera el logo (también a 2x para pantallas retina).
+const aliados = [
+  { logo: ict, alto: 56, clases: "h-14", titulo: "ICT", texto: "Instituto Costarricense de Turismo" },
+  { logo: ina, alto: 56, clases: "h-14", titulo: "INA", texto: "Instituto Nacional de Aprendizaje" },
+  { logo: canatur, alto: 40, clases: "h-10", titulo: "Canatur", texto: "Cámara Nacional de Turismo" },
+  { icono: profesionales, titulo: "Profesionales", texto: "Del sector privado" },
+];
+
+// En gris solo con mouse (pointer-fine); al pasar sobre la tarjeta toma su color.
+// En pantallas táctiles, sin hover, se ve a color desde el inicio.
+const efectoColor =
+  "transition-[filter,opacity,color] duration-500 ease-out pointer-fine:opacity-60 pointer-fine:grayscale group-hover:opacity-100 group-hover:grayscale-0 motion-reduce:transition-none";
 ---
 
-<section class="bg-white px-6 py-16 sm:px-10 sm:py-24">
-  <div class="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-20">
-    <div class="max-w-2xl">
-      <span class="text-xs font-semibold uppercase tracking-[0.25em] text-neutral-500">Nuestro compromiso</span>
-      <p class="mt-8 text-base font-medium leading-relaxed text-neutral-800 sm:text-lg">
+<section
+  id="compromiso"
+  aria-labelledby="titulo-compromiso"
+  class="relative isolate overflow-x-clip bg-white px-6 pb-32 pt-20 sm:px-10 sm:pb-40 sm:pt-24"
+>
+  <FondoSello lado="derecha" />
+  <div class="mx-auto grid max-w-6xl items-start gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
+    <div class="lg:pt-6">
+      <h2 id="titulo-compromiso" class="text-balance text-2xl font-medium text-slate-900 sm:text-3xl">
+        Fortalecemos el talento de las personas y las empresas del cantón
+      </h2>
+      <p class="mt-4 max-w-[52ch] text-lg leading-relaxed text-slate-600">
         La Cámara coordina capacitaciones con instituciones públicas como el{" "}
-        <strong class="font-semibold text-[#102a43]">ICT</strong>{" "}y el{" "}
-        <strong class="font-semibold text-[#102a43]"> INA</strong>, además de profesionales del sector privado.
+        <strong class="font-semibold text-slate-900">ICT</strong> y el{" "}
+        <strong class="font-semibold text-slate-900">INA</strong>, además de profesionales del sector privado.
       </p>
-     
     </div>
-    <div>
-      <img
-        src={avancemos.src}
-        width={avancemos.width}
-        height={avancemos.height}
-        loading="lazy"
-        alt="Ilustración de crecimiento y aprendizaje mediante capacitaciones"
-        class="h-auto w-full object-contain"
-      />
-    </div>
+
+    <ul role="list" class="grid grid-cols-2 gap-5 sm:gap-8 lg:gap-10">
+      {
+        aliados.map(({ logo, alto, clases, icono, titulo, texto }) => (
+          <li class="group flex flex-col items-center rounded-[2rem] bg-[#f3f5f8] px-4 py-7 text-center sm:p-8">
+            <div class="flex h-14 w-full items-center justify-center">
+              {logo ? (
+                <Image
+                  src={logo}
+                  alt=""
+                  height={alto}
+                  densities={[1, 2]}
+                  loading="lazy"
+                  decoding="async"
+                  draggable="false"
+                  class:list={["w-auto max-w-full object-contain", clases, efectoColor]}
+                />
+              ) : (
+                icono && (
+                  <img
+                    src={icono.src}
+                    alt=""
+                    width="56"
+                    height="56"
+                    loading="lazy"
+                    decoding="async"
+                    draggable="false"
+                    class:list={["size-14", efectoColor]}
+                  />
+                )
+              )}
+            </div>
+            <h3 class="mt-8 text-lg font-semibold text-slate-900">{titulo}</h3>
+            <p class="mt-1 text-sm leading-relaxed text-slate-600 sm:text-base">{texto}</p>
+          </li>
+        ))
+      }
+    </ul>
   </div>
 </section>

@@ -4,34 +4,98 @@ import imagen1 from "../../assets/capacitaciones/imagen-1.webp";
 import imagen2 from "../../assets/capacitaciones/imagen-2.webp";
 import imagen3 from "../../assets/capacitaciones/imagen-3.webp";
 import imagen4 from "../../assets/capacitaciones/imagen-4.webp";
+import poli from "../../assets/capacitaciones/capacitacion-poli.webp";
+import poli2 from "../../assets/capacitaciones/capacitacion-poli-2.webp";
+import encuentro1 from "../../assets/capacitaciones/encuentro-1.webp";
+import encuentro2 from "../../assets/capacitaciones/encuentro-2.webp";
+import encuentro3 from "../../assets/capacitaciones/encuentro-3.webp";
+import encuentro4 from "../../assets/capacitaciones/encuentro-4.webp";
 
+// Collage desde lg: el lienzo mide 100 de ancho por ALTO de alto y cada foto
+// se ubica con x, y, w en esas unidades. La mitad de abajo repite la de arriba
+// girada 180°. Debajo de lg las fotos pasan a una cuadrícula (2 columnas en
+// celular, 3 en tablet): las "panoramicas" ocupan dos columnas siempre y las
+// "anchas" solo en celular.
+const ALTO = 74;
 
 const fotos = [
   {
+    src: encuentro1,
+    alt: "Participantes de un encuentro en un restaurante",
+    x: 43, y: 0, w: 46, z: 2,
+    proporcion: "lg:aspect-[8/3]",
+    enfoque: "50% 85%",
+    panoramica: true,
+  },
+  {
+    src: poli2,
+    alt: "Facilitadores dando una charla en una cancha techada",
+    x: 21, y: 3, w: 25, z: 1,
+    proporcion: "lg:aspect-[4/5]",
+    enfoque: "0% 50%",
+  },
+  {
     src: imagen1,
-    alt: "Capacitación de la Cámara de Comercio de Quepos",
-    clase: "md:left-[32%] md:top-[3%] md:z-10 md:w-[34%]",
-    velocidad: 0.05,
+    alt: "Asistentes a una capacitación en el salón comunal",
+    x: 2, y: 11, w: 22, z: 3,
+    proporcion: "lg:aspect-[3/2]",
+    enfoque: "50% 60%",
   },
   {
     src: imagen2,
-    alt: "Participantes en una capacitación",
-    clase: "md:left-[2%] md:top-[36%] md:z-20 md:w-[29%]",
-    velocidad: 0.25,
+    alt: "Expositor hablando a los participantes sentados en las mesas",
+    x: 52, y: 21.5, w: 20, z: 4,
+    proporcion: "lg:aspect-[4/3]",
+    enfoque: "50% 50%",
+    ancha: true,
+  },
+  {
+    src: encuentro2,
+    alt: "Participantes de un encuentro tomando notas en una terraza",
+    x: 10, y: 30, w: 21, z: 3,
+    proporcion: "lg:aspect-[3/2]",
+    enfoque: "50% 70%",
+  },
+  {
+    src: encuentro3,
+    alt: "Expositora con micrófono frente a los asistentes de un encuentro",
+    x: 69, y: 30, w: 21, z: 3,
+    proporcion: "lg:aspect-[3/2]",
+    enfoque: "100% 50%",
   },
   {
     src: imagen3,
-    alt: "Charla de capacitación para empresas de Quepos",
-    clase: "md:left-[68%] md:top-0 md:z-0 md:w-[31%]",
-    velocidad: -0.2,
+    alt: "Expositor junto a la pantalla durante una capacitación en el salón comunal",
+    x: 28, y: 37.5, w: 20, z: 4,
+    proporcion: "lg:aspect-[4/3]",
+    enfoque: "50% 50%",
+    ancha: true,
+  },
+  {
+    src: encuentro4,
+    alt: "Asistentes escuchando con atención durante un encuentro",
+    x: 54, y: 39.75, w: 25, z: 1,
+    proporcion: "lg:aspect-[4/5]",
+    enfoque: "80% 50%",
   },
   {
     src: imagen4,
-    alt: "Taller de formación de la Cámara",
-    clase: "md:left-[48%] md:top-[55%] md:z-30 md:w-[33%]",
-    velocidad: 0.4,
+    alt: "Participantes en las mesas del salón comunal durante una capacitación",
+    x: 76, y: 48.33, w: 22, z: 3,
+    proporcion: "lg:aspect-[3/2]",
+    enfoque: "50% 70%",
+  },
+  {
+    src: poli,
+    alt: "Foto grupal de los participantes de una capacitación en una cancha techada",
+    x: 11, y: 56.75, w: 46, z: 2,
+    proporcion: "lg:aspect-[8/3]",
+    enfoque: "50% 54%",
+    panoramica: true,
   },
 ];
+
+const porcentaje = (valor: number) => `${Number(valor.toFixed(3))}%`;
 ---
 
 <section id="galeria-capacitaciones" class="overflow-x-clip bg-white px-6 pb-24 sm:px-10 sm:pb-32">
@@ -41,28 +105,35 @@ const fotos = [
     </div>
 
     <div
-      data-galeria-capacitaciones
-      class="mt-12 flex flex-col md:relative md:mt-16 md:block md:aspect-[16/11]"
+      class="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:relative lg:mt-16 lg:block lg:aspect-(--proporcion)"
+      style={`--proporcion: 100 / ${ALTO}`}
     >
       {
-        fotos.map((foto, i) => (
+        fotos.map((foto) => (
           <figure
-            data-galeria-foto
-            data-velocidad={foto.velocidad}
             class:list={[
-              "group relative w-[85%] md:absolute md:mt-0",
-              i % 2 === 0 ? "self-start" : "self-end",
-              i > 0 && "-mt-8",
-              foto.clase,
+              "group lg:absolute lg:left-(--x) lg:top-(--y) lg:w-(--w) lg:z-(--z) lg:hover:z-50",
+              foto.panoramica && "col-span-2",
+              foto.ancha && "col-span-2 sm:col-span-1",
             ]}
+            style={`--x: ${porcentaje(foto.x)}; --y: ${porcentaje((foto.y / ALTO) * 100)}; --w: ${porcentaje(foto.w)}; --z: ${foto.z}`}
           >
             <Image
               src={foto.src}
               alt={foto.alt}
               width={1200}
               widths={[480, 800, 1200]}
-              sizes="(min-width: 768px) 32vw, 85vw"
-              class="aspect-[4/3] w-full rounded-xl object-cover shadow-[0_24px_50px_-20px_rgba(15,42,67,0.5)] transition-transform duration-500 group-hover:scale-[1.03]"
+              sizes={`(min-width: 1280px) ${Math.round(foto.w * 12)}px, (min-width: 1024px) ${foto.w}vw, (min-width: 640px) ${foto.panoramica ? 66 : 33}vw, ${foto.panoramica || foto.ancha ? 100 : 50}vw`}
+              class:list={[
+                "h-full w-full rounded-xl object-cover shadow-[0_24px_50px_-20px_rgba(15,42,67,0.5)] transition duration-500 ease-out group-hover:-translate-y-1.5 group-hover:shadow-[0_34px_60px_-22px_rgba(15,42,67,0.6)] motion-reduce:transition-none motion-reduce:group-hover:translate-y-0",
+                foto.panoramica
+                  ? "aspect-video sm:aspect-[8/3]"
+                  : foto.ancha
+                    ? "aspect-video sm:aspect-[4/3]"
+                    : "aspect-square sm:aspect-[4/3]",
+                foto.proporcion,
+              ]}
+              style={`object-position: ${foto.enfoque}`}
               loading="lazy"
             />
           </figure>
@@ -71,6 +142,3 @@ const fotos = [
     </div>
   </div>
 </section>
-
-<script src="../../scripts/capacitaciones/galeria-parallax.ts"></script>
-
