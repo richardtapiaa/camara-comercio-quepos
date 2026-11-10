@@ -14,9 +14,10 @@ interface Props {
   descripcion: string;
   imagen?: { src: ImageMetadata; alt: string; posicion?: string };
   indexar?: boolean;
+  piePagina?: boolean;
 }
 
-const { titulo, descripcion, imagen, indexar = true } = Astro.props;
+const { titulo, descripcion, imagen, indexar = true, piePagina = true } = Astro.props;
 
 const favicon = await getImage({ src: logo, width: 64, format: "png" });
 const iconoApple = await getImage({ src: logo, width: 180, format: "png" });
@@ -89,7 +90,7 @@ const urlImagenRedes = Astro.site ? new URL(fotoRedes.src, Astro.site).href : un
 		<main id="contenido">
 			<slot />
 		</main>
-		<PiePagina />
+		{piePagina && <PiePagina />}
 		<script src="../scripts/compartido/videos.ts"></script>
 		<script src="../scripts/compartido/scroll-suave.ts"></script>
 	</body>

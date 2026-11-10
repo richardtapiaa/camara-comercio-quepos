@@ -29,7 +29,7 @@
 - id: iguana-tours
   nombre: Iguana Tours
   categoria: Turismo
-  descripcion: Agencia de tours
+  descripcion: Turismo
   logo: ../assets/afiliados/logos/iguana-tours.webp
   telefonos: ["+506 2777-2052", "+506 2777-1262"]
   whatsapp: "+506 8997-1969"
