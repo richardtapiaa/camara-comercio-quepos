@@ -1,0 +1,57 @@
+---
+import savegreUno from "../../assets/Savegre/Savegre_1.JPG";
+import puenteRioSavegre from "../../assets/Savegre/Puente_riosavegre.jpg";
+---
+
+<section id="sobre-savegre" class="relative overflow-hidden bg-white pb-0 pt-16 sm:pb-0 sm:pt-20">
+  <div class="mx-auto grid w-full max-w-7xl gap-10 px-6 sm:px-10 lg:grid-cols-[minmax(15rem,0.8fr)_minmax(0,1.5fr)] lg:gap-20 xl:gap-28">
+    <div>
+      <h1 class="max-w-sm text-3xl font-bold uppercase leading-[0.98] tracking-[-0.03em] text-neutral-950 sm:text-4xl lg:pt-1 xl:text-5xl">
+        Conoce Savegre
+      </h1>
+
+      <div class="mt-12 overflow-hidden rounded-[2rem] lg:-ml-8 lg:w-[calc(100%+4rem)]">
+        <img
+          src={savegreUno.src}
+          alt="Cascada en el bosque de Savegre"
+          loading="lazy"
+          class="aspect-[4/3] w-full object-cover object-left"
+        />
+      </div>
+    </div>
+
+    <div class="max-w-3xl space-y-6 text-base leading-relaxed text-neutral-700 sm:text-lg">
+      <p>
+        Es el distrito más extenso y diverso del cantón de Quepos. Su territorio abarca desde impresionantes zonas
+        costeras hasta frondosos corredores fluviales y montañosos, convirtiéndolo en un destino imperdible para
+        quienes buscan conectar profundamente con la naturaleza, los ríos caudalosos y la tranquilidad del sur.
+      </p>
+
+      <p>
+        <strong class="font-semibold text-neutral-950">Riqueza costera y rural:</strong>
+        Comprende comunidades dinámicas y de gran atractivo turístico como Playa Matapalo, ideal para disfrutar de
+        atardeceres despejados y estancias relajadas frente al mar, así como poblados como Portalón y Savegre,
+        reconocidos por su biodiversidad de transición y proyectos ecológicos.
+      </p>
+
+      <p>
+        <strong class="font-semibold text-neutral-950">Paisajes de agua y aventura:</strong>
+        Alberga importantes atractivos naturales vinculados a la cuenca, destacando la emblemática Catarata Río
+        Savegre, perfecta para los entusiastas de la fotografía de paisajes y las caminatas al aire libre.
+      </p>
+
+      <p>
+        <strong class="font-semibold text-neutral-950">Ideal para:</strong>
+        Amantes del ecoturismo, la observación de aves, el turismo rural y los viajeros que prefieren explorar zonas
+        escénicas alejadas de las aglomeraciones urbanas.
+      </p>
+    </div>
+  </div>
+
+  <div
+    class="mt-14 h-[clamp(20rem,38vw,36rem)] w-full bg-center bg-fixed bg-no-repeat sm:mt-20"
+    style={`background-image: url("${puenteRioSavegre.src}"); background-size: 100% 100%;`}
+    role="img"
+    aria-label="Puente sobre el río Savegre rodeado de bosque tropical"
+  ></div>
+</section>

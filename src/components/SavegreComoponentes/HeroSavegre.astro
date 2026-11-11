@@ -1,0 +1,27 @@
+---
+import { Picture } from "astro:assets";
+import foto from "../../assets/galeria/catarata-bosque.webp";
+---
+
+<section id="hero-savegre" class="relative isolate flex min-h-[420px] items-end overflow-hidden bg-[#1f3b35] sm:min-h-[560px]">
+  <Picture
+    src={foto}
+    formats={["avif", "webp"]}
+    widths={[800, 1280, 1600]}
+    sizes="100vw"
+    quality={65}
+    alt="Catarata entre el bosque tropical de Savegre"
+    class="absolute inset-0 -z-20 size-full object-cover"
+    loading="eager"
+    fetchpriority="high"
+  />
+  <div class="absolute inset-0 -z-10 bg-gradient-to-t from-black/65 via-black/20 to-black/20" aria-hidden="true"></div>
+  <div class="absolute bottom-0 left-0 h-24 w-[min(58rem,58vw)] text-[#173b69] sm:h-32">
+    <svg class="absolute inset-0 size-full" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 0h56c12 0 20 7 25 19 5 12 6 28 8 44 1 14 3 26 6 37H0Z" fill="white"></path>
+    </svg>
+    <h1 class="relative flex h-full max-w-[42rem] items-center px-6 pb-1 text-2xl font-semibold leading-tight tracking-[-0.02em] sm:px-10 sm:text-4xl">
+      Costa Rica Savegre Quepos
+    </h1>
+  </div>
+</section>
