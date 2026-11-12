@@ -1,0 +1,45 @@
+---
+import { Picture } from "astro:assets";
+import TextPath from "../ReactComponentes/NarajintoComponentes/TextPath";
+import foto from "../../assets/naranjito/imagenes-distrito/colinas-naranjito.webp";
+
+const frase = "Ríos, montañas y vida de campo en Naranjito";
+
+
+const ola = "M -40 150 C 320 40, 560 40, 760 120 S 1180 220, 1480 90";
+---
+
+
+<section data-foto-parallax class="relative isolate w-full overflow-hidden bg-white">
+  <div class="relative z-10">
+    <TextPath
+      client:visible
+      text={frase}
+      path={ola}
+      viewBox="0 0 1440 240"
+      fontSize={64}
+      fontWeight={600}
+      letterSpacing={0.02}
+      repeats={3}
+      duration={30}
+      className="w-[200%] max-w-none -translate-x-1/4 text-[#1f5c3a] sm:w-full sm:translate-x-0"
+    />
+  </div>
+
+  <div class="relative -mt-[6vw] h-[65svh] mask-t-from-75% sm:-mt-[3vw] sm:h-[clamp(20rem,32vw,34rem)] sm:mask-t-from-70%">
+    <Picture
+      src={foto}
+      formats={["avif", "webp"]}
+      alt="Colinas verdes con potreros y bosque en el interior de la zona de Quepos"
+      widths={[640, 960, 1280, 1600]}
+      sizes="100vw"
+      quality={90}
+      loading="lazy"
+      decoding="async"
+      data-foto-parallax-capa
+      class="absolute inset-x-0 top-[-25%] block h-[150%] w-full object-cover object-[center_50%] contrast-[1.06] saturate-[1.12] will-change-transform max-sm:top-[-12.5%] max-sm:h-[125%] md:top-0 md:h-full md:will-change-auto"
+    />
+  </div>
+</section>
+
+<script src="../../scripts/quepos/foto-quepos.ts"></script>

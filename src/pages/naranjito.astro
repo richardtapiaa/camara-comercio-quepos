@@ -1,0 +1,23 @@
+---
+// El Layout ya incluye el Navbar; el pie de página se oculta con piePagina={false}.
+import Layout from "../layouts/Layout.astro";
+import Hero from "../components/NaranjitoComponentes/Hero.astro";
+import PorqueVisitarNaranjito from "../components/NaranjitoComponentes/PorqueVisitarNaranjito.astro";
+import FotoNaranjito from "../components/NaranjitoComponentes/FotoNaranjito.astro";
+import InfoNaranjito from "../components/NaranjitoComponentes/InfoNaranjito.astro";
+import TextPath from "../components/NaranjitoComponentes/TextPath.astro";
+import GaleriaNaranjito from "../components/NaranjitoComponentes/GaleriaNarajito.astro";
+---
+
+<Layout
+  titulo="Naranjito"
+  descripcion="Naranjito, en el cantón de Quepos: conoce la comunidad junto a la Cámara de Comercio de Quepos."
+  piePagina={true}
+>
+  <Hero />
+  <InfoNaranjito />
+  <FotoNaranjito />
+  <PorqueVisitarNaranjito />
+  <GaleriaNaranjito />
+  <TextPath />
+</Layout>

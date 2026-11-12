@@ -1,15 +1,26 @@
 ---
-import { Image } from "astro:assets";
+import { Picture } from "astro:assets";
 import { Leaf } from "lucide-react";
-import imagen from "../../assets/actividades/actividades-1.jpg";
+import foto from "../../assets/actividades/actividades-1.jpg";
 import siluetaPerezoso from "../../assets/quepos/perezoso-rama.svg";
 import siluetaBallena from "../../assets/quepos/ballena-cola.svg";
 ---
 
+<!--
+  Mismo diseño que "¿Por qué visitar Quepos?": en desktop la foto ocupa la
+  mitad izquierda y llega hasta el borde de la pantalla (solo se redondean sus
+  esquinas derechas); a la derecha van el título con su ícono y el texto. En
+  celular la foto va arriba, con márgenes, y el texto debajo. La ballena asoma
+  sobre la foto y el perezoso cuelga a la derecha, detrás del texto.
+  La sección sigue siendo un panel fijo (sticky) para el efecto de scroll con
+  la sección siguiente; por eso usa overflow-x-clip y el perezoso va dentro de
+  su propia capa con overflow-hidden.
+-->
 <section
   id="biodiversidad-quepos"
   data-panel-sticky
-  class="panel sticky top-[min(0px,calc(100svh_-_var(--alto-panel,100svh)))] overflow-x-clip bg-white py-12 sm:py-16"
+  aria-labelledby="titulo-biodiversidad-quepos"
+  class="panel sticky top-[min(0px,calc(100svh_-_var(--alto-panel,100svh)))] overflow-x-clip bg-white py-20 sm:py-24"
 >
   <div class="pointer-events-none absolute inset-0 overflow-hidden">
     <img
@@ -19,40 +30,12 @@ import siluetaBallena from "../../assets/quepos/ballena-cola.svg";
       alt=""
       loading="lazy"
       decoding="async"
-      class="absolute -left-10 top-[22%] h-auto w-[230px] sm:w-[260px] lg:-left-8 lg:top-[12%] lg:w-[330px]"
+      class="absolute -right-10 bottom-[8%] h-auto w-[230px] -scale-x-100 sm:w-[260px] lg:-right-8 lg:bottom-auto lg:top-[12%] lg:w-[330px]"
     />
   </div>
-  <div
-    class="relative mx-auto grid w-full items-start gap-10 px-3 sm:max-md:max-w-[540px] md:max-lg:max-w-[720px] lg:max-xl:max-w-[960px] lg:grid-cols-2 lg:gap-12 xl:max-[1399px]:max-w-[1140px] min-[1400px]:max-w-[1320px]"
-  >
-    <div>
-      <div class="flex items-center gap-4">
-        <span class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#F8E39A]" aria-hidden="true">
-          <Leaf className="size-6 text-neutral-900" strokeWidth={1.75} />
-        </span>
-        <h2 class="text-2xl font-semibold leading-tight text-neutral-900 sm:text-[1.75rem]">Biodiversidad de Quepos</h2>
-      </div>
 
-      <div class="mt-6 space-y-6 text-base leading-relaxed text-neutral-600">
-        <p>
-          Quepos se distingue por su riqueza natural y la diversidad de especies que habitan sus bosques y ecosistemas
-          marinos. En la región viven monos, lapas, iguanas, venados y dantas, y en ciertas épocas del año se pueden ver
-          ballenas y delfines.
-        </p>
-        <p>
-          A pocos kilómetros del centro está el Parque Nacional Manuel Antonio, creado en 1972 y uno de los más visitados
-          del país. Aunque es pequeño, reúne bosque tropical, manglares, arrecifes y playas de arena blanca en un mismo
-          lugar.
-        </p>
-        <p>
-          Sus senderos permiten ver de cerca perezosos, mapaches y tres especies de monos: el cariblanco, el congo y el mono
-          tití, propio del Pacífico Central. Playas como Manuel Antonio y Espadilla Sur, junto con el mirador de Punta
-          Catedral, lo convierten en una visita obligada para quienes disfrutan del ecoturismo.
-        </p>
-      </div>
-    </div>
-
-    <div class="relative lg:static">
+  <div class="relative grid items-center gap-10 lg:grid-cols-2 lg:gap-14 xl:gap-20">
+    <div class="relative mt-16 px-6 sm:px-10 lg:mt-14 lg:px-0">
       <img
         src={siluetaBallena.src}
         width={siluetaBallena.width}
@@ -60,18 +43,49 @@ import siluetaBallena from "../../assets/quepos/ballena-cola.svg";
         alt=""
         loading="lazy"
         decoding="async"
-        class="pointer-events-none absolute bottom-full right-3 w-[200px] sm:w-[250px] lg:bottom-[calc(100%-3.5rem)] lg:left-[calc(50%+4rem)] lg:right-auto lg:w-[250px]"
+        class="pointer-events-none absolute bottom-[calc(100%-1.5rem)] right-10 w-[200px] sm:right-16 sm:w-[250px]"
       />
-      <div class="relative aspect-[624/320] overflow-hidden rounded-[40px] lg:absolute lg:top-14 lg:bottom-0 lg:left-[calc(50%+1.5rem)] lg:right-[calc((100%-100vw)/2)] lg:aspect-auto lg:rounded-r-none">
-        <Image
-          src={imagen}
-          alt="Perezoso colgado de una rama en el bosque de Quepos"
-          widths={[480, 720, 960, 1200]}
-          sizes="(min-width: 1024px) 50vw, 100vw"
-          quality={75}
-          class="absolute inset-0 size-full object-cover"
-          loading="lazy"
-        />
+      <Picture
+        src={foto}
+        formats={["avif", "webp"]}
+        alt="Perezoso colgado de una rama en el bosque de Quepos"
+        widths={[640, 960, 1280, 1600]}
+        sizes="(min-width: 1024px) 50vw, calc(100vw - 3rem)"
+        quality={80}
+        loading="lazy"
+        decoding="async"
+        class="relative aspect-[3/2] w-full rounded-[2rem] object-cover lg:rounded-l-none"
+      />
+    </div>
+
+    <div class="px-6 sm:px-10 lg:pl-0 lg:pr-10 xl:pr-[max(2.5rem,calc((100vw-80rem)/2))]">
+      <div class="max-w-xl">
+        <div class="flex items-center gap-4">
+          <span class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#F8E39A]" aria-hidden="true">
+            <Leaf className="size-6 text-neutral-900" strokeWidth={1.75} />
+          </span>
+          <h2 id="titulo-biodiversidad-quepos" class="text-balance text-3xl font-bold leading-[1.15] tracking-tight text-slate-900 sm:text-4xl lg:text-[2.75rem]">
+            Biodiversidad de Quepos
+          </h2>
+        </div>
+
+        <div class="mt-8 max-w-[62ch] space-y-5 text-base leading-[1.8] text-slate-600 sm:text-[1.0625rem]">
+          <p class="text-lg font-medium leading-relaxed text-slate-700 sm:text-xl">
+            Quepos se distingue por su riqueza natural y la diversidad de especies que habitan sus bosques y ecosistemas
+            marinos. En la región viven monos, lapas, iguanas, venados y dantas, y en ciertas épocas del año se pueden ver
+            ballenas y delfines.
+          </p>
+          <p>
+            A pocos kilómetros del centro está el Parque Nacional Manuel Antonio, creado en 1972 y uno de los más visitados
+            del país. Aunque es pequeño, reúne bosque tropical, manglares, arrecifes y playas de arena blanca en un mismo
+            lugar.
+          </p>
+          <p>
+            Sus senderos permiten ver de cerca perezosos, mapaches y tres especies de monos: el cariblanco, el congo y el
+            mono tití, propio del Pacífico Central. Playas como Manuel Antonio y Espadilla Sur, junto con el mirador de
+            Punta Catedral, lo convierten en una visita obligada para quienes disfrutan del ecoturismo.
+          </p>
+        </div>
       </div>
     </div>
   </div>

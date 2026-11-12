@@ -1,7 +1,6 @@
-import type { ReactNode } from "react";
 import type { PostFacebook } from "../../../lib/facebook";
-import { formatoFecha, idNoticia, parrafos, recortar, separarTitulo } from "../../../lib/noticias";
-import logoSello from "../../../assets/compartido/logo-camara-sello.webp";
+import { formatoFecha, idNoticia, recortar, rutaNoticia, separarTitulo } from "../../../lib/noticias";
+import FondoSello from "../../compartidos/FondoSello";
 
 interface Props {
   posts: PostFacebook[];
@@ -10,30 +9,6 @@ interface Props {
 
 const AVISO_PESTANA = " (se abre en una pestaña nueva)";
 const LARGO_RESUMEN = 160;
-
-const patronUrl = /(https?:\/\/[^\s]+)/g;
-function conEnlaces(texto: string): ReactNode[] {
-  return texto.split(patronUrl).map((trozo, i) =>
-    i % 2 === 1 ? (
-      <a
-        key={i}
-        href={trozo}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="break-all font-semibold text-[#1d5a7a] underline underline-offset-2 hover:text-[#2b4a5c]"
-      >
-        {trozo}
-        <span className="sr-only">{AVISO_PESTANA}</span>
-      </a>
-    ) : (
-      trozo
-    ),
-  );
-}
-
-function Parrafo({ texto }: { texto: string }) {
-  return <p className="whitespace-pre-line">{conEnlaces(texto)}</p>;
-}
 
 const normalizar = (texto: string) =>
   texto
@@ -66,21 +41,26 @@ const datosBusqueda = (post: PostFacebook) => {
 const claseEnlace =
   "rounded font-semibold text-[#1d5a7a] underline underline-offset-4 hover:text-[#2b4a5c] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#1d5a7a]";
 
+const formatoDia = new Intl.DateTimeFormat("es-CR", { day: "numeric", timeZone: "America/Costa_Rica" });
+const formatoMesCorto = new Intl.DateTimeFormat("es-CR", { month: "short", timeZone: "America/Costa_Rica" });
+
 function datosNoticia(post: PostFacebook) {
   const { titulo, cuerpo } = separarTitulo(post.texto);
+  const fecha = new Date(post.fecha);
+  const cuerpoLimpio = cuerpo.replace(/\s+/g, " ").trim();
   return {
-    fechaTexto: formatoFecha.format(new Date(post.fecha)),
+    // "14 - jul" a la vista; los lectores de pantalla oyen la fecha completa.
+    fechaCorta: `${formatoDia.format(fecha)} - ${formatoMesCorto.format(fecha).replace(".", "")}`,
+    fechaTexto: formatoFecha.format(fecha),
     idTitulo: idNoticia(post.id),
     titulo,
-    cuerpo,
-    parrafosCuerpo: parrafos(cuerpo),
-    conLeerMas: cuerpo.length > LARGO_RESUMEN + 60,
+    resumen: cuerpoLimpio.length > LARGO_RESUMEN ? recortar(cuerpoLimpio, LARGO_RESUMEN) : cuerpoLimpio,
   };
 }
 
 function ImagenNoticia({ src, className = "" }: { src: string; className?: string }) {
   return (
-    <div className={`relative isolate overflow-hidden rounded-[1.5rem] bg-slate-200 ${className}`}>
+    <div className={`relative isolate overflow-hidden bg-slate-200 ${className}`}>
       <img
         src={src}
         alt=""
@@ -104,52 +84,55 @@ function ImagenNoticia({ src, className = "" }: { src: string; className?: strin
   );
 }
 
-function CuerpoNoticia({ datos }: { datos: ReturnType<typeof datosNoticia> }) {
-  const { cuerpo, parrafosCuerpo, conLeerMas } = datos;
-  return (
-    <div className="mb-5 mt-3 space-y-4 leading-relaxed text-slate-700">
-      {conLeerMas ? (
-        <>
-          <p className="group-has-[details[open]]/nota:hidden">{recortar(cuerpo.replace(/\s+/g, " "), LARGO_RESUMEN)}</p>
-          <details className="group">
-            <summary
-              className={`inline-flex cursor-pointer list-none items-center gap-1 [&::-webkit-details-marker]:hidden ${claseEnlace}`}
-            >
-              <span className="group-open:hidden">Leer más</span>
-              <span className="hidden group-open:inline">Mostrar menos</span>
-              <span aria-hidden="true" className="inline-block transition-transform group-open:rotate-180 motion-reduce:transition-none">
-                ▾
-              </span>
-            </summary>
-            <div className="mt-4 space-y-4">
-              {parrafosCuerpo.map((texto, i) => (
-                <Parrafo key={i} texto={texto} />
-              ))}
-            </div>
-          </details>
-        </>
-      ) : (
-        parrafosCuerpo.map((texto, i) => <Parrafo key={i} texto={texto} />)
-      )}
-    </div>
-  );
-}
+/**
+ * Tarjeta de una noticia. Toda la tarjeta abre la página de la noticia: el
+ * ::after del enlace "Leer más" la cubre entera. Se usa en /noticias y en
+ * "Otras noticias" al final de cada noticia.
+ */
+export function TarjetaNoticia({ post }: { post: PostFacebook }) {
+  const datos = datosNoticia(post);
 
-function EnlaceFacebook({ href, titulo }: { href: string; titulo: string }) {
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className={`inline-flex items-center gap-1.5 ${claseEnlace}`}>
-      Ver en Facebook
-      <svg className="size-5 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
-        <path d="M13.5 22v-8.2h2.8l.5-3.3h-3.3V8.4c0-.9.3-1.6 1.7-1.6h1.7V4a22 22 0 0 0-2.5-.1c-2.5 0-4.2 1.5-4.2 4.3v2.3H7.2v3.3H10V22h3.5Z" />
-      </svg>
-      <span className="sr-only">: {titulo}{AVISO_PESTANA}</span>
-    </a>
+    <article
+      aria-labelledby={datos.idTitulo}
+      className="group/nota relative flex w-full flex-col overflow-hidden rounded-[2rem] bg-[#f3f5f8] shadow-[0_18px_40px_-24px_rgb(15_23_42/0.45)] transition-shadow duration-300 hover:shadow-[0_26px_50px_-24px_rgb(15_23_42/0.55)] motion-reduce:transition-none"
+    >
+      {post.imagen && <ImagenNoticia src={post.imagen} className="aspect-square" />}
+      <div className="flex flex-1 flex-col p-6">
+        <h3 id={datos.idTitulo} className="scroll-mt-32 text-xl font-bold leading-snug text-slate-900">
+          {datos.titulo}
+        </h3>
+        {datos.resumen && <p className="mt-4 line-clamp-3 leading-relaxed text-slate-700">{datos.resumen}</p>}
+        <div className="mt-auto flex items-center justify-between gap-4 pt-8">
+          <p className="text-lg font-bold text-slate-900">
+            <time dateTime={post.fecha}>
+              <span aria-hidden="true">{datos.fechaCorta}</span>
+              <span className="sr-only">{datos.fechaTexto}</span>
+            </time>
+          </p>
+          <a
+            href={rutaNoticia(post)}
+            className="inline-flex items-center gap-3 rounded-full font-semibold text-slate-900 after:absolute after:inset-0 after:content-[''] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#1d5a7a]"
+          >
+            <span>
+              Leer más<span className="sr-only">: {datos.titulo}</span>
+            </span>
+            <span
+              aria-hidden="true"
+              className="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#2b4a5c] text-white transition-[translate,background-color] duration-300 group-hover/nota:translate-x-1 group-hover/nota:bg-[#1d3542] motion-reduce:transition-none"
+            >
+              <svg className="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" focusable="false">
+                <path d="M5 12h14M13 6l6 6-6 6" />
+              </svg>
+            </span>
+          </a>
+        </div>
+      </div>
+    </article>
   );
 }
 
 function Noticia({ post }: { post: PostFacebook }) {
-  const datos = datosNoticia(post);
-
   return (
     <li
       data-noticia=""
@@ -158,34 +141,7 @@ function Noticia({ post }: { post: PostFacebook }) {
       data-mes={mesDe(post.fecha).clave}
       className="flex"
     >
-      <article aria-labelledby={datos.idTitulo} className="group/nota flex w-full flex-col rounded-[2rem] bg-[#f3f5f8] p-5">
-        {post.imagen && <ImagenNoticia src={post.imagen} className="aspect-[4/3]" />}
-        <div className="flex flex-1 flex-col px-3 pb-2 pt-6">
-          <p className="flex items-center gap-2 text-sm font-semibold text-slate-600">
-            <svg
-              className="size-4 shrink-0 text-[#2780c9]"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              aria-hidden="true"
-              focusable="false"
-            >
-              <circle cx="12" cy="12" r="9" />
-              <path d="M12 7v5l3 2" />
-            </svg>
-            <time dateTime={post.fecha}>{datos.fechaTexto}</time>
-          </p>
-          <h3 id={datos.idTitulo} className="mt-3 scroll-mt-32 text-xl font-semibold leading-snug text-slate-900">
-            {datos.titulo}
-          </h3>
-          <CuerpoNoticia datos={datos} />
-          <div className="mt-auto flex justify-end border-t border-slate-200 pt-4">
-            <EnlaceFacebook href={post.enlace} titulo={datos.titulo} />
-          </div>
-        </div>
-      </article>
+      <TarjetaNoticia post={post} />
     </li>
   );
 }
@@ -267,19 +223,7 @@ export default function Noticias({ posts, urlFacebook }: Props) {
       aria-labelledby="titulo-ultimas"
       className="relative isolate overflow-x-clip bg-white px-6 py-16 sm:px-10 sm:py-24"
     >
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
-        <div className="sticky top-0 flex h-svh items-center justify-end overflow-hidden">
-          <img
-            src={logoSello.src}
-            width={logoSello.width}
-            height={logoSello.height}
-            alt=""
-            decoding="async"
-            draggable={false}
-            className="-mr-24 h-auto w-[380px] max-w-none rotate-6 select-none opacity-[0.10] sm:w-[540px] lg:-mr-28 lg:w-[780px]"
-          />
-        </div>
-      </div>
+      <FondoSello />
       <div className="mx-auto max-w-6xl">
         <h2 id="titulo-ultimas" className="text-4xl font-bold text-slate-900 sm:text-5xl">
           Últimas publicaciones
@@ -291,7 +235,7 @@ export default function Noticias({ posts, urlFacebook }: Props) {
         {posts.length > 0 && <Filtros posts={posts} />}
 
         {posts.length > 0 && (
-          <ol role="list" className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+          <ol role="list" className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-12">
             {posts.map((post) => (
               <Noticia key={post.id} post={post} />
             ))}

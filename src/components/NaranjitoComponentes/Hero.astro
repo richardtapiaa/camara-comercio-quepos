@@ -1,0 +1,85 @@
+---
+import { sizesCubrePantalla, variantesCapa } from "../../lib/imagenes";
+import foto from "../../assets/naranjito/imagenes-distrito/naranjito-hero.webp";
+
+const anchos = [800, 1200, 1600, 2048];
+const fotoWebp = await variantesCapa(foto, anchos, 80);
+const fotoAvif = await variantesCapa(foto, anchos, 55, "avif");
+const sizes = sizesCubrePantalla(foto);
+---
+
+<!--
+  La foto ocupa todo el ancho y el 78% del alto de la pantalla (igual que el hero
+  de Capacitaciones), con solo las esquinas de abajo redondeadas. Abajo a la
+  izquierda, una pestaña blanca del mismo color que la página se "recorta" de la
+  foto y lleva el título. --radio es el redondeo de todas las esquinas.
+-->
+<section id="hero" aria-labelledby="titulo-naranjito" class="bg-white">
+  <div
+    class="hero-naranjito-recuadro relative isolate h-[78svh] min-h-[32.5rem] overflow-hidden rounded-b-(--radio) bg-[#2b4a5c] [--radio:1.5rem] lg:[--radio:2rem]"
+  >
+    <picture>
+      <source type="image/avif" srcset={fotoAvif.srcSet} sizes={sizes} />
+      <img
+        src={fotoWebp.src}
+        srcset={fotoWebp.srcSet}
+        sizes={sizes}
+        width={foto.width}
+        height={foto.height}
+        alt="Persona a caballo por un camino rural rodeado de árboles en Naranjito, Quepos"
+        class="hero-naranjito-foto absolute inset-0 -z-20 size-full object-cover object-[54%_100%]"
+        draggable="false"
+        fetchpriority="high"
+      />
+    </picture>
+
+    <!--
+      Los saltos de línea del título son fijos para que la pestaña mida justo lo
+      que mide el texto: en celular va en tres líneas, en tablet y laptops en dos
+      ("Quepos, Naranjito:" arriba) y desde 1360px en una sola. En desktop la
+      pestaña nunca llega hasta el jinete, que empieza al 62,5% del ancho.
+    -->
+    <div class="hero-naranjito-pestana absolute bottom-0 left-0 max-w-[calc(100%-3rem)] rounded-tr-(--radio) bg-white px-5 py-4 sm:px-7 sm:py-5 lg:max-w-[calc(62.5%-3rem)]">
+      <h1 id="titulo-naranjito" class="text-balance text-xl font-medium leading-snug text-[#2b4a5c] sm:text-2xl lg:text-[1.75rem]">
+        <span class="block font-bold text-[#163746] min-[1360px]:inline">Quepos, Naranjito:</span> Auténtico, natural, <br class="sm:hidden" />inolvidable.
+      </h1>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Esquinas curvas hacia adentro donde la pestaña se une con la foto: arriba a
+     la izquierda y abajo a la derecha de la pestaña. Pintan de blanco solo la
+     parte fuera de un cuarto de círculo, así la foto parece redondeada ahí. */
+  .hero-naranjito-pestana::before,
+  .hero-naranjito-pestana::after {
+    content: "";
+    position: absolute;
+    width: var(--radio);
+    height: var(--radio);
+    background: radial-gradient(circle at 100% 0, transparent calc(var(--radio) - 0.5px), #fff var(--radio));
+    pointer-events: none;
+  }
+  .hero-naranjito-pestana::before {
+    bottom: 100%;
+    left: 0;
+  }
+  .hero-naranjito-pestana::after {
+    bottom: 0;
+    left: 100%;
+  }
+
+  /* En celulares el recuadro es vertical: la foto se escala por el alto y el
+     jinete, casi en el borde de abajo, quedaría detrás de la pestaña. Aquí se
+     corre la foto para dejarlo siempre a 0.75rem del borde derecho, al lado de
+     la pestaña. El jinete está al 64,8% del ancho de la foto (proporción 1.5),
+     o sea a 97.2cqh de su borde izquierdo, y mide unos 7.4cqh de ancho. */
+  .hero-naranjito-recuadro {
+    container: hero-naranjito / size;
+  }
+  @container hero-naranjito (max-aspect-ratio: 3/4) {
+    .hero-naranjito-foto {
+      object-position: calc(100cqw - 0.75rem - 3.7cqh - 97.2cqh) 100%;
+    }
+  }
+</style>

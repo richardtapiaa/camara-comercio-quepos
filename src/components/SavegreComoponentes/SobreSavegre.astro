@@ -1,57 +1,61 @@
 ---
-import savegreUno from "../../assets/Savegre/Savegre_1.JPG";
-import puenteRioSavegre from "../../assets/Savegre/Puente_riosavegre.jpg";
+import { Picture } from "astro:assets";
+import foto from "../../assets/Savegre/Savegre_1.JPG";
+
+
+const puntos = [
+  { texto: "Playa Matapalo, Portalón y comunidades costeras y rurales", color: "#326dab" },
+  { texto: "La Catarata Río Savegre, sus ríos y caminatas al aire libre", color: "#4e79de" },
+  { texto: "Ideal para el ecoturismo, la observación de aves y el turismo rural", color: "#49bfff" },
+];
 ---
 
-<section id="sobre-savegre" class="relative overflow-hidden bg-white pb-0 pt-16 sm:pb-0 sm:pt-20">
-  <div class="mx-auto grid w-full max-w-7xl gap-10 px-6 sm:px-10 lg:grid-cols-[minmax(15rem,0.8fr)_minmax(0,1.5fr)] lg:gap-20 xl:gap-28">
-    <div>
-      <h1 class="max-w-sm text-3xl font-bold uppercase leading-[0.98] tracking-[-0.03em] text-neutral-950 sm:text-4xl lg:pt-1 xl:text-5xl">
-        Conoce Savegre
-      </h1>
 
-      <div class="mt-12 overflow-hidden rounded-[2rem] lg:-ml-8 lg:w-[calc(100%+4rem)]">
-        <img
-          src={savegreUno.src}
-          alt="Cascada en el bosque de Savegre"
-          loading="lazy"
-          class="aspect-[4/3] w-full object-cover object-left"
-        />
+<section id="sobre-savegre" aria-labelledby="titulo-sobre-savegre" class="bg-white py-20 sm:py-24">
+  <div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-14 xl:gap-20">
+    <div class="px-6 sm:px-10 lg:px-0">
+      <Picture
+        src={foto}
+        formats={["avif", "webp"]}
+        alt="Cascada en el bosque de Savegre"
+        widths={[640, 960, 1280, 1600]}
+        sizes="(min-width: 1024px) 50vw, calc(100vw - 3rem)"
+        quality={75}
+        loading="lazy"
+        decoding="async"
+        class="aspect-[3/2] w-full rounded-[2rem] object-cover object-[30%_50%] lg:rounded-l-none"
+      />
+    </div>
+
+    <div class="px-6 sm:px-10 lg:pl-0 lg:pr-10 xl:pr-[max(2.5rem,calc((100vw-80rem)/2))]">
+      <div class="max-w-xl">  
+        <h2 id="titulo-sobre-savegre" class="mt-4 text-balance text-3xl font-semibold text-slate-900 sm:text-4xl">Conoce Savegre</h2>
+        <p class="mt-4 text-lg leading-relaxed text-slate-600">
+          Es el distrito más extenso y diverso del cantón de Quepos. Su territorio abarca desde impresionantes zonas
+          costeras hasta frondosos corredores fluviales y montañosos, ideal para conectar con la naturaleza, los ríos
+          caudalosos y la tranquilidad del sur.
+        </p> 
+
+        <ul role="list" class="mt-10 space-y-4">
+          {
+            puntos.map(({ texto, color }) => (
+              <li class="flex items-start gap-3 text-lg text-slate-600">
+                <svg viewBox="0 0 24 24" class="mt-1 size-6 shrink-0" style={`color: ${color}`} aria-hidden="true">
+                  <path
+                    fill="currentColor"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linejoin="round"
+                    d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"
+                  />
+                  <path fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m9 12 2 2 4-4" />
+                </svg>
+                <span>{texto}</span>
+              </li>
+            ))
+          }
+        </ul>
       </div>
     </div>
-
-    <div class="max-w-3xl space-y-6 text-base leading-relaxed text-neutral-700 sm:text-lg">
-      <p>
-        Es el distrito más extenso y diverso del cantón de Quepos. Su territorio abarca desde impresionantes zonas
-        costeras hasta frondosos corredores fluviales y montañosos, convirtiéndolo en un destino imperdible para
-        quienes buscan conectar profundamente con la naturaleza, los ríos caudalosos y la tranquilidad del sur.
-      </p>
-
-      <p>
-        <strong class="font-semibold text-neutral-950">Riqueza costera y rural:</strong>
-        Comprende comunidades dinámicas y de gran atractivo turístico como Playa Matapalo, ideal para disfrutar de
-        atardeceres despejados y estancias relajadas frente al mar, así como poblados como Portalón y Savegre,
-        reconocidos por su biodiversidad de transición y proyectos ecológicos.
-      </p>
-
-      <p>
-        <strong class="font-semibold text-neutral-950">Paisajes de agua y aventura:</strong>
-        Alberga importantes atractivos naturales vinculados a la cuenca, destacando la emblemática Catarata Río
-        Savegre, perfecta para los entusiastas de la fotografía de paisajes y las caminatas al aire libre.
-      </p>
-
-      <p>
-        <strong class="font-semibold text-neutral-950">Ideal para:</strong>
-        Amantes del ecoturismo, la observación de aves, el turismo rural y los viajeros que prefieren explorar zonas
-        escénicas alejadas de las aglomeraciones urbanas.
-      </p>
-    </div>
   </div>
-
-  <div
-    class="mt-14 h-[clamp(20rem,38vw,36rem)] w-full bg-center bg-fixed bg-no-repeat sm:mt-20"
-    style={`background-image: url("${puenteRioSavegre.src}"); background-size: 100% 100%;`}
-    role="img"
-    aria-label="Puente sobre el río Savegre rodeado de bosque tropical"
-  ></div>
 </section>

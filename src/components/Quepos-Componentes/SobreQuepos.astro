@@ -1,12 +1,20 @@
 ---
-import { Image } from "astro:assets";
+import { Picture } from "astro:assets";
 import IconoUbicacion from "../../assets/icons-svg/quepos-icons/whypr.svg";
-import imagen from "../../assets/quepos/nose.webp";
+import foto from "../../assets/quepos/nose.webp";
 import siluetaMono from "../../assets/quepos/mono-rama.svg";
 import siluetaMontanas from "../../assets/quepos/montanas-quepos.svg";
 ---
 
-<section id="sobre-quepos" class="relative overflow-hidden bg-white py-16 sm:py-20">
+<!--
+  Mismo diseño que "Conozca Naranjito": en desktop la foto ocupa la mitad
+  izquierda y llega hasta el borde de la pantalla (solo se redondean sus
+  esquinas derechas); a la derecha van el título con su ícono y el texto,
+  alineados con el ancho del resto del sitio. En celular la foto va arriba, con
+  márgenes, y el texto debajo. Las siluetas decoran el fondo: las montañas
+  asoman sobre la foto y el mono queda abajo a la derecha, detrás del texto.
+-->
+<section id="sobre-quepos" aria-labelledby="titulo-sobre-quepos" class="relative overflow-hidden bg-white py-20 sm:py-24">
   <img
     src={siluetaMono.src}
     width={siluetaMono.width}
@@ -14,37 +22,11 @@ import siluetaMontanas from "../../assets/quepos/montanas-quepos.svg";
     alt=""
     loading="lazy"
     decoding="async"
-    class="pointer-events-none absolute -right-6 top-[24%] h-auto w-[270px] sm:w-[340px] lg:-bottom-4 lg:-left-4 lg:right-auto lg:top-auto lg:w-[460px]"
+    class="pointer-events-none absolute -bottom-4 -right-6 h-auto w-[270px] sm:w-[340px] lg:-right-4 lg:w-[460px]"
   />
-  <div
-    class="relative mx-auto grid w-full items-start gap-10 px-3 sm:max-md:max-w-[540px] md:max-lg:max-w-[720px] lg:max-xl:max-w-[960px] lg:grid-cols-2 lg:gap-12 xl:max-[1399px]:max-w-[1140px] min-[1400px]:max-w-[1320px]"
-  >
-    <div>
-      <div class="flex items-center gap-4">
-        <IconoUbicacion class="size-12 shrink-0" aria-hidden="true" />
-        <h2 class="text-2xl font-semibold leading-tight text-neutral-900 sm:text-[1.75rem]">¿Por qué visitar Quepos?</h2>
-      </div>
 
-      <div class="mt-6 space-y-6 text-base leading-relaxed text-neutral-600">
-        <p>
-          Quepos está en la costa del Pacífico central de Costa Rica, a unas 3 horas en carro desde San José. Es la puerta
-          de entrada al Parque Nacional Manuel Antonio, uno de los más visitados del país, con playas de arena blanca
-          rodeadas de bosque tropical.
-        </p>
-        <p>
-          En sus bosques viven monos, perezosos, iguanas y cientos de especies de aves. Puede caminar por los senderos del
-          parque, hacer rafting en los ríos Savegre y Naranjo, recorrer en kayak los manglares de Isla Damas o salir a pescar
-          desde Marina Pez Vela, reconocida por la pesca deportiva.
-        </p>
-        <p>
-          Su gente, su comida típica y una amplia oferta de hoteles, restaurantes y tours hacen de Quepos un destino para
-          cualquier época del año: la temporada seca va de diciembre a abril, y de mayo a noviembre la temporada verde llena
-          todo de vida.
-        </p>
-      </div>
-    </div>
-
-    <div class="relative lg:static">
+  <div class="relative grid items-center gap-10 lg:grid-cols-2 lg:gap-14 xl:gap-20">
+    <div class="relative mt-16 px-6 sm:px-10 lg:mt-14 lg:px-0">
       <img
         src={siluetaMontanas.src}
         width={siluetaMontanas.width}
@@ -52,18 +34,47 @@ import siluetaMontanas from "../../assets/quepos/montanas-quepos.svg";
         alt=""
         loading="lazy"
         decoding="async"
-        class="pointer-events-none absolute bottom-full right-3 w-[220px] sm:w-[280px] lg:bottom-[calc(100%-3.5rem)] lg:left-[calc(50%+4rem)] lg:right-auto lg:w-[400px]"
+        class="pointer-events-none absolute bottom-[calc(100%-1.5rem)] right-10 w-[220px] sm:right-16 sm:w-[280px] lg:w-[400px]"
       />
-      <div class="relative aspect-[624/320] overflow-hidden rounded-[40px] lg:absolute lg:top-14 lg:bottom-0 lg:left-[calc(50%+1.5rem)] lg:right-[calc((100%-100vw)/2)] lg:aspect-auto lg:rounded-r-none">
-        <Image
-          src={imagen}
-          alt="Vista aérea del Parque Nacional Manuel Antonio y sus playas"
-          widths={[480, 720, 960, 1280]}
-          sizes="(min-width: 1024px) 50vw, 100vw"
-          quality={75}
-          class="absolute inset-0 size-full object-cover"
-          loading="lazy"
-        />
+      <Picture
+        src={foto}
+        formats={["avif", "webp"]}
+        alt="Vista aérea del Parque Nacional Manuel Antonio y sus playas"
+        widths={[640, 960, 1280, 1600]}
+        sizes="(min-width: 1024px) 50vw, calc(100vw - 3rem)"
+        quality={80}
+        loading="lazy"
+        decoding="async"
+        class="relative aspect-[3/2] w-full rounded-[2rem] object-cover lg:rounded-l-none"
+      />
+    </div>
+
+    <div class="px-6 sm:px-10 lg:pl-0 lg:pr-10 xl:pr-[max(2.5rem,calc((100vw-80rem)/2))]">
+      <div class="max-w-xl">
+        <div class="flex items-center gap-4">
+          <IconoUbicacion class="size-12 shrink-0" aria-hidden="true" />
+          <h2 id="titulo-sobre-quepos" class="text-balance text-3xl font-bold leading-[1.15] tracking-tight text-slate-900 sm:text-4xl lg:text-[2.75rem]">
+            ¿Por qué visitar Quepos?
+          </h2>
+        </div>
+
+        <div class="mt-8 max-w-[62ch] space-y-5 text-base leading-[1.8] text-slate-600 sm:text-[1.0625rem]">
+          <p class="text-lg font-medium leading-relaxed text-slate-700 sm:text-xl">
+            Quepos está en la costa del Pacífico central de Costa Rica, a unas 3 horas en carro desde San José. Es la puerta
+            de entrada al Parque Nacional Manuel Antonio, uno de los más visitados del país, con playas de arena blanca
+            rodeadas de bosque tropical.
+          </p>
+          <p>
+            En sus bosques viven monos, perezosos, iguanas y cientos de especies de aves. Puede caminar por los senderos del
+            parque, hacer rafting en los ríos Savegre y Naranjo, recorrer en kayak los manglares de Isla Damas o salir a
+            pescar desde Marina Pez Vela, reconocida por la pesca deportiva.
+          </p>
+          <p>
+            Su gente, su comida típica y una amplia oferta de hoteles, restaurantes y tours hacen de Quepos un destino para
+            cualquier época del año: la temporada seca va de diciembre a abril, y de mayo a noviembre la temporada verde
+            llena todo de vida.
+          </p>
+        </div>
       </div>
     </div>
   </div>
