@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 30 460 270">
+  <!-- Silueta tenue de una balsa bajando los rápidos del río Naranjo, entre la pared del cañón y las piedras
+       (mismo estilo sello / grunge que mono-rama.svg).
+       Verde oliva #4d5b2c, como el resto del sitio; la opacidad va en el grupo para que las partes que se cruzan no se oscurezcan -->
+  <defs>
+    <filter id="balsa-rapidos-grunge" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="5" result="ruido"/>
+      <feDisplacementMap in="SourceGraphic" in2="ruido" scale="6" xChannelSelector="R" yChannelSelector="G" result="borde"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="2" seed="19" result="manchas"/>
+      <feColorMatrix in="manchas" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  16 0 0 0 -11.6" result="huecos"/>
+      <feComposite in="borde" in2="huecos" operator="out"/>
+    </filter>
+  </defs>
+  <g opacity="0.11" fill="#4d5b2c" stroke="#4d5b2c" stroke-linecap="round" stroke-linejoin="round" filter="url(#balsa-rapidos-grunge)">
+    <!-- Pared del cañón con selva arriba -->
+    <path d="M10 312c-1 -7 -5 -28 -4 -40c1 -12 8 -19 8 -30c0 -11 -8 -23 -8 -34c0 -11 6 -23 6 -34c0 -11 -8 -21 -8 -32c0 -11 5 -23 6 -32c1 -9 -2 -18 -2 -22c-5 -6 0 -17 7 -15c-6 -12 8 -23 18 -14c4 -7 15 -6 16 1c11 -9 26 3 18 16c12 -3 19 11 10 20c11 0 15 16 5 20c1 4 8 16 8 24c0 8 -10 17 -10 26c0 9 10 17 10 26c0 9 -8 17 -8 26c0 9 9 19 10 28c1 9 -6 15 -6 26c0 11 3 33 4 40z" stroke="none"/>
+    <!-- Hojas que salen de la pared -->
+    <path d="M86 146C100 130 118 126 134 134C118 136 102 144 90 158ZM88 200C104 190 122 192 134 204C118 202 102 204 90 212Z" stroke="none"/>
+    <!-- Olas del río: tres hileras, cada una termina más lejos -->
+    <path d="M100 242q14 -11 28 0t28 0t28 0M356 246q13 -10 26 0t26 0" fill="none" stroke-width="5"/>
+    <path d="M98 266q16 -12 32 0t32 0t32 0t32 0t32 0t32 0t32 0t32 0t32 0t32 0" fill="none" stroke-width="6"/>
+    <path d="M96 290q16 -12 32 0t32 0t32 0t32 0t32 0t32 0t32 0t32 0t32 0t32 0t32 0" fill="none" stroke-width="6"/>
+    <!-- Piedras -->
+    <path d="M122 254C120 236 136 226 152 230C166 234 174 246 170 258Z" stroke="#fff" stroke-width="5"/>
+    <path d="M404 266C404 254 416 248 426 252C434 256 438 262 436 270Z" stroke="#fff" stroke-width="5"/>
+    <!-- Remeros: tronco y cabeza con casco -->
+    <path d="M236 222L240 194M272 224L276 196M308 218L312 190" fill="none" stroke-width="14"/>
+    <circle cx="242" cy="182" r="9" stroke="none"/>
+    <circle cx="278" cy="184" r="9" stroke="none"/>
+    <circle cx="314" cy="178" r="9" stroke="none"/>
+    <!-- Balsa: un tubo inflable; primero un borde blanco para separarla de las olas, y la costura en blanco -->
+    <path d="M206 228C240 238 296 236 340 214" fill="none" stroke="#fff" stroke-width="36"/>
+    <path d="M206 228C240 238 296 236 340 214" fill="none" stroke-width="26"/>
+    <path d="M208 228C242 237 294 235 338 215" fill="none" stroke="#fff" stroke-width="3"/>
+    <!-- Brazos y remos: primero un borde blanco y encima el remo, para que se separen de la balsa -->
+    <path d="M246 190L266 258M282 192L302 258M318 186L338 252" fill="none" stroke="#fff" stroke-width="9"/>
+    <path d="M246 190L266 258M282 192L302 258M318 186L338 252" fill="none" stroke-width="4"/>
+    <path d="M262 244L266 258M298 244L302 258M334 238L338 252" fill="none" stroke-width="11"/>
+    <path d="M240 198L251 208M276 200L287 210M312 194L323 204" fill="none" stroke-width="6"/>
+    <!-- Agua que salpica en la punta -->
+    <path d="M358 226q10 -16 24 -6M374 238q8 -12 20 -4" fill="none" stroke-width="4"/>
+    <circle cx="366" cy="198" r="4" stroke="none"/>
+    <circle cx="380" cy="182" r="3" stroke="none"/>
+    <circle cx="390" cy="206" r="3.5" stroke="none"/>
+    <circle cx="360" cy="176" r="2.5" stroke="none"/>
+    <circle cx="402" cy="192" r="2.5" stroke="none"/>
+    <!-- Aves -->
+    <path d="M176 84q8 -8 15 0q7 -8 15 0M222 62q6 -6 12 0q6 -6 12 0" fill="none" stroke-width="3"/>
+    <!-- Salpicaduras sueltas -->
+    <circle cx="150" cy="120" r="3.5" stroke="none"/>
+    <circle cx="420" cy="140" r="3" stroke="none"/>
+    <circle cx="300" cy="126" r="3" stroke="none"/>
+  </g>
+</svg>

@@ -1,0 +1,66 @@
+---
+import { Picture } from "astro:assets";
+import foto from "../../assets/naranjito/imagenes-distrito/foto-naranjito.webp";
+
+// Cada palabra va en su propio span para que frase-scroll.ts (la misma
+// animación de FotoSavegre y FraseCelebre) la vaya encendiendo al bajar.
+const frase =
+  "“Ya sea cabalgando hasta una catarata o bajando los rápidos del río Naranjo, Naranjito es su lugar para la aventura.”";
+const palabras = frase.split(" ");
+
+// Filas de la palabra gigante que va detrás de la foto (solo decoración)
+const filas = Array.from({ length: 10 });
+---
+
+<!--
+  Mismo diseño que FotoSavegre: dos paneles a todo el ancho; a la izquierda, en
+  verde oscuro, la frase abajo; a la derecha, en verde claro, la palabra
+  "naranjito" repetida en letras gigantes y encima la foto, que tapa el centro
+  de cada fila. En celular la frase va arriba y la foto debajo. La palabra
+  gigante es decorativa y se oculta a los lectores de pantalla. La foto se sirve
+  en AVIF o WebP, en el tamaño de cada pantalla.
+  Las palabras de la frase se encienden una por una al bajar; con "reducir
+  movimiento" activado, o sin JavaScript, la frase se ve completa desde el inicio.
+-->
+<section data-frase-celebre aria-labelledby="frase-naranjito" class="grid bg-[#0f4d3a] lg:min-h-[85svh] lg:grid-cols-2">
+  <div class="flex items-end px-6 py-16 sm:px-10 sm:py-20 lg:py-24 lg:pl-10 lg:pr-14 xl:pl-[max(2.5rem,calc((100vw-80rem)/2))]">
+    <figure class="max-w-xl">
+      <blockquote>
+        <p
+          id="frase-naranjito"
+          class="text-balance text-3xl font-semibold leading-[1.2] tracking-tight text-[#d4ead9] sm:text-4xl lg:text-[2.75rem]"
+        >
+          {palabras.map((palabra) => (
+            <>
+              <span data-frase-palabra class="inline-block">{palabra}</span>{" "}
+            </>
+          ))}
+        </p>
+      </blockquote>
+      <figcaption class="mt-6 text-lg text-white/80">Distrito de Naranjito, Quepos</figcaption>
+    </figure>
+  </div>
+
+  <div class="relative isolate flex items-center justify-center overflow-hidden bg-[#d4ead9] px-6 py-14 sm:px-10 sm:py-20">
+    <div
+      class="pointer-events-none absolute inset-0 -z-10 flex select-none flex-col items-center justify-center text-[clamp(4.5rem,24vw,8.5rem)] font-semibold leading-[0.92] tracking-tight text-[#2f8a5b] lg:text-[clamp(4rem,7.5vw,8.5rem)]"
+      aria-hidden="true"
+    >
+      {filas.map(() => <span class="block whitespace-nowrap">naranjito</span>)}
+    </div>
+
+    <Picture
+      src={foto}
+      formats={["avif", "webp"]}
+      alt="Vista desde lo alto de un río que atraviesa el bosque y los potreros de Naranjito, con el océano Pacífico al fondo"
+      widths={[400, 560, 720, 900, 1100]}
+      sizes="(min-width: 1024px) min(30vw, 32rem), min(calc(100vw - 3rem), 28rem)"
+      quality={80}
+      loading="lazy"
+      decoding="async"
+      class="aspect-[4/5] w-full max-w-md rounded-[1.25rem] object-cover object-[60%_50%] shadow-xl lg:max-w-[min(30vw,32rem)]"
+    />
+  </div>
+</section>
+
+<script src="../../scripts/afiliados/frase-scroll.ts"></script>

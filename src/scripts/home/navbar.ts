@@ -15,6 +15,7 @@ const isOpen = (dropdown: Dropdown) => dropdown.toggle?.getAttribute("aria-expan
 
 const overlay = document.getElementById("nav-overlay");
 const closeBtn = document.getElementById("nav-close");
+const seccionesSinNav = Array.from(document.querySelectorAll<HTMLElement>("[data-ocultar-nav]"));
 const isMobile = () => window.matchMedia("(max-width: 1023px)").matches;
 
 const setDropdownOpen = (dropdown: Dropdown, open: boolean, immediate = false) => {
@@ -187,8 +188,20 @@ const update = () => {
 
   const solid = pastHero ? "true" : "false";
   if (header.dataset.solid !== solid) header.dataset.solid = solid;
-  if (header.dataset.hidden !== "false") header.dataset.hidden = "false";
+
+  const tapada = seccionesSinNav.some((seccion) => {
+    const { top, bottom } = seccion.getBoundingClientRect();
+    return top <= header.offsetHeight && bottom >= window.innerHeight;
+  });
+  const oculta = tapada && header.dataset.menuOpen !== "true" && !header.matches(":focus-within") ? "true" : "false";
+  if (header.dataset.hidden !== oculta) {
+    header.dataset.hidden = oculta;
+    if (oculta === "true") dropdowns.forEach((dropdown) => setDropdownOpen(dropdown, false, true));
+  }
 };
+
+header?.addEventListener("focusin", update);
+header?.addEventListener("focusout", () => requestAnimationFrame(update));
 
 let cuadroPendiente = 0;
 window.addEventListener(

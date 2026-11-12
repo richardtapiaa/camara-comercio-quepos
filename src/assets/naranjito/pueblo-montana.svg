@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 300">
+  <!-- Silueta tenue de un pueblito de montaña: casitas, árboles y un camino entre las lomas
+       (mismo estilo sello / grunge que mono-rama.svg).
+       Verde oliva #4d5b2c, como el resto del sitio; la opacidad va en el grupo para que las partes que se cruzan no se oscurezcan -->
+  <defs>
+    <filter id="pueblo-montana-grunge" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="61" result="ruido"/>
+      <feDisplacementMap in="SourceGraphic" in2="ruido" scale="6" xChannelSelector="R" yChannelSelector="G" result="borde"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="2" seed="83" result="manchas"/>
+      <feColorMatrix in="manchas" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  16 0 0 0 -11.6" result="huecos"/>
+      <feComposite in="borde" in2="huecos" operator="out"/>
+    </filter>
+  </defs>
+  <g opacity="0.11" fill="#4d5b2c" stroke="#4d5b2c" stroke-linecap="round" stroke-linejoin="round" filter="url(#pueblo-montana-grunge)">
+    <!-- Montes con bosque al fondo -->
+    <path d="M-10 240l0 -90c-3 -9 10 -19 16 -11c-2 -4 6 -10 10 -7c-3 -10 7 -16 14 -9c-1 -7 10 -10 12 -3c4 -9 18 -6 19 4c5 -7 17 -2 16 7c2 -10 14 -9 16 0c-2 -7 7 -12 12 -6c-4 -8 5 -14 12 -9c-4 -11 6 -18 15 -9c0 -10 11 -13 13 -3c2 -5 12 -3 13 2c5 -8 20 -2 18 7c4 -8 17 -3 15 5c6 -8 22 -3 19 7c6 -14 21 -10 20 5c0 -10 13 -11 15 -1c-1 -8 11 -14 17 -9c-2 -8 6 -14 13 -8c-5 -12 7 -19 16 -9c-2 -12 11 -17 16 -6c0 -12 15 -16 20 -5c0 -10 14 -12 17 -2c2 -6 11 -5 12 2c5 -6 21 -1 20 6c3 -7 15 -6 15 2c-4 -12 14 -19 20 -8c-4 -14 11 -20 18 -8c1 -5 14 -4 16 2c6 -10 19 -6 18 6c2 -5 8 -3 7 2l0 146z" stroke="none"/>
+    <!-- Loma del pueblo, separada de los montes por una línea blanca -->
+    <path d="M-10 312l0 -102c12 -4 45 -22 70 -24c25 -2 53 12 80 10c27 -2 53 -18 80 -20c27 -2 53 11 80 10c27 -1 52 -17 80 -18c28 -1 75 8 90 10l0 134z" stroke="#fff" stroke-width="6"/>
+    <!-- Camino de tierra en blanco -->
+    <path d="M150 312C170 280 200 258 236 240C262 228 290 214 312 196" fill="none" stroke="#fff" stroke-width="12"/>
+    <!-- Casitas -->
+    <path d="M64 174L97 144L130 174Z" fill="#fff" stroke="#fff" stroke-width="8"/>
+    <path d="M70 214V174H124V214Z" stroke="#fff" stroke-width="6"/>
+    <path d="M70 214V174H124V214Z" stroke="none"/>
+    <path d="M62 176L97 144L132 176Z" stroke="none"/>
+    <path d="M80.8 189.2h10.8v10.4h-10.8ZM102.4 214v-20h10.8v20" fill="#fff" stroke="none"/>
+    <path d="M304 160L334 133L364 160Z" fill="#fff" stroke="#fff" stroke-width="8"/>
+    <path d="M310 196V160H358V196Z" stroke="#fff" stroke-width="6"/>
+    <path d="M310 196V160H358V196Z" stroke="none"/>
+    <path d="M302 162L334 133L366 162Z" stroke="none"/>
+    <path d="M319.6 173.68h9.600000000000001v9.36h-9.600000000000001ZM338.8 196v-18h9.600000000000001v18" fill="#fff" stroke="none"/>
+    <path d="M364 162L392 138L420 162Z" fill="#fff" stroke="#fff" stroke-width="8"/>
+    <path d="M370 194V162H414V194Z" stroke="#fff" stroke-width="6"/>
+    <path d="M370 194V162H414V194Z" stroke="none"/>
+    <path d="M362 164L392 138L422 164Z" stroke="none"/>
+    <path d="M378.8 174.16h8.8v8.32h-8.8ZM396.4 194v-16h8.8v16" fill="#fff" stroke="none"/>
+    <path d="M164 162L196 126L228 162Z" fill="#fff" stroke="#fff" stroke-width="8"/>
+    <path d="M170 210V162H222V210Z" stroke="#fff" stroke-width="6"/>
+    <path d="M170 210V162H222V210Z" stroke="none"/>
+    <path d="M162 164L196 126L230 164Z" stroke="none"/>
+    <path d="M180.4 180.24h10.4v12.48h-10.4ZM201.2 210v-24h10.4v24" fill="#fff" stroke="none"/>
+    <!-- Árboles -->
+    <path d="M36 222V202.8" fill="none" stroke-width="5"/><circle cx="36" cy="196.4" r="16" stroke="#fff" stroke-width="5"/>
+    <path d="M262 206V184.4" fill="none" stroke-width="5"/><circle cx="262" cy="177.2" r="18" stroke="#fff" stroke-width="5"/>
+    <path d="M430 190V172" fill="none" stroke-width="5"/><circle cx="430" cy="166" r="15" stroke="#fff" stroke-width="5"/>
+    <!-- Cañaveral, abajo a la derecha -->
+    <path d="M360 300l-6 -52M374 300l2 -58M388 300l8 -50M402 300l-2 -56M416 300l6 -48" fill="none" stroke="#fff" stroke-width="7"/>
+    <path d="M360 300l-6 -52M374 300l2 -58M388 300l8 -50M402 300l-2 -56M416 300l6 -48" fill="none" stroke-width="3.5"/>
+    <path d="M354 248q-14 -6 -20 4M376 242q14 -8 22 0M396 250q12 -10 22 -4M400 244q-12 -8 -20 -2" fill="none" stroke-width="3"/>
+    <!-- Sol y aves -->
+    <circle cx="232" cy="60" r="18" stroke="none"/>
+    <path d="M110 54q8 -8 15 0q7 -8 15 0M150 36q6 -6 12 0q6 -6 12 0" fill="none" stroke-width="3"/>
+    <!-- Salpicaduras sueltas -->
+    <circle cx="300" cy="40" r="3.5" stroke="none"/>
+    <circle cx="20" cy="80" r="3" stroke="none"/>
+  </g>
+</svg>

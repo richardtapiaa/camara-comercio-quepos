@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 30 460 270">
+  <!-- Silueta tenue de un jinete a caballo camino a una catarata (mismo estilo sello / grunge que mono-rama.svg).
+       Verde oliva #4d5b2c, como el resto del sitio; la opacidad va en el grupo para que las partes que se cruzan no se oscurezcan -->
+  <defs>
+    <filter id="jinete-catarata-grunge" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="21" result="ruido"/>
+      <feDisplacementMap in="SourceGraphic" in2="ruido" scale="6" xChannelSelector="R" yChannelSelector="G" result="borde"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="2" seed="43" result="manchas"/>
+      <feColorMatrix in="manchas" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  16 0 0 0 -11.6" result="huecos"/>
+      <feComposite in="borde" in2="huecos" operator="out"/>
+    </filter>
+  </defs>
+  <g opacity="0.11" fill="#4d5b2c" stroke="#4d5b2c" stroke-linecap="round" stroke-linejoin="round" filter="url(#jinete-catarata-grunge)">
+    <!-- Suelo: empieza en punta a la izquierda y llega hasta el peñón -->
+    <path d="M24 272C60 252 120 252 176 248C236 244 290 252 352 246L352 312L24 312Z" stroke="none"/>
+    <!-- Peñón con selva arriba -->
+    <path d="M352 312c0 -8 0 -37 -2 -50c-2 -13 -8 -18 -8 -26c0 -8 6 -16 6 -24c0 -8 -8 -16 -8 -24c0 -8 8 -17 8 -26c0 -9 -6 -18 -6 -26c0 -8 5 -17 8 -24c3 -7 10 -17 12 -20c-10 -9 -1 -23 12 -18c-1 -11 14 -18 22 -10c-2 -10 12 -13 16 -4c4 -9 20 -8 21 2c7 -6 16 2 11 9c7 0 13 12 8 15c-1 4 -5 17 -4 26c1 9 8 18 8 28c0 10 -8 21 -8 32c0 11 8 21 8 32c0 11 -6 21 -6 32c0 11 6 19 6 32c0 13 -3 37 -4 44z" stroke="none"/>
+    <!-- Hojas que salen del peñón -->
+    <path d="M346 142C332 126 314 122 298 130C314 132 330 140 342 154ZM344 196C328 186 310 188 298 200C314 198 330 200 342 208Z" stroke="none"/>
+    <!-- Catarata: el agua en blanco, más ancha abajo, con hilos verdes adentro, y la poza -->
+    <path d="M386 52C388 120 382 190 376 256L420 256C414 190 410 120 408 52Z" fill="#fff" stroke="none"/>
+    <path d="M392 96C393 134 390 172 388 212M402 110C403 152 402 196 404 240" fill="none" stroke-width="3"/>
+    <ellipse cx="398" cy="260" rx="52" ry="12" fill="#fff" stroke="none"/>
+    <path d="M356 262q10 -9 20 0t20 0t20 0t20 0M372 274q9 -7 18 0t18 0t18 0" fill="none" stroke-width="4"/>
+    <!-- Gotas que saltan de la poza -->
+    <circle cx="364" cy="238" r="3.5" stroke="none"/>
+    <circle cx="432" cy="234" r="3" stroke="none"/>
+    <circle cx="370" cy="222" r="2.5" stroke="none"/>
+    <circle cx="426" cy="216" r="2.5" stroke="none"/>
+    <!-- Caballo y jinete, mirando hacia la catarata -->
+    <g transform="translate(182 252)">
+      <!-- Cola -->
+      <path d="M-46 -96C-62 -96 -72 -78 -70 -52C-69 -40 -72 -30 -78 -22C-66 -26 -60 -38 -60 -52C-60 -68 -56 -82 -48 -88Z" stroke="none"/>
+      <!-- Patas: la parte de arriba más gruesa -->
+      <path d="M-42 -72L-47 -44M-30 -68L-19 -44M35 -66L36 -44M40 -66L52 -46" fill="none" stroke-width="16"/>
+      <path d="M-47 -44L-42 -8L-38 0M-19 -44L-24 -10L-18 0M36 -44L35 -8L38 0M52 -46L48 -20" fill="none" stroke-width="9"/>
+      <!-- Cuerpo, cuello y cabeza -->
+      <path d="M-46 -98C-24 -106 6 -102 24 -108C34 -124 46 -142 58 -154L59 -166L66 -155C78 -150 90 -134 98 -120C102 -113 97 -106 90 -108C82 -112 76 -120 70 -126C66 -112 60 -98 52 -86C50 -72 44 -62 34 -58C10 -52 -20 -54 -36 -60C-48 -64 -54 -80 -50 -92C-50 -96 -48 -98 -46 -98Z" stroke="none"/>
+      <!-- Crin -->
+      <path d="M26 -110C36 -126 48 -144 58 -156" fill="none" stroke-width="7"/>
+      <!-- Riendas -->
+      <path d="M32 -116C52 -110 74 -108 90 -110" fill="none" stroke-width="2.5"/>
+      <!-- Pierna del jinete: primero un borde blanco y encima la pierna, para que se separe del caballo -->
+      <path d="M2 -104L20 -84L16 -58L25 -56" fill="none" stroke="#fff" stroke-width="17"/>
+      <path d="M2 -104L20 -84" fill="none" stroke-width="12"/>
+      <path d="M20 -84L16 -58L25 -56" fill="none" stroke-width="9"/>
+      <!-- Tronco, brazo, cabeza y sombrero -->
+      <path d="M2 -104L6 -138" fill="none" stroke-width="17"/>
+      <path d="M6 -134L18 -118L32 -116" fill="none" stroke-width="7"/>
+      <circle cx="8" cy="-153" r="9" stroke="none"/>
+      <ellipse cx="8" cy="-160" rx="19" ry="4.5" stroke="none"/>
+      <path d="M-1 -160C-1 -173 17 -173 17 -160Z" stroke="none"/>
+    </g>
+    <!-- Matas de zacate -->
+    <path d="M70 254l-4 -14M76 253l2 -16M82 253l6 -12M286 250l-4 -13M292 250l2 -15M298 250l6 -11" fill="none" stroke-width="3"/>
+    <!-- Aves -->
+    <path d="M232 64q8 -8 15 0q7 -8 15 0M276 44q6 -6 12 0q6 -6 12 0" fill="none" stroke-width="3"/>
+    <!-- Salpicaduras sueltas -->
+    <circle cx="96" cy="150" r="4" stroke="none"/>
+    <circle cx="300" cy="90" r="3.5" stroke="none"/>
+    <circle cx="50" cy="214" r="3" stroke="none"/>
+  </g>
+</svg>

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 300">
+  <!-- Silueta tenue de un tronco de cacao con mazorcas, hojas y flores, y unas vainas de vainilla
+       (mismo estilo sello / grunge que mono-rama.svg).
+       Verde oliva #4d5b2c, como el resto del sitio; la opacidad va en el grupo para que las partes que se cruzan no se oscurezcan -->
+  <defs>
+    <filter id="cacao-finca-grunge" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="33" result="ruido"/>
+      <feDisplacementMap in="SourceGraphic" in2="ruido" scale="6" xChannelSelector="R" yChannelSelector="G" result="borde"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="2" seed="57" result="manchas"/>
+      <feColorMatrix in="manchas" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  16 0 0 0 -11.6" result="huecos"/>
+      <feComposite in="borde" in2="huecos" operator="out"/>
+    </filter>
+  </defs>
+  <g opacity="0.11" fill="#4d5b2c" stroke="#4d5b2c" stroke-linecap="round" stroke-linejoin="round" filter="url(#cacao-finca-grunge)">
+    <!-- Tronco y ramas -->
+    <path d="M214 312C208 250 214 190 206 120C202 84 206 50 214 20" fill="none" stroke-width="26"/>
+    <path d="M210 150C170 128 132 110 92 104M208 92C244 70 284 58 330 56M212 210C256 196 300 188 350 192" fill="none" stroke-width="11"/>
+    <!-- Hojas -->
+    <g transform="translate(92 104) rotate(-70)"><path d="M0 0C26 -19.5 20.8 -62.400000000000006 0 -78C-20.8 -62.400000000000006 -26 -19.5 0 0Z" stroke="none"/><path d="M0 -6L0 -68.64" fill="none" stroke="#fff" stroke-width="3"/></g>
+    <g transform="translate(120 116) rotate(-130)"><path d="M0 0C22 -16 17.6 -51.2 0 -64C-17.6 -51.2 -22 -16 0 0Z" stroke="none"/><path d="M0 -6L0 -56.32" fill="none" stroke="#fff" stroke-width="3"/></g>
+    <g transform="translate(330 56) rotate(72)"><path d="M0 0C26 -20 20.8 -64 0 -80C-20.8 -64 -26 -20 0 0Z" stroke="none"/><path d="M0 -6L0 -70.4" fill="none" stroke="#fff" stroke-width="3"/></g>
+    <g transform="translate(290 62) rotate(20)"><path d="M0 0C20 -15.5 16 -49.6 0 -62C-16 -49.6 -20 -15.5 0 0Z" stroke="none"/><path d="M0 -6L0 -54.56" fill="none" stroke="#fff" stroke-width="3"/></g>
+    <g transform="translate(350 192) rotate(100)"><path d="M0 0C26 -20.5 20.8 -65.60000000000001 0 -82C-20.8 -65.60000000000001 -26 -20.5 0 0Z" stroke="none"/><path d="M0 -6L0 -72.16" fill="none" stroke="#fff" stroke-width="3"/></g>
+    <g transform="translate(312 192) rotate(150)"><path d="M0 0C20 -15 16 -48 0 -60C-16 -48 -20 -15 0 0Z" stroke="none"/><path d="M0 -6L0 -52.8" fill="none" stroke="#fff" stroke-width="3"/></g>
+    <g transform="translate(214 22) rotate(-20)"><path d="M0 0C24 -17.5 19.200000000000003 -56 0 -70C-19.200000000000003 -56 -24 -17.5 0 0Z" stroke="none"/><path d="M0 -6L0 -61.6" fill="none" stroke="#fff" stroke-width="3"/></g>
+    <g transform="translate(214 22) rotate(30)"><path d="M0 0C22 -16.5 17.6 -52.800000000000004 0 -66C-17.6 -52.800000000000004 -22 -16.5 0 0Z" stroke="none"/><path d="M0 -6L0 -58.08" fill="none" stroke="#fff" stroke-width="3"/></g>
+    <!-- Mazorcas que cuelgan del tronco: primero un borde blanco para separarlas -->
+    <g stroke="#fff" stroke-width="8" fill="#fff">
+      <ellipse cx="174" cy="196" rx="26" ry="42" transform="rotate(14 174 196)"/>
+      <ellipse cx="250" cy="250" rx="24" ry="40" transform="rotate(-12 250 250)"/>
+      <ellipse cx="248" cy="140" rx="20" ry="32" transform="rotate(-18 248 140)"/>
+    </g>
+    <g transform="translate(174 196) rotate(14)"><path d="M0 -42C23.400000000000002 -31.5 28.6 -8.4 26 10.5C22.099999999999998 29.4 9.1 42 0 44.1C-9.1 42 -22.099999999999998 29.4 -26 10.5C-28.6 -8.4 -23.400000000000002 -31.5 0 -42Z" stroke="none"/><path d="M0 -34.44C3.9 -8.4 3.9 16.8 0 37.800000000000004M-13 -25.2C-16.12 -2.1 -15.079999999999998 16.8 -9.88 32.76M13 -25.2C16.12 -2.1 15.079999999999998 16.8 9.88 32.76" fill="none" stroke="#fff" stroke-width="3.5"/></g>
+    <g transform="translate(250 250) rotate(-12)"><path d="M0 -40C21.6 -30 26.400000000000002 -8 24 10C20.4 28 8.399999999999999 40 0 42C-8.399999999999999 40 -20.4 28 -24 10C-26.400000000000002 -8 -21.6 -30 0 -40Z" stroke="none"/><path d="M0 -32.8C3.5999999999999996 -8 3.5999999999999996 16 0 36M-12 -24C-14.879999999999999 -2 -13.919999999999998 16 -9.120000000000001 31.200000000000003M12 -24C14.879999999999999 -2 13.919999999999998 16 9.120000000000001 31.200000000000003" fill="none" stroke="#fff" stroke-width="3.5"/></g>
+    <g transform="translate(248 140) rotate(-18)"><path d="M0 -32C18 -24 22 -6.4 20 8C17 22.4 7 32 0 33.6C-7 32 -17 22.4 -20 8C-22 -6.4 -18 -24 0 -32Z" stroke="none"/><path d="M0 -26.24C3 -6.4 3 12.8 0 28.8M-10 -19.2C-12.4 -1.6 -11.6 12.8 -7.6 24.96M10 -19.2C12.4 -1.6 11.6 12.8 7.6 24.96" fill="none" stroke="#fff" stroke-width="3.5"/></g>
+    <!-- Florcitas en el tronco -->
+    <circle cx="200" cy="262" r="4" stroke="none"/>
+    <circle cx="222" cy="186" r="3.5" stroke="none"/>
+    <circle cx="200" cy="112" r="3" stroke="none"/>
+    <!-- Vainas de vainilla atadas, abajo a la izquierda -->
+    <path d="M70 280C84 248 100 222 118 200M84 284C96 254 110 228 126 208M98 286C108 258 120 234 134 214" fill="none" stroke-width="6"/>
+    <path d="M86 252l26 10" fill="none" stroke-width="5"/>
+    <!-- Ramita de canela, abajo a la derecha -->
+    <path d="M330 286L402 244M338 296L410 254" fill="none" stroke-width="8"/>
+    <path d="M330 286q-6 6 8 10M402 244q8 4 8 10" fill="none" stroke-width="4"/>
+    <!-- Salpicaduras sueltas -->
+    <circle cx="60" cy="150" r="4" stroke="none"/>
+    <circle cx="400" cy="120" r="3.5" stroke="none"/>
+    <circle cx="140" cy="40" r="3" stroke="none"/>
+  </g>
+</svg>

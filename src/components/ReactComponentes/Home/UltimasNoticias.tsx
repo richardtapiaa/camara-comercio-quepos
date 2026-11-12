@@ -1,6 +1,6 @@
 import { ArrowRight, Clock } from "lucide-react";
 import type { PostFacebook } from "../../../lib/facebook";
-import { formatoFecha, idNoticia, recortar, separarTitulo } from "../../../lib/noticias";
+import { formatoFecha, recortar, rutaNoticia, separarTitulo } from "../../../lib/noticias";
 import FondoSello from "../../compartidos/FondoSello";
 
 interface Props {
@@ -50,7 +50,7 @@ function TarjetaNoticia({ post }: { post: PostFacebook }) {
 
         <h3 className="mt-1 text-lg font-semibold leading-snug text-slate-900">
           <a
-            href={`/noticias#${idNoticia(post.id)}`}
+            href={rutaNoticia(post)}
             className="line-clamp-3 outline-none after:absolute after:inset-0 after:content-['']"
           >
             {titulo}

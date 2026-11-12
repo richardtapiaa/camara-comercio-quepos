@@ -1,0 +1,87 @@
+---
+import { Picture } from "astro:assets";
+import foto from "../../assets/naranjito/imagenes-distrito/valle-naranjito.webp";
+import siluetaPaisaje from "../../assets/naranjito/paisaje-naranjito.svg";
+
+// Datos de Wikipedia, que cita al INEC y a la División Territorial
+// Administrativa (consultados en noviembre de 2026). Cada punto lleva un sello
+// con check de un azul distinto.
+const puntos = [
+  { texto: "Distrito del cantón de Quepos desde 1971", color: "#326dab" },
+  { texto: "104,68 km² de fincas, ríos y bosque", color: "#4e79de" },
+  { texto: "3.677 habitantes según el censo de 2011", color: "#49bfff" },
+  { texto: "Acceso por la Ruta Nacional 616", color: "#59a9c3" },
+];
+---
+
+<!--
+  Mismo diseño que "Conoce Savegre": en desktop la foto ocupa la mitad izquierda
+  y llega hasta el borde de la pantalla (solo se redondean sus esquinas
+  derechas); a la derecha van el título, la entrada y la lista con check,
+  alineados con el ancho del resto del sitio. En celular la foto va arriba, con
+  márgenes, y el texto debajo. Sin JavaScript; la foto se sirve en AVIF o WebP,
+  en el tamaño de cada pantalla.
+  De fondo va un sello tenue del paisaje de Naranjito (el mismo de la foto de la
+  sección siguiente), pegado abajo a la derecha: en desktop queda detrás del
+  texto, del alto de la sección como máximo, y su lado izquierdo se esconde
+  detrás de la foto; en celular ocupa el ancho de la pantalla, detrás de la
+  lista.
+-->
+<section id="info-naranjito" aria-labelledby="titulo-info-naranjito" class="relative overflow-hidden bg-white py-20 sm:py-24">
+  <img
+    src={siluetaPaisaje.src}
+    width={siluetaPaisaje.width}
+    height={siluetaPaisaje.height}
+    alt=""
+    loading="lazy"
+    decoding="async"
+    class="pointer-events-none absolute bottom-0 right-0 h-auto w-[118%] max-w-none sm:w-full lg:max-h-full lg:w-[61%] lg:object-contain lg:object-[100%_100%]"
+  />
+
+  <div class="relative grid items-center gap-10 lg:grid-cols-2 lg:gap-14 xl:gap-20">
+    <div class="px-6 sm:px-10 lg:px-0">
+      <Picture
+        src={foto}
+        formats={["avif", "webp"]}
+        alt="Vista aérea de un valle con un río, cultivos y montañas al fondo en la zona de Quepos"
+        widths={[640, 960, 1280, 1600]}
+        sizes="(min-width: 1024px) 50vw, calc(100vw - 3rem)"
+        quality={80}
+        loading="lazy"
+        decoding="async"
+        class="aspect-[3/2] w-full rounded-[2rem] object-cover lg:rounded-l-none"
+      />
+    </div>
+
+    <div class="px-6 sm:px-10 lg:pl-0 lg:pr-10 xl:pr-[max(2.5rem,calc((100vw-80rem)/2))]">
+      <div class="max-w-xl">
+        <h2 id="titulo-info-naranjito" class="text-balance text-3xl font-semibold text-slate-900 sm:text-4xl">Conozca Naranjito</h2>
+        <p class="mt-4 text-lg leading-relaxed text-slate-600">
+          Uno de los tres distritos de Quepos, donde la vida de campo, los ríos y las comunidades rurales están a pocos
+          kilómetros de la costa. Sus poblados van desde las tierras bajas cercanas a Quepos hasta comunidades de montaña
+          como Santa Juana.
+        </p>
+
+        <ul role="list" class="mt-10 space-y-4">
+          {
+            puntos.map(({ texto, color }) => (
+              <li class="flex items-start gap-3 text-lg text-slate-600">
+                <svg viewBox="0 0 24 24" class="mt-1 size-6 shrink-0" style={`color: ${color}`} aria-hidden="true">
+                  <path
+                    fill="currentColor"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linejoin="round"
+                    d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"
+                  />
+                  <path fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m9 12 2 2 4-4" />
+                </svg>
+                <span>{texto}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

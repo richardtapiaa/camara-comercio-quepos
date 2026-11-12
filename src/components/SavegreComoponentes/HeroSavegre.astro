@@ -1,27 +1,73 @@
 ---
-import { Picture } from "astro:assets";
-import foto from "../../assets/galeria/catarata-bosque.webp";
+import { sizesCubrePantalla, variantesCapa } from "../../lib/imagenes";
+import foto from "../../assets/Savegre/catarata-savegre.webp";
+
+const anchos = [800, 1200, 1600];
+const fotoWebp = await variantesCapa(foto, anchos, 80);
+const fotoAvif = await variantesCapa(foto, anchos, 55, "avif");
+const sizes = sizesCubrePantalla(foto);
 ---
 
-<section id="hero-savegre" class="relative isolate flex min-h-[420px] items-end overflow-hidden bg-[#1f3b35] sm:min-h-[560px]">
-  <Picture
-    src={foto}
-    formats={["avif", "webp"]}
-    widths={[800, 1280, 1600]}
-    sizes="100vw"
-    quality={65}
-    alt="Catarata entre el bosque tropical de Savegre"
-    class="absolute inset-0 -z-20 size-full object-cover"
-    loading="eager"
-    fetchpriority="high"
-  />
-  <div class="absolute inset-0 -z-10 bg-gradient-to-t from-black/65 via-black/20 to-black/20" aria-hidden="true"></div>
-  <div class="absolute bottom-0 left-0 h-24 w-[min(58rem,58vw)] text-[#173b69] sm:h-32">
-    <svg class="absolute inset-0 size-full" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-      <path d="M0 0h56c12 0 20 7 25 19 5 12 6 28 8 44 1 14 3 26 6 37H0Z" fill="white"></path>
-    </svg>
-    <h1 class="relative flex h-full max-w-[42rem] items-center px-6 pb-1 text-2xl font-semibold leading-tight tracking-[-0.02em] sm:px-10 sm:text-4xl">
-      Costa Rica Savegre Quepos
-    </h1>
+<!--
+  Mismo diseño que el hero de Naranjito: la foto ocupa todo el ancho y el 78% del
+  alto de la pantalla, con solo las esquinas de abajo redondeadas, y abajo a la
+  izquierda una pestaña blanca que se "recorta" de la foto lleva el título.
+  --radio es el redondeo de todas las esquinas. En celular y tablet la foto se
+  centra en la caída de agua grande (25% del ancho); desde lg se ve completa a lo
+  ancho y un poco más arriba del centro, para no cortar la parte alta de las
+  cataratas.
+-->
+<section id="hero" aria-labelledby="titulo-savegre" class="bg-white">
+  <div
+    class="relative isolate h-[78svh] min-h-[32.5rem] overflow-hidden rounded-b-(--radio) bg-[#2b4a5c] [--radio:1.5rem] lg:[--radio:2rem]"
+  >
+    <picture>
+      <source type="image/avif" srcset={fotoAvif.srcSet} sizes={sizes} />
+      <img
+        src={fotoWebp.src}
+        srcset={fotoWebp.srcSet}
+        sizes={sizes}
+        width={foto.width}
+        height={foto.height}
+        alt="Catarata doble que cae entre rocas y bosque tropical"
+        class="absolute inset-0 -z-20 size-full object-cover object-[25%_50%] lg:object-[50%_40%]"
+        draggable="false"
+        fetchpriority="high"
+      />
+    </picture>
+
+    <!--
+      Los saltos de línea del título son fijos para que la pestaña mida justo lo
+      que mide el texto: en celular "Quepos, Savegre:" arriba y la frase en dos
+      líneas parejas; en tablet y laptops en dos líneas y desde 1360px en una.
+    -->
+    <div class="hero-savegre-pestana absolute bottom-0 left-0 max-w-[calc(100%-3rem)] rounded-tr-(--radio) bg-white px-5 py-4 sm:px-7 sm:py-5 lg:max-w-[calc(62.5%-3rem)]">
+      <h1 id="titulo-savegre" class="text-balance text-xl font-medium leading-snug text-[#2b4a5c] sm:text-2xl lg:text-[1.75rem]">
+        <span class="block font-bold text-[#163746] min-[1360px]:inline">Quepos, Savegre:</span> Naturaleza en <br class="sm:hidden" />estado puro.
+      </h1>
+    </div>
   </div>
 </section>
+
+<style>
+  /* Esquinas curvas hacia adentro donde la pestaña se une con la foto: arriba a
+     la izquierda y abajo a la derecha de la pestaña. Pintan de blanco solo la
+     parte fuera de un cuarto de círculo, así la foto parece redondeada ahí. */
+  .hero-savegre-pestana::before,
+  .hero-savegre-pestana::after {
+    content: "";
+    position: absolute;
+    width: var(--radio);
+    height: var(--radio);
+    background: radial-gradient(circle at 100% 0, transparent calc(var(--radio) - 0.5px), #fff var(--radio));
+    pointer-events: none;
+  }
+  .hero-savegre-pestana::before {
+    bottom: 100%;
+    left: 0;
+  }
+  .hero-savegre-pestana::after {
+    bottom: 0;
+    left: 100%;
+  }
+</style>

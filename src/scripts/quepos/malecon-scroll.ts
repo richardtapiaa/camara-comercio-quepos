@@ -37,6 +37,7 @@ document.querySelectorAll<HTMLElement>("[data-malecon-scroll]").forEach((seccion
     const escala = Math.max(lienzo.width / img.width, lienzo.height / img.height);
     const ancho = img.width * escala;
     const alto = img.height * escala;
+    ctx.imageSmoothingQuality = "high";
     ctx.drawImage(img, (lienzo.width - ancho) / 2, (lienzo.height - alto) / 2, ancho, alto);
   };
 

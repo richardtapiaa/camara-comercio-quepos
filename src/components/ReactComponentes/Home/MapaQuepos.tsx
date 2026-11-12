@@ -8,8 +8,8 @@ const estilo: Record<IdDistrito, { color: string; etiqueta?: [number, number]; e
     etiqueta: [315, 395],
     enlace: "/quepos",
   },
-  savegre: { color: "#93a77f" },
-  naranjito: { color: "#cf8f5f", etiqueta: [380, 222] },
+  savegre: { color: "#93a77f", enlace: "/savegre" },
+  naranjito: { color: "#cf8f5f", etiqueta: [380, 222], enlace: "/naranjito" },
 };
 
 const distritos = mapa.distritos.map((d) => {
@@ -31,8 +31,8 @@ export default function MapaQuepos() {
           <path
             d={d.d}
             fill={d.color}
-            stroke="#ffffff"
-            strokeWidth={3}
+            stroke={d.color}
+            strokeWidth={1.5}
             strokeLinejoin="round"
             className={
               d.enlace
@@ -42,7 +42,7 @@ export default function MapaQuepos() {
           />
         );
         return d.enlace ? (
-          <a key={d.id} href={d.enlace} data-distrito={d.id} aria-label={`Distrito ${d.nombre}: conozca Quepos`} className="group cursor-pointer outline-none">
+          <a key={d.id} href={d.enlace} data-distrito={d.id} aria-label={`Conozca el distrito de ${d.nombre}`} className="group cursor-pointer outline-none">
             {forma}
             <path
               d={d.d}
