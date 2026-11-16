@@ -1,0 +1,91 @@
+---
+import { Picture } from "astro:assets";
+import fotoMontana from "../../assets/Savegre/Imagen1.webp";
+import fotoRafting from "../../assets/Savegre/Imagen2.webp";
+import fotoRio from "../../assets/Savegre/Imagen3.webp";
+import fotoBosque from "../../assets/Savegre/imagen4.webp";
+import fotoValle from "../../assets/Savegre/Imagen5.webp";
+
+const fotos = [
+  {
+    src: fotoMontana,
+    fila: 3,
+    texto: "Montañas de Savegre",
+    alt: "Montañas verdes cubiertas de bosque en Savegre",
+  },
+  {
+    src: fotoRafting,
+    fila: 3,
+    texto: "Rafting en el río Savegre",
+    alt: "Grupo practicando rafting en los rápidos de un río",
+  },
+  {
+    src: fotoRio,
+    fila: 3,
+    texto: "Ríos y valles",
+    alt: "Río que atraviesa un valle verde rodeado de vegetación",
+  },
+  {
+    src: fotoBosque,
+    fila: 2,
+    texto: "Bosque nuboso",
+    alt: "Sendero entre la vegetación de un bosque nuboso",
+  },
+  {
+    src: fotoValle,
+    fila: 2,
+    texto: "Vista panorámica",
+    alt: "Vista panorámica de las montañas y los valles de Savegre",
+  },
+];
+---
+
+<section aria-labelledby="titulo-galeria-savegre" class="bg-white px-6 pt-10 sm:px-10 sm:pt-14">
+  <h2 id="titulo-galeria-savegre" class="sr-only">Galería de Savegre</h2>
+
+  <ul role="list" class="mx-auto grid max-w-[1840px] grid-cols-2 overflow-hidden rounded-[1.5rem] [transform:translateZ(0)] lg:grid-cols-6 lg:rounded-[2rem]">
+    {
+      fotos.map((foto, i) => (
+        <li
+          class:list={[
+            "relative overflow-hidden bg-[#2b4a5c]",
+            foto.fila === 3 ? "aspect-[4/5] lg:col-span-2 lg:aspect-[21/20]" : "aspect-[4/5] lg:col-span-3 lg:aspect-[16/10]",
+            i === fotos.length - 1 && "col-span-2 aspect-[16/10]",
+          ]}
+        >
+          <figure class="size-full">
+            <Picture
+              src={foto.src}
+              formats={["avif", "webp"]}
+              alt={foto.alt}
+              widths={[480, 720, 960, 1280, 1600, 2048]}
+              sizes={
+                i === fotos.length - 1
+                  ? "(min-width: 1024px) 50vw, calc(100vw - 3rem)"
+                  : foto.fila === 3
+                    ? "(min-width: 1024px) 33vw, calc(50vw - 1.5rem)"
+                    : "(min-width: 1024px) 50vw, calc(50vw - 1.5rem)"
+              }
+              quality={88}
+              loading="lazy"
+              decoding="async"
+              class="size-full object-cover contrast-[1.05] saturate-[1.1]"
+            />
+            <figcaption
+              tabindex="0"
+              class="group/pin absolute bottom-3 left-3 inline-flex items-center rounded-full bg-black/55 p-2 text-sm font-medium text-white backdrop-blur-sm outline-none focus-visible:ring-2 focus-visible:ring-white sm:bottom-4 sm:left-4"
+            >
+              <svg viewBox="0 0 24 24" class="size-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 10c0 5-5.5 10.2-7.4 11.8a1 1 0 0 1-1.2 0C9.5 20.2 4 15 4 10a8 8 0 0 1 16 0" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              <span class="max-w-0 overflow-hidden whitespace-nowrap opacity-0 transition-[max-width,opacity,margin] duration-500 ease-out group-hover/pin:mr-1 group-hover/pin:ml-1.5 group-hover/pin:max-w-48 group-hover/pin:opacity-100 group-focus-visible/pin:mr-1 group-focus-visible/pin:ml-1.5 group-focus-visible/pin:max-w-48 motion-reduce:transition-none">
+                {foto.texto}
+              </span>
+            </figcaption>
+          </figure>
+        </li>
+      ))
+    }
+  </ul>
+</section>

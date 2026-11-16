@@ -1,0 +1,126 @@
+---
+import { Picture } from "astro:assets";
+import fotoRio from "../../assets/Savegre/savegre_actividad1.webp";
+import fotoBosque from "../../assets/Savegre/savegre_actividad2.webp";
+import fotoTrucha from "../../assets/Savegre/savegre_actividad3.webp";
+import fotoCaminata from "../../assets/Savegre/savegre_actividad4.webp";
+
+const experiencias = [
+  {
+    icono: "rio",
+    foto: fotoRio,
+    alt: "Catarata que desciende entre rocas y bosque tropical en Savegre",
+    titulo: "Aventura en el río Savegre",
+    texto:
+      "Considerado uno de los ríos más limpios de Centroamérica, el Savegre ofrece emocionantes recorridos de rafting y kayaking rodeados de imponentes cañones, cataratas escondidas y una biodiversidad excepcional.",
+  },
+  {
+    icono: "ave",
+    foto: fotoBosque,
+    alt: "Paisaje natural de Savegre con bosque y agua entre las montañas",
+    titulo: "Avistamiento del Quetzal y biodiversidad",
+    texto:
+      "Los bosques nubosos de Savegre son el hogar por excelencia del resplandeciente quetzal. Senderos mágicos guiados permiten adentrarse en la espesura del bosque primario para observar aves únicas y una flora inigualable.",
+  },
+  {
+    icono: "pez",
+    foto: fotoTrucha,
+    alt: "Trucha fresca preparada como parte de la gastronomía de montaña",
+    titulo: "Pesca de trucha y sabores de la montaña",
+    texto:
+      "En las frías aguas de la zona se cultiva y pesca trucha fresca. Los visitantes pueden disfrutar de una experiencia gastronómica local única, saboreando platillos tradicionales de la montaña en armonía con el clima fresco.",
+  },
+  {
+    icono: "sendero",
+    foto: fotoCaminata,
+    alt: "Puente sobre el río Savegre en medio del bosque",
+    titulo: "Turismo rural y caminatas por el bosque",
+    texto:
+      "Familias locales de la zona reciben a los viajeros con caminatas hacia impresionantes cataratas, historias de conservación y deliciosos almuerzos típicos preparados con sazón casera.",
+  },
+];
+---
+
+<section id="por-que-visitar-savegre" aria-labelledby="titulo-por-que-visitar-savegre" class="bg-white px-6 pt-20 pb-8 sm:px-10 sm:pt-24 sm:pb-10">
+  <div class="relative z-10 mx-auto grid max-w-[1840px] gap-6 lg:grid-cols-2 lg:items-end lg:gap-14">
+    <h2 id="titulo-por-que-visitar-savegre" class="text-balance text-3xl font-semibold leading-tight tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
+      Lo que hace único a Savegre
+    </h2>
+    <p class="max-w-2xl text-lg leading-relaxed text-slate-600 lg:justify-self-end">
+      Ríos cristalinos que descienden de la cordillera, bosques nubosos y comunidades que preservan la naturaleza: así es
+      Savegre, uno de los tesoros naturales del cantón de Quepos. Un refugio de aire puro ideal para quienes buscan
+      aventura ecológica, avistamiento de aves y desconexión total en la montaña.
+    </p>
+  </div>
+
+  <div class="relative mx-auto mt-14 max-w-[1840px]">
+    <ul role="list" class="relative space-y-10 sm:space-y-12 lg:space-y-14">
+      {
+        experiencias.map((experiencia, i) => (
+          <li class="grid items-center gap-8 lg:grid-cols-2 lg:gap-14 xl:gap-20">
+            <div class={i % 2 === 1 ? "lg:order-2" : undefined}>
+              <Picture
+                src={experiencia.foto}
+                formats={["avif", "webp"]}
+                alt={experiencia.alt}
+                widths={[480, 640, 860, 1100]}
+                sizes="(min-width: 1840px) 900px, (min-width: 1024px) calc(50vw - 4rem), calc(100vw - 3rem)"
+                quality={78}
+                loading="lazy"
+                decoding="async"
+                class="aspect-[3/2] w-full rounded-[2rem] object-cover"
+              />
+            </div>
+            <div class={`relative max-w-xl ${i % 2 === 1 ? "lg:order-1 lg:justify-self-end" : ""}`}>
+              <div class="flex items-center gap-4">
+                <svg viewBox="0 0 64 64" class="size-12 shrink-0 text-[#1f5c3a] sm:size-14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  {
+                    experiencia.icono === "rio" && (
+                      <>
+                        <path d="M8 45c10-8 18-8 28 0s18 8 20 0" />
+                        <path d="M8 53c10-8 18-8 28 0s18 8 20 0" />
+                        <path d="m23 18 18 18" />
+                        <path d="M18 23c7-7 14-7 21 0" />
+                      </>
+                    )
+                  }
+                  {
+                    experiencia.icono === "ave" && (
+                      <>
+                        <path d="M11 39c8-16 21-23 42-19-6 4-9 10-10 17-8 8-20 9-32 2Z" />
+                        <path d="M33 25c-3 8-2 15 3 21" />
+                        <path d="m48 20 7-5" />
+                        <path d="m47 20 4 6" />
+                      </>
+                    )
+                  }
+                  {
+                    experiencia.icono === "pez" && (
+                      <>
+                        <path d="M10 32c8-12 21-16 38-7l7 7-7 7c-17 9-30 5-38-7Z" />
+                        <path d="m10 32-6-7v14l6-7Z" />
+                        <circle cx="42" cy="29" r="1.5" fill="currentColor" stroke="none" />
+                      </>
+                    )
+                  }
+                  {
+                    experiencia.icono === "sendero" && (
+                      <>
+                        <path d="M21 11h12l-3 18c-1 6 2 9 10 14 4 2 2 10-3 10H19c-6 0-8-7-4-11 5-5 8-8 8-14l-2-17Z" />
+                        <path d="M23 20h9M22 28h9" />
+                      </>
+                    )
+                  }
+                </svg>
+                <h3 class="text-balance text-2xl font-semibold leading-tight text-slate-900 sm:text-3xl lg:text-4xl">
+                  {experiencia.titulo}
+                </h3>
+              </div>
+              <p class="mt-5 text-lg leading-relaxed text-slate-600">{experiencia.texto}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
