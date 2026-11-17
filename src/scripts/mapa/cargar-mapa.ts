@@ -32,4 +32,9 @@ if (contenedor && montaje && datos) {
 
   eventos.forEach((evento) => window.addEventListener(evento, cargar, { once: true, passive: true }));
   contenedor.querySelector("[data-mapa-cargar]")?.addEventListener("click", cargar);
+
+  // Si se llega con el enlace de un afiliado (/mapa-afiliados#id, desde "Ver en el mapa"), el mapa carga solo,
+  // sin esperar a que la persona toque la pantalla, y abre la tarjeta de ese afiliado (MapaAfiliadosMapcn).
+  const buscado = decodeURIComponent(location.hash.slice(1));
+  if (buscado && (datos.textContent ?? "").includes(`"id":${JSON.stringify(buscado)}`)) cargar();
 }

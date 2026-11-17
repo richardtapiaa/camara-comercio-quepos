@@ -2,38 +2,38 @@
 import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 import {
-  Check,
-  ChevronDown,
-  Factory,
-  Globe,
-  LayoutGrid,
-  Mail,
-  MessageCircle,
-  Phone,
   Search,
-  Shapes,
-  ShoppingBag,
-  TreePalm,
+  X,
 } from "lucide-react";
 import { categoriasAfiliados } from "../../content.config";
 import logo from "../../assets/compartido/logo-camara.webp";
 import logoSello from "../../assets/compartido/logo-camara-sello.webp";
 import "../../styles/afiliados/afiliados.css";
+// Íconos de SVG Repo, todos de un solo color: negro.
+import iconoTelefono from "../../assets/afiliados/iconos-svg/icono-telefono.svg";
+import iconoWhatsapp from "../../assets/afiliados/iconos-svg/icono-whatsapp.svg";
+import iconoCorreo from "../../assets/afiliados/iconos-svg/icono-correo.svg";
+import iconoWeb from "../../assets/afiliados/iconos-svg/icono-web.svg";
+import iconoMapa from "../../assets/afiliados/iconos-svg/icono-mapa.svg";
+import iconoFacebook from "../../assets/afiliados/iconos-svg/icono-facebook.svg";
+import iconoInstagram from "../../assets/afiliados/iconos-svg/icono-instagram.svg";
 
 const afiliados = (await getCollection("afiliados")).sort((a, b) =>
   a.data.nombre.localeCompare(b.data.nombre, "es"),
 );
 
+// Afiliados que salen en el mapa: solo esos llevan el enlace "Ver en el mapa".
+const enMapa = new Set((await getCollection("mapaAfiliados")).map(({ id }) => id));
+
 const categorias = categoriasAfiliados.filter((c) => afiliados.some((a) => a.data.categoria === c));
 
-const iconosCategoria: Record<string, typeof LayoutGrid> = {
-  Comercio: ShoppingBag,
-  Turismo: TreePalm,
-  Industria: Factory,
-};
 const opcionesCategoria = [
-  { valor: "", nombre: "Todas", Icono: LayoutGrid },
-  ...categorias.map((categoria) => ({ valor: categoria, nombre: categoria, Icono: iconosCategoria[categoria] ?? Shapes })),
+  { valor: "", nombre: "Todas", cantidad: afiliados.length },
+  ...categorias.map((categoria) => ({
+    valor: categoria,
+    nombre: categoria,
+    cantidad: afiliados.filter((a) => a.data.categoria === categoria).length,
+  })),
 ];
 
 const normalizar = (texto: string) =>
@@ -41,10 +41,19 @@ const normalizar = (texto: string) =>
 
 const soloDigitos = (telefono: string) => telefono.replace(/[^\d+]/g, "");
 
-const claseDato = "-my-1 flex items-start gap-3 py-1 transition-colors hover:text-[#2780c9]";
-const claseIcono = "mt-0.5 size-4 shrink-0 text-[#2780c9]";
+const claseDato = "group/dato flex items-center gap-3 transition-colors hover:text-slate-950";
+
+// Cada dato lleva su ícono solo, sin fondo.
+const claseInsignia =
+  "flex size-7 shrink-0 items-center justify-center";
+const insignia = { telefono: claseInsignia, correo: claseInsignia, web: claseInsignia };
+const claseIcono = "size-6";
 
 const dominio = (url: string) => new URL(url).hostname.replace(/^www\./, "");
+
+// Botón redondo de las redes sociales, al pie de la card.
+const claseRed =
+  "block size-8 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2780c9] focus-visible:ring-offset-2";
 ---
 
 <section id="afiliados" data-afiliados class="relative isolate scroll-mt-12 overflow-x-clip bg-white px-4 py-16 sm:px-6 sm:py-24">
@@ -64,70 +73,57 @@ const dominio = (url: string) => new URL(url).hostname.replace(/^www\./, "");
 
   <div class="mx-auto max-w-7xl">
     <div class="mx-auto max-w-3xl text-center">
-      <h2 class="text-4xl font-bold uppercase leading-tight tracking-tight text-neutral-700 sm:text-5xl">
+      <h2 class="text-balance text-2xl font-medium text-slate-900 sm:text-3xl">
         Nuestros afiliados
       </h2>
-      <p class="mt-4 text-lg text-slate-600">
+      <p class="mx-auto mt-4 max-w-[52ch] text-lg leading-relaxed text-slate-600">
         Empresas y organizaciones de Quepos que forman parte de la Cámara de Comercio, Industria y Turismo.
       </p>
     </div>
 
-    <div class="mt-10 flex flex-col items-center gap-3">
-      <div class="relative z-20 flex w-full max-w-2xl items-stretch rounded-full bg-white shadow-[0_18px_40px_-18px_rgba(16,42,67,0.3),0_4px_10px_-4px_rgba(16,42,67,0.1)] ring-1 ring-slate-900/5 transition focus-within:ring-2 focus-within:ring-[#2780c9]/40">
-        <label class="relative min-w-0 flex-1">
-          <span class="sr-only">Buscar afiliado por nombre</span>
-          <Search className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-slate-400 sm:left-5" aria-hidden="true" />
-          <input
-            data-afiliados-buscar
-            type="search"
-            placeholder="Buscar afiliado…"
-            class="w-full rounded-l-full bg-transparent py-3.5 pl-11 pr-3 text-sm text-slate-800 outline-none placeholder:text-slate-400 sm:py-4 sm:pl-13 sm:text-base"
-          />
-        </label>
+    <!--
+      Buscador: campo con borde (al enfocarlo, un halo gris suave) y botón × para borrar; debajo, las categorías como botones
+      visibles con la cantidad de afiliados de cada una (afiliados.ts filtra con data-cat-chip / aria-pressed).
+    -->
+    <div class="mx-auto mt-10 flex w-full max-w-2xl flex-col items-center gap-4">
+      <label class="relative block w-full">
+        <span class="sr-only">Buscar afiliado por nombre</span>
+        <Search className="pointer-events-none absolute left-5 top-1/2 size-5 -translate-y-1/2 text-slate-400" aria-hidden="true" />
+        <input
+          data-afiliados-buscar
+          type="search"
+          placeholder="Buscar por nombre…"
+          autocomplete="off"
+          class="h-14 w-full rounded-2xl border border-slate-200 bg-white pl-13 pr-13 text-base text-slate-900 shadow-[0_10px_30px_-18px_rgba(16,42,67,0.35)] outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-slate-300 focus:ring-4 focus:ring-slate-100 [&::-webkit-search-cancel-button]:appearance-none"
+        />
+        <button
+          type="button"
+          data-afiliados-limpiar
+          hidden
+          aria-label="Borrar la búsqueda"
+          class="absolute right-3 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900"
+        >
+          <X className="size-4" aria-hidden="true" />
+        </button>
+      </label>
 
-        <span class="my-2.5 w-px shrink-0 bg-slate-200" aria-hidden="true"></span>
-
-        <div data-afiliados-categoria class="relative flex shrink-0">
-          <button
-            type="button"
-            data-cat-boton
-            aria-haspopup="listbox"
-            aria-expanded="false"
-            aria-label="Filtrar por categoría: Todas"
-            class="flex w-40 items-center gap-2 rounded-r-full py-3.5 pl-3.5 pr-3.5 text-left text-sm font-semibold text-slate-700 outline-none sm:w-52 sm:gap-2.5 sm:pl-4 sm:pr-5 sm:text-base"
-          >
-            <span data-cat-icono class="flex shrink-0 text-[#2780c9]"><LayoutGrid className="size-4 sm:size-[1.1rem]" aria-hidden="true" /></span>
-            <span data-cat-texto class="min-w-0 flex-1 truncate">Todas</span>
-            <ChevronDown data-cat-flecha className="size-4 shrink-0 text-slate-500 transition-transform duration-200" aria-hidden="true" />
-          </button>
-
-          <ul
-            data-cat-lista
-            role="listbox"
-            aria-label="Categorías"
-            data-abierto="false"
-            class="cat-lista absolute right-0 top-[calc(100%+0.6rem)] z-30 w-60 rounded-2xl bg-white p-1.5 shadow-[0_24px_50px_-16px_rgba(16,42,67,0.35),0_6px_14px_-6px_rgba(16,42,67,0.15)] ring-1 ring-slate-900/5"
-          >
-            {
-              opcionesCategoria.map(({ valor, nombre, Icono }, i) => (
-                <li
-                  style={`--i: ${i}`}
-                  role="option"
-                  data-valor={valor}
-                  aria-selected={i === 0 ? "true" : "false"}
-                  tabindex="-1"
-                  class="group flex cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-700 outline-none transition-colors hover:bg-[#E8F4FA] focus:bg-[#E8F4FA] aria-selected:text-[#2780c9]"
-                >
-                  <span data-cat-icono-opcion class="flex size-5 shrink-0 items-center justify-center text-[#2780c9]">
-                    <Icono className="size-4" aria-hidden="true" />
-                  </span>
-                  <span class="flex-1">{nombre}</span>
-                  <Check className="size-4 opacity-0 group-aria-selected:opacity-100" aria-hidden="true" />
-                </li>
-              ))
-            }
-          </ul>
-        </div>
+      <div role="group" aria-label="Filtrar por categoría" class="flex flex-wrap justify-center gap-2">
+        {
+          opcionesCategoria.map(({ valor, nombre, cantidad }, i) => (
+            <button
+              type="button"
+              data-cat-chip
+              data-valor={valor}
+              aria-pressed={i === 0 ? "true" : "false"}
+              class="group/chip inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white py-2 pl-4 pr-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 aria-pressed:border-slate-900 aria-pressed:bg-slate-900 aria-pressed:text-white"
+            >
+              {nombre}
+              <span class="min-w-6 rounded-full bg-slate-100 px-1.5 py-0.5 text-xs font-semibold text-slate-600 group-aria-pressed/chip:bg-white/15 group-aria-pressed/chip:text-white">
+                {cantidad}
+              </span>
+            </button>
+          ))
+        }
       </div>
 
       <p data-afiliados-cuenta class="text-sm text-slate-500" aria-live="polite">
@@ -139,7 +135,19 @@ const dominio = (url: string) => new URL(url).hostname.replace(/^www\./, "");
       {
         afiliados.map(({ id, data }) => (
           <li id={id} data-afiliado data-categoria={data.categoria} data-nombre={normalizar(data.nombre)} class="scroll-mt-28 pt-20">
-            <article class="flex h-full flex-col rounded-[2.5rem] bg-white px-6 pb-8 text-center shadow-[0_24px_50px_-18px_rgba(16,42,67,0.28),0_6px_14px_-6px_rgba(16,42,67,0.12)] ring-1 ring-slate-900/5 transition duration-300 hover:-translate-y-1.5 hover:shadow-[0_32px_60px_-18px_rgba(16,42,67,0.34),0_8px_18px_-6px_rgba(16,42,67,0.14)]">
+            <article class="afiliado-card relative isolate flex h-full flex-col rounded-[2.5rem] bg-white px-6 pb-7 text-center ring-1 ring-slate-900/5">
+              <!-- Sello de la Cámara de fondo, muy tenue, abajo a la derecha: indica que el negocio es afiliado -->
+              <div class="pointer-events-none absolute inset-0 -z-10 overflow-hidden rounded-[2.5rem]" aria-hidden="true">
+                <img
+                  src={logoSello.src}
+                  width={logoSello.width}
+                  height={logoSello.height}
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  class="absolute -bottom-6 -right-6 w-48 rotate-[8deg] select-none opacity-15"
+                />
+              </div>
               <div class="mx-auto -mt-20 flex size-40 items-center justify-center overflow-hidden rounded-full bg-white p-6 shadow-[0_12px_30px_-10px_rgba(16,42,67,0.35)] ring-4 ring-white">
                 <Image
                   src={data.logo}
@@ -150,23 +158,28 @@ const dominio = (url: string) => new URL(url).hostname.replace(/^www\./, "");
                 />
               </div>
 
-              <h3 class="mt-6 text-xl font-bold leading-snug text-[#2780c9]">{data.nombre}</h3>
-              <p class="mt-1 text-sm text-slate-500">{data.descripcion ?? data.categoria}</p>
+              <h3 class="mt-6 text-lg font-semibold leading-snug text-slate-900">{data.nombre}</h3>
+              <p class="mt-1 text-sm leading-relaxed text-slate-600 sm:text-base">{data.descripcion ?? data.categoria}</p>
 
-              {(data.telefonos || data.whatsapp || data.correo || data.correos || data.web || data.facebook || data.instagram) && (
-                <ul class="mx-auto mt-5 flex w-full max-w-xs flex-col gap-2.5 text-left text-sm text-slate-700">
-                  {data.telefonos?.map((telefono) => (
-                    <li>
-                      <a href={`tel:${soloDigitos(telefono)}`} class={claseDato}>
-                        <Phone className={claseIcono} aria-hidden="true" />
-                        {telefono}
-                      </a>
+              {(data.telefonos || data.whatsapp || data.correo || data.correos || data.web) && (
+                <ul class="mx-auto mt-5 flex w-full max-w-xs flex-col gap-2.5 border-t border-slate-200 pt-5 text-left text-sm text-slate-700">
+                  {data.telefonos && data.telefonos.length > 0 && (
+                    <li class="flex items-start gap-3">
+                      <span class={insignia.telefono} aria-hidden="true"><img src={iconoTelefono.src} alt="" width="24" height="24" class={claseIcono} /></span>
+                      <span class="sr-only">Teléfonos:</span>
+                      <span class="flex min-h-7 flex-col justify-center gap-1">
+                        {data.telefonos.map((telefono) => (
+                          <a href={`tel:${soloDigitos(telefono)}`} class="transition-colors hover:text-slate-950">
+                            {telefono}
+                          </a>
+                        ))}
+                      </span>
                     </li>
-                  ))}
+                  )}
                   {data.whatsapp && (
                     <li>
                       <a href={`https://wa.me/${soloDigitos(data.whatsapp).replace("+", "")}`} target="_blank" rel="noopener noreferrer" class={claseDato}>
-                        <MessageCircle className={claseIcono} aria-hidden="true" />
+                        <span class={claseInsignia} aria-hidden="true"><img src={iconoWhatsapp.src} alt="" width="24" height="24" class={claseIcono} /></span>
                         <span><span class="sr-only">WhatsApp: </span>{data.whatsapp}</span>
                       </a>
                     </li>
@@ -174,42 +187,48 @@ const dominio = (url: string) => new URL(url).hostname.replace(/^www\./, "");
                   {[...(data.correo ? [data.correo] : []), ...(data.correos ?? [])].map((correo) => (
                     <li>
                       <a href={`mailto:${correo}`} class={claseDato}>
-                        <Mail className={claseIcono} aria-hidden="true" />
-                        <span class="break-all">{correo}</span>
+                        <span class={insignia.correo} aria-hidden="true"><img src={iconoCorreo.src} alt="" width="24" height="24" class={claseIcono} /></span>
+                        <span class="min-w-0 [overflow-wrap:anywhere]">
+                          {correo.split("@")[0]}@<wbr />{correo.split("@")[1]}
+                        </span>
                       </a>
                     </li>
                   ))}
                   {data.web && (
                     <li>
                       <a href={data.web} target="_blank" rel="noopener noreferrer" class={claseDato}>
-                        <Globe className={claseIcono} aria-hidden="true" />
+                        <span class={insignia.web} aria-hidden="true"><img src={iconoWeb.src} alt="" width="24" height="24" class={claseIcono} /></span>
                         <span>{dominio(data.web)}</span>
                       </a>
                     </li>
                   )}
-                  {data.facebook && (
-                    <li>
-                      <a href={data.facebook} target="_blank" rel="noopener noreferrer" class={claseDato}>
-                        <svg class={claseIcono} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                          <path d="M13.5 22v-8.2h2.8l.5-3.3h-3.3V8.4c0-.9.3-1.6 1.7-1.6h1.7V4a22 22 0 0 0-2.5-.1c-2.5 0-4.2 1.5-4.2 4.3v2.3H7.2v3.3H10V22h3.5Z" />
-                        </svg>
-                        <span>Facebook</span>
-                      </a>
-                    </li>
-                  )}
-                  {data.instagram && (
-                    <li>
-                      <a href={data.instagram} target="_blank" rel="noopener noreferrer" class={claseDato}>
-                        <svg class={claseIcono} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                          <rect x="3" y="3" width="18" height="18" rx="5" />
-                          <circle cx="12" cy="12" r="4" />
-                          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
-                        </svg>
-                        <span>Instagram</span>
-                      </a>
-                    </li>
-                  )}
                 </ul>
+              )}
+
+              {(data.facebook || data.instagram || enMapa.has(id)) && (
+                <div class="mx-auto mt-auto flex w-full max-w-xs items-center justify-between gap-3 pt-6">
+                  <div class="flex items-center gap-2">
+                    {data.facebook && (
+                      <a href={data.facebook} target="_blank" rel="noopener noreferrer" class={claseRed} aria-label={`Facebook de ${data.nombre}`}>
+                        <img src={iconoFacebook.src} alt="" width="32" height="32" class="size-8" />
+                      </a>
+                    )}
+                    {data.instagram && (
+                      <a href={data.instagram} target="_blank" rel="noopener noreferrer" class={claseRed} aria-label={`Instagram de ${data.nombre}`}>
+                        <img src={iconoInstagram.src} alt="" width="32" height="32" class="size-8" />
+                      </a>
+                    )}
+                  </div>
+                  {enMapa.has(id) && (
+                    <a
+                      href={`/mapa-afiliados#${id}`}
+                      class="inline-flex items-center gap-1.5 text-sm font-medium text-black underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none"
+                    >
+                      <img src={iconoMapa.src} alt="" width="20" height="20" class="size-5" aria-hidden="true" />
+                      Ver en el mapa
+                    </a>
+                  )}
+                </div>
               )}
             </article>
           </li>

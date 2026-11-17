@@ -38,19 +38,23 @@ const fotos = [
     alt: "Vista panorámica de las montañas y los valles de Savegre",
   },
 ];
+
+// En celular la galería va 2 – 1 – 2: dos fotos cuadradas, la del medio a todo lo ancho y otras dos cuadradas,
+// pegadas a los bordes de la pantalla. Desde lg vuelve a las filas de 3 y 2 fotos.
+const ANCHA_EN_CELULAR = 2;
 ---
 
-<section aria-labelledby="titulo-galeria-savegre" class="bg-white px-6 pt-10 sm:px-10 sm:pt-14">
+<section id="galeria-savegre" aria-labelledby="titulo-galeria-savegre" class="bg-white pt-10 sm:px-10 sm:pt-14">
   <h2 id="titulo-galeria-savegre" class="sr-only">Galería de Savegre</h2>
 
-  <ul role="list" class="mx-auto grid max-w-[1840px] grid-cols-2 overflow-hidden rounded-[1.5rem] [transform:translateZ(0)] lg:grid-cols-6 lg:rounded-[2rem]">
+  <ul role="list" class="mx-auto grid max-w-[1840px] grid-cols-2 overflow-hidden [transform:translateZ(0)] sm:rounded-[1.5rem] lg:grid-cols-6 lg:rounded-[2rem]">
     {
       fotos.map((foto, i) => (
         <li
           class:list={[
             "relative overflow-hidden bg-[#2b4a5c]",
-            foto.fila === 3 ? "aspect-[4/5] lg:col-span-2 lg:aspect-[21/20]" : "aspect-[4/5] lg:col-span-3 lg:aspect-[16/10]",
-            i === fotos.length - 1 && "col-span-2 aspect-[16/10]",
+            i === ANCHA_EN_CELULAR ? "col-span-2 aspect-[16/10]" : "aspect-square",
+            foto.fila === 3 ? "lg:col-span-2 lg:aspect-[21/20]" : "lg:col-span-3 lg:aspect-[16/10]",
           ]}
         >
           <figure class="size-full">
@@ -60,11 +64,9 @@ const fotos = [
               alt={foto.alt}
               widths={[480, 720, 960, 1280, 1600, 2048]}
               sizes={
-                i === fotos.length - 1
-                  ? "(min-width: 1024px) 50vw, calc(100vw - 3rem)"
-                  : foto.fila === 3
-                    ? "(min-width: 1024px) 33vw, calc(50vw - 1.5rem)"
-                    : "(min-width: 1024px) 50vw, calc(50vw - 1.5rem)"
+                foto.fila === 3
+                  ? `(min-width: 1024px) 33vw, ${i === ANCHA_EN_CELULAR ? "(min-width: 640px) calc(100vw - 5rem), 100vw" : "(min-width: 640px) calc(50vw - 2.5rem), 50vw"}`
+                  : "(min-width: 1024px) 50vw, (min-width: 640px) calc(50vw - 2.5rem), 50vw"
               }
               quality={88}
               loading="lazy"

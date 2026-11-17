@@ -1,83 +1,86 @@
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
 const normalizar = (texto: string) =>
   texto.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
 
+// Tiempo que se espera después de la última tecla antes de filtrar, para no ocultar y mostrar cards con cada letra.
+const ESPERA_AL_ESCRIBIR = 300;
+// Cuántas cards entran escalonadas como máximo; las demás entran junto con la última, para que no tarde de más.
+const MAXIMO_ESCALONADAS = 8;
+
 document.querySelectorAll<HTMLElement>("[data-afiliados]").forEach((seccion) => {
   const buscador = seccion.querySelector<HTMLInputElement>("[data-afiliados-buscar]");
-  const desplegable = seccion.querySelector<HTMLElement>("[data-afiliados-categoria]");
+  const limpiar = seccion.querySelector<HTMLButtonElement>("[data-afiliados-limpiar]");
+  const chips = Array.from(seccion.querySelectorAll<HTMLButtonElement>("[data-cat-chip]"));
   const tarjetas = Array.from(seccion.querySelectorAll<HTMLElement>("[data-afiliado]"));
   const cuenta = seccion.querySelector<HTMLElement>("[data-afiliados-cuenta]");
   const vacio = seccion.querySelector<HTMLElement>("[data-afiliados-vacio]");
   let categoria = "";
+  let remedir = 0;
+  let espera = 0;
 
   const actualizar = () => {
+    window.clearTimeout(espera);
     const texto = normalizar(buscador?.value ?? "");
     let visibles = 0;
     tarjetas.forEach((tarjeta) => {
       const ver =
         (!categoria || tarjeta.dataset.categoria === categoria) && (tarjeta.dataset.nombre ?? "").includes(texto);
       tarjeta.hidden = !ver;
-      if (ver) visibles++;
+      // Las cards que quedan visibles entran suaves, una tras otra (afiliados.css: .afiliado-entra).
+      tarjeta.classList.remove("afiliado-entra");
+      if (ver) {
+        tarjeta.style.setProperty("--orden", String(Math.min(visibles, MAXIMO_ESCALONADAS)));
+        void tarjeta.offsetWidth; // reinicia la animación aunque la card ya estuviera visible
+        tarjeta.classList.add("afiliado-entra");
+        visibles++;
+      }
     });
     if (cuenta) cuenta.textContent = `${visibles} ${visibles === 1 ? "afiliado" : "afiliados"}`;
     if (vacio) vacio.hidden = visibles > 0;
+    if (limpiar) limpiar.hidden = !buscador?.value;
+    // Al ocultar o mostrar cards la página cambia de alto y todo lo de abajo (como la animación de FraseCelebre)
+    // queda en otra posición: se le pide a ScrollTrigger que vuelva a medir, en el siguiente cuadro.
+    if (!remedir) remedir = requestAnimationFrame(() => {
+      remedir = 0;
+      ScrollTrigger.refresh();
+    });
   };
 
-  if (desplegable) {
-    const boton = desplegable.querySelector<HTMLButtonElement>("[data-cat-boton]")!;
-    const lista = desplegable.querySelector<HTMLUListElement>("[data-cat-lista]")!;
-    const opciones = Array.from(lista.querySelectorAll<HTMLLIElement>("[role=option]"));
-    const iconoBoton = boton.querySelector<HTMLElement>("[data-cat-icono]")!;
-    const textoBoton = boton.querySelector<HTMLElement>("[data-cat-texto]")!;
-    const flecha = boton.querySelector<SVGElement>("[data-cat-flecha]");
-
-    const abierta = () => lista.dataset.abierto === "true";
-    const abrir = (enfocar = true) => {
-      lista.dataset.abierto = "true";
-      boton.setAttribute("aria-expanded", "true");
-      flecha?.classList.add("rotate-180");
-      if (enfocar) (opciones.find((o) => o.getAttribute("aria-selected") === "true") ?? opciones[0]).focus();
-    };
-    const cerrar = (devolverFoco = false) => {
-      lista.dataset.abierto = "false";
-      boton.setAttribute("aria-expanded", "false");
-      flecha?.classList.remove("rotate-180");
-      if (devolverFoco) boton.focus();
-    };
-    const elegir = (opcion: HTMLLIElement) => {
-      opciones.forEach((o) => o.setAttribute("aria-selected", String(o === opcion)));
-      categoria = opcion.dataset.valor ?? "";
-      const nombre = opcion.textContent?.trim() ?? "";
-      textoBoton.textContent = nombre;
-      iconoBoton.innerHTML = opcion.querySelector("[data-cat-icono-opcion]")?.innerHTML ?? "";
-      boton.setAttribute("aria-label", `Filtrar por categoría: ${nombre}`);
-      cerrar(true);
+  // Al escribir: se espera a que la persona haga una pausa y mientras tanto el contador dice "Buscando…".
+  buscador?.addEventListener("input", () => {
+    if (limpiar) limpiar.hidden = !buscador.value;
+    if (cuenta && !espera) cuenta.textContent = "Buscando…";
+    window.clearTimeout(espera);
+    espera = window.setTimeout(() => {
+      espera = 0;
       actualizar();
-    };
+    }, ESPERA_AL_ESCRIBIR);
+  });
 
-    boton.addEventListener("click", () => (abierta() ? cerrar() : abrir()));
-    boton.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
-        e.preventDefault();
-        abrir();
-      }
+  // Categorías: botones de alternancia (aria-pressed); solo uno activo a la vez. Filtran al instante.
+  chips.forEach((chip) => {
+    chip.addEventListener("click", () => {
+      categoria = chip.dataset.valor ?? "";
+      chips.forEach((c) => c.setAttribute("aria-pressed", String(c === chip)));
+      espera = 0;
+      actualizar();
     });
-    opciones.forEach((opcion, i) => {
-      opcion.addEventListener("click", () => elegir(opcion));
-      opcion.addEventListener("keydown", (e) => {
-        if (e.key === "ArrowDown") opciones[(i + 1) % opciones.length].focus();
-        else if (e.key === "ArrowUp") opciones[(i - 1 + opciones.length) % opciones.length].focus();
-        else if (e.key === "Home") opciones[0].focus();
-        else if (e.key === "End") opciones[opciones.length - 1].focus();
-        else if (e.key === "Enter" || e.key === " ") elegir(opcion);
-        else if (e.key === "Escape") cerrar(true);
-        else if (e.key === "Tab") cerrar();
-        else return;
-        e.preventDefault();
-      });
-    });
-    document.addEventListener("pointerdown", (e) => {
-      if (abierta() && !desplegable.contains(e.target as Node)) cerrar();
-    });
-  }
-  buscador?.addEventListener("input", actualizar);
+  });
+
+  // Botón × y tecla Escape: borran la búsqueda al instante y dejan el cursor en el campo.
+  const borrar = () => {
+    if (!buscador) return;
+    buscador.value = "";
+    espera = 0;
+    actualizar();
+    buscador.focus();
+  };
+  limpiar?.addEventListener("click", borrar);
+  buscador?.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && buscador.value) {
+      e.preventDefault();
+      borrar();
+    }
+  });
 });

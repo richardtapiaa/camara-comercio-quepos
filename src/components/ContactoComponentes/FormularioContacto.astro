@@ -1,9 +1,37 @@
 ---
-import InformacionContacto from "./InformacionContacto.astro";
+import { Picture } from "astro:assets";
+// contacto-unete.png con el cable alargado (se repite un tramo recto del espiral) para que cruce toda la tarjeta
+import telefono from "../../assets/contacto/telefono-cable-largo.png";
 import FurmulairoContacto from "../ReactComponentes/CONTACTO/furmulariocontacto.tsx";
 ---
 
-<div class="relative grid min-h-[42rem] w-full overflow-hidden bg-white pt-24 lg:pt-28 lg:grid-cols-[0.82fr_1.18fr]">
-  <InformacionContacto />
-  <FurmulairoContacto client:visible />
-</div>
+<!--
+  Formulario de contacto en una sola tarjeta de esquinas redondeadas: adentro,
+  el teléfono rojo a la izquierda y su cable corriendo por la parte de abajo,
+  por debajo del formulario, hasta salir por el borde derecho (la tarjeta
+  recorta lo que sobra). En celular el teléfono se oculta (es decorativo) y el
+  formulario ocupa todo el ancho.
+-->
+<section id="formulario-contacto" aria-label="Formulario de contacto" class="bg-white px-4 py-16 sm:px-8 sm:py-20 lg:px-10 lg:py-24">
+  <div
+    class="relative mx-auto grid max-w-7xl overflow-hidden rounded-[2rem] bg-gradient-to-br from-white to-slate-50 shadow-[0_24px_60px_-24px_rgba(15,40,70,0.3)] ring-1 ring-slate-200/80 lg:grid-cols-[minmax(14rem,0.6fr)_1.4fr]"
+  >
+    <!-- La imagen se posiciona contra la tarjeta (no contra esta columna) para que el cable cruce por debajo del formulario -->
+    <div class="hidden lg:block" aria-hidden="true">
+      <Picture
+        src={telefono}
+        formats={["avif", "webp"]}
+        alt=""
+        widths={[900, 1180]}
+        sizes="1180px"
+        loading="lazy"
+        decoding="async"
+        class="pointer-events-none absolute bottom-4 left-0 w-[calc(min(52rem,72%)*1.928)] max-w-none [filter:drop-shadow(3px_5px_3px_rgba(0,0,0,0.28))_drop-shadow(20px_28px_24px_rgba(0,0,0,0.2))]"
+      />
+    </div>
+
+    <div class="relative z-10 p-7 sm:p-10 lg:py-14 lg:pb-44 lg:pl-4 lg:pr-14">
+      <FurmulairoContacto client:visible />
+    </div>
+  </div>
+</section>
