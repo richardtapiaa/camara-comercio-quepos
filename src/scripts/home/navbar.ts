@@ -49,6 +49,14 @@ const setDropdownOpen = (dropdown: Dropdown, open: boolean, immediate = false) =
   }
 };
 
+// Mientras el panel de celular está abierto, la página de atrás no se desplaza: se bloquea el scroll del
+// documento y se pausa el scroll suave (Lenis). El panel sí se puede desplazar por dentro (data-lenis-prevent).
+const bloquearScroll = (bloquear: boolean) => {
+  document.documentElement.style.overflow = bloquear ? "hidden" : "";
+  if (bloquear) window.lenis?.stop();
+  else window.lenis?.start();
+};
+
 let tl: gsap.core.Timeline | null = null;
 let menuOpen = false;
 let anchoMenu = 0;
@@ -65,6 +73,7 @@ const openMenu = () => {
   toggle?.setAttribute("aria-label", "Cerrar menú");
   header?.setAttribute("data-menu-open", "true");
   header?.setAttribute("data-hidden", "false");
+  bloquearScroll(true);
   tl.timeScale(1).play();
   gsap.delayedCall(0.1, () => menuOpen && closeBtn?.focus({ preventScroll: true }));
 };
@@ -75,6 +84,7 @@ const closeMenu = () => {
   toggle?.setAttribute("aria-expanded", "false");
   toggle?.setAttribute("aria-label", "Abrir menú");
   header?.setAttribute("data-menu-open", "false");
+  bloquearScroll(false);
   tl?.timeScale(1.3).reverse();
 };
 
@@ -120,6 +130,8 @@ mm.add("(max-width: 1023px)", () => {
   if (menuOpen) tl.progress(1);
 
   return () => {
+    // Al pasar a escritorio el panel desaparece sin cerrarse: se libera el scroll por si quedó bloqueado.
+    bloquearScroll(false);
     toggle?.removeEventListener("pointerdown", prepararCapas);
     tl?.kill();
     tl = null;

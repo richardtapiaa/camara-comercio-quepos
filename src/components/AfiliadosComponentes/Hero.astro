@@ -1,8 +1,9 @@
 ---
-import { getImage } from "astro:assets";
+import { getImage, Image } from "astro:assets";
 import video from "../../assets/afiliados/hero-afiliados.mp4";
 import videoWebm from "../../assets/afiliados/hero-afiliados.webm";
 import poster from "../../assets/afiliados/hero-afiliados-poster.jpg";
+import logoBlanco from "../../assets/compartido/logo-camara-blanco.webp";
 import BordePincelada from "../compartidos/BordePincelada.astro";
 import "../../styles/compartido/etiqueta-papel.css";
 import "../../styles/compartido/hero-texto.css";
@@ -30,9 +31,23 @@ const posterOptimizado = await getImage({ src: poster, width: 1920, format: "web
   </video>
   <div class="absolute inset-0 -z-10 bg-gradient-to-t from-black/75 via-black/40 to-black/45" aria-hidden="true"></div>
 
-  <div class="mx-auto w-full max-w-[1320px] px-6 pb-[clamp(5rem,12vh,8rem)] text-white sm:px-10">
-    <p class="hero-texto-kicker">Cámara de Comercio de Quepos</p>
-    <h1 id="titulo-afiliados" class="hero-texto-titulo">Afiliados</h1>
+  <!-- Título a la izquierda y el logo de la Cámara, en blanco sobre una tarjeta translúcida, a la derecha;
+       en celular la tarjeta va debajo del título -->
+  <div class="mx-auto flex w-full max-w-[1320px] flex-col items-start gap-6 px-6 pb-[clamp(5rem,12vh,8rem)] text-white sm:px-10 md:flex-row md:items-end md:justify-between">
+    <div>
+      <h1 id="titulo-afiliados" class="hero-texto-titulo">Afiliados</h1>
+    </div>
+    <div class="shrink-0 rounded-[1.75rem] bg-white/10 px-6 py-5 ring-1 ring-inset ring-white/25 backdrop-blur-md sm:px-7 md:mb-2">
+      <Image
+        src={logoBlanco}
+        alt="Cámara de Comercio, Industria y Turismo de Quepos"
+        widths={[240, 400, 506]}
+        sizes="(min-width: 1024px) 236px, (min-width: 640px) 169px, 135px"
+        loading="eager"
+        decoding="async"
+        class="h-16 w-auto sm:h-20 lg:h-28"
+      />
+    </div>
   </div>
 
   <BordePincelada color="text-white" />

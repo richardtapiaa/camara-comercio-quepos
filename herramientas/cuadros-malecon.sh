@@ -28,8 +28,8 @@ generar() {
     "AVIF $(du -ch "$carpeta"/*.avif | tail -1 | cut -f1), WebP $(du -ch "$carpeta"/*.webp | tail -1 | cut -f1)"
 }
 
-generar malecon video-nahomi-scroll.mp4 "fps=144/15.534" 28 75 yuv420p10le -an
-generar malecon-mobile video-nahomi-scroll.mp4 "fps=144/15.534,crop=606:1080" 28 75 yuv420p10le -an
+generar malecon nahomi-scroll-2.mp4 "fps=144/10" 35 70 yuv420p10le -an
+generar malecon-mobile nahomi-scroll-2.mp4 "fps=144/10,crop=606:1080" 32 70 yuv420p10le -an
 
 generar malecon-2 video-quepos-scroll.mp4 "fps=12" 38 70 yuv420p -ss 5 -t 11.875
 generar malecon-2-mobile video-quepos-scroll.mp4 "fps=12" 42 65 yuv420p -ss 5 -t 11.875

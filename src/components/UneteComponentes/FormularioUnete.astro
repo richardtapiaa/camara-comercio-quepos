@@ -1,9 +1,52 @@
 ---
-import InformacionUnete from "./InformacionUnete.astro";
+import ilustracion from "../../assets/unete/unete.svg";
+import { contacto } from "../../lib/sitio";
 import FormularioUnete from "../ReactComponentes/UNETE/FormularioUnete.tsx";
 ---
 
-<div class="relative grid min-h-[42rem] w-full overflow-hidden bg-white pt-24 lg:pt-28 lg:grid-cols-[0.82fr_1.18fr]">
-  <InformacionUnete />
-  <FormularioUnete client:visible />
-</div>
+<!--
+  Formulario de afiliación en dos columnas sobre un fondo crema: a la izquierda
+  el título, la frase, el correo y la ilustración; a la derecha el formulario
+  por pasos con campos de línea. En celular, uno debajo del otro.
+-->
+<section
+  id="formulario-afiliacion"
+  aria-labelledby="titulo-formulario-unete"
+  class="bg-[#f8f5f0] px-6 py-20 sm:px-10 sm:py-24 lg:py-28"
+>
+  <div class="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
+    <div class="flex flex-col">
+      <p class="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">Únete a nosotros</p>
+      <h2
+        id="titulo-formulario-unete"
+        class="mt-4 text-balance text-4xl font-semibold leading-[1.1] tracking-tight text-slate-900 sm:text-5xl"
+      >
+        Únete, no esperes más
+      </h2>
+      <p class="mt-5 max-w-md text-lg leading-relaxed text-slate-600">
+        Complete el formulario y la Cámara se pondrá en contacto con usted para afiliar su negocio.
+      </p>
+      <p class="mt-4 text-base text-slate-700">
+        ¿Prefiere escribirnos?{" "}
+        <a
+          href={`mailto:${contacto.email}`}
+          class="font-semibold text-[#1d6aa8] underline decoration-[#2780c9]/40 underline-offset-4 hover:decoration-[#2780c9]"
+        >
+          {contacto.email}
+        </a>
+      </p>
+
+      <img
+        src={ilustracion.src}
+        width={ilustracion.width}
+        height={ilustracion.height}
+        alt=""
+        loading="lazy"
+        decoding="async"
+        class="mt-auto hidden w-full max-w-md pt-10 lg:block"
+      />
+    </div>
+
+    <FormularioUnete client:visible />
+  </div>
+</section>

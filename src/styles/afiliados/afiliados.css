@@ -1,60 +1,61 @@
-.cat-lista {
-  transform-origin: top right;
-  transition:
-    opacity 0.18s ease,
-    transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0s linear 0.22s;
-}
-.cat-lista[data-abierto="false"] {
-  opacity: 0;
-  transform: translateY(-8px) scale(0.96);
-  visibility: hidden;
-  pointer-events: none;
-}
-.cat-lista[data-abierto="true"] {
-  opacity: 1;
-  transform: none;
-  visibility: visible;
-  transition:
-    opacity 0.2s ease,
-    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0s;
-}
-.cat-lista[data-abierto="true"] > li {
-  animation: cat-opcion 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
-  animation-delay: calc(var(--i) * 25ms);
-}
-@keyframes cat-opcion {
-  from {
-    opacity: 0;
-    transform: translateY(-4px);
-  }
-}
 [data-afiliado]:target > article {
-  animation: afiliado-destacado 3s ease-out 0.3s both;
+  animation: afiliado-brinco 0.9s ease-out 0.35s both;
 }
-@keyframes afiliado-destacado {
+@keyframes afiliado-brinco {
   0%,
-  60% {
-    box-shadow:
-      0 0 0 3px rgb(39 128 201 / 0.85),
-      0 24px 50px -18px rgb(16 42 67 / 0.28),
-      0 6px 14px -6px rgb(16 42 67 / 0.12);
+  50%,
+  84%,
+  100% {
+    translate: 0 0;
+  }
+  30% {
+    translate: 0 -14px;
+  }
+  68% {
+    translate: 0 -6px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .cat-lista,
-  .cat-lista[data-abierto="true"] {
-    transition: none;
-  }
-  .cat-lista[data-abierto="true"] > li {
-    animation: none;
-  }
   [data-afiliado]:target > article {
     animation: none;
-    box-shadow:
-      0 0 0 3px rgb(39 128 201 / 0.85),
-      0 24px 50px -18px rgb(16 42 67 / 0.28),
-      0 6px 14px -6px rgb(16 42 67 / 0.12);
+  }
+}
+
+/* Al buscar o filtrar, las cards que quedan visibles entran muy suaves: aparecen despacio y suben apenas, una tras otra
+   (--orden lo pone afiliados.ts). Sin animación con "reducir movimiento". */
+[data-afiliado].afiliado-entra {
+  animation: afiliado-entra 0.9s cubic-bezier(0.33, 1, 0.68, 1) both;
+  animation-delay: calc(var(--orden, 0) * 80ms);
+}
+@keyframes afiliado-entra {
+  from {
+    opacity: 0;
+    translate: 0 6px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-afiliado].afiliado-entra {
+    animation: none;
+  }
+}
+
+/* Card de cada afiliado: sombra y un hover suave (sube 2 px y la sombra se intensifica un poco) */
+.afiliado-card {
+  box-shadow:
+    0 24px 50px -18px rgb(16 42 67 / 0.28),
+    0 6px 14px -6px rgb(16 42 67 / 0.12);
+  transition:
+    translate 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.afiliado-card:hover {
+  translate: 0 -2px;
+  box-shadow:
+    0 28px 54px -18px rgb(16 42 67 / 0.31),
+    0 7px 16px -6px rgb(16 42 67 / 0.13);
+}
+@media (prefers-reduced-motion: reduce) {
+  .afiliado-card:hover {
+    translate: none;
   }
 }

@@ -3,10 +3,10 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { gsap } from "gsap";
-import { setWorkerUrl } from "maplibre-gl";
+import { setWorkerUrl, type RasterDEMSourceSpecification } from "maplibre-gl";
 import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?url";
 import Supercluster, { type AnyProps, type ClusterFeature, type PointFeature } from "supercluster";
-import { IdCard, Info, MapPin, Maximize2, Search, X } from "lucide-react";
+import { IdCard, Info, Loader2, Locate, MapPin, Maximize2, Search, X } from "lucide-react";
 
 import {
   Map,
@@ -103,6 +103,8 @@ export default function MapaAfiliadosMapcn({ afiliados }: { afiliados: AfiliadoM
     >
       <ColoresMapa />
       <MapControls />
+      <MiUbicacion />
+      <AbrirDesdeEnlace afiliados={afiliados} indice={indice} onSeleccionar={seleccionar} />
       <BuscadorAfiliados
         afiliados={afiliados}
         indice={indice}
@@ -123,23 +125,37 @@ export default function MapaAfiliadosMapcn({ afiliados }: { afiliados: AfiliadoM
   );
 }
 
+// Colores del paisaje real de Quepos: bosque verde profundo, potreros más claros, arena y un Pacífico
+// verdeazulado. Las sombras del relieve (abajo) se dibujan encima y le dan volumen a las montañas.
 const COLORES_MAPA: Record<string, [propiedad: "background-color" | "fill-color" | "line-color", color: string]> = {
-  background: ["background-color", "#e8f1d9"],
-  landcover: ["fill-color", "#bfe0a3"],
-  landuse: ["fill-color", "#cfe6bd"],
-  park_nature_reserve: ["fill-color", "#acd790"],
-  park_national_park: ["fill-color", "#98cf7c"],
-  landuse_residential: ["fill-color", "#f2e6cc"],
-  water: ["fill-color", "#5fadd8"],
-  water_shadow: ["fill-color", "#86c5e6"],
-  waterway: ["line-color", "#86c5e6"],
+  background: ["background-color", "#e7edd6"],
+  landcover: ["fill-color", "#b3d398"],
+  landuse: ["fill-color", "#d0e3bb"],
+  park_nature_reserve: ["fill-color", "#9dca84"],
+  park_national_park: ["fill-color", "#8bc173"],
+  landuse_residential: ["fill-color", "#eee3cd"],
+  water: ["fill-color", "#62afd4"],
+  water_shadow: ["fill-color", "#8ac7e2"],
+  waterway: ["line-color", "#7bbde0"],
 };
 
 const TERRENOS_EXTRA = [
-  { id: "cultivos", tipo: "farmland", color: "#dbe8b4" },
-  { id: "manglares", tipo: "wetland", color: "#9cd3bd" },
-  { id: "playas", tipo: "beach", color: "#f6dd97" },
+  { id: "cultivos", tipo: "farmland", color: "#d8e6b0" },
+  { id: "manglares", tipo: "wetland", color: "#9ccdb2" },
+  { id: "playas", tipo: "beach", color: "#f1dfab" },
 ];
+
+// Relieve: elevación gratuita de AWS Terrain Tiles (formato "terrarium", hasta zoom 14; más cerca se
+// estira). Se dibuja como sombras, con luz desde el noroeste, debajo de ríos, mar, calles y nombres.
+const FUENTE_RELIEVE: RasterDEMSourceSpecification = {
+  type: "raster-dem",
+  tiles: ["https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"],
+  encoding: "terrarium",
+  tileSize: 256,
+  maxzoom: 14,
+  attribution:
+    '<a href="https://github.com/tilezen/joerd/blob/master/docs/attribution.md" target="_blank" rel="noopener noreferrer">Relieve: Mapzen</a>',
+};
 
 function ColoresMapa() {
   const { map, isLoaded } = useMap();
@@ -150,6 +166,7 @@ function ColoresMapa() {
       if (map.getLayer(capa)) map.setPaintProperty(capa, propiedad, color);
     }
     if (!map.getSource("protomaps")) return;
+    const debajoDe = map.getLayer("waterway") ? "waterway" : undefined;
     for (const { id, tipo, color } of TERRENOS_EXTRA) {
       if (map.getLayer(id)) continue;
       map.addLayer(
@@ -161,12 +178,133 @@ function ColoresMapa() {
           filter: ["==", ["get", "kind"], tipo],
           paint: { "fill-color": color },
         },
-        map.getLayer("waterway") ? "waterway" : undefined,
+        debajoDe,
+      );
+    }
+    if (!map.getSource("relieve")) map.addSource("relieve", FUENTE_RELIEVE);
+    if (!map.getLayer("sombras-relieve")) {
+      map.addLayer(
+        {
+          id: "sombras-relieve",
+          type: "hillshade",
+          source: "relieve",
+          paint: {
+            // Marcado de lejos (se leen las montañas) y se apaga al llegar al nivel de calles: más allá del
+            // zoom 14 la elevación se estira y las sombras se ven como manchas y cuadros junto a la costa.
+            "hillshade-exaggeration": ["interpolate", ["linear"], ["zoom"], 9, 0.55, 13, 0.45, 14.5, 0.25, 15.5, 0],
+            "hillshade-illumination-direction": 315,
+            "hillshade-shadow-color": "#2f4a2c",
+            "hillshade-highlight-color": "#fbfdf6",
+            "hillshade-accent-color": "#4f6b45",
+          },
+        },
+        debajoDe,
       );
     }
   }, [map, isLoaded]);
 
   return null;
+}
+
+// Margen alrededor del cantón (en grados, ~5 km) para considerar que la persona está "en Quepos".
+const MARGEN_CANTON = 0.05;
+
+const estaEnQuepos = ({ longitude, latitude }: { longitude: number; latitude: number }) => {
+  const [[oeste, sur], [este, norte]] = CANTON_QUEPOS;
+  return (
+    longitude >= oeste - MARGEN_CANTON &&
+    longitude <= este + MARGEN_CANTON &&
+    latitude >= sur - MARGEN_CANTON &&
+    latitude <= norte + MARGEN_CANTON
+  );
+};
+
+// Botón "Mi ubicación": marca a la persona con un punto azul y acerca el mapa, pero solo si está en
+// Quepos; si está lejos no saca el mapa del cantón y le avisa. Va justo encima de los botones de zoom
+// (MapControls los pone en bottom-10 right-2; 66 px de alto + 6 px de separación) y usa su mismo estilo.
+function MiUbicacion() {
+  const { map } = useMap();
+  const [buscando, setBuscando] = useState(false);
+  const [posicion, setPosicion] = useState<{ longitude: number; latitude: number } | null>(null);
+  const [aviso, setAviso] = useState("");
+
+  useEffect(() => {
+    if (!aviso) return;
+    const temporizador = window.setTimeout(() => setAviso(""), 5000);
+    return () => window.clearTimeout(temporizador);
+  }, [aviso]);
+
+  const ubicar = () => {
+    if (!("geolocation" in navigator)) {
+      setAviso("Su navegador no permite obtener la ubicación.");
+      return;
+    }
+    setBuscando(true);
+    setAviso("");
+    navigator.geolocation.getCurrentPosition(
+      ({ coords }) => {
+        setBuscando(false);
+        const actual = { longitude: coords.longitude, latitude: coords.latitude };
+        if (!estaEnQuepos(actual)) {
+          setPosicion(null);
+          setAviso("Su ubicación está fuera del cantón de Quepos.");
+          return;
+        }
+        setPosicion(actual);
+        map?.flyTo({ center: [actual.longitude, actual.latitude], zoom: Math.max(map.getZoom(), 15), duration: 1500 });
+      },
+      (error) => {
+        setBuscando(false);
+        setAviso(
+          error.code === error.PERMISSION_DENIED
+            ? "Para ver su ubicación, permita el acceso en su navegador."
+            : "No se pudo obtener su ubicación. Inténtelo de nuevo.",
+        );
+      },
+      // Sin tiempo límite, un permiso ignorado dejaría el botón cargando para siempre.
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 },
+    );
+  };
+
+  return (
+    <>
+      <div className="absolute bottom-28 right-2 z-10 overflow-hidden rounded-md border border-border bg-background shadow-sm">
+        <button
+          type="button"
+          onClick={ubicar}
+          disabled={buscando}
+          aria-label="Mostrar mi ubicación"
+          title="Mi ubicación"
+          className="flex size-8 items-center justify-center transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+        >
+          {buscando ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : <Locate className="size-4" aria-hidden="true" />}
+        </button>
+      </div>
+
+      {posicion && (
+        <MapMarker longitude={posicion.longitude} latitude={posicion.latitude}>
+          <MarkerContent>
+            <span className="relative flex size-5">
+              <span className="absolute inset-0 rounded-full bg-[#2780c9]/50 motion-safe:animate-ping" aria-hidden="true" />
+              <span className="relative size-5 rounded-full border-[3px] border-white bg-[#2780c9] shadow-md" />
+            </span>
+          </MarkerContent>
+          <MarkerTooltip>Usted está aquí</MarkerTooltip>
+        </MapMarker>
+      )}
+
+      <p
+        role="status"
+        aria-live="polite"
+        className={cn(
+          "pointer-events-none absolute bottom-6 left-1/2 z-30 w-max max-w-[calc(100%-2rem)] -translate-x-1/2 rounded-full bg-slate-900/85 px-4 py-2 text-center text-sm text-white shadow-lg backdrop-blur transition-opacity duration-300",
+          aviso ? "opacity-100" : "opacity-0",
+        )}
+      >
+        {aviso}
+      </p>
+    </>
+  );
 }
 
 function MarcadoresAfiliados({
@@ -276,6 +414,41 @@ function zoomParaVerLogo(indice: Supercluster<AfiliadoMapa>, afiliado: AfiliadoM
     if (suelto) return zoom;
   }
   return ZOOM_MAXIMO_GRUPOS + 1;
+}
+
+// Abre la tarjeta del afiliado que viene en la dirección (/mapa-afiliados#id, desde "Ver en el mapa" en la página
+// de Afiliados) y lleva el mapa hasta su logo, con el mismo encuadre que al tocar un marcador.
+function AbrirDesdeEnlace({
+  afiliados,
+  indice,
+  onSeleccionar,
+}: {
+  afiliados: AfiliadoMapa[];
+  indice: Supercluster<AfiliadoMapa>;
+  onSeleccionar: (afiliado: AfiliadoMapa) => void;
+}) {
+  const { map, isLoaded } = useMap();
+  const hecho = useRef(false);
+
+  useEffect(() => {
+    if (!map || !isLoaded || hecho.current) return;
+    hecho.current = true;
+    const id = decodeURIComponent(location.hash.slice(1));
+    const afiliado = afiliados.find((a) => a.id === id);
+    if (!afiliado) return;
+    const compu = window.matchMedia("(min-width: 768px)").matches;
+    onSeleccionar(afiliado);
+    map.flyTo({
+      center: [afiliado.lng, afiliado.lat],
+      zoom: zoomParaVerLogo(indice, afiliado),
+      offset: compu ? [226, 48] : [0, -170],
+      duration: 1800,
+      curve: 1.4,
+      essential: true,
+    });
+  }, [map, isLoaded, afiliados, indice, onSeleccionar]);
+
+  return null;
 }
 
 function BuscadorAfiliados({

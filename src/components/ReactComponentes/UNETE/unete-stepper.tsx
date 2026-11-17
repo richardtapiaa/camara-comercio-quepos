@@ -34,9 +34,10 @@ const VACIO: Datos = {
   mensaje: "",
 };
 
+// Campos de línea: solo el borde de abajo; al enfocar, la línea se vuelve azul y más gruesa (sin mover el diseño).
 const CAMPO =
-  "w-full rounded-xl bg-slate-50 px-5 py-3 text-sm text-slate-800 placeholder-slate-400 ring-1 ring-slate-200 transition focus:outline-none focus:ring-2 focus:ring-[#2780c9]";
-const ETIQUETA = "grid gap-2 text-sm font-semibold text-slate-700";
+  "w-full rounded-none border-0 border-b border-slate-300 bg-transparent px-0 py-2.5 text-base text-slate-900 placeholder-slate-400 transition-colors focus:border-[#2780c9] focus:shadow-[0_1px_0_0_#2780c9] focus:outline-none";
+const ETIQUETA = "grid gap-1 text-sm font-medium text-slate-800";
 
 interface Props {
   onSubmit?: (datos: Datos) => void | Promise<void>;
@@ -167,10 +168,10 @@ const VerticalLinearStepper = ({ onSubmit }: Props) => {
           <StepLabel>{steps[0].label}</StepLabel>
           <StepContent>
             <div className="grid gap-5 pb-2 sm:grid-cols-2">
-              {campo("Nombre", <input name="nombre" type="text" autoComplete="name" value={datos.nombre} onChange={cambiar("nombre")} className={CAMPO} />, true)}
-              {campo("Correo electrónico", <input name="email" type="email" autoComplete="email" value={datos.email} onChange={cambiar("email")} className={CAMPO} />, true)}
-              {campo("Teléfono de contacto", <input name="telefono" type="tel" inputMode="numeric" autoComplete="tel" value={datos.telefono} onChange={cambiar("telefono", true)} className={CAMPO} />, true)}
-              {campo("Otro teléfono", <input name="otro-telefono" type="tel" inputMode="numeric" autoComplete="tel" value={datos.otroTelefono} onChange={cambiar("otroTelefono", true)} className={CAMPO} />)}
+              {campo("Nombre", <input name="nombre" type="text" autoComplete="name" placeholder="Nombre completo" value={datos.nombre} onChange={cambiar("nombre")} className={CAMPO} />, true)}
+              {campo("Correo electrónico", <input name="email" type="email" autoComplete="email" placeholder="nombre@correo.com" value={datos.email} onChange={cambiar("email")} className={CAMPO} />, true)}
+              {campo("Teléfono de contacto", <input name="telefono" type="tel" placeholder="8888 8888" inputMode="numeric" autoComplete="tel" value={datos.telefono} onChange={cambiar("telefono", true)} className={CAMPO} />, true)}
+              {campo("Otro teléfono", <input name="otro-telefono" type="tel" placeholder="Opcional" inputMode="numeric" autoComplete="tel" value={datos.otroTelefono} onChange={cambiar("otroTelefono", true)} className={CAMPO} />)}
             </div>
             <Controles
               activeStep={activeStep}
@@ -187,8 +188,8 @@ const VerticalLinearStepper = ({ onSubmit }: Props) => {
           <StepLabel>{steps[1].label}</StepLabel>
           <StepContent>
             <div className="grid gap-5 pb-2 sm:grid-cols-2">
-              {campo("Nombre de su empresa", <input name="empresa" type="text" autoComplete="organization" value={datos.empresa} onChange={cambiar("empresa")} className={CAMPO} />, true)}
-              {campo("Área comercial", <input name="area-comercial" type="text" value={datos.areaComercial} onChange={cambiar("areaComercial")} className={CAMPO} />)}
+              {campo("Nombre de su empresa", <input name="empresa" type="text" autoComplete="organization" placeholder="Nombre de la empresa" value={datos.empresa} onChange={cambiar("empresa")} className={CAMPO} />, true)}
+              {campo("Área comercial", <input name="area-comercial" type="text" placeholder="Ej. turismo, comercio, servicios" value={datos.areaComercial} onChange={cambiar("areaComercial")} className={CAMPO} />)}
               {campo(
                 "Tipo de empresa",
                 <select
@@ -231,7 +232,7 @@ const VerticalLinearStepper = ({ onSubmit }: Props) => {
                   true,
                 )}
               </div>
-              {campo("Ubicación del negocio", <input name="ubicacion" type="text" autoComplete="address-level2" value={datos.ubicacion} onChange={cambiar("ubicacion")} className={CAMPO} />, true)}
+              {campo("Ubicación del negocio", <input name="ubicacion" type="text" autoComplete="address-level2" placeholder="Ej. Quepos centro" value={datos.ubicacion} onChange={cambiar("ubicacion")} className={CAMPO} />, true)}
             </div>
             <Controles
               activeStep={activeStep}
@@ -247,7 +248,7 @@ const VerticalLinearStepper = ({ onSubmit }: Props) => {
         <Step>
           <StepLabel>{steps[2].label}</StepLabel>
           <StepContent>
-            {campo("Mensaje sobre su negocio", <textarea name="mensaje" rows={6} value={datos.mensaje} onChange={cambiar("mensaje")} className={`${CAMPO} resize-y`} />)}
+            {campo("Mensaje sobre su negocio", <textarea name="mensaje" rows={5} placeholder="Cuéntenos brevemente sobre su negocio" value={datos.mensaje} onChange={cambiar("mensaje")} className={`${CAMPO} resize-y`} />)}
             <Controles
               activeStep={activeStep}
               onNext={handleNext}
@@ -283,10 +284,30 @@ interface ControlesProps {
 
 const Controles = ({ activeStep, onNext, onBack, continueButtonRef, backButtonRef, enviando }: ControlesProps) => (
   <Box sx={{ mb: 1 }}>
-    <Button variant="contained" onClick={onNext} sx={{ mt: 1, mr: 1 }} ref={continueButtonRef} disabled={enviando}>
+    <Button
+      variant="contained"
+      onClick={onNext}
+      sx={{
+        mt: 2,
+        mr: 1,
+        px: 3,
+        bgcolor: "#2780c9",
+        borderRadius: "0.5rem",
+        boxShadow: "none",
+        textTransform: "none",
+        fontWeight: 600,
+        "&:hover": { bgcolor: "#1d6aa8", boxShadow: "none" },
+      }}
+      ref={continueButtonRef}
+      disabled={enviando}
+    >
       {activeStep === steps.length - 1 ? (enviando ? "Enviando..." : "Enviar solicitud") : "Continuar"}
     </Button>
-    {activeStep > 0 && <Button onClick={onBack} sx={{ mt: 1 }} ref={backButtonRef} disabled={enviando}>Atrás</Button>}
+    {activeStep > 0 && (
+      <Button onClick={onBack} sx={{ mt: 2, color: "#1d6aa8", textTransform: "none", fontWeight: 600 }} ref={backButtonRef} disabled={enviando}>
+        Atrás
+      </Button>
+    )}
   </Box>
 );
 

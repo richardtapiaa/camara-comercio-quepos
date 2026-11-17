@@ -5,6 +5,14 @@ import { optimizarImagen } from "@/lib/imagenes";
 import mapaEscritorio from "@/assets/mapa/mapa-escritorio.webp";
 import mapaMovil from "@/assets/mapa/mapa-movil.webp";
 
+// Imagen fija del mapa (con relieve) que se ve mientras carga el mapa real: AVIF, y WebP de respaldo.
+const [fondoEscritorioAvif, fondoEscritorioWebp, fondoMovilAvif, fondoMovilWebp] = await Promise.all([
+  getImage({ src: mapaEscritorio, format: "avif", quality: 50 }),
+  getImage({ src: mapaEscritorio, format: "webp", quality: 70 }),
+  getImage({ src: mapaMovil, format: "avif", quality: 50 }),
+  getImage({ src: mapaMovil, format: "webp", quality: 70 }),
+]);
+
 const ALTO_LOGO = 36 * 2;
 const ANCHO_FOTO = 420 * 2;
 
@@ -37,9 +45,11 @@ const afiliados = await Promise.all(
 
 <div data-lenis-prevent data-mapa-afiliados class="relative z-0 h-dvh min-h-[480px] w-full overflow-hidden bg-[#e8f1d9]">
   <picture>
-    <source media="(max-width: 767px)" srcset={(await getImage({ src: mapaMovil, format: "webp" })).src} />
+    <source media="(max-width: 767px)" type="image/avif" srcset={fondoMovilAvif.src} />
+    <source media="(max-width: 767px)" type="image/webp" srcset={fondoMovilWebp.src} />
+    <source type="image/avif" srcset={fondoEscritorioAvif.src} />
     <img
-      src={(await getImage({ src: mapaEscritorio, format: "webp" })).src}
+      src={fondoEscritorioWebp.src}
       alt=""
       class="absolute inset-0 size-full object-cover"
       fetchpriority="high"
@@ -55,7 +65,7 @@ const afiliados = await Promise.all(
       Explorar el mapa de afiliados
     </button>
   </p>
-  <p class="absolute bottom-1 right-2 text-[10px] text-slate-500">© OpenStreetMap contributors © CARTO</p>
+  <p class="absolute bottom-1 right-2 text-[10px] text-slate-500">© OpenStreetMap contributors © CARTO · Relieve: Mapzen</p>
   <div data-mapa-montaje class="absolute inset-0 z-20"></div>
   <script type="application/json" data-mapa-datos set:html={JSON.stringify(afiliados).replace(/</g, "\\u003c")} />
 </div>
