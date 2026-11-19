@@ -1,0 +1,52 @@
+---
+import iconoRed from "../../assets/icons-svg/unete-icons/red-empresarial.svg";
+import iconoIntermediacion from "../../assets/icons-svg/unete-icons/intermediacion.svg";
+import iconoOportunidades from "../../assets/icons-svg/unete-icons/oportunidades.svg";
+import iconoBeneficios from "../../assets/icons-svg/unete-icons/beneficios.svg";
+
+// Mismo diseño de tarjeta que "¿Por qué afiliarse?" del inicio (components/home/PorQueAfiliarse.astro).
+// Íconos de la colección "Strategy Management Flat Vectors" de Cyber Olympus en SVG Repo, con licencia CC BY 4.0:
+// la licencia pide dar crédito al autor, por eso va la línea de créditos debajo de las tarjetas.
+const beneficios = [
+  {
+    icono: iconoRed,
+    titulo: "Red empresarial",
+    texto: "Sea parte de un círculo de empresarios exitosos del cantón.",
+  },
+  {
+    icono: iconoIntermediacion,
+    titulo: "Intermediación comercial",
+    texto: "Intermediación en diálogos y posibilidades de tratos comerciales.",
+  },
+  {
+    icono: iconoOportunidades,
+    titulo: "Oportunidades de negocio",
+    texto: "Acceda a nuevas oportunidades para que su negocio crezca.",
+  },
+  {
+    icono: iconoBeneficios,
+    titulo: "Beneficios para su empresa",
+    texto: "Disfrute de los beneficios que la Cámara ofrece a sus afiliados.",
+  },
+];
+---
+
+<!-- Tarjetas de beneficios montadas sobre la parte de abajo del Hero (margen negativo). Detrás va un fondo blanco
+     con el borde de arriba curvo, que tapa la foto desde la mitad de las tarjetas hacia abajo. -->
+<section aria-labelledby="titulo-beneficios-unete" class="relative z-10 -mt-44 px-6 pb-20 sm:-mt-52 sm:px-10 lg:-mt-56">
+  <div aria-hidden="true" class="absolute inset-x-0 bottom-0 top-28 -z-10 rounded-t-[50%_3rem] bg-white sm:top-32 sm:rounded-t-[50%_5rem]"></div>
+  <h2 id="titulo-beneficios-unete" class="sr-only">Beneficios de afiliarse</h2>
+
+  <ul role="list" class="mx-auto grid max-w-7xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    {
+      beneficios.map(({ icono, titulo, texto }) => (
+        <li class="flex flex-col rounded-[2rem] bg-[#f3f5f8] p-7">
+          <img src={icono.src} alt="" width="56" height="56" loading="lazy" decoding="async" class="size-14" />
+          <h3 class="mt-auto pt-14 text-lg font-semibold text-slate-900">{titulo}</h3>
+          <p class="mt-2 leading-relaxed text-slate-600">{texto}</p>
+        </li>
+      ))
+    }
+  </ul>
+
+</section>

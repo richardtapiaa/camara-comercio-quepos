@@ -1,34 +1,14 @@
 ---
-import { Picture } from "astro:assets";
-import foto from "../../assets/quepos/bahia-manuel-antonio.jpg";
-import BordePincelada from "../compartidos/BordePincelada.astro";
-import "../../styles/compartido/etiqueta-papel.css";
-import "../../styles/compartido/hero-texto.css";
+import FondoSello from "../compartidos/FondoSello";
 ---
 
-<section
-  id="hero"
-  aria-labelledby="titulo-contacto"
-  class="relative isolate flex h-[78svh] min-h-[520px] items-end overflow-hidden bg-[#2b4a5c]"
->
-  <Picture
-    src={foto}
-    formats={["avif", "webp"]}
-    alt="Bahía de Manuel Antonio al atardecer, con las islas en el mar y el bosque en primer plano"
-    widths={[800, 1280, 1600]}
-    sizes="100vw"
-    quality={50}
-    class="absolute inset-0 -z-20 size-full object-cover"
-    loading="eager"
-    fetchpriority="high"
-    decoding="async"
-  />
-  <div class="absolute inset-0 -z-10 bg-gradient-to-t from-black/70 via-black/25 to-black/45" aria-hidden="true"></div>
-
-  <div class="mx-auto w-full max-w-[1320px] px-6 pb-[clamp(5rem,12vh,8rem)] text-white sm:px-10">
-    <p class="hero-texto-kicker">Cámara de Comercio de Quepos</p>
-    <h1 id="titulo-contacto" class="hero-texto-titulo">Contacto</h1>
+<section id="hero-contacto" aria-labelledby="titulo-contacto" class="relative isolate flex min-h-[75svh] items-center overflow-hidden bg-white px-6 pb-16 pt-36 sm:px-10 sm:pt-40 lg:min-h-[80svh] lg:pt-44">
+  <!-- Sello de la Cámara de fondo, tenue, abajo a la derecha e inclinado hacia el título -->
+  <FondoSello lado="derecha" abajo fijo={false} />
+  <div class="mx-auto w-full max-w-[1320px]">
+    <h1 id="titulo-contacto" class="text-[clamp(3rem,9vw,7.5rem)] font-bold leading-[0.95] tracking-tight text-slate-950">Contacto</h1>
+    <p class="mt-4 max-w-xl text-base leading-relaxed text-slate-700 sm:text-lg">
+      ¿Tiene alguna consulta o un proyecto en mente? No dude en escribirnos: con gusto conversamos.
+    </p>
   </div>
-
-  <BordePincelada />
 </section>

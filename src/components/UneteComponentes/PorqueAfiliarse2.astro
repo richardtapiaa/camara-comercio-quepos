@@ -1,0 +1,49 @@
+---
+import { Image } from "astro:assets";
+import logo from "../../assets/compartido/logo-camara.webp";
+import fotoIzquierda from "../../assets/capacitaciones/encuentro-3.webp";
+import fotoDerecha from "../../assets/capacitaciones/imagen-3.webp";
+---
+
+<!-- Texto centrado con el logo arriba y una foto de capacitaciones a cada lado. Desde lg las fotos salen del borde
+     de la pantalla (la izquierda arriba y la derecha abajo); en pantallas pequeñas van debajo del texto, lado a lado. -->
+<section aria-labelledby="titulo-porque-afiliarse-2" class="relative isolate overflow-hidden bg-white px-6 py-20 sm:px-10 lg:py-36">
+  <Image
+    src={fotoIzquierda}
+    alt="Expositora hablando a los participantes de un encuentro de la Cámara"
+    widths={[480, 800]}
+    sizes="26vw"
+    loading="lazy"
+    class="absolute left-0 top-16 hidden aspect-[4/5] w-[24vw] max-w-[380px] rounded-r-[2.5rem] object-cover lg:block"
+  />
+  <Image
+    src={fotoDerecha}
+    alt="Capacitación de la Cámara en un salón con proyector"
+    widths={[480, 800]}
+    sizes="26vw"
+    loading="lazy"
+    class="absolute bottom-16 right-0 hidden aspect-[4/5] w-[24vw] max-w-[380px] rounded-l-[2.5rem] object-cover object-[30%_50%] lg:block"
+  />
+
+  <div class="mx-auto flex max-w-xl flex-col items-center text-center">
+    <Image src={logo} alt="Cámara de Comercio, Industria y Turismo de Quepos" widths={[260, 360, 520, 720]} sizes="(min-width: 640px) 360px, 260px" loading="lazy" class="h-auto w-[260px] sm:w-[360px]" />
+    <h2 id="titulo-porque-afiliarse-2" class="mt-8 text-balance text-4xl font-semibold leading-tight tracking-tight text-slate-950 sm:text-5xl">
+      Si usted lo <em class="font-serif italic">sueña</em>, juntos lo <em class="font-serif italic">hacemos crecer</em>.
+    </h2>
+    <p class="mt-6 max-w-md leading-relaxed text-slate-600">
+      La Cámara reúne a los comercios, las empresas turísticas y las industrias del cantón. Como afiliado, su negocio gana
+      visibilidad, se capacita y forma parte de las decisiones que impulsan el desarrollo de Quepos.
+    </p>
+    <a
+      href="/contacto"
+      class="mt-8 inline-flex h-11 items-center justify-center rounded-md bg-slate-950 px-7 text-sm font-semibold text-white transition-colors hover:bg-slate-800 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-slate-950 motion-reduce:transition-none"
+    >
+      Contáctenos
+    </a>
+  </div>
+
+  <div class="mx-auto mt-14 grid max-w-xl grid-cols-2 gap-4 lg:hidden">
+    <Image src={fotoIzquierda} alt="" widths={[400, 700]} sizes="50vw" loading="lazy" class="aspect-[4/5] w-full rounded-3xl object-cover" />
+    <Image src={fotoDerecha} alt="" widths={[400, 700]} sizes="50vw" loading="lazy" class="mt-10 aspect-[4/5] w-full rounded-3xl object-cover object-[30%_50%]" />
+  </div>
+</section>
