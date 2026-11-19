@@ -1,5 +1,5 @@
 ---
-import bolsaImage from "../../assets/bolsa-empleo/bolsa-empleo.svg";
+import ilustracionBolsa from "../../assets/bolsa-empleo/bolsa-empleo.svg";
 
 const puntos = [
   "Registra tu información profesional.",
@@ -8,43 +8,43 @@ const puntos = [
 ];
 ---
 
-<aside class="relative z-10 min-h-[38rem] self-start overflow-hidden bg-transparent text-white lg:h-[68rem] lg:min-h-0">
-  <svg
-    class="pointer-events-none absolute -left-px -top-px h-[calc(100%+2px)] w-[calc(100%+2px)]"
-    viewBox="0 0 500 800"
-    preserveAspectRatio="none"
-    aria-hidden="true"
-  >
-    <path class="lg:hidden" d="M0 0H500V745C500 775 475 790 440 800H0V0Z" fill="#2780c9"></path>
-    <path
-      class="hidden lg:block"
-      transform="translate(500 0) scale(-1 1)"
-      d="M0 0H500V760C465 736 437 738 405 756C370 776 339 792 306 778C273 765 258 731 226 712C194 693 161 695 136 667C108 636 107 608 81 583C55 558 23 554 10 520C0 494 0 460 0 430V0Z"
-      fill="#2780c9"></path>
-  </svg>
-  <div class="relative z-10 p-8 sm:p-12 lg:p-14">
-    <img
-      src={bolsaImage.src}
-      width={bolsaImage.width}
-      height={bolsaImage.height}
-      fetchpriority="high"
-      alt="Persona buscando una oportunidad laboral"
-      class="mx-auto mb-8 w-full max-w-[25rem] sm:max-w-[28rem] lg:max-w-[30rem]"
-    />
-    <p class="mt-8 text-xs font-semibold uppercase tracking-[0.3em] text-white/80">Cámara de Comercio de Quepos</p>
-    <h2 class="mt-4 text-3xl font-bold uppercase leading-tight sm:text-4xl">Bolsa de empleo</h2>
-    <p class="mt-4 max-w-sm text-base leading-7 text-white/90">
-      Conectamos a las personas que buscan trabajo con las oportunidades laborales de nuestros asociados.
+<aside class="relative z-10 min-h-[48rem] self-stretch overflow-hidden bg-transparent px-7 py-10 text-white sm:px-12 lg:min-h-0 lg:px-12 lg:py-14 xl:px-16">
+  <div class="mt-10 max-w-[43rem] lg:mt-12">
+    <p class="text-[11px] font-bold uppercase tracking-[0.26em] text-[#f4ad42]">
+      Oportunidades laborales
     </p>
-    <ul class="mt-8 space-y-3 border-t border-white/30 pt-6 text-sm leading-6 text-white/90 sm:text-base">
+    <h1 class="mt-4 max-w-[44rem] text-[2.15rem] font-bold leading-[1.12] sm:text-5xl lg:text-[2.55rem] xl:text-[2.85rem]">
+      ¡Bienvenido a la <span class="text-[#f4ad42]">Bolsa de Empleo</span><br class="hidden xl:block" />
+      de la Cámara de Comercio,<br class="hidden xl:block" />
+      Industria y Turismo de Quepos!
+    </h1>
+
+    <img
+      src={ilustracionBolsa.src}
+      width={ilustracionBolsa.width}
+      height={ilustracionBolsa.height}
+      alt="Persona buscando una oportunidad laboral"
+      class="mx-auto mt-6 h-auto w-64 sm:w-72 lg:w-72 xl:w-80"
+    />
+
+    <div class="mt-7 max-w-[42rem] text-sm leading-6 text-white/80">
+      <p class="mb-3 font-semibold text-white">Conectamos a las personas que buscan trabajo con las oportunidades laborales de nuestros asociados.</p>
+      <p class="mb-2"><strong class="text-white">¿En qué consiste nuestro servicio?</strong></p>
+      <p>Nuestra Bolsa de Empleo busca promover y facilitar la vinculación laboral entre nuestros asociados y las personas en situación de desempleo.</p>
+      <p class="mt-2">Brindamos un servicio de intermediación buscando promover entre nuestros asociados las necesidades de las personas que buscan trabajo.</p>
+      <p class="mt-2">Es importante aclarar que la Cámara de Comercio, Industria y Turismo de Quepos no busca colaboradores, sino solamente facilita las solicitudes de empleo a los asociados que lo requieren.</p>
+      <p class="mt-2">Agradecemos la acogida a este nuevo programa de oferta y demanda laboral en nuestro cantón.</p>
+    </div>
+
+    <ol class="mt-9 max-w-[38rem] space-y-4">
       {
-        puntos.map((punto) => (
-          <li class="flex gap-3">
-            <span aria-hidden="true">•</span>
+        puntos.map((punto, indice) => (
+          <li class="grid grid-cols-[2.1rem_1fr] items-center text-sm text-white/95 sm:text-[15px]">
+            <span class="text-lg font-semibold text-[#f4ad42]">{String(indice + 1).padStart(2, "0")}</span>
             <span>{punto}</span>
           </li>
         ))
       }
-    </ul>
+    </ol>
   </div>
 </aside>
