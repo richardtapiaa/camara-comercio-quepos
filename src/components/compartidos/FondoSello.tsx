@@ -6,6 +6,8 @@ interface Props {
   corrido?: boolean;
   claro?: boolean;
   fijo?: boolean;
+  /** Pega el sello abajo (en la esquina de su lado) e inclinado hacia el contenido, en vez de centrarlo. */
+  abajo?: boolean;
 }
 
 const clasesLado = {
@@ -13,17 +15,25 @@ const clasesLado = {
   izquierda: { fila: "justify-start", sello: "-ml-24 -rotate-6 lg:-ml-28" },
 };
 
+// Abajo en la esquina, asomando por el borde e inclinado hacia el centro (donde suele ir el texto). La parte de
+// abajo se desvanece para que el sello no termine en una línea recta donde acaba la sección.
+const clasesAbajo = {
+  derecha: "-mb-10 -mr-20 rotate-[14deg] sm:-mb-16 lg:-mb-24 lg:-mr-24",
+  izquierda: "-mb-10 -ml-20 -rotate-[14deg] sm:-mb-16 lg:-mb-24 lg:-ml-24",
+};
+
 const clasesCorrido = {
   derecha: "-mr-48 rotate-6 lg:-mr-[22rem]",
   izquierda: "-ml-48 -rotate-6 lg:-ml-[22rem]",
 };
 
-export default function FondoSello({ opacidad = 0.1, lado = "derecha", corrido = false, claro = false, fijo = true }: Props) {
+export default function FondoSello({ opacidad = 0.1, lado = "derecha", corrido = false, claro = false, fijo = true, abajo = false }: Props) {
   const clases = clasesLado[lado];
-  const claseSello = `${corrido ? clasesCorrido[lado] : clases.sello} ${claro ? "brightness-0 invert" : ""}`;
+  const posicion = abajo ? clasesAbajo[lado] : corrido ? clasesCorrido[lado] : clases.sello;
+  const claseSello = `${posicion} ${claro ? "brightness-0 invert" : ""}`;
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
-      <div className={`${fijo ? "sticky top-0 h-svh" : "absolute inset-0"} flex items-center overflow-hidden ${clases.fila}`}>
+      <div className={`${fijo ? "sticky top-0 h-svh" : "absolute inset-0"} flex ${abajo ? "items-end [mask-image:linear-gradient(to_bottom,#000_72%,transparent_100%)]" : "items-center"} overflow-hidden ${clases.fila}`}>
         <img
           src={logoSello.src}
           width={logoSello.width}

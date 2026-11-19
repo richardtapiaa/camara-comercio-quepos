@@ -1,11 +1,14 @@
-import VerticalLinearStepper, { type Datos } from "./unete-stepper";
+import { enviarFormulario } from "../../../lib/api";
+import VerticalLinearStepper, { type DatosEnvio } from "./unete-stepper";
 
 interface Props {
-  onSubmit?: (datos: Datos) => void | Promise<void>;
+  onSubmit?: (datos: DatosEnvio) => void | Promise<void>;
 }
 
+const enviarAfiliacion = (datos: DatosEnvio) => enviarFormulario("afiliacion", datos);
+
 // El título y la frase van en UneteComponentes/FormularioUnete.astro; aquí solo el formulario por pasos.
-const FormularioUnete = ({ onSubmit }: Props) => (
+const FormularioUnete = ({ onSubmit = enviarAfiliacion }: Props) => (
   <div className="w-full">
     <VerticalLinearStepper onSubmit={onSubmit} />
   </div>
