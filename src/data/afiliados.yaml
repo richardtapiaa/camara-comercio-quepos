@@ -139,14 +139,6 @@
   correo: info@tracopacr.com
   web: https://tracopacr.com
 
-- id: quatro-legal
-  nombre: Quatro Legal
-  categoria: Comercio
-  descripcion: Comercio
-  logo: ../assets/afiliados/logos/quatro-legal.webp
-  telefonos: ["+506 2103-7294"]
-  correo: info@quatro.legal
-  web: https://quatro.legal
 
 # --- Sin datos de contacto todavía (completar cuando se tengan) ---
 

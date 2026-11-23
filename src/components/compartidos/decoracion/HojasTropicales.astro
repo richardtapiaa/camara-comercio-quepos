@@ -1,0 +1,27 @@
+---
+// Hojas tropicales semitransparentes (una hoja de plátano verde salvia y una heliconia coral) para una esquina
+// inferior. Con `espejo` se reflejan para la esquina derecha. Posición y tamaño van en `class`.
+interface Props {
+  class?: string;
+  espejo?: boolean;
+}
+const { class: clase = "", espejo = false } = Astro.props;
+---
+
+<svg class={`pointer-events-none absolute -z-10 ${espejo ? "-scale-x-100" : ""} ${clase}`} viewBox="0 0 300 380" aria-hidden="true">
+  <!-- Hoja de plátano -->
+  <g transform="translate(40 380) rotate(28)" opacity="0.35">
+    <path d="M0 0 C -48 -92 -76 -190 -52 -300 C -40 -350 -14 -372 0 -378 C 14 -372 40 -350 52 -300 C 76 -190 48 -92 0 0 Z" fill="#8fa588" />
+    <path d="M0 -6 L0 -370" stroke="#faf7f2" stroke-width="3" opacity="0.7" />
+    <path d="M0 -60 L-38 -96 M0 -110 L-46 -150 M0 -160 L-50 -204 M0 -210 L-48 -256 M0 -260 L-40 -302 M0 -60 L38 -96 M0 -110 L46 -150 M0 -160 L50 -204 M0 -210 L48 -256 M0 -260 L40 -302" stroke="#faf7f2" stroke-width="1.5" opacity="0.6" fill="none" />
+  </g>
+  <!-- Heliconia: tallo y brácteas alternadas -->
+  <g transform="translate(170 380) rotate(-8)" opacity="0.5">
+    <path d="M0 0 C -6 -90 6 -180 -4 -270" stroke="#8fa588" stroke-width="5" fill="none" />
+    <path d="M-2 -70 C -36 -74 -62 -92 -72 -122 C -44 -112 -18 -104 -2 -94 Z" fill="#e8907a" />
+    <path d="M1 -118 C 34 -124 58 -144 66 -172 C 40 -160 16 -150 1 -140 Z" fill="#e8907a" />
+    <path d="M-3 -164 C -32 -170 -54 -188 -60 -214 C -36 -204 -16 -196 -3 -186 Z" fill="#e8907a" />
+    <path d="M0 -208 C 26 -214 46 -230 52 -252 C 32 -242 14 -234 0 -226 Z" fill="#e8907a" />
+    <path d="M-60 -214 C -56 -208 -54 -206 -50 -204 M66 -172 C 62 -166 60 -164 56 -162" stroke="#f3c96b" stroke-width="5" stroke-linecap="round" />
+  </g>
+</svg>

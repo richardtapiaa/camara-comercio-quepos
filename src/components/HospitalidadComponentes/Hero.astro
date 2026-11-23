@@ -1,21 +1,22 @@
 ---
-import { Picture } from "astro:assets";
 import foto from "../../assets/hospitalidad/vista-hotel-manuel-antonio.jpg";
+import fotoVertical from "../../assets/hospitalidad/vista-hotel-manuel-antonio-celular.webp";
 import BordePincelada from "../compartidos/BordePincelada.astro";
+import PortadaConRecorte from "../compartidos/PortadaConRecorte.astro";
 import "../../styles/compartido/etiqueta-papel.css";
 import "../../styles/compartido/hero-texto.css";
 ---
 
 <section id="hero" class="relative isolate flex h-[78svh] min-h-[520px] items-end overflow-hidden bg-[#2b4a5c]">
-  <Picture
-    src={foto}
-    formats={["avif", "webp"]}
+  <PortadaConRecorte
+    foto={foto}
+    recorte={fotoVertical}
+    anchos={[800, 1280, 1920, 2560]}
+    calidad={50}
     alt="Vista al mar y a las islas de Manuel Antonio desde la terraza de un hotel, entre árboles"
-    widths={[800, 1280, 1920, 2560]}
-    sizes="100vw"
-    quality={50}
     class="absolute inset-0 -z-20 size-full object-cover"
     loading="eager"
+    decoding="async"
     fetchpriority="high"
   />
   <div class="absolute inset-0 -z-10 bg-gradient-to-t from-black/55 via-black/10 to-black/30" aria-hidden="true"></div>

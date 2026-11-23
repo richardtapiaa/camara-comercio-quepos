@@ -1,0 +1,12 @@
+---
+// Ondas orgánicas color arena para el pie de una sección. Posición y alto van en `class`.
+interface Props {
+  class?: string;
+}
+const { class: clase = "" } = Astro.props;
+---
+
+<svg class={`pointer-events-none absolute inset-x-0 -z-10 w-full ${clase}`} viewBox="0 0 1440 220" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0 110 C 220 60 420 150 720 105 C 1010 62 1220 140 1440 95 L1440 220 L0 220 Z" fill="#f2ebe0" opacity="0.6" />
+  <path d="M0 160 C 260 120 480 190 760 150 C 1040 112 1250 180 1440 145 L1440 220 L0 220 Z" fill="#f2ebe0" />
+</svg>

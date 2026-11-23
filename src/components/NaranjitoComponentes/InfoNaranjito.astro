@@ -2,6 +2,7 @@
 import { Picture } from "astro:assets";
 import foto from "../../assets/naranjito/imagenes-distrito/valle-naranjito.webp";
 import siluetaPaisaje from "../../assets/naranjito/paisaje-naranjito.svg";
+import { sizesHasta2x } from "../../lib/imagenes";
 
 // Datos de Wikipedia, que cita al INEC y a la División Territorial
 // Administrativa (consultados en noviembre de 2026). Cada punto lleva un sello
@@ -44,8 +45,8 @@ const puntos = [
         src={foto}
         formats={["avif", "webp"]}
         alt="Vista aérea de un valle con un río, cultivos y montañas al fondo en la zona de Quepos"
-        widths={[640, 960, 1280, 1600]}
-        sizes="(min-width: 1024px) 50vw, calc(100vw - 3rem)"
+        widths={[640, 768, 960, 1280, 1600]}
+        sizes={`(min-width: 1024px) 50vw, ${sizesHasta2x("100vw - 3rem")}`}
         quality={80}
         loading="lazy"
         decoding="async"

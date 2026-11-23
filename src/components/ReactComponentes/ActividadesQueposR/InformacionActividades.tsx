@@ -86,9 +86,10 @@ type InformacionActividadesProps = {
   kayak?: string;
   canopy?: string;
   pescado?: string;
+  tortuga?: string;
 };
 
-const InformacionActividades = ({ imagenes, perezoso, kayak, canopy, pescado }: InformacionActividadesProps) => {
+const InformacionActividades = ({ imagenes, perezoso, kayak, canopy, pescado, tortuga }: InformacionActividadesProps) => {
   const timelineData = actividades.slice(0, imagenes.length).map((actividad, i) => ({
     ...actividad,
     image: imagenes[i].src,
@@ -97,7 +98,7 @@ const InformacionActividades = ({ imagenes, perezoso, kayak, canopy, pescado }: 
   }));
 
   return (
-    <section id="actividades" className="overflow-clip bg-[#f6f6f7] py-16 md:py-24">
+    <section id="actividades" className="overflow-clip py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 md:px-8 lg:px-16">
         <div className="mb-12 max-w-2xl space-y-4 md:mb-20">
 
@@ -111,7 +112,7 @@ const InformacionActividades = ({ imagenes, perezoso, kayak, canopy, pescado }: 
             </p>
           </div>
         </div>
-        <Timeline items={timelineData} perezoso={perezoso} kayak={kayak} canopy={canopy} pescado={pescado} />
+        <Timeline items={timelineData} perezoso={perezoso} kayak={kayak} canopy={canopy} pescado={pescado} tortuga={tortuga} />
       </div>
     </section>
   );

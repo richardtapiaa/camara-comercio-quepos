@@ -12,6 +12,7 @@ import {
   Minimize,
   SkipBack,
   SkipForward,
+  Globe,
 } from "lucide-react";
 
 const videoPlayerVariants = cva(
@@ -418,7 +419,7 @@ const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
                           <Volume2 className="w-4 h-4" />
                         )}
                       </button>
-                      <div className="w-0 group-hover/volume:w-20 transition-all duration-200 overflow-hidden">
+                      <div className="w-0 group-hover/volume:w-20 group-focus-within/volume:w-20 transition-all duration-200 overflow-hidden">
                         {" "}
                         <input
                           type="range"
@@ -481,6 +482,8 @@ type Idioma = "es" | "en";
 export interface VideoQueposIdiomasProps extends Omit<VideoPlayerProps, "src" | "fuentes"> {
   fuentesEs: FuenteVideo[];
   fuentesEn: FuenteVideo[];
+  /** Si se da, el reproductor va dentro de un marco (div) con estas clases. */
+  claseMarco?: string;
 }
 
 const idiomas: { valor: Idioma; texto: string }[] = [
@@ -488,7 +491,7 @@ const idiomas: { valor: Idioma; texto: string }[] = [
   { valor: "en", texto: "Ver en inglés" },
 ];
 
-function VideoQueposIdiomas({ fuentesEs, fuentesEn, autoPlay, ...props }: VideoQueposIdiomasProps) {
+function VideoQueposIdiomas({ fuentesEs, fuentesEn, autoPlay, claseMarco, ...props }: VideoQueposIdiomasProps) {
   const [idioma, setIdioma] = React.useState<Idioma>("es");
   const [cambiado, setCambiado] = React.useState(false);
 
@@ -499,16 +502,26 @@ function VideoQueposIdiomas({ fuentesEs, fuentesEn, autoPlay, ...props }: VideoQ
   };
 
   return (
-    <div className="flex w-full flex-col items-center gap-6">
-      <VideoPlayer
-        key={idioma}
-        fuentes={idioma === "es" ? fuentesEs : fuentesEn}
-        autoPlay={cambiado || autoPlay}
-        lang={idioma}
-        {...props}
-      />
+    <div className="flex w-full flex-col items-center gap-6 sm:gap-8">
+      {(() => {
+        const reproductor = (
+          <VideoPlayer
+            key={idioma}
+            fuentes={idioma === "es" ? fuentesEs : fuentesEn}
+            autoPlay={cambiado || autoPlay}
+            lang={idioma}
+            {...props}
+          />
+        );
+        return claseMarco ? <div className={claseMarco}>{reproductor}</div> : reproductor;
+      })()}
 
-      <div role="group" aria-label="Idioma del video" className="inline-flex rounded-full bg-slate-100 p-1">
+      {/* Selector de idioma tipo cápsula: el activo en azul de la Cámara (aria-pressed), con transición suave */}
+      <div
+        role="group"
+        aria-label="Idioma del video"
+        className="inline-flex gap-1 rounded-full bg-white/90 p-1.5 shadow-[0_10px_30px_-12px_rgba(15,40,70,0.35)] ring-1 ring-black/5 backdrop-blur"
+      >
         {idiomas.map(({ valor, texto }) => (
           <button
             key={valor}
@@ -516,11 +529,14 @@ function VideoQueposIdiomas({ fuentesEs, fuentesEn, autoPlay, ...props }: VideoQ
             onClick={() => elegir(valor)}
             aria-pressed={idioma === valor}
             className={cn(
-              "rounded-full px-5 py-2.5 text-sm font-semibold transition-colors sm:px-6",
-              idioma === valor ? "bg-[#2578bd] text-white shadow" : "text-slate-600 hover:text-slate-900",
+              "inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mar focus-visible:ring-offset-2 sm:px-6",
+              idioma === valor
+                ? "bg-mar text-white shadow-[0_6px_16px_-6px_rgba(37,120,189,0.7)]"
+                : "text-tinta hover:bg-crema hover:text-marino",
             )}
           >
             {texto}
+            <Globe className={cn("size-4 transition-opacity", idioma === valor ? "opacity-90" : "opacity-60")} aria-hidden="true" />
           </button>
         ))}
       </div>

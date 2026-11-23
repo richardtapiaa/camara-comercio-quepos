@@ -1,17 +1,9 @@
 ---
 import InformacionBolsa from "./InformacionBolsa.astro";
 import Bolsa from "../ReactComponentes/BOLSAEMPLEO/bolsa.tsx";
-import logoCamara from "../../assets/compartido/logo-camara-blanco-nav.webp";
 ---
 
-<section class="relative grid min-h-[68rem] w-full overflow-hidden bg-[#073a5e] pt-28 text-slate-800 lg:min-h-[46rem] lg:grid-cols-[50%_50%] lg:pt-32">
-  <img
-    src={logoCamara.src}
-    width={logoCamara.width}
-    height={logoCamara.height}
-    alt="Cámara de Comercio, Industria y Turismo de Quepos"
-    class="absolute right-5 top-28 z-20 h-auto w-44 sm:right-10 sm:w-52 lg:right-12 lg:top-36 lg:w-[13.5rem] xl:right-16 xl:w-[15rem]"
-  />
+<section class="relative grid min-h-[68rem] w-full overflow-hidden bg-white pt-10 text-slate-800 lg:min-h-[46rem] lg:grid-cols-[50%_50%] lg:pt-12">
   <InformacionBolsa />
   <Bolsa client:visible />
 </section>

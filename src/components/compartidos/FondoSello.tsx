@@ -1,4 +1,4 @@
-import logoSello from "../../assets/compartido/logo-camara-sello.webp";
+import { sello900, selloSizes, selloSrcSet } from "../../lib/sello";
 
 interface Props {
   opacidad?: number;
@@ -8,6 +8,8 @@ interface Props {
   fijo?: boolean;
   /** Pega el sello abajo (en la esquina de su lado) e inclinado hacia el contenido, en vez de centrarlo. */
   abajo?: boolean;
+  /** Para cuando el sello se ve apenas abre la página: se carga de inmediato y con prioridad. */
+  prioritario?: boolean;
 }
 
 const clasesLado = {
@@ -27,7 +29,7 @@ const clasesCorrido = {
   izquierda: "-ml-48 -rotate-6 lg:-ml-[22rem]",
 };
 
-export default function FondoSello({ opacidad = 0.1, lado = "derecha", corrido = false, claro = false, fijo = true, abajo = false }: Props) {
+export default function FondoSello({ opacidad = 0.1, lado = "derecha", corrido = false, claro = false, fijo = true, abajo = false, prioritario = false }: Props) {
   const clases = clasesLado[lado];
   const posicion = abajo ? clasesAbajo[lado] : corrido ? clasesCorrido[lado] : clases.sello;
   const claseSello = `${posicion} ${claro ? "brightness-0 invert" : ""}`;
@@ -35,11 +37,14 @@ export default function FondoSello({ opacidad = 0.1, lado = "derecha", corrido =
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
       <div className={`${fijo ? "sticky top-0 h-svh" : "absolute inset-0"} flex ${abajo ? "items-end [mask-image:linear-gradient(to_bottom,#000_72%,transparent_100%)]" : "items-center"} overflow-hidden ${clases.fila}`}>
         <img
-          src={logoSello.src}
-          width={logoSello.width}
-          height={logoSello.height}
+          src={sello900.src}
+          srcSet={selloSrcSet}
+          sizes={selloSizes}
+          width={sello900.width}
+          height={sello900.height}
           alt=""
-          loading="lazy"
+          loading={prioritario ? "eager" : "lazy"}
+          fetchPriority={prioritario ? "high" : undefined}
           decoding="async"
           draggable={false}
           style={{ opacity: opacidad }}

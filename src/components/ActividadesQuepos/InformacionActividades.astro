@@ -1,5 +1,9 @@
 ---
+import { Image } from "astro:assets";
 import { optimizarImagen, variantesCapa } from "../../lib/imagenes";
+import CurvasTopograficas from "../compartidos/decoracion/CurvasTopograficas.astro";
+import HojaMonstera from "../compartidos/decoracion/HojaMonstera.astro";
+import palmera from "../../assets/quepos/palmera-sin-fondo.webp";
 import InformacionActividades from "../ReactComponentes/ActividadesQueposR/InformacionActividades";
 import perezosoLinea from "../../assets/actividades/perezoso-linea.webp";
 import kayakLinea from "../../assets/actividades/kayak-linea.webp";
@@ -13,6 +17,7 @@ import actividades6 from "../../assets/actividades/actividades-6.jpeg";
 import actividad7 from "../../assets/actividades/actividad7.jpg";
 import actividad8 from "../../assets/actividades/actividad8.jpg";
 import pescadoLinea from "../../assets/actividades/Pescado.webp";
+import tortugaLinea from "../../assets/actividades/Tortuga.webp";
 
 const anchosFotos = [400, 700, 1000];
 const imagenes = [
@@ -26,11 +31,33 @@ const imagenes = [
 ];
 ---
 
-<InformacionActividades
-  client:visible
-  imagenes={imagenes}
-  perezoso={await optimizarImagen(perezosoLinea, 256, 80)}
-  kayak={await optimizarImagen(kayakLinea, 160, 80)}
-  canopy={await optimizarImagen(canopyLinea, 192, 85)}
-  pescado={await optimizarImagen(pescadoLinea, 192, 80)}
-/>
+<!--
+  Fondo tropical de la línea de actividades (las cards no cambian): degradado de arena arriba a agua abajo, curvas
+  topográficas tenues a los lados, palmas en las esquinas de arriba y hojas de monstera en los costados, algo
+  desenfocadas. Los adornos son decorativos (aria-hidden, sin clics), van detrás y se reducen en pantallas chicas.
+-->
+<div class="relative isolate overflow-hidden bg-[linear-gradient(180deg,#f7ecdc_0%,#eef0e6_22%,#d9ece6_50%,#c6e4e0_78%,#b9ded9_100%)]">
+  <CurvasTopograficas class="-left-64 top-[6%] hidden w-[46rem] text-[#b9a78a] opacity-30 md:block" giroInicial={15} />
+  <CurvasTopograficas class="-right-72 top-[30%] hidden w-[52rem] -scale-x-100 text-[#b9a78a] opacity-25 md:block" giroInicial={50} pasoGiro={9} />
+  <CurvasTopograficas class="-left-72 top-[58%] hidden w-[50rem] text-[#9fb5ad] opacity-30 md:block" anillos={9} giroInicial={80} />
+  <CurvasTopograficas class="-right-60 top-[80%] hidden w-[44rem] -scale-x-100 text-[#9fb5ad] opacity-30 md:block" anillos={8} giroInicial={30} />
+
+  <Image src={palmera} alt="" width={600} widths={[300, 600]} sizes="(min-width: 1024px) 384px, 192px" class="pointer-events-none absolute right-0 top-0 -z-10 h-auto w-48 select-none opacity-90 blur-[1px] lg:w-96" loading="lazy" draggable="false" aria-hidden="true" />
+  <Image src={palmera} alt="" width={600} widths={[300, 600]} sizes="(min-width: 1024px) 384px, 192px" class="pointer-events-none absolute left-0 top-0 -z-10 h-auto w-48 -scale-x-100 select-none opacity-90 blur-[1px] lg:w-96" loading="lazy" draggable="false" aria-hidden="true" />
+
+  <HojaMonstera class="-left-20 top-[18%] -z-10 hidden w-48 rotate-[30deg] opacity-90 blur-[1.5px] lg:block xl:w-60" />
+  <HojaMonstera class="-right-20 top-[32%] -z-10 hidden w-48 -rotate-[25deg] opacity-90 blur-[1.5px] lg:block xl:w-60" espejo />
+  <HojaMonstera class="-left-24 top-[52%] -z-10 hidden w-52 rotate-[55deg] opacity-85 blur-[2px] lg:block xl:w-64" />
+  <HojaMonstera class="-right-24 top-[68%] -z-10 hidden w-52 -rotate-[45deg] opacity-85 blur-[2px] lg:block xl:w-64" espejo />
+  <HojaMonstera class="-left-16 top-[86%] -z-10 hidden w-44 rotate-[15deg] opacity-80 blur-[1.5px] lg:block" />
+
+  <InformacionActividades
+    client:visible
+    imagenes={imagenes}
+    perezoso={await optimizarImagen(perezosoLinea, 256, 80)}
+    kayak={await optimizarImagen(kayakLinea, 160, 80)}
+    canopy={await optimizarImagen(canopyLinea, 192, 85)}
+    pescado={await optimizarImagen(pescadoLinea, 192, 80)}
+    tortuga={await optimizarImagen(tortugaLinea, 288, 80)}
+  />
+</div>

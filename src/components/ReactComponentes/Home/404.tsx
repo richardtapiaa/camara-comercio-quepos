@@ -1,105 +1,11 @@
-  'use client';
-
-import { AnimatePresence, motion } from 'framer-motion';
+import type { CSSProperties } from 'react';
 import { FlowButton } from '@/components/ui/flow-button';
 import logoCamara from '@/assets/compartido/logo-camara.webp';
-import logoSello from '@/assets/compartido/logo-camara-sello.webp';
+import logoSello from '@/assets/compartido/logo-camara-sello-900.webp';
+import fantasma from '@/assets/compartido/fantasma-404.png';
 
-const containerVariants = {
-  hidden: {
-    opacity: 0,
-    y: 30,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.7,
-      ease: [0.43, 0.13, 0.23, 0.96] as const,
-      delayChildren: 0.1,
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: {
-    opacity: 0,
-    y: 20,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: [0.43, 0.13, 0.23, 0.96] as const,
-    },
-  },
-};
-
-const numberVariants = {
-  hidden: (direction: number) => ({
-    opacity: 0,
-    x: direction * 40,
-    y: 15,
-    rotate: direction * 5,
-  }),
-  visible: {
-    opacity: 0.7,
-    x: 0,
-    y: 0,
-    rotate: 0,
-    transition: {
-      duration: 0.8,
-      ease: [0.43, 0.13, 0.23, 0.96] as const,
-    },
-  },
-};
-
-const ghostVariants = {
-  hidden: {
-    scale: 0.8,
-    opacity: 0,
-    y: 15,
-    rotate: -5,
-  },
-  visible: {
-    scale: 1,
-    opacity: 1,
-    y: 0,
-    rotate: 0,
-    transition: {
-      duration: 0.6,
-      ease: [0.43, 0.13, 0.23, 0.96] as const,
-    },
-  },
-  hover: {
-    scale: 1.1,
-    y: -10,
-    rotate: [0, -5, 5, -5, 0],
-    transition: {
-      duration: 0.8,
-      ease: 'easeInOut' as const,
-      rotate: {
-        duration: 2,
-        ease: 'linear' as const,
-        repeat: Infinity,
-        repeatType: 'reverse' as const,
-      },
-    },
-  },
-  floating: {
-    y: [-5, 5],
-    transition: {
-      y: {
-        duration: 2,
-        ease: 'easeInOut' as const,
-        repeat: Infinity,
-        repeatType: 'reverse' as const,
-      },
-    },
-  },
-};
+const retraso = (segundos: number, lado?: number) =>
+  ({ '--retraso': `${segundos}s`, '--lado': lado }) as CSSProperties;
 
 export function NotFound() {
   return (
@@ -114,29 +20,18 @@ export function NotFound() {
         draggable={false}
         className="pointer-events-none absolute -bottom-6 -right-28 -z-10 h-auto w-[520px] max-w-none -rotate-6 select-none opacity-[0.18] md:-bottom-24 md:-right-32 md:w-[720px] lg:w-[820px]"
       />
-      <AnimatePresence mode="wait">
-        <motion.div
-          className="relative z-10 text-center"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          exit="hidden"
-        >
-          <div className="mb-8 flex items-center justify-center gap-4 md:mb-12 md:gap-6">
-            <motion.span
-              className="select-none font-bold text-[80px] text-[#222222] opacity-70 md:text-[120px]"
-              variants={numberVariants}
-              custom={-1}
-            >
-              4
-            </motion.span>
-            <motion.div
-              variants={ghostVariants}
-              whileHover="hover"
-              animate={['visible', 'floating']}
-            >
+      <div className="p404-contenido relative z-10 text-center">
+        <div className="mb-8 flex items-center justify-center gap-4 md:mb-12 md:gap-6">
+          <span
+            className="p404-numero select-none font-bold text-[80px] text-[#222222] opacity-70 md:text-[120px]"
+            style={retraso(0.1, -1)}
+          >
+            4
+          </span>
+          <div className="p404-fantasma">
+            <div className="p404-fantasma-flotar">
               <img
-                src="https://cdn.21st.dev/assets/mirror/88/8848c4fd858052c49c5a5d7267489c02b021c6cf3e31bfec02787e16f1ab7d0e.png"
+                src={fantasma.src}
                 alt="Fantasma"
                 width={120}
                 height={120}
@@ -144,58 +39,46 @@ export function NotFound() {
                 draggable={false}
                 loading="eager"
               />
-            </motion.div>
-            <motion.span
-              className="select-none font-bold text-[80px] text-[#222222] opacity-70 md:text-[120px]"
-              variants={numberVariants}
-              custom={1}
-            >
-              4
-            </motion.span>
+            </div>
           </div>
-
-          <motion.h1
-            className="mb-4 select-none font-bold text-3xl text-[#222222] opacity-70 md:mb-6 md:text-5xl"
-            variants={itemVariants}
+          <span
+            className="p404-numero select-none font-bold text-[80px] text-[#222222] opacity-70 md:text-[120px]"
+            style={retraso(0.2, 1)}
           >
-            ¡Boo! Página no encontrada
-          </motion.h1>
+            4
+          </span>
+        </div>
 
-          <motion.p
-            className="mb-8 select-none text-lg text-[#222222] opacity-50 md:mb-12 md:text-xl"
-            variants={itemVariants}
-          >
-            ¡Ups! Esta página debe ser un fantasma; no está aquí.
-          </motion.p>
+        <h1
+          className="p404-elemento mb-4 select-none font-bold text-3xl text-[#222222] md:mb-6 md:text-5xl"
+          style={retraso(0.3)}
+        >
+          ¡Boo! Página no encontrada
+        </h1>
 
-          <motion.div
-            className="flex justify-center"
-            variants={itemVariants}
-            whileHover={{
-              scale: 1.05,
-              transition: {
-                duration: 0.3,
-                ease: [0.43, 0.13, 0.23, 0.96] as const,
-              },
-            }}
-          >
-            <a href="/">
-              <FlowButton text="Volver al inicio" />
-            </a>
-          </motion.div>
+        <p
+          className="p404-elemento mb-8 select-none text-lg text-[#222222] md:mb-12 md:text-xl"
+          style={retraso(0.4)}
+        >
+          ¡Ups! Esta página debe ser un fantasma; no está aquí.
+        </p>
 
-          <motion.div className="mt-12 flex justify-center" variants={itemVariants}>
-            <img
-              src={logoCamara.src}
-              alt="Cámara de Comercio, Industria y Turismo de Quepos"
-              width={260}
-              height={130}
-              className="h-auto w-[220px] object-contain md:w-[260px]"
-            />
-          </motion.div>
+        <div className="p404-elemento p404-boton flex justify-center" style={retraso(0.5)}>
+          <a href="/">
+            <FlowButton text="Volver al inicio" />
+          </a>
+        </div>
 
-        </motion.div>
-      </AnimatePresence>
+        <div className="p404-elemento mt-12 flex justify-center" style={retraso(0.6)}>
+          <img
+            src={logoCamara.src}
+            alt="Cámara de Comercio, Industria y Turismo de Quepos"
+            width={260}
+            height={130}
+            className="h-auto w-[220px] object-contain md:w-[260px]"
+          />
+        </div>
+      </div>
     </div>
   );
 }

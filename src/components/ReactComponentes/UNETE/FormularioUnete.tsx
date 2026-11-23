@@ -7,7 +7,7 @@ interface Props {
 
 const enviarAfiliacion = (datos: DatosEnvio) => enviarFormulario("afiliacion", datos);
 
-// El título y la frase van en UneteComponentes/FormularioUnete.astro; aquí solo el formulario por pasos.
+
 const FormularioUnete = ({ onSubmit = enviarAfiliacion }: Props) => (
   <div className="w-full">
     <VerticalLinearStepper onSubmit={onSubmit} />

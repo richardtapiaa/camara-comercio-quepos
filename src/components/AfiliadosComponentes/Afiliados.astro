@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { categoriasAfiliados } from "../../content.config";
 import logo from "../../assets/compartido/logo-camara.webp";
-import logoSello from "../../assets/compartido/logo-camara-sello.webp";
+import { sello480, sello900, selloSizes, selloSrcSet } from "../../lib/sello";
 import "../../styles/afiliados/afiliados.css";
 // Íconos de SVG Repo, todos de un solo color: negro.
 import iconoTelefono from "../../assets/afiliados/iconos-svg/icono-telefono.svg";
@@ -60,9 +60,11 @@ const claseRed =
   <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10">
     <div class="sticky top-0 flex h-svh items-center justify-end overflow-hidden">
       <img
-        src={logoSello.src}
-        width={logoSello.width}
-        height={logoSello.height}
+        src={sello900.src}
+        srcset={selloSrcSet}
+        sizes={selloSizes}
+        width={sello900.width}
+        height={sello900.height}
         alt=""
         decoding="async"
         draggable="false"
@@ -139,9 +141,9 @@ const claseRed =
               <!-- Sello de la Cámara de fondo, muy tenue, abajo a la derecha: indica que el negocio es afiliado -->
               <div class="pointer-events-none absolute inset-0 -z-10 overflow-hidden rounded-[2.5rem]" aria-hidden="true">
                 <img
-                  src={logoSello.src}
-                  width={logoSello.width}
-                  height={logoSello.height}
+                  src={sello480.src}
+                  width={sello480.width}
+                  height={sello480.height}
                   alt=""
                   loading="lazy"
                   decoding="async"
@@ -222,7 +224,7 @@ const claseRed =
                   {enMapa.has(id) && (
                     <a
                       href={`/mapa-afiliados#${id}`}
-                      class="inline-flex items-center gap-1.5 text-sm font-medium text-black underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none"
+                      class="inline-flex items-center gap-1.5 text-sm font-medium text-black underline-offset-4 hover:underline rounded focus-visible:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#1d5a7a]"
                     >
                       <img src={iconoMapa.src} alt="" width="20" height="20" class="size-5" aria-hidden="true" />
                       Ver en el mapa

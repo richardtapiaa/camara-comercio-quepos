@@ -1,18 +1,21 @@
 ---
-import { Image } from "astro:assets";
-import fotoMarina from "../../assets/unete/marina-pez-vela.webp";
+import fotoQuepos from "../../assets/unete/quepos-aerea.webp";
+import fotoVertical from "../../assets/unete/quepos-aerea-celular.webp";
+import PortadaConRecorte from "../compartidos/PortadaConRecorte.astro";
 ---
 
 
 <section id="hero" aria-labelledby="titulo-unete" class="relative isolate overflow-hidden bg-slate-950 px-6 pb-56 pt-52 sm:px-10 sm:pb-64 sm:pt-52 lg:min-h-[88svh] lg:pb-72 lg:pt-52">
-  <Image
-    src={fotoMarina}
+  <PortadaConRecorte
+    foto={fotoQuepos}
+    recorte={fotoVertical}
+    anchos={[640, 800, 1024, 1600]}
+    calidad={60}
     alt=""
-    widths={[640, 1024, 1600]}
-    sizes="100vw"
     loading="eager"
+    decoding="async"
     fetchpriority="high"
-    class="absolute inset-0 -z-20 size-full object-cover object-[center_30%]"
+    class="absolute inset-0 -z-20 size-full object-cover object-[center_55%]"
   />
 
   <div aria-hidden="true" class="absolute inset-0 -z-10 bg-gradient-to-r from-slate-950/85 via-slate-950/55 to-slate-950/20"></div>

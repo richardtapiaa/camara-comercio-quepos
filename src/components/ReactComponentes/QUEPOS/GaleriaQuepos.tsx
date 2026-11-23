@@ -111,8 +111,10 @@ export function Gallery({ children, images = [] }: { children: React.ReactNode; 
   );
 }
 
-export function GalleryGrid({ children, className }: { children: React.ReactNode; className?: string }) {
-  return <div className={cn("columns-2 gap-3 md:columns-3 md:gap-4 lg:columns-4", className)}>{children}</div>;
+export function GalleryGrid({ children, className, rejilla = false }: { children: React.ReactNode; className?: string; rejilla?: boolean }) {
+  // rejilla: cuadrícula pareja (1 columna en celular, 2 en tablet, 4 en escritorio); si no, columnas tipo mosaico.
+  const base = rejilla ? "grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4 lg:gap-7" : "columns-2 gap-3 md:columns-3 md:gap-4 lg:columns-4";
+  return <div className={cn(base, className)}>{children}</div>;
 }
 
 export function GalleryImage({
@@ -128,6 +130,8 @@ export function GalleryImage({
   sizes,
   ancho,
   alto,
+  rejilla = false,
+  prioritaria = false,
 }: {
   src: string;
   alt?: string;
@@ -141,6 +145,8 @@ export function GalleryImage({
   sizes?: string;
   ancho?: number;
   alto?: number;
+  rejilla?: boolean;
+  prioritaria?: boolean;
 }) {
   const context = React.useContext(GalleryContext);
   if (!context) throw new Error("GalleryImage must be used within a Gallery");
@@ -149,13 +155,16 @@ export function GalleryImage({
     <motion.button
       type="button"
       whileHover="hover"
+      whileFocus={rejilla ? "hover" : undefined}
       whileTap="tap"
       className={cn(
-        "relative mb-3 block w-full break-inside-avoid cursor-zoom-in rounded-2xl overflow-hidden bg-slate-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 md:mb-4",
-        aspect,
+        rejilla
+          ? "group relative block aspect-[4/3] w-full cursor-zoom-in overflow-hidden rounded-lg bg-crema focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-marino"
+          : "relative mb-3 block w-full break-inside-avoid cursor-zoom-in rounded-2xl overflow-hidden bg-crema focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-marino md:mb-4",
+        !rejilla && aspect,
         className,
       )}
-      style={!aspect && ancho && alto ? { aspectRatio: `${ancho} / ${alto}` } : undefined}
+      style={!rejilla && !aspect && ancho && alto ? { aspectRatio: `${ancho} / ${alto}` } : undefined}
       onClick={() => context.setSelectedImage({ id, src, alt })}
       onPointerEnter={miniatura ? () => (new Image().src = src) : undefined}
       onFocus={miniatura ? () => (new Image().src = src) : undefined}
@@ -171,12 +180,17 @@ export function GalleryImage({
         decoding="async"
         alt={alt || "Imagen de la galería"}
         loading={loading}
-        className={cn("w-full object-cover rounded-2xl", aspect || (ancho && alto) ? "h-full" : "h-auto")}
-        variants={{
-          hover: { scale: 0.98 },
-          tap: { scale: 0.95 },
-        }}
-        transition={spring}
+        fetchPriority={prioritaria ? "high" : undefined}
+        className={cn(
+          "w-full object-cover",
+          rejilla ? "h-full rounded-lg" : cn("rounded-2xl", aspect || (ancho && alto) ? "h-full" : "h-auto"),
+        )}
+        variants={
+          rejilla
+            ? { hover: { scale: 1.03 }, tap: { scale: 0.99 } }
+            : { hover: { scale: 0.98 }, tap: { scale: 0.95 } }
+        }
+        transition={rejilla ? { type: "tween", duration: 0.45, ease: [0.22, 1, 0.36, 1] } : spring}
       />
 
       <motion.div
@@ -185,8 +199,11 @@ export function GalleryImage({
           tap: { opacity: 1 },
         }}
         initial={{ opacity: 0 }}
-        className="absolute inset-0 bg-black/20 pointer-events-none rounded-2xl"
-        transition={{ duration: 0.2 }}
+        className={cn(
+          "pointer-events-none absolute inset-0",
+          rejilla ? "rounded-lg bg-black/10" : "rounded-2xl bg-black/20",
+        )}
+        transition={{ duration: rejilla ? 0.35 : 0.2 }}
       />
     </motion.button>
   );
@@ -344,11 +361,14 @@ const primerasDeColumna = (total: number) => {
   return indices;
 };
 
-const GaleriaQuepos = ({ items, className }: { items: GaleriaItem[]; className?: string }) => {
-  const visiblesAlAbrir = primerasDeColumna(items.length);
+const TAMANOS_REJILLA = "(min-width: 1600px) 370px, (min-width: 1024px) 23vw, (min-width: 640px) 48vw, 100vw";
+
+const GaleriaQuepos = ({ items, className, rejilla = false }: { items: GaleriaItem[]; className?: string; rejilla?: boolean }) => {
+  // En rejilla se cargan de inmediato las fotos de la primera fila; en mosaico, las primeras de cada columna.
+  const visiblesAlAbrir = rejilla ? new Set([0, 1, 2, 3]) : primerasDeColumna(items.length);
   return (
     <Gallery images={items.map((item) => ({ id: String(item.id), src: item.src, alt: item.alt }))}>
-      <GalleryGrid className={className}>
+      <GalleryGrid className={className} rejilla={rejilla}>
         {items.map((item, index) => (
           <GalleryImage
             key={item.id}
@@ -357,11 +377,13 @@ const GaleriaQuepos = ({ items, className }: { items: GaleriaItem[]; className?:
             alt={item.alt}
             miniatura={item.miniatura}
             srcSet={item.srcSet}
-            sizes={TAMANOS_MINIATURA}
+            sizes={rejilla ? TAMANOS_REJILLA : TAMANOS_MINIATURA}
             ancho={item.ancho}
             alto={item.alto}
             loading={visiblesAlAbrir.has(index) ? "eager" : "lazy"}
+            prioritaria={rejilla && index === 0}
             aspect={item.ancho && item.alto ? undefined : PROPORCIONES[index % PROPORCIONES.length]}
+            rejilla={rejilla}
           />
         ))}
       </GalleryGrid>

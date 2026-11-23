@@ -19,6 +19,187 @@ const TAMANO_FOTO = "(min-width: 1280px) 480px, (min-width: 768px) 35vw, calc(10
 
 const PUNTO_REFERENCIA = "70%";
 
+// Cuántas actividades se ven antes de "Ver más"; las cards con más se acortan para que no queden tan largas.
+const VISIBLES = 4;
+
+function ListaActividades({
+  descripcion,
+  id,
+  abierta,
+  onAlternar,
+  onFin,
+}: {
+  descripcion: string;
+  id: string;
+  abierta: boolean;
+  onAlternar: () => void;
+  onFin: (abierta: boolean) => void;
+}) {
+  const lineas = descripcion.split("\n").map((l) => l.trim()).filter(Boolean);
+  const extra = lineas.slice(VISIBLES);
+  const claseTexto = "text-sm leading-relaxed text-slate-600 md:text-[15px] md:leading-[1.75]";
+
+  return (
+    <div className="mt-4">
+      <ul className={claseTexto}>
+        {lineas.slice(0, VISIBLES).map((l) => (
+          <li key={l}>{l}</li>
+        ))}
+      </ul>
+      {extra.length > 0 && (
+        <>
+          <div
+            id={id}
+            className={cn(
+              "grid transition-[grid-template-rows,opacity] duration-500 ease-out motion-reduce:transition-none",
+              abierta ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0",
+            )}
+            onTransitionEnd={(e) => e.propertyName === "grid-template-rows" && onFin(abierta)}
+            inert={!abierta}
+          >
+            <ul className={cn("overflow-hidden", claseTexto)}>
+              {extra.map((l) => (
+                <li key={l}>{l}</li>
+              ))}
+            </ul>
+          </div>
+          <button
+            type="button"
+            onClick={onAlternar}
+            aria-expanded={abierta}
+            aria-controls={id}
+            className="group mt-3 inline-flex items-center gap-1.5 rounded-full text-sm font-semibold text-[#2780c9] transition-colors hover:text-[#1d6aa8] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#2780c9]"
+          >
+            {abierta ? "Ver menos" : `Ver más (${extra.length})`}
+            <svg viewBox="0 0 24 24" className={cn("size-4 transition-transform duration-300", abierta && "rotate-180")} fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+        </>
+      )}
+    </div>
+  );
+}
+
+// Card de la línea de tiempo. En escritorio, al abrir "Ver más" la card NO empuja lo de abajo: el marco conserva el alto que tenía
+// cerrada y la card se despliega por encima del espacio de abajo (posición absoluta, por delante). Así la línea,
+// sus puntos y los animales que la recorren se quedan quietos. Al terminar de cerrarse, vuelve a su lugar normal.
+// onEspacio: solo la última card, que no tiene espacio debajo. Se despliega igual que las demás (el punto y la línea
+// no se mueven) y avisa cuánto crece para que la lista agregue ese espacio al final; al terminar se vuelve a medir
+// la página para las animaciones de las secciones siguientes.
+function TarjetaActividad({
+  item,
+  indice,
+  onEspacio,
+}: {
+  item: TimelineItem;
+  indice: number;
+  onEspacio?: (px: number) => void;
+}) {
+  const marco = React.useRef<HTMLDivElement>(null);
+  const [abierta, setAbierta] = React.useState(false);
+  const [altoFijo, setAltoFijo] = React.useState<number | null>(null);
+
+  // Cómo se abre, decidido en cada clic:
+  //  "encima"  (escritorio): se despliega por encima del espacio vacío de abajo; la línea no se mueve.
+  //  "espacio" (escritorio, última card): igual, y la lista agrega al final el espacio que crece.
+  //  "empuja"  (celular): no hay espacio vacío al lado, así que crece normal y empuja las cards de abajo;
+  //            mientras se abre, la línea se vuelve a medir en cada cuadro para que siga a los puntos.
+  const modo = React.useRef<"encima" | "espacio" | "empuja">("encima");
+  const cuadro = React.useRef(0);
+
+  const soltar = () => setAltoFijo(null);
+  const sinMovimiento = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // Mientras la página cambia de alto, el navegador no debe moverla por su cuenta (el anclaje de scroll
+  // toma la sección de abajo como referencia y la card "brinca").
+  const anclaje = (activo: boolean) => {
+    document.documentElement.style.overflowAnchor = activo ? "" : "none";
+  };
+  const medirLinea = () => marco.current?.dispatchEvent(new Event("timeline-medir", { bubbles: true }));
+  const seguirLinea = () => {
+    medirLinea();
+    cuadro.current = requestAnimationFrame(seguirLinea);
+  };
+  const terminarCambio = () => {
+    cancelAnimationFrame(cuadro.current);
+    ScrollTrigger.refresh();
+    anclaje(true);
+  };
+  React.useEffect(() => () => cancelAnimationFrame(cuadro.current), []);
+
+  const alTerminar = (quedoAbierta: boolean) => {
+    if (!quedoAbierta) soltar();
+    if (modo.current !== "encima") terminarCambio();
+  };
+  const alternar = () => {
+    if (!abierta) {
+      const movil = !window.matchMedia("(min-width: 768px)").matches;
+      modo.current = movil ? "empuja" : onEspacio ? "espacio" : "encima";
+    }
+    const actual = modo.current;
+    if (actual !== "encima") anclaje(false);
+
+    if (actual === "empuja") {
+      setAbierta((a) => !a);
+      if (sinMovimiento()) requestAnimationFrame(terminarCambio);
+      else {
+        cancelAnimationFrame(cuadro.current);
+        cuadro.current = requestAnimationFrame(seguirLinea);
+      }
+      return;
+    }
+
+    if (!abierta) {
+      setAltoFijo(marco.current?.offsetHeight ?? null);
+      setAbierta(true);
+      // Lo que va a crecer la card = alto de la lista oculta
+      if (actual === "espacio")
+        onEspacio?.(marco.current?.querySelector<HTMLElement>(`#actividades-extra-${indice} > ul`)?.scrollHeight ?? 0);
+    } else {
+      setAbierta(false);
+      if (actual === "espacio") onEspacio?.(0);
+      if (sinMovimiento()) soltar();
+    }
+    if (actual === "espacio" && sinMovimiento()) requestAnimationFrame(terminarCambio);
+  };
+
+  return (
+    <div ref={marco} className="relative" style={altoFijo ? { height: altoFijo } : undefined}>
+      <article
+        data-tarjeta
+        className={cn(
+          "overflow-hidden rounded-3xl bg-white shadow-[0_12px_40px_-16px_rgba(16,42,67,0.35)] ring-1 ring-slate-900/5",
+          altoFijo && "absolute inset-x-0 top-0 z-30",
+        )}
+      >
+        <div className="relative aspect-[16/10] overflow-hidden">
+          <img
+            src={item.image}
+            srcSet={item.imageSrcSet}
+            sizes={item.imageSrcSet ? TAMANO_FOTO : undefined}
+            alt={item.alt ?? item.title}
+            loading="lazy"
+            decoding="async"
+            className="size-full object-cover"
+            draggable={false}
+          />
+        </div>
+
+        <div className="p-6 md:p-8">
+          <h3 className="text-xl font-bold tracking-tight text-[#102a43] md:text-2xl">{item.title}</h3>
+          <ListaActividades
+            descripcion={item.description}
+            id={`actividades-extra-${indice}`}
+            abierta={abierta}
+            onAlternar={alternar}
+            onFin={alTerminar}
+          />
+        </div>
+      </article>
+    </div>
+  );
+}
+
 function useAnimacionTimeline(ref: React.RefObject<HTMLDivElement | null>) {
   React.useLayoutEffect(() => {
     const raiz = ref.current;
@@ -37,7 +218,9 @@ function useAnimacionTimeline(ref: React.RefObject<HTMLDivElement | null>) {
       { fondo: "[data-linea-tronco]", viajero: "[data-linea-perezoso]", desde: 0, hasta: 1 },
       { fondo: "[data-linea-agua]", viajero: "[data-linea-kayak]", desde: 1, hasta: 3 },
       { fondo: "[data-linea-cable]", viajero: "[data-linea-canopy]", desde: 3, hasta: 4 },
-      { fondo: "[data-linea-agua-pesca]", viajero: "[data-linea-pescado]", desde: 4, hasta: marcadores.length - 1 },
+      // Pesca (4) -> Bienestar (5) en el agua; Bienestar (5) -> último punto en la arena con la tortuga
+      { fondo: "[data-linea-agua-pesca]", viajero: "[data-linea-pescado]", desde: 4, hasta: 5 },
+      { fondo: "[data-linea-arena]", viajero: "[data-linea-tortuga]", desde: 5, hasta: marcadores.length - 1 },
     ]
       .map((t) => ({
         ...t,
@@ -62,9 +245,11 @@ function useAnimacionTimeline(ref: React.RefObject<HTMLDivElement | null>) {
     };
     medir();
     ScrollTrigger.addEventListener("refreshInit", medir);
+    raiz.addEventListener("timeline-medir", medir);
 
     const sinMovimiento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    let alRefrescar: (() => void) | null = null;
     const ctx = gsap.context(() => {
       if (sinMovimiento) {
         gsap.set(relleno, { scaleY: 1 });
@@ -112,6 +297,12 @@ function useAnimacionTimeline(ref: React.RefObject<HTMLDivElement | null>) {
         );
         recorrido.eventCallback("onUpdate", () => actualizarViajeros(Number(gsap.getProperty(punta, "y"))));
         actualizarViajeros(0);
+        // Un refresh (cambio de tamaño de la ventana, abrir la última card) reinicia el recorrido por un instante
+        // y dejaba a un animal equivocado visible: al terminar se vuelve a decidir con la posición real.
+        ScrollTrigger.addEventListener("refresh", alRefrescar = () => {
+          tramoAntes = null;
+          actualizarViajeros(Number(gsap.getProperty(punta, "y")));
+        });
       }
 
       marcadores.forEach((marcador) => {
@@ -147,6 +338,8 @@ function useAnimacionTimeline(ref: React.RefObject<HTMLDivElement | null>) {
 
     return () => {
       ScrollTrigger.removeEventListener("refreshInit", medir);
+      raiz.removeEventListener("timeline-medir", medir);
+      if (alRefrescar) ScrollTrigger.removeEventListener("refresh", alRefrescar);
       ctx.revert();
     };
   }, [ref]);
@@ -158,14 +351,17 @@ export default function Timeline({
   kayak,
   canopy,
   pescado,
+  tortuga,
 }: {
   items: TimelineItem[];
   perezoso?: string;
   kayak?: string;
   canopy?: string;
   pescado?: string;
+  tortuga?: string;
 }) {
   const ref = React.useRef<HTMLDivElement>(null);
+  const [espacioFinal, setEspacioFinal] = React.useState(0);
   useAnimacionTimeline(ref);
 
   return (
@@ -237,6 +433,20 @@ export default function Timeline({
             />
           </div>
         )}
+
+        {tortuga && (
+          <div data-linea-tortuga className="invisible absolute left-0 top-0 z-20 opacity-0 will-change-transform">
+            <img
+              src={tortuga}
+              alt=""
+              width={1796}
+              height={876}
+              className="-ml-11 -mt-6 h-auto w-22 max-w-none rotate-90 select-none drop-shadow-[0_3px_3px_rgb(80_55_20/0.3)] motion-reduce:rotate-90 md:-ml-[4.5rem] md:-mt-9 md:w-36"
+              draggable={false}
+              loading="lazy"
+            />
+          </div>
+        )}
       </div>
 
       {perezoso && (
@@ -288,7 +498,18 @@ export default function Timeline({
         />
       )}
 
-      <ol>
+      {tortuga && (
+        <div
+          data-linea-arena
+          className="arena-linea pointer-events-none absolute left-3 w-6 -translate-x-1/2 md:left-1/2 md:w-9"
+          aria-hidden="true"
+        />
+      )}
+
+      <ol
+        className="transition-[padding-bottom] duration-500 ease-out motion-reduce:transition-none"
+        style={espacioFinal ? { paddingBottom: espacioFinal } : undefined}
+      >
         {items.map((item, i) => {
           const tarjetaIzquierda = i % 2 === 0;
 
@@ -313,27 +534,7 @@ export default function Timeline({
               </span>
 
               <div className={cn(tarjetaIzquierda ? "md:order-1 md:pr-24" : "md:pl-24")}>
-                <article data-tarjeta className="overflow-hidden rounded-3xl bg-white shadow-[0_12px_40px_-16px_rgba(16,42,67,0.35)] ring-1 ring-slate-900/5">
-                  <div className="relative aspect-[16/10] overflow-hidden">
-                    <img
-                      src={item.image}
-                      srcSet={item.imageSrcSet}
-                      sizes={item.imageSrcSet ? TAMANO_FOTO : undefined}
-                      alt={item.alt ?? item.title}
-                      loading="lazy"
-                      decoding="async"
-                      className="size-full object-cover"
-                      draggable={false}
-                    />
-                  </div>
-
-                  <div className="p-6 md:p-8">
-                    <h3 className="text-xl font-bold tracking-tight text-[#102a43] md:text-2xl">{item.title}</h3>
-                    <p className="mt-4 whitespace-pre-line text-sm leading-relaxed text-slate-600 md:text-[15px] md:leading-[1.75]">
-                      {item.description}
-                    </p>
-                  </div>
-                </article>
+                <TarjetaActividad item={item} indice={i} onEspacio={i === items.length - 1 ? setEspacioFinal : undefined} />
               </div>
             </li>
           );
