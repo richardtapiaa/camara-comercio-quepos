@@ -11,6 +11,7 @@
 
 - id: 2-costa-rica-real-estate
   ubicacion: { lat: 9.426491, lng: -84.167244 }
+  foto: ../assets/afiliados/lugares-afiliados/2-costa-rica-estate.jpg
   info: Agencia de bienes raíces con propiedades en venta en Manuel Antonio y en otras zonas del país. Casas, villas,
     condominios, hoteles y lotes, además de alquileres vacacionales.
 
@@ -40,8 +41,10 @@
 
 - id: blue-horizon
   ubicacion: { lat: 9.393961, lng: -84.153717 }
+  foto: ../assets/afiliados/lugares-afiliados/blue-horizon.jpg
   info: Tours y servicios en Manuel Antonio, conocido por su campamento de surf y la pesca deportiva. También ofrece
     avistamiento de ballenas, snorkel, cuadraciclos, canopy, cabalgatas y alquileres vacacionales.
+
 
 - id: brisa-elegante
   # Aproximada: la oficina es la 107 de Marina Pez Vela, al lado del cajero (en la plaza hay dos). Confirmar
@@ -72,7 +75,10 @@
 - id: diario-mirador
   # En Google sale como "Capitan Morgan Bar & Restaurant", pero con la web de Diario Mirador: confirmar
   ubicacion: { lat: 9.430923, lng: -84.164787 }
+  foto: ../assets/afiliados/lugares-afiliados/diario-mirador.jpeg
   info: Medio de comunicación con noticias de Quepos y el Pacífico Central.
+
+
 
 - id: ferreteria-costanera-sur
   ubicacion: { lat: 9.429830, lng: -84.163731 }
@@ -169,11 +175,6 @@
   info: Comunidad ecológica privada en Portalón de Savegre, con 540 hectáreas de bosque, ríos y tres cataratas.
     Alquila 11 casas vacacionales y tiene senderos, alquiler de bicicletas y servicios de construcción y
     administración.
-
-- id: quatro-legal
-  ubicacion: { lat: 9.405485, lng: -84.157211 }
-  info: Oficina en Plaza Vista Real, Manuel Antonio. Atiende bienes raíces, migración, derecho laboral, corporativo y
-    de familia, planificación patrimonial y contabilidad.
 
 - id: ronnys-place
   ubicacion: { lat: 9.411192, lng: -84.158098 }

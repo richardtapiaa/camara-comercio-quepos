@@ -17,10 +17,10 @@ function TarjetaNoticia({ post }: { post: PostFacebook }) {
   return (
     <article className="group relative flex h-full flex-col rounded-[2rem] bg-[#f3f5f8] p-5 transition-colors duration-300 focus-within:ring-2 focus-within:ring-[#2780c9] hover:bg-[#eaeef3] motion-reduce:transition-none">
       <div className="relative isolate aspect-[4/3] overflow-hidden rounded-[1.5rem] bg-slate-200">
-        {post.imagen && (
+        {post.miniatura && (
           <>
             <img
-              src={post.imagen}
+              src={post.miniatura}
               alt=""
               aria-hidden="true"
               loading="lazy"
@@ -29,7 +29,7 @@ function TarjetaNoticia({ post }: { post: PostFacebook }) {
               className="absolute inset-0 -z-10 size-full scale-125 object-cover opacity-90 blur-2xl saturate-150"
             />
             <img
-              src={post.imagen}
+              src={post.miniatura}
               alt=""
               width={800}
               height={600}

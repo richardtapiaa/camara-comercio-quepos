@@ -4,6 +4,8 @@ import Hero from "../components/ActividadesQuepos/Hero.astro";
 import InformacionActividades from "../components/ActividadesQuepos/InformacionActividades.astro";
 import KayakScroll from "../components/ActividadesQuepos/KayakScroll.astro";
 import FAQ from "../components/Quepos-Componentes/FAQ.astro";
+import CierreConFoto from "../components/compartidos/CierreConFoto.astro";
+import tortugaDeMar from "../assets/actividades/Tortuga_demar.jpg";
 ---
 
 <Layout
@@ -13,5 +15,11 @@ import FAQ from "../components/Quepos-Componentes/FAQ.astro";
   <Hero />
   <InformacionActividades />
   <KayakScroll />
-  <FAQ />
+  <CierreConFoto
+    foto={tortugaDeMar}
+    alt="Tortuga marina recién nacida avanzando sobre la arena húmeda de la playa hacia el mar"
+    claseFoto="object-bottom max-sm:object-[30%_bottom]"
+  >
+    <FAQ transparente />
+  </CierreConFoto>
 </Layout>

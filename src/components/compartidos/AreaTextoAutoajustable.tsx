@@ -1,9 +1,5 @@
 import * as React from "react";
 
-// <textarea> que crece con el texto: empieza con la altura de `rows` y se agranda línea por línea mientras la
-// persona escribe. Si llega al max-height que le den por clase (por ejemplo max-h-[60svh]), deja de crecer y pasa
-// a tener scroll por dentro. También se reajusta si cambia el ancho (girar el celular, cambiar el tamaño de la
-// ventana) y cuando el valor se vacía al enviar el formulario.
 
 type Props = React.ComponentPropsWithRef<"textarea">;
 

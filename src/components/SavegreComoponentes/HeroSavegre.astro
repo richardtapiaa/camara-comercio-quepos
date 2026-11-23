@@ -1,10 +1,12 @@
 ---
-import { sizesCubrePantalla, variantesCapa } from "../../lib/imagenes";
+import { portadaCelular, sizesCubrePantalla, variantesCapa } from "../../lib/imagenes";
 import foto from "../../assets/Savegre/catarata-savegre.webp";
+import fotoVertical from "../../assets/Savegre/catarata-savegre-celular.webp";
 
 const anchos = [800, 1200, 1600];
 const fotoWebp = await variantesCapa(foto, anchos, 80);
 const fotoAvif = await variantesCapa(foto, anchos, 55, "avif");
+const celular = await portadaCelular(fotoVertical, foto, anchos);
 const sizes = sizesCubrePantalla(foto);
 ---
 
@@ -22,6 +24,8 @@ const sizes = sizesCubrePantalla(foto);
     class="relative isolate h-[78svh] min-h-[32.5rem] overflow-hidden rounded-b-(--radio) bg-[#2b4a5c] [--radio:1.5rem] lg:[--radio:2rem]"
   >
     <picture>
+      <source media={celular.media} type="image/avif" srcset={celular.avif} sizes={celular.sizes} />
+      <source media={celular.media} type="image/webp" srcset={celular.webp} sizes={celular.sizes} />
       <source type="image/avif" srcset={fotoAvif.srcSet} sizes={sizes} />
       <img
         src={fotoWebp.src}

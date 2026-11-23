@@ -1,0 +1,37 @@
+function aleatorio(semilla: number) {
+  return () => {
+    semilla = (semilla + 0x6d2b79f5) | 0;
+    let t = Math.imul(semilla ^ (semilla >>> 15), 1 | semilla);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function cerro(cx: number, cy: number, anillos: number, paso: number, semilla: number) {
+  const rnd = aleatorio(semilla);
+  const ondas = [2, 3, 4, 6].map((f) => ({ f, a: (0.05 + rnd() * 0.1) / (f / 2), p: rnd() * Math.PI * 2 }));
+  const estirar = 1.1 + rnd() * 0.4;
+  const caminos: string[] = [];
+  for (let k = 0; k < anillos; k++) {
+    const r = paso * (k + 1);
+    const puntos: string[] = [];
+    for (let i = 0; i < 120; i++) {
+      const t = (i / 120) * Math.PI * 2;
+      const factor = 1 + ondas.reduce((s, o) => s + o.a * Math.sin(o.f * t + o.p + k * 0.25), 0);
+      puntos.push(`${(cx + r * factor * estirar * Math.cos(t)).toFixed(1)},${(cy + r * factor * Math.sin(t)).toFixed(1)}`);
+    }
+    caminos.push(`M${puntos.join("L")}Z`);
+  }
+  return caminos;
+}
+
+export function svgFondoTopografico(color = "#2b4a5c") {
+  const caminos = [
+    ...cerro(180, 140, 9, 42, 11),
+    ...cerro(1450, 780, 11, 44, 23),
+    ...cerro(820, 980, 7, 46, 37),
+    ...cerro(1300, -40, 6, 48, 51),
+  ];
+  const trazos = caminos.map((d) => `<path d="${d}" vector-effect="non-scaling-stroke"/>`).join("");
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" fill="none" stroke="${color}" stroke-width="1.5" stroke-linejoin="round">${trazos}</svg>`;
+}

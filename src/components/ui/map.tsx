@@ -2,7 +2,7 @@
 
 import type * as MapLibreGL from "maplibre-gl";
 import type { PopupOptions, MarkerOptions } from "maplibre-gl";
-import "maplibre-gl/dist/maplibre-gl.css";
+import estilosMapa from "maplibre-gl/dist/maplibre-gl.css?url";
 import type * as GeoJSON from "geojson";
 import {
   createContext,
@@ -26,9 +26,23 @@ type MapLibreModule = typeof MapLibreGL;
 
 let maplibrePromise: Promise<MapLibreModule> | null = null;
 
+// Los estilos del mapa llegan junto con la librería, no en el HTML de la página.
+const cargarEstilos = () =>
+  new Promise<void>((listo, fallo) => {
+    const enlace = document.createElement("link");
+    enlace.rel = "stylesheet";
+    enlace.href = estilosMapa;
+    enlace.onload = () => listo();
+    enlace.onerror = () => {
+      enlace.remove();
+      fallo(new Error("No se pudieron cargar los estilos del mapa"));
+    };
+    document.head.append(enlace);
+  });
+
 function loadMapLibre() {
-  maplibrePromise ??= import("maplibre-gl")
-    .then((lib) => {
+  maplibrePromise ??= Promise.all([import("maplibre-gl"), cargarEstilos()])
+    .then(([lib]) => {
       if (!lib.getWorkerUrl()) {
         lib.setWorkerUrl(
           `https://unpkg.com/maplibre-gl@${lib.getVersion()}/dist/maplibre-gl-worker.mjs`,

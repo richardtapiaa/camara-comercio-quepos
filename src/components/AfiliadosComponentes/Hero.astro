@@ -11,6 +11,7 @@ import "../../styles/compartido/hero-texto.css";
 const posterOptimizado = await getImage({ src: poster, width: 1920, format: "webp", quality: 70 });
 ---
 
+<link rel="preload" as="image" href={posterOptimizado.src} fetchpriority="high" />
 <section
   id="hero"
   aria-labelledby="titulo-afiliados"

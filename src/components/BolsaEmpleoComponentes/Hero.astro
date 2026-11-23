@@ -1,0 +1,45 @@
+---
+import { recorteCelular, variantesCapa } from "../../lib/imagenes";
+import foto from "../../assets/bolsa-empleo/cocineros-parrilla.webp";
+import fotoVertical from "../../assets/bolsa-empleo/cocineros-parrilla-celular.webp";
+import BordePincelada from "../compartidos/BordePincelada.astro";
+import "../../styles/compartido/hero-texto.css";
+
+const anchos = [800, 1280, 1600];
+const fotoWebp = await variantesCapa(foto, anchos, 60);
+const fotoAvif = await variantesCapa(foto, anchos, 60, "avif");
+const celular = await recorteCelular(fotoVertical, foto, anchos, "100vw", 60);
+---
+
+<!-- Mismo estilo que los heroes de Hospitalidad y Capacitaciones: foto a todo el ancho, degradado para que el texto
+     se lea, etiqueta y título grande abajo a la izquierda (en Poppins, como el de contacto), y el borde de pincelada blanco, del color de la sección
+     que sigue (Info_bolsa). Con id="hero" la barra de navegación queda transparente encima. -->
+<section id="hero" aria-labelledby="titulo-bolsa" class="relative isolate flex h-[78svh] min-h-[520px] items-end overflow-hidden bg-[#073a5e]">
+  <picture>
+    <source media={celular.media} type="image/avif" srcset={celular.avif} sizes={celular.sizes} />
+    <source media={celular.media} type="image/webp" srcset={celular.webp} sizes={celular.sizes} />
+    <source type="image/avif" srcset={fotoAvif.srcSet} sizes="100vw" />
+    <img
+      src={fotoWebp.src}
+      srcset={fotoWebp.srcSet}
+      sizes="100vw"
+      width={foto.width}
+      height={foto.height}
+      alt="Dos cocineros sonrientes junto a la parrilla de leña de un restaurante en Quepos"
+      class="absolute inset-0 -z-20 size-full object-cover object-[60%_35%]"
+      loading="eager"
+      fetchpriority="high"
+    />
+  </picture>
+  <div class="absolute inset-0 -z-10 bg-gradient-to-t from-black/75 via-black/35 to-black/40" aria-hidden="true"></div>
+
+  <div class="hero-texto mx-auto w-full max-w-[1320px] px-6 pb-[clamp(5rem,12vh,8rem)] text-white sm:px-10">
+    <p class="hero-texto-kicker">Oportunidades laborales</p>
+    <h1 id="titulo-bolsa" class="mt-2 text-[clamp(2.75rem,8vw,6.5rem)] font-bold leading-[0.95] tracking-tight [text-shadow:0_6px_24px_rgb(0_0_0/0.4)]">Bolsa de Empleo</h1>
+    <p class="mt-4 max-w-xl text-base leading-relaxed text-white/90 [text-shadow:0_2px_10px_rgb(0_0_0/0.45)] sm:text-lg">
+      Conectamos a las personas que buscan trabajo con las oportunidades laborales de nuestros asociados.
+    </p>
+  </div>
+
+  <BordePincelada />
+</section>

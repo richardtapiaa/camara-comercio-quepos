@@ -1,15 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  motion,
-  useAnimationFrame,
-  useInView,
-  useMotionValue,
-  useReducedMotion,
-  useScroll,
-  useSpring,
-  useTransform,
-  useVelocity,
-} from "framer-motion";
 
 import { cn } from "@/lib/utils";
 
@@ -20,6 +9,15 @@ export interface Decoracion {
 }
 
 const POSICION_POR_DEFECTO = "bottom-[78%] left-1/2 h-[0.9em] -translate-x-1/2";
+
+// El HTML ya sale con la fila llena: si empezara con una sola copia, el texto saltaría al activarse el componente.
+const REPETICIONES_INICIALES = 8;
+
+// Resorte que suaviza la velocidad del scroll antes de acelerar la cinta.
+const RIGIDEZ = 400;
+const AMORTIGUACION = 50;
+const PASO_RESORTE = 0.004;
+const MAX_DELTA = 0.04;
 
 interface VelocityScrollProps {
   text: string;
@@ -70,25 +68,11 @@ export const wrap = (min: number, max: number, v: number) => {
 };
 
 function ParallaxText({ children, baseVelocity = 100, className, scrollReactive = true, decoraciones }: ParallaxProps) {
-  const baseX = useMotionValue(0);
-  const x = useMotionValue("0%");
-  const { scrollY } = useScroll();
-  const scrollVelocity = useVelocity(scrollY);
-  const smoothVelocity = useSpring(scrollVelocity, {
-    damping: 50,
-    stiffness: 400,
-  });
-
-  const velocityFactor = useTransform(smoothVelocity, [0, 1000], [0, 5], {
-    clamp: false,
-  });
-
-  const [repetitions, setRepetitions] = useState(1);
-  const repetitionsRef = useRef(1);
+  const [repetitions, setRepetitions] = useState(REPETICIONES_INICIALES);
+  const repetitionsRef = useRef(REPETICIONES_INICIALES);
   const containerRef = useRef<HTMLDivElement>(null);
+  const filaRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLSpanElement>(null);
-  const enPantalla = useInView(containerRef, { margin: "200px 0px" });
-  const sinMovimiento = useReducedMotion();
 
   useEffect(() => {
     const calculateRepetitions = () => {
@@ -108,35 +92,76 @@ function ParallaxText({ children, baseVelocity = 100, className, scrollReactive 
     return () => window.removeEventListener("resize", calculateRepetitions);
   }, [children]);
 
-  const directionFactor = useRef<number>(1);
-  useAnimationFrame((_, delta) => {
-    if (!enPantalla || sinMovimiento) return;
-    let moveBy = directionFactor.current * baseVelocity * (delta / 1000);
+  useEffect(() => {
+    const contenedor = containerRef.current;
+    const fila = filaRef.current;
+    if (!contenedor || !fila || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    if (scrollReactive) {
-      if (velocityFactor.get() < 0) {
-        directionFactor.current = -1;
-      } else if (velocityFactor.get() > 0) {
-        directionFactor.current = 1;
+    let cuadro = 0;
+    let anterior = 0;
+    let posicion = 0;
+    let direccion = 1;
+    let scrollAnterior = 0;
+    let velocidad = 0;
+    let inercia = 0;
+
+    const avanzar = (ahora: number) => {
+      cuadro = requestAnimationFrame(avanzar);
+      const delta = Math.min((ahora - anterior) / 1000, MAX_DELTA);
+      anterior = ahora;
+      if (delta <= 0) return;
+
+      let paso = direccion * baseVelocity * delta;
+      if (scrollReactive) {
+        const scroll = window.scrollY;
+        const objetivo = (scroll - scrollAnterior) / delta;
+        scrollAnterior = scroll;
+        for (let resto = delta; resto > 0; resto -= PASO_RESORTE) {
+          const h = Math.min(resto, PASO_RESORTE);
+          inercia += (RIGIDEZ * (objetivo - velocidad) - AMORTIGUACION * inercia) * h;
+          velocidad += inercia * h;
+        }
+        if (!objetivo && Math.abs(velocidad) < 0.01) velocidad = inercia = 0;
+
+        const factor = velocidad * 0.005;
+        if (factor < 0) direccion = -1;
+        else if (factor > 0) direccion = 1;
+        paso += direccion * paso * factor;
       }
 
-      moveBy += directionFactor.current * moveBy * velocityFactor.get();
-    }
+      posicion += paso;
+      fila.style.transform = `translateX(${wrap(-100 / repetitionsRef.current, 0, posicion)}%)`;
+    };
 
-    const nextX = baseX.get() + moveBy;
-    baseX.set(nextX);
-    x.set(`${wrap(-100 / repetitionsRef.current, 0, nextX)}%`);
-  });
+    // Solo corre mientras la cinta está cerca de la pantalla.
+    const observador = new IntersectionObserver(
+      ([entrada]) => {
+        cancelAnimationFrame(cuadro);
+        if (!entrada.isIntersecting) return;
+        anterior = performance.now();
+        scrollAnterior = window.scrollY;
+        velocidad = inercia = 0;
+        cuadro = requestAnimationFrame(avanzar);
+      },
+      { rootMargin: "200px 0px" },
+    );
+    observador.observe(contenedor);
+
+    return () => {
+      observador.disconnect();
+      cancelAnimationFrame(cuadro);
+    };
+  }, [baseVelocity, scrollReactive]);
 
   return (
     <div className={cn("w-full whitespace-nowrap", decoraciones?.length ? "overflow-x-clip" : "overflow-hidden")} ref={containerRef}>
-      <motion.div className={cn("inline-block", className)} style={{ x }}>
+      <div ref={filaRef} className={cn("inline-block", className)}>
         {Array.from({ length: repetitions }).map((_, i) => (
-          <span key={i} ref={i === 0 ? textRef : null}>
+          <span key={i} ref={i === 0 ? textRef : null} aria-hidden={i > 0 ? true : undefined}>
             {decoraciones?.length ? textoConDecoraciones(children, decoraciones) : children}{" "}
           </span>
         ))}
-      </motion.div>
+      </div>
     </div>
   );
 }
@@ -155,14 +180,16 @@ export function VelocityScroll({
         {text}
       </ParallaxText>
       {filas === 2 && (
-        <ParallaxText
-          baseVelocity={-default_velocity}
-          className={className}
-          scrollReactive={scrollReactive}
-          decoraciones={decoraciones}
-        >
-          {text}
-        </ParallaxText>
+        <div aria-hidden="true">
+          <ParallaxText
+            baseVelocity={-default_velocity}
+            className={className}
+            scrollReactive={scrollReactive}
+            decoraciones={decoraciones}
+          >
+            {text}
+          </ParallaxText>
+        </div>
       )}
     </section>
   );

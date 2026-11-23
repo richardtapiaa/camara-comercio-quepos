@@ -57,6 +57,22 @@
     translate: 1px 4px;
   }
 }
+/* Tramo de la tortuga: arena de playa con la misma forma ondulada que el agua, con granitos y huellas */
+.arena-linea {
+  background-color: #e9cf9b;
+  background-image:
+    radial-gradient(circle at 30% 20%, rgb(150 110 55 / 0.35) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 70% 60%, rgb(255 248 230 / 0.7) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 50% 85%, rgb(150 110 55 / 0.3) 0 1.2px, transparent 1.7px),
+    linear-gradient(90deg, rgb(160 120 60 / 0.25), transparent 35%, rgb(255 245 220 / 0.35) 50%, transparent 65%, rgb(160 120 60 / 0.3));
+  background-size: 9px 11px, 13px 9px, 11px 15px, 100% 100%;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 120' preserveAspectRatio='none'%3E%3Cpath d='M5 0C2 20 2 40 5 60S8 100 5 120H27C30 100 30 80 27 60S24 20 27 0Z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 120' preserveAspectRatio='none'%3E%3Cpath d='M5 0C2 20 2 40 5 60S8 100 5 120H27C30 100 30 80 27 60S24 20 27 0Z'/%3E%3C/svg%3E");
+  -webkit-mask-size: 100% 120px;
+  mask-size: 100% 120px;
+  -webkit-mask-repeat: repeat-y;
+  mask-repeat: repeat-y;
+}
 @media (prefers-reduced-motion: reduce) {
   .agua-linea {
     animation: none;

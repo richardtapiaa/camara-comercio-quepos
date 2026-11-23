@@ -4,6 +4,26 @@
   --font-sans: "Poppins", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
   --font-serif: var(--font-sans);
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Colores de la galería (Galería y Videos de Quepos). Paleta "Mar y selva": sale de los colores del logo. Mar (azul) para botones y enlaces principales, selva
+     (verde) como segundo color para categorías y naturaleza, marino para títulos y fondos oscuros, bosque para
+     fondos oscuros de naturaleza, crema y arena de fondo, y atardecer (naranja) solo para destacar.
+     Se usan como clases de Tailwind: bg-mar, text-selva, border-arena, bg-mar-claro, etc. */
+  --color-mar: #2780c9;
+  --color-mar-oscuro: #1d6aa8;
+  --color-mar-claro: #dcecf8;
+  --color-selva: #1f6b4f;
+  --color-selva-oscuro: #17543e;
+  --color-selva-claro: #dcece1;
+  --color-marino: #1b2a4a;
+  --color-marino-oscuro: #121d35;
+  --color-bosque: #17322a;
+  --color-atardecer: #f39a1e;
+  --color-atardecer-oscuro: #b5610a;
+  --color-crema: #faf7f2;
+  --color-arena: #f2ebe0;
+  --color-borde-arena: #e8e2d6;
+  --color-tinta: #4f5560;
 }
 
 html,
@@ -25,6 +45,14 @@ body {
   }
 }
 
+/* Serifa elegante para títulos editoriales (Galería). Playfair Display, licencia OFL, alojada en /public/fonts. */
+@font-face {
+  font-family: "Playfair Display";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/playfair-display-500-latin.woff2") format("woff2");
+}
 @font-face {
   font-family: "Poppins";
   font-style: normal;
@@ -137,4 +165,10 @@ body {
   .maplibregl-popup {
     z-index: 2;
   }
+}
+
+[data-animacion-pausada],
+[data-animacion-pausada]::before,
+[data-animacion-pausada]::after {
+  animation-play-state: paused !important;
 }

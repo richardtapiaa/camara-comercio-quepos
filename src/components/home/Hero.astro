@@ -1,6 +1,7 @@
 ---
-import { Picture } from "astro:assets";
+import PortadaConRecorte from "../compartidos/PortadaConRecorte.astro";
 import fondo from "../../assets/inicio/hero-quepos-inicio-poster.jpg";
+import fondoVertical from "../../assets/inicio/hero-quepos-inicio-poster-celular.webp";
 import videoHero from "../../assets/inicio/hero-quepos-inicio.mp4";
 import videoHeroMovil from "../../assets/inicio/hero-quepos-inicio-movil.mp4";
 import videoHeroWebm from "../../assets/inicio/hero-quepos-inicio.webm";
@@ -10,15 +11,17 @@ import "../../styles/home/hero.css";
 ---
 
 <section id="hero" data-end-pin="#mision" data-pin-desktop class="panel pinned sticky top-0 isolate md:relative h-lvh w-full overflow-hidden bg-black">
-  <Picture
-    src={fondo}
-    formats={["avif", "webp"]}
-    widths={[800, 1280, 1920]}
+  <PortadaConRecorte
+    foto={fondo}
+    recorte={fondoVertical}
+    anchos={[800, 1280, 1920]}
+    calidad={50}
     sizes="max(100vw, 192vh)"
-    quality={50}
+    mediaRecorte="(max-width: 430px) and (max-aspect-ratio: 5/6)"
     alt=""
     class="absolute inset-0 -z-30 h-full w-full object-cover object-left-bottom"
     loading="eager"
+    decoding="async"
     fetchpriority="high"
     aria-hidden="true"
   />

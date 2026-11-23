@@ -3,14 +3,20 @@ import { Image } from "astro:assets";
 import { variantesGaleria } from "../../../lib/imagenes";
 import GaleriaQuepos from "../../ReactComponentes/QUEPOS/GaleriaQuepos";
 import palmera from "../../../assets/quepos/palmera-sin-fondo.webp";
+import { VelocityScroll } from "../../ReactComponentes/QUEPOS/ScrollVelocity.tsx";
+import CurvasTopograficas from "../../compartidos/decoracion/CurvasTopograficas.astro";
+import HojaLineas from "../../compartidos/decoracion/HojaLineas.astro";
+import BandadaLineas from "../../compartidos/decoracion/BandadaLineas.astro";
+import HojasTropicales from "../../compartidos/decoracion/HojasTropicales.astro";
+import OndasArena from "../../compartidos/decoracion/OndasArena.astro";
 
 const clasesPalmera =
-  "h-auto w-44 select-none sm:w-64 md:w-72 lg:w-80 xl:w-96 2xl:w-[28rem] [mask-image:linear-gradient(to_bottom,transparent,black_30%)]";
-const sizesPalmera =
-  "(min-width: 1536px) 448px, (min-width: 1280px) 384px, (min-width: 1024px) 320px, (min-width: 768px) 288px, (min-width: 640px) 256px, 176px";
+  "pointer-events-none absolute top-20 z-10 h-auto w-32 select-none sm:top-24 sm:w-56 md:w-72 lg:w-80 xl:w-96 [mask-image:linear-gradient(to_bottom,transparent,black_25%)]";
+const sizesPalmera = "(min-width: 1280px) 384px, (min-width: 1024px) 320px, (min-width: 768px) 288px, (min-width: 640px) 224px, 128px";
 
 const archivos = import.meta.glob<{ default: ImageMetadata }>("../../../assets/galeria/*.webp", { eager: true });
 const foto = (nombre: string) => archivos[`../../../assets/galeria/${nombre}.webp`].default;
+
 const fotos: [nombre: string, alt: string][] = [
   ["letras-quepos", "Letras de colores de Quepos frente al mar"],
   ["playa-manuel-antonio-aerea", "Vista aérea de una playa de Manuel Antonio con una isla cubierta de bosque"],
@@ -45,35 +51,64 @@ const fotos: [nombre: string, alt: string][] = [
 const items = await Promise.all(
   fotos.map(async ([nombre, alt], i) => ({ id: i + 1, ...(await variantesGaleria(foto(nombre))), alt })),
 );
+
+// Hojas de líneas y aves en vuelo (compartidos/decoracion): solo en pantallas anchas, donde hay margen a los lados.
+const hojas = [
+  { clase: "left-[1.5%] top-[25rem] w-36", giro: -22 },
+  { clase: "right-[2%] top-[45%] w-32", giro: 28 },
+  { clase: "left-[2.5%] top-[66%] w-28", giro: 14 },
+];
+const bandadas: { clase: string; aves: [number, number, number][] }[] = [
+  { clase: "right-[2%] top-[21rem] w-48", aves: [[0, 0, 1], [34, -18, 0.75], [62, 4, 0.6]] },
+  { clase: "left-[2%] top-[43%] w-44", aves: [[0, 0, 0.9], [-30, -16, 0.7], [26, -26, 0.55]] },
+  { clase: "right-[3%] top-[75%] w-36", aves: [[0, 0, 0.8], [30, -12, 0.6]] },
+];
 ---
 
-<section id="galeria-completa" class="relative w-full self-start overflow-x-clip bg-white">
-  <Image
-    src={palmera}
-    alt=""
-    width={600}
-    widths={[300, 450, 600]}
-    sizes={sizesPalmera}
-    class={`pointer-events-none absolute bottom-full right-0 ${clasesPalmera}`}
-    loading="lazy"
-    fetchpriority="low"
-    draggable="false"
-    aria-hidden="true"
-  />
-  <Image
-    src={palmera}
-    alt=""
-    width={600}
-    widths={[300, 450, 600]}
-    sizes={sizesPalmera}
-    class={`pointer-events-none absolute bottom-full left-0 -scale-x-100 ${clasesPalmera}`}
-    loading="lazy"
-    fetchpriority="low"
-    draggable="false"
-    aria-hidden="true"
-  />
 
-  <div class="relative mx-auto max-w-7xl px-4 pb-24 pt-10 sm:px-6 sm:pt-12">
-    <GaleriaQuepos client:visible items={items} />
+<section id="galeria-completa" aria-labelledby="titulo-galeria" class="relative isolate w-full overflow-hidden bg-[#faf7f2]">
+ 
+  <CurvasTopograficas class="-right-48 top-[30rem] hidden w-[52rem] text-[#b9a78a] opacity-30 md:block" />
+  <CurvasTopograficas class="-left-60 top-[58%] hidden w-[40rem] -scale-x-100 text-[#b9a78a] opacity-25 md:block" anillos={8} giroInicial={40} pasoGiro={9} />
+
+  
+  {hojas.map(({ clase, giro }) => <HojaLineas class={`hidden text-[#a8967a] opacity-55 min-[1680px]:block ${clase}`} giro={giro} />)}
+  {bandadas.map(({ clase, aves }) => <BandadaLineas class={`hidden text-[#a8967a] opacity-60 min-[1680px]:block ${clase}`} aves={aves} />)}
+
+  <!-- Palmas en las esquinas de arriba -->
+  <Image src={palmera} alt="" width={600} widths={[300, 450, 600]} sizes={sizesPalmera} class={`right-0 ${clasesPalmera}`} loading="lazy" draggable="false" aria-hidden="true" />
+  <Image src={palmera} alt="" width={600} widths={[300, 450, 600]} sizes={sizesPalmera} class={`left-0 -scale-x-100 ${clasesPalmera}`} loading="lazy" draggable="false" aria-hidden="true" />
+
+  <!-- Hojas tropicales en las esquinas de abajo (izquierda y, reflejadas, derecha) -->
+  <HojasTropicales class="bottom-10 left-0 hidden w-56 md:block lg:w-72" />
+  <HojasTropicales class="bottom-10 right-0 hidden w-56 md:block lg:w-72" espejo />
+
+  <!-- Ondas de arena al pie -->
+  <OndasArena class="bottom-0 h-40 sm:h-56" />
+
+  <h1 id="titulo-galeria" class="sr-only">Galería de Quepos</h1>
+
+  <!-- Texto giratorio "GALERIA" (el mismo de antes: TextVelocity), sin fondo propio para dejar ver el crema -->
+  <div class="overflow-hidden pb-8 pt-28 sm:pb-12 sm:pt-32" aria-hidden="true">
+    <div class="[mask-image:linear-gradient(to_bottom,black_50%,transparent_96%)]">
+      <VelocityScroll
+        client:visible
+        text="GALERIA"
+        default_velocity={5}
+        scrollReactive={false}
+        filas={2}
+        className="font-serif text-5xl font-bold uppercase tracking-[0.12em] text-black sm:text-7xl lg:text-8xl"
+      />
+    </div>
+  </div>
+
+  <div class="relative mx-auto max-w-[1600px] px-4 pb-40 sm:px-8 sm:pb-52 lg:px-12">
+    <GaleriaQuepos client:visible items={items} rejilla />
+
+    <p class="mt-10 text-center text-xs font-medium uppercase tracking-[0.25em] text-tinta sm:text-sm sm:tracking-[0.35em]">
+      <span class="whitespace-nowrap">Costa Rica</span>
+      <span class="mx-2 hidden text-[#b9a78a] sm:inline" aria-hidden="true">|</span>
+      <span class="block whitespace-nowrap sm:inline">Naturaleza y cultura</span>
+    </p>
   </div>
 </section>

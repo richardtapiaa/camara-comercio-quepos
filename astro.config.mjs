@@ -5,6 +5,7 @@ import tailwindcss from "@tailwindcss/vite";
 
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
+import comprobarFacebook from "./herramientas/comprobar-facebook.mjs";
 
 
 export default defineConfig({
@@ -18,11 +19,16 @@ export default defineConfig({
     inlineStylesheets: "always",
   },
 
+  // Fotos de las noticias: se descargan de Facebook al compilar (ver src/lib/facebook.ts).
+  image: {
+    remotePatterns: [{ protocol: "https", hostname: "**.fbcdn.net" }],
+  },
+
   vite: {
     plugins: [
       tailwindcss(),
     ],
   },
 
-  integrations: [react(), sitemap({ filter: (pagina) => !pagina.endsWith("/404/") })],
+  integrations: [comprobarFacebook(), react(), sitemap({ filter: (pagina) => !pagina.endsWith("/404/") })],
 });

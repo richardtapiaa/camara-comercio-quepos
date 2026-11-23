@@ -1,0 +1,22 @@
+---
+// Curvas topográficas decorativas: una forma orgánica repetida a varias escalas, en trazo fino que no se engrosa
+// al escalar. La posición, el tamaño, el color (text-*) y la opacidad van en `class`.
+interface Props {
+  class?: string;
+  /** Cuántos anillos dibujar (de 1 a 10). */
+  anillos?: number;
+  /** Giro del primer anillo y cuánto gira cada anillo siguiente, en grados. */
+  giroInicial?: number;
+  pasoGiro?: number;
+}
+const { class: clase = "", anillos = 10, giroInicial = 0, pasoGiro = 7 } = Astro.props;
+const curva =
+  "M0 -100 C 45 -98 88 -70 98 -30 C 108 12 82 48 58 72 C 32 98 -8 108 -44 92 C -82 76 -104 38 -100 -4 C -96 -48 -50 -102 0 -100 Z";
+const escalas = [0.35, 0.55, 0.75, 0.95, 1.15, 1.35, 1.55, 1.75, 1.95, 2.15].slice(0, anillos);
+---
+
+<svg class={`pointer-events-none absolute -z-10 ${clase}`} viewBox="-260 -260 520 520" fill="none" aria-hidden="true">
+  <g stroke="currentColor" stroke-width="1">
+    {escalas.map((e, i) => <path d={curva} transform={`rotate(${giroInicial + i * pasoGiro}) scale(${e})`} vector-effect="non-scaling-stroke" />)}
+  </g>
+</svg>

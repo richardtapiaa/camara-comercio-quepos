@@ -1,0 +1,22 @@
+---
+// Bandada de aves en vuelo, de trazo doble. Cada ave es [x, y, escala]. Posición, tamaño, color y opacidad en `class`.
+interface Props {
+  class?: string;
+  aves: [x: number, y: number, escala: number][];
+}
+const { class: clase = "", aves } = Astro.props;
+const ave = "M-20 0 C -14 -8 -6 -9 0 0 C 6 -9 14 -8 20 0";
+---
+
+<svg class={`pointer-events-none absolute -z-10 ${clase}`} viewBox="-60 -50 140 80" fill="none" aria-hidden="true">
+  <g stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+    {
+      aves.map(([x, y, e]) => (
+        <g transform={`translate(${x} ${y}) scale(${e})`}>
+          <path d={ave} vector-effect="non-scaling-stroke" />
+          <path d={ave} transform="translate(0 4) scale(0.8)" vector-effect="non-scaling-stroke" />
+        </g>
+      ))
+    }
+  </g>
+</svg>

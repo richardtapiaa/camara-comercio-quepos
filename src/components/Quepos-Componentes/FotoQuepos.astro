@@ -5,19 +5,22 @@ import TextVelocity from "../compartidos/TextVelocity.astro";
 import bordeArriba from "../../assets/quepos/borde-rasgado-arriba.svg";
 import bordeAbajo from "../../assets/quepos/borde-rasgado-abajo.svg";
 
-const fotoOptimizada = await getImage({ src: foto, width: foto.width, format: "webp", quality: 90 });
+// Es un fondo CSS, así que cada tamaño de pantalla descarga solo su versión (ver las clases de la capa).
+const [fotoMovil, fotoTableta, fotoEscritorio] = await Promise.all(
+  [960, 1280, foto.width].map((width) => getImage({ src: foto, width, format: "webp", quality: 75 })),
+);
 ---
 
 <section
   data-foto-parallax
   class="relative h-[50svh] min-h-[340px] w-full overflow-hidden bg-[#2b4a5c] md:h-[70svh] md:min-h-[480px]"
-  style={`--foto: url(${fotoOptimizada.src});`}
-  aria-label="Vista aérea de Quepos"
-  role="img"
+  style={`--foto: url(${fotoMovil.src}); --foto-md: url(${fotoTableta.src}); --foto-xl: url(${fotoEscritorio.src});`}
 >
   <div
     data-foto-parallax-capa
-    class="absolute inset-x-0 -top-[25%] h-[150%] bg-[image:var(--foto)] bg-cover bg-center bg-no-repeat will-change-transform md:inset-0 md:h-full md:bg-fixed md:will-change-auto"
+    role="img"
+    aria-label="Vista aérea de Quepos"
+    class="absolute inset-x-0 -top-[25%] h-[150%] bg-[image:var(--foto)] md:bg-[image:var(--foto-md)] xl:bg-[image:var(--foto-xl)] bg-cover bg-center bg-no-repeat will-change-transform md:inset-0 md:h-full md:bg-fixed md:will-change-auto"
   >
   </div>
   <div class="pointer-events-none absolute inset-0 bg-black/25" aria-hidden="true"></div>
@@ -39,7 +42,7 @@ const fotoOptimizada = await getImage({ src: foto, width: foto.width, format: "w
     decoding="async"
     class="pointer-events-none absolute bottom-0 left-1/2 z-10 h-12 w-full min-w-[1100px] max-w-none -translate-x-1/2 [filter:drop-shadow(0_-3px_5px_rgb(0_0_0/0.22))] md:h-16 lg:h-20"
   />
-  <div class="absolute inset-x-0 top-1/2 -translate-y-1/2">
+  <div class="absolute inset-x-0 top-1/2 -translate-y-1/2" aria-hidden="true">
     <TextVelocity
       texto="Conozca Nuestro Canton"
       reaccionaScroll={false}

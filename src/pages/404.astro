@@ -1,8 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { NotFound } from "../components/ReactComponentes/Home/404";
+import "../styles/compartido/pagina-404.css";
 ---
 
 <Layout titulo="Página no encontrada" descripcion="La página que buscas no existe o cambió de dirección." indexar={false}>
-  <NotFound client:load />
+  <NotFound />
 </Layout>

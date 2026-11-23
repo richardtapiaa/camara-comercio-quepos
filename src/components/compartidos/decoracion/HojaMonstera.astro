@@ -1,0 +1,39 @@
+---
+// Hoja de monstera decorativa (verde, con sus cortes característicos). Posición, tamaño, giro y desenfoque van en
+// `class`. Es decorativa: aria-hidden y sin capturar clics.
+interface Props {
+  class?: string;
+  espejo?: boolean;
+}
+const { class: clase = "", espejo = false } = Astro.props;
+const id = `monstera-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<svg class={`pointer-events-none absolute ${espejo ? "-scale-x-100" : ""} ${clase}`} viewBox="0 0 240 240" aria-hidden="true">
+  <defs>
+    <linearGradient id={`${id}-g`} x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4f8f4a" />
+      <stop offset="1" stop-color="#2f6b3a" />
+    </linearGradient>
+    <mask id={`${id}-m`}>
+      <rect width="240" height="240" fill="#fff" />
+      <!-- Cortes desde el borde hacia la nervadura y agujeros -->
+      <g fill="#000">
+        <path d="M22 76 C50 88 78 100 106 116 L104 121 C76 108 48 96 18 88 Z" />
+        <path d="M12 132 C42 132 72 134 104 136 L104 141 C72 142 42 146 13 150 Z" />
+        <path d="M36 190 C58 174 82 160 106 150 L109 155 C88 168 66 184 48 202 Z" />
+        <path d="M218 76 C190 88 162 100 134 116 L136 121 C164 108 192 96 222 88 Z" />
+        <path d="M228 132 C198 132 168 134 136 136 L136 141 C168 142 198 146 227 150 Z" />
+        <path d="M204 190 C182 174 158 160 134 150 L131 155 C152 168 174 184 192 202 Z" />
+        <ellipse cx="78" cy="104" rx="7" ry="4" transform="rotate(25 78 104)" />
+        <ellipse cx="162" cy="104" rx="7" ry="4" transform="rotate(-25 162 104)" />
+        <ellipse cx="80" cy="168" rx="7" ry="4" transform="rotate(-30 80 168)" />
+        <ellipse cx="160" cy="168" rx="7" ry="4" transform="rotate(30 160 168)" />
+      </g>
+    </mask>
+  </defs>
+  <g mask={`url(#${id}-m)`}>
+    <path d="M120 204 C100 222 40 214 18 168 C0 128 10 74 50 44 C80 22 108 14 120 8 C132 14 160 22 190 44 C230 74 240 128 222 168 C200 214 140 222 120 204 Z" fill={`url(#${id}-g)`} />
+  </g>
+  <path d="M120 20 C121 90 120 160 120 204 C119 216 117 228 112 238" stroke="#9cc08a" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.8" />
+</svg>

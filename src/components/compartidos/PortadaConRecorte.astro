@@ -1,0 +1,28 @@
+---
+import type { ImageMetadata } from "astro";
+import type { HTMLAttributes } from "astro/types";
+import { recorteCelular, variantesCapa } from "../../lib/imagenes";
+
+interface Props extends Omit<HTMLAttributes<"img">, "src" | "srcset" | "sizes" | "width" | "height"> {
+  foto: ImageMetadata;
+  recorte: ImageMetadata;
+  anchos: number[];
+  calidad: number;
+  sizes?: string;
+  mediaRecorte?: string;
+}
+
+const { foto, recorte, anchos, calidad, sizes = "100vw", mediaRecorte, ...atributos } = Astro.props;
+const [webp, avif, celular] = await Promise.all([
+  variantesCapa(foto, anchos, calidad),
+  variantesCapa(foto, anchos, calidad, "avif"),
+  recorteCelular(recorte, foto, anchos, sizes, calidad, mediaRecorte),
+]);
+---
+
+<picture>
+  <source media={celular.media} type="image/avif" srcset={celular.avif} sizes={celular.sizes} />
+  <source media={celular.media} type="image/webp" srcset={celular.webp} sizes={celular.sizes} />
+  <source type="image/avif" srcset={avif.srcSet} sizes={sizes} />
+  <img src={webp.src} srcset={webp.srcSet} sizes={sizes} width={foto.width} height={foto.height} {...atributos} />
+</picture>

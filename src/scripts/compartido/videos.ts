@@ -1,8 +1,12 @@
 const sinMovimiento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+// Con ahorro de datos o conexión 2G los videos de fondo no se descargan y queda la imagen fija.
+const conexion = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
+const ahorrarDatos = conexion?.saveData === true || /2g$/.test(conexion?.effectiveType ?? "");
+
 const diferidos = document.querySelectorAll<HTMLVideoElement>("video[data-video-diferido]");
 const iniciarDiferidos = () => {
-  if (sinMovimiento) return;
+  if (sinMovimiento || ahorrarDatos) return;
   diferidos.forEach((video) => {
     video.preload = "auto";
     video.autoplay = true;

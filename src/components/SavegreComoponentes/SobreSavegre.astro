@@ -1,6 +1,7 @@
 ---
 import { Picture } from "astro:assets";
 import foto from "../../assets/Savegre/Savegre_1.webp";
+import { sizesHasta2x } from "../../lib/imagenes";
 
 
 const puntos = [
@@ -18,8 +19,8 @@ const puntos = [
         src={foto}
         formats={["avif", "webp"]}
         alt="Cascada en el bosque de Savegre"
-        widths={[640, 960, 1280, 1600]}
-        sizes="(min-width: 1024px) 50vw, calc(100vw - 3rem)"
+        widths={[640, 768, 960, 1280, 1600]}
+        sizes={`(min-width: 1024px) 50vw, ${sizesHasta2x("100vw - 3rem")}`}
         quality={75}
         loading="lazy"
         decoding="async"

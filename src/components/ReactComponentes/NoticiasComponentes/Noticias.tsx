@@ -97,7 +97,7 @@ export function TarjetaNoticia({ post }: { post: PostFacebook }) {
       aria-labelledby={datos.idTitulo}
       className="group/nota relative flex w-full flex-col overflow-hidden rounded-[2rem] bg-[#f3f5f8] shadow-[0_18px_40px_-24px_rgb(15_23_42/0.45)] transition-shadow duration-300 hover:shadow-[0_26px_50px_-24px_rgb(15_23_42/0.55)] motion-reduce:transition-none"
     >
-      {post.imagen && <ImagenNoticia src={post.imagen} className="aspect-square" />}
+      {post.miniatura && <ImagenNoticia src={post.miniatura} className="aspect-square" />}
       <div className="flex flex-1 flex-col p-6">
         <h3 id={datos.idTitulo} className="scroll-mt-32 text-xl font-bold leading-snug text-slate-900">
           {datos.titulo}

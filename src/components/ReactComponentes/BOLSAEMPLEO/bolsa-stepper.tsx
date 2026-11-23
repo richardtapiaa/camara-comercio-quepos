@@ -5,8 +5,10 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import StepContent from "@mui/material/StepContent";
 import Button from "@mui/material/Button";
-import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
+import { ErrorApi, enviarFormularioConArchivos } from "../../../lib/api";
+import OverlayMensajeEnviado from "../CONTACTO/OverlayMensajeEnviado";
+import type { CargadorAnimacion } from "../CONTACTO/AnimacionCorreoEnviado";
 
 type Formulario = {
   nombre: string; apellido: string; cedula: string; direccion: string; telefono: string; email: string;
@@ -25,18 +27,57 @@ const CAMPO = "w-full rounded-xl bg-slate-50 px-4 py-3 text-sm text-slate-800 ri
 const ETIQUETA = "grid self-start content-start gap-2 text-sm font-semibold text-slate-700";
 const OBLIGATORIO = <span className="text-[#2780c9]">(*)</span>;
 const pasos = ["Datos personales", "Estudios y experiencia", "Documentos y envío"];
+const CV_TAMANO_MAXIMO = 5 * 1024 * 1024;
+const ESPERA_MINIMA_MS = 900;
+const cargarAnimacionBusqueda: CargadorAnimacion = () => import("../../../assets/bolsa-empleo/search-job.json");
+const esperar = (ms: number) => new Promise((resolver) => setTimeout(resolver, ms));
+const CV_EXTENSIONES = [".pdf", ".doc", ".docx"];
+
+// Nombre de cada campo en el servidor (POST /api/bolsa-de-empleo) y el paso del formulario donde está
+const CAMPOS_SERVIDOR: Record<Exclude<keyof Formulario, "cv">, string> = {
+  nombre: "nombre", apellido: "apellido", cedula: "cedula", direccion: "direccion", telefono: "telefono", email: "email",
+  profesion: "profesion", otraProfesion: "otra_profesion", estudios: "estudios", cursosEstudios: "cursos_ina",
+  carnetManipulacion: "carnet_manipulacion", licencia: "licencia", tipoLicencia: "tipo_licencia", zafarrancho: "zafarrancho",
+  otrosCursos: "otros_cursos", cursosAdicionales: "cursos_adicionales", experiencia: "experiencia", lugarExperiencia: "lugar_experiencia",
+};
+const PASO_DE_CAMPO: Record<string, number> = {
+  nombre: 0, apellido: 0, cedula: 0, direccion: 0, telefono: 0, email: 0, profesion: 0, otra_profesion: 0,
+  estudios: 1, cursos_ina: 1, carnet_manipulacion: 1, licencia: 1, tipo_licencia: 1, zafarrancho: 1,
+  otros_cursos: 1, cursos_adicionales: 1, experiencia: 1, lugar_experiencia: 1, cv: 2,
+};
+
+const aFormData = (datos: Formulario, sitioWeb: string) => {
+  const formulario = new FormData();
+  for (const [campo, nombreServidor] of Object.entries(CAMPOS_SERVIDOR)) {
+    const valor = datos[campo as keyof typeof CAMPOS_SERVIDOR];
+    if (Array.isArray(valor)) valor.forEach((opcion) => formulario.append(nombreServidor, opcion));
+    else formulario.append(nombreServidor, valor);
+  }
+  formulario.append("sitio_web", sitioWeb);
+  if (datos.cv) formulario.append("cv", datos.cv);
+  return formulario;
+};
+
+const validarCurriculum = (archivo: File | null) => {
+  if (!archivo) return "";
+  const extension = archivo.name.slice(archivo.name.lastIndexOf(".")).toLowerCase();
+  if (!CV_EXTENSIONES.includes(extension)) return "Adjunte su currículum en PDF o Word (.pdf, .doc o .docx).";
+  if (archivo.size > CV_TAMANO_MAXIMO) return "El currículum no puede pesar más de 5 MB.";
+  return "";
+};
 
 const BolsaStepper = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [datos, setDatos] = React.useState<Formulario>(VACIO);
   const [error, setError] = React.useState("");
   const [enviado, setEnviado] = React.useState(false);
+  const [enviando, setEnviando] = React.useState(false);
+  const [sitioWeb, setSitioWeb] = React.useState("");
 
   const cambiar = (campo: keyof Formulario) =>
     (evento: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
       setDatos((anterior) => ({ ...anterior, [campo]: evento.target.value }));
       setError("");
-      setEnviado(false);
     };
 
   const cambiarEstudios = (evento: React.ChangeEvent<HTMLSelectElement>) => {
@@ -62,10 +103,33 @@ const BolsaStepper = () => {
       if (datos.otrosCursos === "si" && !datos.cursosAdicionales.trim()) return "Indique cuáles cursos adicionales realizó.";
       if (datos.experiencia === "si" && !datos.lugarExperiencia.trim()) return "Indique dónde tiene experiencia.";
     }
+    if (activeStep === 2) return validarCurriculum(datos.cv);
     return "";
   };
 
+  const enviar = async () => {
+    setEnviando(true);
+    setError("");
+    try {
+      await Promise.all([enviarFormularioConArchivos("bolsa-de-empleo", aFormData(datos, sitioWeb)), esperar(ESPERA_MINIMA_MS)]);
+      setDatos(VACIO);
+      setActiveStep(0);
+      setEnviado(true);
+    } catch (e) {
+      if (e instanceof ErrorApi) {
+        const [campo, mensaje] = Object.entries(e.campos)[0] ?? [];
+        setError(mensaje ?? e.message);
+        if (campo && campo in PASO_DE_CAMPO) setActiveStep(PASO_DE_CAMPO[campo]);
+      } else {
+        setError("No se pudo enviar la solicitud. Inténtelo de nuevo.");
+      }
+    } finally {
+      setEnviando(false);
+    }
+  };
+
   const avanzar = () => {
+    if (enviando) return;
     const mensajeError = validarPaso();
     if (mensajeError) {
       setError(mensajeError);
@@ -76,18 +140,10 @@ const BolsaStepper = () => {
       setActiveStep((prev) => prev + 1);
       return;
     }
-    setError("");
-    setEnviado(true);
-    setDatos(VACIO);
-    setActiveStep(pasos.length);
+    void enviar();
   };
 
-  const reiniciar = () => {
-    setDatos(VACIO);
-    setError("");
-    setEnviado(false);
-    setActiveStep(0);
-  };
+  const cerrarConfirmacion = React.useCallback(() => setEnviado(false), []);
 
   const campo = (label: string, contenido: React.ReactNode, obligatorio = false) => (
     <label className={ETIQUETA}>
@@ -111,7 +167,16 @@ const BolsaStepper = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 820, width: "100%" }}>
+    <Box
+      sx={{
+        maxWidth: 820,
+        width: "100%",
+        "& .MuiStepLabel-label, & .MuiStepIcon-text, & .MuiButton-root, & .MuiTypography-root": { fontFamily: "inherit" },
+        "& .MuiStepLabel-label": { fontWeight: 600, color: "#64748b" },
+        "& .MuiStepLabel-label.Mui-active, & .MuiStepLabel-label.Mui-completed": { color: "#0f172a" },
+        "& .MuiButton-root": { textTransform: "none", fontWeight: 600, borderRadius: "0.5rem" },
+      }}
+    >
       <Stepper activeStep={activeStep} orientation="vertical">
         <Step>
           <StepLabel>{pasos[0]}</StepLabel>
@@ -131,7 +196,7 @@ const BolsaStepper = () => {
                 {opcional(datos.profesion === "otro", campo("¿Cuál profesión?", <input type="text" value={datos.otraProfesion} onChange={cambiar("otraProfesion")} className={CAMPO} disabled={datos.profesion !== "otro"} />, true))}
               </div>
             </div>
-            <Controles activeStep={activeStep} avanzar={avanzar} retroceder={volver} />
+            <Controles activeStep={activeStep} avanzar={avanzar} retroceder={volver} enviando={enviando} />
           </StepContent>
         </Step>
         <Step>
@@ -146,22 +211,33 @@ const BolsaStepper = () => {
               <div className="self-start">{campo("Otros cursos", <Opciones nombre="otrosCursos" valor={datos.otrosCursos} cambiar={cambiar("otrosCursos")} />, true)}{opcional(datos.otrosCursos === "si", campo("¿Cuáles cursos?", <input type="text" value={datos.cursosAdicionales} onChange={cambiar("cursosAdicionales")} className={CAMPO} disabled={datos.otrosCursos !== "si"} />, true))}</div>
               <div className="self-start">{campo("Experiencia", <Opciones nombre="experiencia" valor={datos.experiencia} cambiar={cambiar("experiencia")} />, true)}{opcional(datos.experiencia === "si", campo("¿Dónde?", <input type="text" value={datos.lugarExperiencia} onChange={cambiar("lugarExperiencia")} className={CAMPO} disabled={datos.experiencia !== "si"} />, true))}</div>
             </div>
-            <Controles activeStep={activeStep} avanzar={avanzar} retroceder={volver} />
+            <Controles activeStep={activeStep} avanzar={avanzar} retroceder={volver} enviando={enviando} />
           </StepContent>
         </Step>
         <Step>
           <StepLabel>{pasos[2]}</StepLabel>
           <StepContent>
             <div className="grid gap-5 pb-2">
-              {campo("Adjuntar CV", <input type="file" onChange={cambiarArchivo} className="w-full rounded-xl bg-slate-50 py-2 text-sm text-slate-700 ring-1 ring-slate-200 file:mr-2 file:rounded-lg file:border-0 file:bg-[#2780c9] file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-white" />)}
+              {campo("Adjuntar CV", <input type="file" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" onChange={cambiarArchivo} className="w-full rounded-xl bg-slate-50 py-2 text-sm text-slate-700 ring-1 ring-slate-200 file:mr-2 file:rounded-lg file:border-0 file:bg-[#2780c9] file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-white" />)}
             </div>
-            <Controles activeStep={activeStep} avanzar={avanzar} retroceder={volver} />
+            <Controles activeStep={activeStep} avanzar={avanzar} retroceder={volver} enviando={enviando} />
           </StepContent>
         </Step>
       </Stepper>
+      <div aria-hidden="true" className="fixed -left-[9999px] h-px w-px overflow-hidden">
+        <label>
+          Sitio web
+          <input type="text" name="sitio_web" tabIndex={-1} autoComplete="off" value={sitioWeb} onChange={(evento) => setSitioWeb(evento.target.value)} />
+        </label>
+      </div>
       {error && <Typography color="error" role="alert" sx={{ mt: 2, fontSize: "0.875rem" }}>{error}</Typography>}
-      {enviado && <Typography sx={{ mt: 2, color: "#2780c9", fontSize: "0.875rem" }}>¡Gracias! Hemos recibido su información.</Typography>}
-      {activeStep === pasos.length && <Paper square elevation={0} sx={{ p: 2 }}><Typography>Su información fue enviada correctamente.</Typography><Button onClick={reiniciar} sx={{ mt: 1 }}>Enviar otra solicitud</Button></Paper>}
+      <OverlayMensajeEnviado
+        abierto={enviado}
+        onCerrar={cerrarConfirmacion}
+        titulo="¡Solicitud enviada con éxito!"
+        texto="Gracias por registrarse en la Bolsa de Empleo. Compartiremos su información con nuestros asociados que buscan personal."
+        cargarAnimacion={cargarAnimacionBusqueda}
+      />
     </Box>
   );
 };
@@ -174,12 +250,17 @@ const Opciones = ({ nombre, valor, cambiar }: OpcionesProps) => (
   </div>
 );
 
-interface ControlesProps { activeStep: number; avanzar: () => void; retroceder: () => void; }
-const Controles = ({ activeStep, avanzar, retroceder }: ControlesProps) => (
-  <Box sx={{ mb: 1 }}>
-    <Button variant="contained" onClick={avanzar} sx={{ mt: 1, mr: 1 }}>{activeStep === pasos.length - 1 ? "Enviar solicitud" : "Continuar"}</Button>
-    {activeStep > 0 && <Button onClick={retroceder} sx={{ mt: 1 }}>Atrás</Button>}
-  </Box>
-);
+interface ControlesProps { activeStep: number; avanzar: () => void; retroceder: () => void; enviando: boolean; }
+const Controles = ({ activeStep, avanzar, retroceder, enviando }: ControlesProps) => {
+  const esUltimo = activeStep === pasos.length - 1;
+  return (
+    <Box sx={{ mb: 1 }}>
+      <Button variant="contained" onClick={avanzar} disabled={enviando} sx={{ mt: 1, mr: 1 }}>
+        {esUltimo ? (enviando ? "Enviando…" : "Enviar solicitud") : "Continuar"}
+      </Button>
+      {activeStep > 0 && <Button onClick={retroceder} disabled={enviando} sx={{ mt: 1 }}>Atrás</Button>}
+    </Box>
+  );
+};
 
 export default BolsaStepper;
