@@ -27,6 +27,12 @@
 }
 
 .agua-linea {
+  overflow: hidden;
+}
+.agua-linea::before {
+  content: "";
+  position: absolute;
+  inset: -120px 0 0;
   background-color: #4195ce;
   -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 120' preserveAspectRatio='none'%3E%3Cpath d='M5 0C2 20 2 40 5 60S8 100 5 120H27C30 100 30 80 27 60S24 20 27 0Z'/%3E%3C/svg%3E");
   mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 120' preserveAspectRatio='none'%3E%3Cpath d='M5 0C2 20 2 40 5 60S8 100 5 120H27C30 100 30 80 27 60S24 20 27 0Z'/%3E%3C/svg%3E");
@@ -36,14 +42,15 @@
   mask-repeat: repeat-y;
   animation: agua-corre 2.4s linear infinite;
 }
+.agua-linea[data-oculto]::before {
+  animation-play-state: paused;
+}
 @keyframes agua-corre {
   from {
-    -webkit-mask-position: 0 0;
-    mask-position: 0 0;
+    transform: translateY(0);
   }
   to {
-    -webkit-mask-position: 0 120px;
-    mask-position: 0 120px;
+    transform: translateY(120px);
   }
 }
 @keyframes kayak-oleaje {
@@ -72,9 +79,43 @@
   -webkit-mask-repeat: repeat-y;
   mask-repeat: repeat-y;
 }
+[data-marcador] {
+  transition:
+    background-color 0.6s cubic-bezier(0.215, 0.61, 0.355, 1),
+    border-color 0.6s cubic-bezier(0.215, 0.61, 0.355, 1),
+    scale 0.6s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+[data-marcador][data-activo] {
+  background-color: #334155;
+  border-color: #334155;
+  scale: 1.2;
+}
+
+[data-viajero] {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.35s ease,
+    visibility 0s linear 0.35s;
+}
+[data-viajero][data-activo] {
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity 0.35s ease,
+    visibility 0s;
+}
+[data-viajero]:not([data-activo]) img {
+  animation-play-state: paused;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .agua-linea {
+  .agua-linea::before {
     animation: none;
+  }
+  [data-marcador],
+  [data-viajero] {
+    transition: none;
   }
 }
 

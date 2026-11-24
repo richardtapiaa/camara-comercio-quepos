@@ -38,8 +38,10 @@ if (!conCss && !sinMovimiento) {
 
 
     recuadro.querySelectorAll<Element>(".agua-capa, .cielo-nube").forEach((capa) => {
-      const dx = parseFloat(getComputedStyle(capa).getPropertyValue("--agua-x"));
-      gsap.fromTo(capa, { x: dx * -0.5 }, { x: dx * 0.5, ease: "none", scrollTrigger });
+      const valor = getComputedStyle(capa).getPropertyValue("--agua-x").trim();
+      const dx = parseFloat(valor);
+      const eje = valor.endsWith("%") ? "xPercent" : "x";
+      gsap.fromTo(capa, { [eje]: dx * -0.5 }, { [eje]: dx * 0.5, ease: "none", scrollTrigger });
     });
   });
 }

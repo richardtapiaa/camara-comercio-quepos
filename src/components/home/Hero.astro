@@ -3,21 +3,25 @@ import PortadaConRecorte from "../compartidos/PortadaConRecorte.astro";
 import fondo from "../../assets/inicio/hero-quepos-inicio-poster.webp";
 import fondoVertical from "../../assets/inicio/hero-quepos-inicio-poster-celular.webp";
 import videoHero from "../../assets/inicio/hero-quepos-inicio.mp4";
-import videoHeroMovil from "../../assets/inicio/hero-quepos-inicio-movil.mp4";
 import videoHeroWebm from "../../assets/inicio/hero-quepos-inicio.webm";
+import videoHeroMovil from "../../assets/inicio/hero-quepos-inicio-movil.mp4";
 import videoHeroMovilWebm from "../../assets/inicio/hero-quepos-inicio-movil.webm";
+import videoHeroVertical from "../../assets/inicio/hero-quepos-inicio-vertical.mp4";
+import videoHeroVerticalWebm from "../../assets/inicio/hero-quepos-inicio-vertical.webm";
 import "../../styles/home/hero.css";
 
+const PANTALLA_VERTICAL = "(max-aspect-ratio: 4/5)";
+const PANTALLA_PEQUENA = "(max-width: 767px)";
 ---
 
-<section id="hero" data-end-pin="#mision" data-pin-desktop class="panel pinned sticky top-0 isolate md:relative h-lvh w-full overflow-hidden bg-black">
+<section id="hero" data-end-pin="#mision" data-pin-desktop class="panel pinned sticky top-0 isolate md:relative h-svh w-full overflow-hidden bg-black">
   <PortadaConRecorte
     foto={fondo}
     recorte={fondoVertical}
     anchos={[800, 1280, 1920]}
     calidad={50}
     sizes="max(100vw, 192vh)"
-    mediaRecorte="(max-width: 430px) and (max-aspect-ratio: 5/6)"
+    mediaRecorte={PANTALLA_VERTICAL}
     alt=""
     class="absolute inset-0 -z-30 h-full w-full object-cover object-left-bottom"
     loading="eager"
@@ -31,11 +35,15 @@ import "../../styles/home/hero.css";
     muted
     loop
     playsinline
+    disablepictureinpicture
+    disableRemotePlayback
     preload="none"
-    aria-hidden="true"  
+    aria-hidden="true"
   >
-    <source src={videoHeroMovilWebm} type='video/webm; codecs="av01.0.05M.08"' media="(max-width: 767px)" />
-    <source src={videoHeroMovil} type="video/mp4" media="(max-width: 767px)" />
+    <source src={videoHeroVerticalWebm} type='video/webm; codecs="av01.0.05M.08"' media={PANTALLA_VERTICAL} />
+    <source src={videoHeroVertical} type="video/mp4" media={PANTALLA_VERTICAL} />
+    <source src={videoHeroMovilWebm} type='video/webm; codecs="av01.0.05M.08"' media={PANTALLA_PEQUENA} />
+    <source src={videoHeroMovil} type="video/mp4" media={PANTALLA_PEQUENA} />
     <source src={videoHeroWebm} type='video/webm; codecs="av01.0.08M.08"' />
     <source src={videoHero} type="video/mp4" />
   </video>

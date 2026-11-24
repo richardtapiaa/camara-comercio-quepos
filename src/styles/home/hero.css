@@ -16,3 +16,10 @@
     opacity: 0.75;
   }
 }
+
+@media (max-aspect-ratio: 4/5) {
+  #hero video,
+  #hero picture img {
+    object-position: center;
+  }
+}
