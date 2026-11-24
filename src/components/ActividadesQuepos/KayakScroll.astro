@@ -65,21 +65,15 @@ const frase =
     />
   </div>
 
-  <svg
-    class="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-[24%] w-full"
-    viewBox="0 0 1440 200"
-    preserveAspectRatio="none"
-    aria-hidden="true"
-  >
-    <g class="agua-capa agua-capa-frente">
+  <div class="agua-capa agua-capa-frente pointer-events-none absolute inset-x-0 bottom-0 z-20 h-[24%]" aria-hidden="true">
+    <svg class="agua-ola agua-ola-frente block size-full overflow-visible" viewBox="0 0 1440 200" preserveAspectRatio="none">
       <path
-        class="agua-ola agua-ola-frente"
         fill="#2F8FCB"
         fill-opacity="0.92"
         d="M-240 30q85 -16 170 0t170 0t170 0t170 0t170 0t170 0t170 0t170 0t170 0t170 0t170 0t170 0V200H-240Z"
       />
-    </g>
-  </svg>
+    </svg>
+  </div>
 </section>
 
 <KayakJs />

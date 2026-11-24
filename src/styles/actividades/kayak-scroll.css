@@ -54,10 +54,10 @@
 
 @keyframes agua-mecer {
   from {
-    translate: -40px 0;
+    translate: -2.7778% 0;
   }
   to {
-    translate: 40px 6px;
+    translate: 2.7778% 3%;
   }
 }
 

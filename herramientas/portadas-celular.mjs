@@ -51,8 +51,8 @@ const PORTADAS = [
   },
   {
     foto: "src/assets/inicio/hero-quepos-inicio-poster.webp",
-    proporcion: 5 / 6,
-    izquierda: () => 0,
+    proporcion: 4 / 5,
+    izquierda: (ancho, _alto, anchoCorte) => ancho - anchoCorte,
   },
 ];
 
