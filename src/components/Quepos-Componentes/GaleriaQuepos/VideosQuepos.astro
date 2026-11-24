@@ -6,10 +6,6 @@ import HojaLineas from "../../compartidos/decoracion/HojaLineas.astro";
 import HojasTropicales from "../../compartidos/decoracion/HojasTropicales.astro";
 import OndasArena from "../../compartidos/decoracion/OndasArena.astro";
 import palmera from "../../../assets/quepos/palmera-sin-fondo.webp";
-
-// VIDEOS: cada idioma tiene una versión WebM (AV1, más liviana) y una MP4 de respaldo. Para cambiar un video,
-// reemplace estos archivos en src/assets/quepos/videos/ manteniendo los nombres, o cambie las rutas aquí.
-import videoEs from "../../../assets/quepos/videos/video-es.mp4";
 import videoEsWebm from "../../../assets/quepos/videos/video-es.webm";
 import videoEn from "../../../assets/quepos/videos/video-en.mp4";
 import videoEnWebm from "../../../assets/quepos/videos/video-en.webm";
@@ -63,7 +59,7 @@ const sizesPalmera = "(min-width: 1280px) 384px, (min-width: 1024px) 320px, (min
     <div class="mt-10 sm:mt-12">
       <VideoQueposIdiomas
         client:visible={{ rootMargin: "600px" }}
-        fuentesEs={[{ src: videoEsWebm, type: webmAv1 }, { src: videoEs, type: "video/mp4" }]}
+        fuentesEs={[{ src: videoEsWebm, type: webmAv1 }]}
         fuentesEn={[{ src: videoEnWebm, type: webmAv1 }, { src: videoEn, type: "video/mp4" }]}
         poster={poster}
         size="full"
