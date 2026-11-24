@@ -10,10 +10,8 @@ export interface Decoracion {
 
 const POSICION_POR_DEFECTO = "bottom-[78%] left-1/2 h-[0.9em] -translate-x-1/2";
 
-// El HTML ya sale con la fila llena: si empezara con una sola copia, el texto saltaría al activarse el componente.
 const REPETICIONES_INICIALES = 8;
 
-// Resorte que suaviza la velocidad del scroll antes de acelerar la cinta.
 const RIGIDEZ = 400;
 const AMORTIGUACION = 50;
 const PASO_RESORTE = 0.004;
@@ -133,7 +131,6 @@ function ParallaxText({ children, baseVelocity = 100, className, scrollReactive 
       fila.style.transform = `translateX(${wrap(-100 / repetitionsRef.current, 0, posicion)}%)`;
     };
 
-    // Solo corre mientras la cinta está cerca de la pantalla.
     const observador = new IntersectionObserver(
       ([entrada]) => {
         cancelAnimationFrame(cuadro);

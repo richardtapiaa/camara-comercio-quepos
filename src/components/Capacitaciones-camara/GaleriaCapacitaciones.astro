@@ -1,23 +1,17 @@
 ---
 import { Image } from "astro:assets";
 import FondoSello from "../compartidos/FondoSello";
-import imagen1 from "../../assets/capacitaciones/imagen-1.webp";
-import imagen2 from "../../assets/capacitaciones/imagen-2.webp";
-import imagen3 from "../../assets/capacitaciones/imagen-3.webp";
-import imagen4 from "../../assets/capacitaciones/imagen-4.webp";
-import poli from "../../assets/capacitaciones/capacitacion-poli.webp";
-import poli2 from "../../assets/capacitaciones/capacitacion-poli-2.webp";
+import imagen1 from "../../assets/capacitaciones/salon-comunal-1.webp";
+import imagen2 from "../../assets/capacitaciones/salon-comunal-2.webp";
+import imagen3 from "../../assets/capacitaciones/salon-comunal-3.webp";
+import imagen4 from "../../assets/capacitaciones/salon-comunal-4.webp";
+import poli from "../../assets/capacitaciones/polideportivo-1.webp";
+import poli2 from "../../assets/capacitaciones/polideportivo-2.webp";
 import encuentro1 from "../../assets/capacitaciones/encuentro-1.webp";
 import encuentro2 from "../../assets/capacitaciones/encuentro-2.webp";
 import encuentro3 from "../../assets/capacitaciones/encuentro-3.webp";
 import encuentro4 from "../../assets/capacitaciones/encuentro-4.webp";
 
-// Collage desde lg: el lienzo mide 100 de ancho por ALTO de alto y cada foto
-// se ubica con x, y, w en esas unidades, recortada a su "proporcion" (ancho,
-// alto). La mitad de abajo repite la de arriba
-// girada 180°. Debajo de lg las fotos pasan a una cuadrícula (2 columnas en
-// celular, 3 en tablet): las "panoramicas" ocupan dos columnas siempre y las
-// "anchas" solo en celular.
 const ALTO = 74;
 
 const fotos = [
@@ -101,16 +95,9 @@ const porcentaje = (valor: number) => `${Number(valor.toFixed(3))}%`;
 
 type Foto = (typeof fotos)[number];
 
-// Cada foto llena su caja con object-cover: si la caja es más angosta que la
-// foto (p. ej. una foto horizontal en una caja 4/5), el navegador la amplía
-// para cubrirla. Este factor dice cuánto más ancha se dibuja la foto que su
-// caja, para pedir en `sizes` la versión que de verdad se ve y no una más
-// chica que salga borrosa.
 const ampliacion = (foto: Foto, proporcionCaja: number) =>
   Math.max(1, foto.src.width / foto.src.height / proporcionCaja);
 
-// Las proporciones de celular y tablet deben coincidir con las clases aspect-*
-// de la imagen más abajo.
 const tamanos = (foto: Foto) => {
   const [ancho, alto] = foto.proporcion;
   const desktop = ampliacion(foto, ancho / alto);
@@ -136,7 +123,6 @@ const tamanos = (foto: Foto) => {
     </div>
   </div>
 
-  <!-- El collage es más ancho que el título (1600px contra 1280px) para que las fotos luzcan más en desktop. -->
   <div
     class="mx-auto mt-12 grid max-w-[1600px] grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:relative lg:mt-16 lg:block lg:aspect-(--proporcion)"
     style={`--proporcion: 100 / ${ALTO}`}

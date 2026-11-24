@@ -1,13 +1,11 @@
 ---
 import { Picture } from "astro:assets";
-import fotoColinas from "../../assets/naranjito/imagenes-distrito/colinas-naranjito.webp";
-import fotoRafting from "../../assets/actividades/actividades-2.jpg";
-import fotoRioMar from "../../assets/naranjito/imagenes-distrito/foto-naranjito.webp";
-import fotoCabalgata from "../../assets/naranjito/imagenes-distrito/naranjito-hero.webp";
-import fotoValle from "../../assets/naranjito/imagenes-distrito/valle-naranjito.webp";
+import fotoColinas from "../../assets/naranjito/colinas-naranjito.webp";
+import fotoRafting from "../../assets/actividades/rafting-rio.webp";
+import fotoRioMar from "../../assets/naranjito/foto-naranjito.webp";
+import fotoCabalgata from "../../assets/naranjito/naranjito-hero.webp";
+import fotoValle from "../../assets/naranjito/valle-naranjito.webp";
 
-// Fotos que ya usa la página, reutilizadas. "fila" decide el tamaño: las tres
-// primeras van en una fila de tres y las dos últimas en una de dos, más anchas.
 const fotos = [
   { src: fotoColinas, fila: 3, texto: "Colinas y potreros", alt: "Colinas verdes con potreros y bosque en la montaña" },
   { src: fotoRafting, fila: 3, texto: "Rafting", alt: "Grupo con cascos remando en una balsa por los rápidos de un río" },
@@ -17,17 +15,6 @@ const fotos = [
 ];
 ---
 
-<!--
-  Mosaico de fotos pegadas entre sí, como un solo bloque con las esquinas de
-  afuera redondeadas y los mismos márgenes que la sección de arriba; el fondo
-  blanco sigue de corrido hasta la frase curva de TextPath, que va debajo.
-  Desde lg, una fila de tres y otra de dos; en celular y tablet, dos columnas y
-  la última foto a lo ancho. Cada foto lleva abajo un pin que despliega su nombre. Sin
-  JavaScript; las fotos se sirven en AVIF o WebP con calidad alta (88), en el
-  tamaño de cada celda y hasta 2048px para pantallas de alta densidad, y cargan
-  al acercarse. Un toque de contraste y saturación les da más vida; las fotos no
-  tienen efecto al pasar el mouse.
--->
 <section aria-labelledby="titulo-galeria-naranjito" class="bg-white px-6 pt-10 sm:px-10 sm:pt-14">
   <h2 id="titulo-galeria-naranjito" class="sr-only">Galería de Naranjito</h2>
 
@@ -59,11 +46,6 @@ const fotos = [
               decoding="async"
               class="size-full object-cover contrast-[1.05] saturate-[1.1]"
             />
-            <!--
-              El rótulo muestra solo el pin; al pasar el mouse o al llegar con el
-              teclado (Tab), el nombre se despliega hacia la derecha. El texto
-              siempre está en la página, así que los lectores de pantalla lo leen.
-            -->
             <figcaption
               tabindex="0"
               class="group/pin absolute bottom-3 left-3 inline-flex items-center rounded-full bg-black/55 p-2 text-sm font-medium text-white backdrop-blur-sm outline-none focus-visible:ring-2 focus-visible:ring-white sm:bottom-4 sm:left-4"

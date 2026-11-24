@@ -1,7 +1,7 @@
 ---
 import { portadaCelular, sizesCubrePantalla, variantesCapa } from "../../lib/imagenes";
-import foto from "../../assets/Savegre/catarata-savegre.webp";
-import fotoVertical from "../../assets/Savegre/catarata-savegre-celular.webp";
+import foto from "../../assets/savegre/catarata-savegre.webp";
+import fotoVertical from "../../assets/savegre/catarata-savegre-celular.webp";
 
 const anchos = [800, 1200, 1600];
 const fotoWebp = await variantesCapa(foto, anchos, 80);
@@ -10,15 +10,6 @@ const celular = await portadaCelular(fotoVertical, foto, anchos);
 const sizes = sizesCubrePantalla(foto);
 ---
 
-<!--
-  Mismo diseño que el hero de Naranjito: la foto ocupa todo el ancho y el 78% del
-  alto de la pantalla, con solo las esquinas de abajo redondeadas, y abajo a la
-  izquierda una pestaña blanca que se "recorta" de la foto lleva el título.
-  --radio es el redondeo de todas las esquinas. En celular y tablet la foto se
-  centra en la caída de agua grande (25% del ancho); desde lg se ve completa a lo
-  ancho y un poco más arriba del centro, para no cortar la parte alta de las
-  cataratas.
--->
 <section id="hero" aria-labelledby="titulo-savegre" class="bg-white">
   <div
     class="relative isolate h-[78svh] min-h-[32.5rem] overflow-hidden rounded-b-(--radio) bg-[#2b4a5c] [--radio:1.5rem] lg:[--radio:2rem]"
@@ -40,11 +31,6 @@ const sizes = sizesCubrePantalla(foto);
       />
     </picture>
 
-    <!--
-      Los saltos de línea del título son fijos para que la pestaña mida justo lo
-      que mide el texto: en celular "Quepos, Savegre:" arriba y la frase en dos
-      líneas parejas; en tablet y laptops en dos líneas y desde 1360px en una.
-    -->
     <div class="hero-savegre-pestana absolute bottom-0 left-0 max-w-[calc(100%-3rem)] rounded-tr-(--radio) bg-white px-5 py-4 sm:px-7 sm:py-5 lg:max-w-[calc(62.5%-3rem)]">
       <h1 id="titulo-savegre" class="text-balance text-xl font-medium leading-snug text-[#2b4a5c] sm:text-2xl lg:text-[1.75rem]">
         <span class="block font-bold text-[#163746] min-[1360px]:inline">Quepos, Savegre:</span> Naturaleza en <br class="sm:hidden" />estado puro.
@@ -54,9 +40,6 @@ const sizes = sizesCubrePantalla(foto);
 </section>
 
 <style>
-  /* Esquinas curvas hacia adentro donde la pestaña se une con la foto: arriba a
-     la izquierda y abajo a la derecha de la pestaña. Pintan de blanco solo la
-     parte fuera de un cuarto de círculo, así la foto parece redondeada ahí. */
   .hero-savegre-pestana::before,
   .hero-savegre-pestana::after {
     content: "";

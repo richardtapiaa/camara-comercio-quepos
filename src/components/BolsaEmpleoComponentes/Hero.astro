@@ -11,9 +11,6 @@ const fotoAvif = await variantesCapa(foto, anchos, 60, "avif");
 const celular = await recorteCelular(fotoVertical, foto, anchos, "100vw", 60);
 ---
 
-<!-- Mismo estilo que los heroes de Hospitalidad y Capacitaciones: foto a todo el ancho, degradado para que el texto
-     se lea, etiqueta y título grande abajo a la izquierda (en Poppins, como el de contacto), y el borde de pincelada blanco, del color de la sección
-     que sigue (Info_bolsa). Con id="hero" la barra de navegación queda transparente encima. -->
 <section id="hero" aria-labelledby="titulo-bolsa" class="relative isolate flex h-[78svh] min-h-[520px] items-end overflow-hidden bg-[#073a5e]">
   <picture>
     <source media={celular.media} type="image/avif" srcset={celular.avif} sizes={celular.sizes} />

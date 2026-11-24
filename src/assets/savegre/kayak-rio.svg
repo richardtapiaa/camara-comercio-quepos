@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 30 460 270">
+  <defs>
+    <filter id="kayak-rio-grunge" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" result="ruido"/>
+      <feDisplacementMap in="SourceGraphic" in2="ruido" scale="6" xChannelSelector="R" yChannelSelector="G" result="borde"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="2" seed="29" result="manchas"/>
+      <feColorMatrix in="manchas" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  16 0 0 0 -11.6" result="huecos"/>
+      <feComposite in="borde" in2="huecos" operator="out"/>
+    </filter>
+  </defs>
+  <g opacity="0.11" fill="#4d5b2c" stroke="#4d5b2c" stroke-linecap="round" stroke-linejoin="round" filter="url(#kayak-rio-grunge)">
+    <path d="M10 312c-1 -9 -5 -30 -4 -42c1 -12 8 -19 8 -30c0 -11 -8 -23 -8 -34c0 -11 6 -23 6 -34c0 -11 -8 -21 -8 -32c0 -11 5 -23 6 -32c1 -9 -2 -18 -2 -22c-5 -6 0 -17 7 -15c-6 -12 8 -23 18 -14c4 -7 15 -6 16 1c11 -9 26 3 18 16c12 -3 19 11 10 20c11 0 15 16 5 20c1 4 8 16 8 24c0 8 -10 17 -10 26c0 9 10 17 10 26c0 9 -8 17 -8 26c0 9 8 17 8 26c0 9 -6 17 -6 26c0 13 3 30 4 38z" stroke="none"/>
+    <path d="M40 70C44 130 46 190 44 248L72 248C70 190 66 130 60 70Z" fill="#fff" stroke="none"/>
+    <path d="M48 104C50 140 50 180 50 220M58 120C60 156 60 196 62 236" fill="none" stroke-width="3"/>
+    <path d="M84 120C100 104 118 102 132 110C116 112 100 120 88 134ZM82 182C98 172 116 174 126 186C110 184 96 186 86 194Z" stroke="none"/>
+    <path d="M96 262c4 -12 20 -16 32 -10c8 4 10 12 8 16l-40 0z" stroke="none"/>
+    <path d="M370 266c3 -10 16 -13 26 -8c7 3 9 9 7 12l-33 0z" stroke="none"/>
+    <path d="M150 238C192 224 294 224 336 234C304 250 192 250 150 238Z" stroke="none"/>
+    <path d="M244 236L242 200" fill="none" stroke="#fff" stroke-width="22"/>
+    <path d="M244 236L242 200" fill="none" stroke-width="16"/>
+    <circle cx="240" cy="186" r="10" stroke="none"/>
+    <path d="M228 182C228 166 252 166 252 182Z" stroke="none"/>
+    <path d="M242 206L222 198M242 208L262 216" fill="none" stroke-width="7"/>
+    <path d="M190 178L296 236" fill="none" stroke-width="4"/>
+    <ellipse cx="186" cy="176" rx="12" ry="6" transform="rotate(28 186 176)" stroke="none"/>
+    <ellipse cx="300" cy="238" rx="12" ry="6" transform="rotate(28 300 238)" stroke="none"/>
+    <path d="M70 258q12 -9 24 0t24 0M146 254q14 -10 28 0t28 0t28 0t28 0t28 0t28 0M330 258q12 -9 24 0t24 0t24 0t24 0" fill="none" stroke-width="4"/>
+    <path d="M60 276q13 -9 26 0t26 0t26 0t26 0t26 0t26 0t26 0t26 0t26 0t26 0t26 0t26 0t26 0t26 0" fill="none" stroke-width="4"/>
+    <path d="M90 294q14 -9 28 0t28 0t28 0t28 0t28 0t28 0t28 0t28 0t28 0t28 0t28 0" fill="none" stroke-width="4"/>
+    <circle cx="144" cy="226" r="3.5" stroke="none"/>
+    <circle cx="134" cy="214" r="2.5" stroke="none"/>
+    <circle cx="342" cy="222" r="3" stroke="none"/>
+    <circle cx="352" cy="210" r="2.5" stroke="none"/>
+    <circle cx="310" cy="252" r="3" stroke="none"/>
+    <path d="M300 74q8 -8 15 0q7 -8 15 0M344 54q6 -6 12 0q6 -6 12 0" fill="none" stroke-width="3"/>
+    <circle cx="410" cy="120" r="3.5" stroke="none"/>
+    <circle cx="190" cy="96" r="3" stroke="none"/>
+  </g>
+</svg>

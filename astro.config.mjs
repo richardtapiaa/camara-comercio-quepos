@@ -19,7 +19,6 @@ export default defineConfig({
     inlineStylesheets: "always",
   },
 
-  // Fotos de las noticias: se descargan de Facebook al compilar (ver src/lib/facebook.ts).
   image: {
     remotePatterns: [{ protocol: "https", hostname: "**.fbcdn.net" }],
   },

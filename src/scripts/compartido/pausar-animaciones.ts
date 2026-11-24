@@ -1,5 +1,3 @@
-// Las animaciones infinitas gastan CPU y batería aunque no se vean. Se pausan mientras su sección está fuera de
-// pantalla y siguen donde iban al volver.
 const fueraDePantalla = new Set<Element>();
 const animadosPorSeccion = new Map<Element, Set<Element>>();
 

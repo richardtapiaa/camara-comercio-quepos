@@ -49,8 +49,6 @@ const setDropdownOpen = (dropdown: Dropdown, open: boolean, immediate = false) =
   }
 };
 
-// Mientras el panel de celular está abierto, la página de atrás no se desplaza: se bloquea el scroll del
-// documento y se pausa el scroll suave (Lenis). El panel sí se puede desplazar por dentro (data-lenis-prevent).
 const bloquearScroll = (bloquear: boolean) => {
   document.documentElement.style.overflow = bloquear ? "hidden" : "";
   if (bloquear) window.lenis?.stop();
@@ -130,7 +128,6 @@ mm.add("(max-width: 1023px)", () => {
   if (menuOpen) tl.progress(1);
 
   return () => {
-    // Al pasar a escritorio el panel desaparece sin cerrarse: se libera el scroll por si quedó bloqueado.
     bloquearScroll(false);
     toggle?.removeEventListener("pointerdown", prepararCapas);
     tl?.kill();

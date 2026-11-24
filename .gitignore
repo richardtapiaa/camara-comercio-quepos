@@ -1,37 +1,28 @@
-# build output
 dist/
 
-# generated types
 .astro/
 
-# dependencies
 node_modules/
 
-# logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# environment variables
 .env
 .env.production
 .env.example
 
-# macOS-specific files
 .DS_Store
 
-# jetbrains setting folder
 .idea/
 src/assets/quepos/videos/*.mp4
 
-# cuadros de la animación del malecón (pesan mucho; se generan del video)
 public/malecon/
 public/malecon-mobile/
 public/malecon-2/
 public/malecon-2-mobile/
 
-# informes de pruebas y mediciones (npm test, npm run rendimiento)
 informes-lighthouse/
 informes-playwright/
 resultados-playwright/

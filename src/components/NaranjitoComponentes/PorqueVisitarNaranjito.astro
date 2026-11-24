@@ -1,20 +1,18 @@
 ---
 import { Picture } from "astro:assets";
-import iconoRio from "../../assets/naranjito/iconos-svg/kayak-svgrepo-com.svg";
-import iconoCabalgata from "../../assets/naranjito/iconos-svg/cabalgata.svg";
-import iconoCacao from "../../assets/naranjito/iconos-svg/cacao-cacaos-cacau-svgrepo-com.svg";
-import iconoComunidad from "../../assets/naranjito/iconos-svg/village-svgrepo-com.svg";
+import iconoRio from "../../assets/naranjito/iconos/kayak.svg";
+import iconoCabalgata from "../../assets/naranjito/iconos/cabalgata.svg";
+import iconoCacao from "../../assets/naranjito/iconos/cacao.svg";
+import iconoComunidad from "../../assets/naranjito/iconos/pueblo.svg";
 import siluetaBalsa from "../../assets/naranjito/balsa-rapidos.svg";
 import siluetaJinete from "../../assets/naranjito/jinete-catarata.svg";
 import siluetaCacao from "../../assets/naranjito/cacao-finca.svg";
 import siluetaPueblo from "../../assets/naranjito/pueblo-montana.svg";
-import fotoRafting from "../../assets/naranjito/imagenes-distrito/rafting-naranjito.webp";
-import fotoCabalgata from "../../assets/naranjito/imagenes-distrito/cabalgata-naranjito.webp";
-import fotoCacao from "../../assets/actividades/actividad8.jpg";
-import fotoComunidad from "../../assets/naranjito/imagenes-distrito/turismo-rural.webp";
+import fotoRafting from "../../assets/naranjito/rafting-naranjito.webp";
+import fotoCabalgata from "../../assets/naranjito/cabalgata-naranjito.webp";
+import fotoCacao from "../../assets/actividades/molienda-artesanal.webp";
+import fotoComunidad from "../../assets/naranjito/turismo-rural.webp";
 
-// Cada razón lleva una foto y un ícono de SVG Repo (licencia CC0). Los datos salen de
-// sitios de turismo y de operadores de la zona (noviembre de 2026).
 const razones = [
   {
     icono: iconoRio,
@@ -56,7 +54,6 @@ const razones = [
 ---
 
 <section id="por-que-visitar" aria-labelledby="titulo-por-que-visitar" class="bg-white px-6 pt-20 pb-8 sm:px-10 sm:pt-24 sm:pb-10">
-  <!-- Encabezado en dos columnas: el título a la izquierda y la entrada a la derecha; en celular, uno debajo del otro -->
   <div class="relative z-10 mx-auto grid max-w-[1840px] gap-6 lg:grid-cols-2 lg:items-end lg:gap-14">
     <h2 id="titulo-por-que-visitar" class="text-balance text-3xl font-semibold leading-tight tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
       Lo que hace único a Naranjito
@@ -87,7 +84,6 @@ const razones = [
               />
             </div>
             <div class={`relative isolate max-w-xl ${i % 2 === 1 ? "lg:order-1 lg:justify-self-end" : ""}`}>
-              <!-- Sello de la actividad, tenue, detrás del texto -->
               <img
                 src={razon.sello.src}
                 width={razon.sello.width}

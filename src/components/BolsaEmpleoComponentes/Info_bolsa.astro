@@ -8,14 +8,12 @@ import logoBlanco from "../../assets/compartido/logo-camara-blanco.webp";
 import sello from "../../assets/compartido/logo-camara-sello-480.webp";
 import { recorteCelular, sizesHasta2x, variantesCapa } from "../../lib/imagenes";
 
-// Mismas cifras que "La Cámara en cifras" del inicio (components/home/imagen.astro)
 const ANIO_FUNDACION = 1995;
 const cifras = [
   { valor: "43", texto: "Empresas afiliadas" },
   { valor: String(new Date().getFullYear() - ANIO_FUNDACION), texto: "Años de trayectoria" },
 ];
 
-// En celular las tarjetas miden 22rem de alto y las fotos (3:2) se ajustan por alto: necesitan al menos 33rem de ancho.
 const anchoCelular = sizesHasta2x("max(100vw - 3rem, 33rem)");
 const anchosArtesano = [480, 800, 1056, 1200];
 const artesanoWebp = await variantesCapa(fotoArtesano, anchosArtesano, 80);
@@ -29,11 +27,6 @@ const artesanoCelular = await recorteCelular(artesanoVertical, fotoArtesano, [48
 const vendedorCelular = await recorteCelular(vendedorVertical, fotoVendedor, [480, 800, 1200, 1600], "100vw", 65);
 ---
 
-<!--
-  Tres tarjetas en fila: foto con cifras de la Cámara encima, tarjeta azul con el logo y una frase, y foto con una
-  etiqueta abajo. Debajo, un párrafo centrado que explica el servicio. En celular las tarjetas van una debajo de la
-  otra; en tablet, las dos primeras lado a lado y la tercera a todo el ancho.
--->
 <section aria-labelledby="titulo-info-bolsa" class="bg-white px-6 py-20 sm:px-10 sm:py-24">
   <h2 id="titulo-info-bolsa" class="sr-only">Sobre la Bolsa de Empleo</h2>
 

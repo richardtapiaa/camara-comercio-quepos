@@ -1,19 +1,11 @@
 ---
 import { Picture } from "astro:assets";
-import IconoUbicacion from "../../assets/icons-svg/quepos-icons/whypr.svg";
-import foto from "../../assets/quepos/nose.webp";
+import IconoUbicacion from "../../assets/quepos/iconos/ubicacion.svg";
+import foto from "../../assets/quepos/parque-manuel-antonio-aereo.webp";
 import siluetaMono from "../../assets/quepos/mono-rama.svg";
 import siluetaMontanas from "../../assets/quepos/montanas-quepos.svg";
 ---
 
-<!--
-  Mismo diseño que "Conozca Naranjito": en desktop la foto ocupa la mitad
-  izquierda y llega hasta el borde de la pantalla (solo se redondean sus
-  esquinas derechas); a la derecha van el título con su ícono y el texto,
-  alineados con el ancho del resto del sitio. En celular la foto va arriba, con
-  márgenes, y el texto debajo. Las siluetas decoran el fondo: las montañas
-  asoman sobre la foto y el mono queda abajo a la derecha, detrás del texto.
--->
 <section id="sobre-quepos" aria-labelledby="titulo-sobre-quepos" class="relative overflow-hidden bg-white py-20 sm:py-24">
   <img
     src={siluetaMono.src}

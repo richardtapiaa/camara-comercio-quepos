@@ -1,11 +1,10 @@
 ---
 import { getImage } from "astro:assets";
-import foto from "../../assets/quepos/quepos-foto-prueba.jpg";
+import foto from "../../assets/quepos/quepos-aereo.webp";
 import TextVelocity from "../compartidos/TextVelocity.astro";
 import bordeArriba from "../../assets/quepos/borde-rasgado-arriba.svg";
 import bordeAbajo from "../../assets/quepos/borde-rasgado-abajo.svg";
 
-// Es un fondo CSS, así que cada tamaño de pantalla descarga solo su versión (ver las clases de la capa).
 const [fotoMovil, fotoTableta, fotoEscritorio] = await Promise.all(
   [960, 1280, foto.width].map((width) => getImage({ src: foto, width, format: "webp", quality: 75 })),
 );

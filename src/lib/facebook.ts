@@ -5,8 +5,6 @@ const VERSION_API = "v23.0";
 const ANCHO_IMAGEN = 1200;
 const ANCHO_MINIATURA = 720;
 
-// Al compilar se insiste antes de rendirse. En desarrollo basta un intento para no dejar la página esperando;
-// tras un fallo, se vuelve a probar en la primera recarga pasados 30 segundos.
 const INTENTOS = import.meta.env.PROD ? 3 : 1;
 const ESPERA_ENTRE_INTENTOS_MS = 1500;
 const LIMITE_POR_INTENTO_MS = 15000;
@@ -34,7 +32,6 @@ interface RespuestaGraph {
   error?: { message: string; is_transient?: boolean };
 }
 
-// Respuesta de error de Facebook. Solo vale la pena reintentar las temporales: un token vencido seguirá vencido.
 class ErrorFacebook extends Error {
   temporal: boolean;
 
@@ -80,8 +77,6 @@ export function obtenerPostsFacebook(limite = 6): Promise<PostFacebook[]> {
   return posts;
 }
 
-// Las URL de las fotos de Facebook caducan a los pocos días y el sitio es estático, así que cada foto
-// se descarga y optimiza al compilar. Si una descarga falla, esa noticia conserva la URL original.
 async function guardarImagen(url: string) {
   try {
     const { width, height } = await conReintentos(() => inferRemoteSize(url));

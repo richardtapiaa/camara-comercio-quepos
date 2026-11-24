@@ -5,7 +5,6 @@ import { optimizarImagen } from "@/lib/imagenes";
 import mapaEscritorio from "@/assets/mapa/mapa-escritorio.webp";
 import mapaMovil from "@/assets/mapa/mapa-movil.webp";
 
-// Imagen fija del mapa (con relieve) que se ve mientras carga el mapa real: AVIF, y WebP de respaldo.
 const [fondoEscritorioAvif, fondoEscritorioWebp, fondoMovilAvif, fondoMovilWebp] = await Promise.all([
   getImage({ src: mapaEscritorio, format: "avif", quality: 50 }),
   getImage({ src: mapaEscritorio, format: "webp", quality: 70 }),

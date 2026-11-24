@@ -19,7 +19,6 @@ const TAMANO_FOTO = "(min-width: 1280px) 480px, (min-width: 768px) 35vw, calc(10
 
 const PUNTO_REFERENCIA = "70%";
 
-// Cuántas actividades se ven antes de "Ver más"; las cards con más se acortan para que no queden tan largas.
 const VISIBLES = 4;
 
 function ListaActividades({
@@ -81,12 +80,6 @@ function ListaActividades({
   );
 }
 
-// Card de la línea de tiempo. En escritorio, al abrir "Ver más" la card NO empuja lo de abajo: el marco conserva el alto que tenía
-// cerrada y la card se despliega por encima del espacio de abajo (posición absoluta, por delante). Así la línea,
-// sus puntos y los animales que la recorren se quedan quietos. Al terminar de cerrarse, vuelve a su lugar normal.
-// onEspacio: solo la última card, que no tiene espacio debajo. Se despliega igual que las demás (el punto y la línea
-// no se mueven) y avisa cuánto crece para que la lista agregue ese espacio al final; al terminar se vuelve a medir
-// la página para las animaciones de las secciones siguientes.
 function TarjetaActividad({
   item,
   indice,
@@ -100,18 +93,11 @@ function TarjetaActividad({
   const [abierta, setAbierta] = React.useState(false);
   const [altoFijo, setAltoFijo] = React.useState<number | null>(null);
 
-  // Cómo se abre, decidido en cada clic:
-  //  "encima"  (escritorio): se despliega por encima del espacio vacío de abajo; la línea no se mueve.
-  //  "espacio" (escritorio, última card): igual, y la lista agrega al final el espacio que crece.
-  //  "empuja"  (celular): no hay espacio vacío al lado, así que crece normal y empuja las cards de abajo;
-  //            mientras se abre, la línea se vuelve a medir en cada cuadro para que siga a los puntos.
   const modo = React.useRef<"encima" | "espacio" | "empuja">("encima");
   const cuadro = React.useRef(0);
 
   const soltar = () => setAltoFijo(null);
   const sinMovimiento = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  // Mientras la página cambia de alto, el navegador no debe moverla por su cuenta (el anclaje de scroll
-  // toma la sección de abajo como referencia y la card "brinca").
   const anclaje = (activo: boolean) => {
     document.documentElement.style.overflowAnchor = activo ? "" : "none";
   };
@@ -152,7 +138,6 @@ function TarjetaActividad({
     if (!abierta) {
       setAltoFijo(marco.current?.offsetHeight ?? null);
       setAbierta(true);
-      // Lo que va a crecer la card = alto de la lista oculta
       if (actual === "espacio")
         onEspacio?.(marco.current?.querySelector<HTMLElement>(`#actividades-extra-${indice} > ul`)?.scrollHeight ?? 0);
     } else {
@@ -218,7 +203,6 @@ function useAnimacionTimeline(ref: React.RefObject<HTMLDivElement | null>) {
       { fondo: "[data-linea-tronco]", viajero: "[data-linea-perezoso]", desde: 0, hasta: 1 },
       { fondo: "[data-linea-agua]", viajero: "[data-linea-kayak]", desde: 1, hasta: 3 },
       { fondo: "[data-linea-cable]", viajero: "[data-linea-canopy]", desde: 3, hasta: 4 },
-      // Pesca (4) -> Bienestar (5) en el agua; Bienestar (5) -> último punto en la arena con la tortuga
       { fondo: "[data-linea-agua-pesca]", viajero: "[data-linea-pescado]", desde: 4, hasta: 5 },
       { fondo: "[data-linea-arena]", viajero: "[data-linea-tortuga]", desde: 5, hasta: marcadores.length - 1 },
     ]
@@ -297,8 +281,6 @@ function useAnimacionTimeline(ref: React.RefObject<HTMLDivElement | null>) {
         );
         recorrido.eventCallback("onUpdate", () => actualizarViajeros(Number(gsap.getProperty(punta, "y"))));
         actualizarViajeros(0);
-        // Un refresh (cambio de tamaño de la ventana, abrir la última card) reinicia el recorrido por un instante
-        // y dejaba a un animal equivocado visible: al terminar se vuelve a decidir con la posición real.
         ScrollTrigger.addEventListener("refresh", alRefrescar = () => {
           tramoAntes = null;
           actualizarViajeros(Number(gsap.getProperty(punta, "y")));

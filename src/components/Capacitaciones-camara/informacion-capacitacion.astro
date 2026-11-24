@@ -6,7 +6,6 @@ import ina from "../../assets/inicio/colaboradores/ina-logo.webp";
 import canatur from "../../assets/inicio/colaboradores/canatur-logo.webp";
 import profesionales from "../../assets/capacitaciones/profesionales-capa.svg";
 
-// `alto` es la altura en píxeles con la que se genera el logo (también a 2x para pantallas retina).
 const aliados = [
   { logo: ict, alto: 56, clases: "h-14", titulo: "ICT", texto: "Instituto Costarricense de Turismo" },
   { logo: ina, alto: 56, clases: "h-14", titulo: "INA", texto: "Instituto Nacional de Aprendizaje" },
@@ -14,8 +13,6 @@ const aliados = [
   { icono: profesionales, titulo: "Profesionales", texto: "Del sector privado" },
 ];
 
-// En gris solo con mouse (pointer-fine); al pasar sobre la tarjeta toma su color.
-// En pantallas táctiles, sin hover, se ve a color desde el inicio.
 const efectoColor =
   "transition-[filter,opacity,color] duration-500 ease-out pointer-fine:opacity-60 pointer-fine:grayscale group-hover:opacity-100 group-hover:grayscale-0 motion-reduce:transition-none";
 ---

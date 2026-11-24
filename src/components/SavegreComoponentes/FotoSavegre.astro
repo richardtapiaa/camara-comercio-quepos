@@ -1,24 +1,11 @@
 ---
 import { Picture } from "astro:assets";
-import foto from "../../assets/Savegre/rio-savegre.jpeg";
+import foto from "../../assets/savegre/rio-savegre.webp";
 
-// Cada palabra va en su propio span para que frase-scroll.ts (la misma
-// animación de FraseCelebre) la vaya encendiendo al bajar.
 const frase = "“Entre ríos caudalosos, cataratas y playas tranquilas, Savegre es naturaleza en su estado más puro.”";
 const palabras = frase.split(" ");
 ---
 
-<!--
-  Foto del río Savegre de fondo, a todo el ancho y al 80 % del alto de la
-  ventana, con la frase encima en el estilo de letra de FraseCelebre (gruesa y
-  en mayúsculas), en blanco sobre un degradado oscuro para que se lea. La foto
-  se sirve en AVIF o WebP, en el tamaño de cada pantalla (el original mide
-  1280px), y se recorta al centro del río en celular. Las palabras se encienden
-  una por una al bajar; con "reducir movimiento" activado, o sin JavaScript, la
-  frase se ve completa desde el inicio.
-  Parallax: la foto es un 30 % más alta que la sección y se desplaza más lento
-  que el scroll (parallax-imagen.ts); con "reducir movimiento" se queda quieta.
--->
 <section
   id="foto-savegre"
   data-frase-celebre

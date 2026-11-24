@@ -1,7 +1,6 @@
 import BolsaStepper from "./bolsa-stepper";
 import logo from "../../../assets/compartido/logo-camara-nav-400.webp";
 
-// Tarjeta del formulario con el logo de la Cámara centrado arriba, igual que en contacto y Únete
 const Bolsa = () => (
   <section className="flex items-start px-4 py-8 sm:px-8 lg:px-6 lg:pt-20 xl:px-10">
     <div className="mx-auto w-full max-w-[38rem]">

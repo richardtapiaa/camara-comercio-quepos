@@ -7,15 +7,11 @@ import HojasTropicales from "../../compartidos/decoracion/HojasTropicales.astro"
 import OndasArena from "../../compartidos/decoracion/OndasArena.astro";
 import palmera from "../../../assets/quepos/palmera-sin-fondo.webp";
 
-// VIDEOS: cada idioma tiene una versión WebM (AV1, más liviana) y una MP4 de respaldo. Para cambiar un video,
-// reemplace estos archivos en src/assets/quepos/videos/ manteniendo los nombres, o cambie las rutas aquí.
 import videoEs from "../../../assets/quepos/videos/video-es.mp4";
 import videoEsWebm from "../../../assets/quepos/videos/video-es.webm";
 import videoEn from "../../../assets/quepos/videos/video-en.mp4";
 import videoEnWebm from "../../../assets/quepos/videos/video-en.webm";
 
-// PORTADA (poster): la imagen que se ve antes de reproducir. Es un cuadro del propio video (atardecer con un bote),
-// recortado para que no salga el subtítulo. Para cambiarla, reemplace este archivo.
 import portada from "../../../assets/quepos/videos/portada-videos.webp";
 
 const webmAv1 = 'video/webm; codecs="av01.0.08M.08, opus"';
@@ -26,30 +22,19 @@ const clasesPalmera =
 const sizesPalmera = "(min-width: 1280px) 384px, (min-width: 1024px) 320px, (min-width: 768px) 288px, (min-width: 640px) 240px, 160px";
 ---
 
-<!--
-  Videos de Quepos con la misma estética de la galería: fondo crema, curvas topográficas tenues, palmas arriba,
-  hojas tropicales a los lados y ondas de arena al pie. Título en serif (Playfair Display), el reproductor dentro de
-  un marco blanco con sombra (16:9) y debajo el selector de idioma en cápsula (VideoQueposIdiomas, con aria-pressed).
-  Los adornos son decorativos (aria-hidden, sin capturar clics) y los de los lados solo aparecen en pantallas anchas.
--->
 <section id="videos-quepos" aria-labelledby="titulo-videos" class="relative isolate overflow-hidden bg-[#faf7f2] px-4 pb-36 pt-32 sm:px-6 sm:pb-44 lg:pt-36">
-  <!-- Curvas topográficas a los dos lados -->
   <CurvasTopograficas class="-left-56 top-10 hidden w-[46rem] text-[#b9a78a] opacity-25 md:block" anillos={9} giroInicial={20} />
   <CurvasTopograficas class="-right-64 top-1/3 hidden w-[54rem] -scale-x-100 text-[#b9a78a] opacity-25 md:block" giroInicial={60} pasoGiro={9} />
 
-  <!-- Hojas de líneas en los márgenes, solo en pantallas anchas -->
   <HojaLineas class="left-[4%] top-[42%] hidden w-32 text-[#a8967a] opacity-50 min-[1680px]:block" giro={-18} />
   <HojaLineas class="right-[5%] top-[30%] hidden w-28 text-[#a8967a] opacity-50 min-[1680px]:block" giro={24} />
 
-  <!-- Palmas en las esquinas de arriba -->
   <Image src={palmera} alt="" width={600} widths={[300, 450, 600]} sizes={sizesPalmera} class={`right-0 ${clasesPalmera}`} loading="lazy" draggable="false" aria-hidden="true" />
   <Image src={palmera} alt="" width={600} widths={[300, 450, 600]} sizes={sizesPalmera} class={`left-0 -scale-x-100 ${clasesPalmera}`} loading="lazy" draggable="false" aria-hidden="true" />
 
-  <!-- Hojas tropicales a los lados del video -->
   <HojasTropicales class="bottom-24 left-0 hidden w-64 lg:block xl:w-80" />
   <HojasTropicales class="bottom-24 right-0 hidden w-64 lg:block xl:w-80" espejo />
 
-  <!-- Ondas de arena al pie -->
   <OndasArena class="bottom-0 h-40 sm:h-56" />
 
   <div class="relative mx-auto max-w-5xl">
