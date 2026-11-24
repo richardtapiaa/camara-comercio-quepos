@@ -49,7 +49,6 @@ function datosNoticia(post: PostFacebook) {
   const fecha = new Date(post.fecha);
   const cuerpoLimpio = cuerpo.replace(/\s+/g, " ").trim();
   return {
-    // "14 - jul" a la vista; los lectores de pantalla oyen la fecha completa.
     fechaCorta: `${formatoDia.format(fecha)} - ${formatoMesCorto.format(fecha).replace(".", "")}`,
     fechaTexto: formatoFecha.format(fecha),
     idTitulo: idNoticia(post.id),
@@ -84,11 +83,6 @@ function ImagenNoticia({ src, className = "" }: { src: string; className?: strin
   );
 }
 
-/**
- * Tarjeta de una noticia. Toda la tarjeta abre la página de la noticia: el
- * ::after del enlace "Leer más" la cubre entera. Se usa en /noticias y en
- * "Otras noticias" al final de cada noticia.
- */
 export function TarjetaNoticia({ post }: { post: PostFacebook }) {
   const datos = datosNoticia(post);
 

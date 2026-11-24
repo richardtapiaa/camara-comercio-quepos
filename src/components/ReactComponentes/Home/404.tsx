@@ -2,7 +2,7 @@ import type { CSSProperties } from 'react';
 import { FlowButton } from '@/components/ui/flow-button';
 import logoCamara from '@/assets/compartido/logo-camara.webp';
 import logoSello from '@/assets/compartido/logo-camara-sello-900.webp';
-import fantasma from '@/assets/compartido/fantasma-404.png';
+import fantasma from '@/assets/compartido/fantasma-404.webp';
 
 const retraso = (segundos: number, lado?: number) =>
   ({ '--retraso': `${segundos}s`, '--lado': lado }) as CSSProperties;

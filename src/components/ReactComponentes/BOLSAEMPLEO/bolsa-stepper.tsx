@@ -33,7 +33,6 @@ const cargarAnimacionBusqueda: CargadorAnimacion = () => import("../../../assets
 const esperar = (ms: number) => new Promise((resolver) => setTimeout(resolver, ms));
 const CV_EXTENSIONES = [".pdf", ".doc", ".docx"];
 
-// Nombre de cada campo en el servidor (POST /api/bolsa-de-empleo) y el paso del formulario donde está
 const CAMPOS_SERVIDOR: Record<Exclude<keyof Formulario, "cv">, string> = {
   nombre: "nombre", apellido: "apellido", cedula: "cedula", direccion: "direccion", telefono: "telefono", email: "email",
   profesion: "profesion", otraProfesion: "otra_profesion", estudios: "estudios", cursosEstudios: "cursos_ina",

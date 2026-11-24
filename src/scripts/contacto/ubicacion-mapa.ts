@@ -1,7 +1,3 @@
-// Mapa satelital fijo (sin moverse ni hacer zoom): calcula qué imágenes de 256 px de Esri World Imagery cubren la
-// sección, centradas en la ubicación, y las coloca como <img>. En pantallas de alta densidad pide un nivel de zoom
-// más y las muestra a la mitad de tamaño, para que se vean nítidas. Se vuelve a calcular si cambia el tamaño.
-
 const URL_IMAGEN = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile";
 
 document.querySelectorAll<HTMLElement>("[data-mapa-estatico]").forEach((mapa) => {
@@ -14,9 +10,8 @@ document.querySelectorAll<HTMLElement>("[data-mapa-estatico]").forEach((mapa) =>
   const dibujar = () => {
     const nitido = window.devicePixelRatio > 1;
     const zoom = zoomBase + (nitido ? 1 : 0);
-    const lado = nitido ? 128 : 256; // tamaño en pantalla de cada imagen
-    const mundo = 2 ** zoom; // imágenes por lado a este zoom
-    // Posición del centro, en "imágenes" (proyección Web Mercator)
+    const lado = nitido ? 128 : 256;
+    const mundo = 2 ** zoom;
     const radLat = (lat * Math.PI) / 180;
     const cx = ((lng + 180) / 360) * mundo;
     const cy = ((1 - Math.log(Math.tan(radLat) + 1 / Math.cos(radLat)) / Math.PI) / 2) * mundo;
@@ -39,7 +34,6 @@ document.querySelectorAll<HTMLElement>("[data-mapa-estatico]").forEach((mapa) =>
     capas.replaceChildren(fragmento);
   };
 
-  // Solo se dibuja cuando la sección se acerca a la pantalla.
   let ancho = 0;
   const alCambiarTamano = new ResizeObserver(([entrada]) => {
     const nuevo = Math.round(entrada.contentRect.width);

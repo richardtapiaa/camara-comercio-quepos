@@ -1,6 +1,4 @@
 ---
-// Hoja de monstera decorativa (verde, con sus cortes característicos). Posición, tamaño, giro y desenfoque van en
-// `class`. Es decorativa: aria-hidden y sin capturar clics.
 interface Props {
   class?: string;
   espejo?: boolean;
@@ -17,7 +15,6 @@ const id = `monstera-${Math.random().toString(36).slice(2, 8)}`;
     </linearGradient>
     <mask id={`${id}-m`}>
       <rect width="240" height="240" fill="#fff" />
-      <!-- Cortes desde el borde hacia la nervadura y agujeros -->
       <g fill="#000">
         <path d="M22 76 C50 88 78 100 106 116 L104 121 C76 108 48 96 18 88 Z" />
         <path d="M12 132 C42 132 72 134 104 136 L104 141 C72 142 42 146 13 150 Z" />

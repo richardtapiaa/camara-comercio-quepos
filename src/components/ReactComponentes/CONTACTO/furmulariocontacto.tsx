@@ -17,7 +17,6 @@ const CAMPO =
 const ETIQUETA = "grid gap-2 text-sm font-medium text-slate-800";
 const CAMPO_INVALIDO = "ring-red-500!";
 
-// Tiempo mínimo del "Enviando…": si la API responde muy rápido, el spinner no alcanza a verse y parece un parpadeo
 const ESPERA_MINIMA_MS = 900;
 
 type ErroresCampos = Partial<Record<keyof DatosContacto, string>>;
@@ -31,7 +30,6 @@ const esperar = (ms: number) => new Promise((resolver) => setTimeout(resolver, m
 
 const FurmulairoContacto = ({ onSubmit }: Props) => {
   const [datos, setDatos] = React.useState(VACIO);
-  // Honeypot anti-spam: campo oculto que las personas no ven ni llenan; si llega con texto, el servidor lo descarta
   const [sitioWeb, setSitioWeb] = React.useState("");
   const [error, setError] = React.useState("");
   const [erroresCampos, setErroresCampos] = React.useState<ErroresCampos>({});
@@ -128,7 +126,6 @@ const FurmulairoContacto = ({ onSubmit }: Props) => {
             </label>
           </div>
 
-          {/* Honeypot: fuera de la pantalla, sin tabulación y oculto para lectores de pantalla */}
           <div aria-hidden="true" className="fixed -left-[9999px] h-px w-px overflow-hidden">
             <label>
               Sitio web

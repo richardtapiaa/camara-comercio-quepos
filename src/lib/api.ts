@@ -29,10 +29,7 @@ async function enviar(ruta: string, opciones: RequestInit): Promise<void> {
   );
 }
 
-// Formularios sin archivos: se envían como JSON
 export const enviarFormulario = (ruta: string, datos: unknown) =>
   enviar(ruta, { headers: { "Content-Type": "application/json" }, body: JSON.stringify(datos) });
 
-// Formularios con archivos (por ejemplo, el currículum de la Bolsa de Empleo): se envían como multipart/form-data.
-// No se pone Content-Type a mano: el navegador lo arma con el "boundary" correcto.
 export const enviarFormularioConArchivos = (ruta: string, datos: FormData) => enviar(ruta, { body: datos });

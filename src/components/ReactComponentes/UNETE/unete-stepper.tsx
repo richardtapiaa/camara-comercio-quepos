@@ -9,10 +9,6 @@ import OverlayMensajeEnviado from "../CONTACTO/OverlayMensajeEnviado";
 import type { CargadorAnimacion } from "../CONTACTO/AnimacionCorreoEnviado";
 import AreaTextoAutoajustable from "../../compartidos/AreaTextoAutoajustable";
 
-// Formulario de afiliación por pasos (Stepper de MUI) con el mismo diseño que el formulario de contacto
-// (CONTACTO/furmulariocontacto.tsx): campos grises redondeados, error debajo de cada campo, botón con "Enviando…"
-// y la pantalla completa de confirmación al terminar.
-
 export type Datos = {
   nombre: string;
   email: string;
@@ -98,7 +94,6 @@ const erroresDelPaso = (errores: ErroresCampos, paso: number): ErroresCampos =>
 const primerPasoConError = (errores: ErroresCampos) =>
   PASOS.findIndex(({ campos }) => campos.some((campo) => errores[campo]));
 
-// Colores de la Cámara en los círculos y líneas del Stepper, y la letra Poppins del sitio
 const estiloStepper = {
   "& .MuiStepLabel-label": { fontFamily: "inherit", fontWeight: 600, fontSize: "0.95rem", color: "#64748b" },
   "& .MuiStepLabel-label.Mui-active, & .MuiStepLabel-label.Mui-completed": { color: "#0f172a", fontWeight: 600 },
@@ -113,8 +108,6 @@ const estiloStepper = {
 
 const reducirMovimiento = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-// Desplaza la página hasta el paso (debajo de la barra de navegación fija) si no se ve completo, y mueve el foco:
-// al primer campo con mouse o teclado; en pantallas táctiles, al paso en sí para no abrir el teclado de golpe.
 const llevarAlPaso = (paso: HTMLElement | null | undefined) => {
   if (!paso) return;
   const cabecera = document.getElementById("site-header");
@@ -152,15 +145,12 @@ const VerticalLinearStepper = ({ onSubmit }: Props) => {
     setPasoActivo(indice);
   };
 
-  // Se llama cuando el paso termina de abrirse (y el anterior de cerrarse): recién ahí las alturas son las finales
   const alAbrirPaso = (indice: number) => {
     if (pasoPorMostrar.current !== indice) return;
     pasoPorMostrar.current = null;
     llevarAlPaso(pasos.current[indice]);
   };
 
-  // Al cerrar la confirmación se vuelve al primer paso. Va en un efecto porque corre después de que la pantalla de
-  // confirmación libera el scroll de la página.
   React.useEffect(() => {
     if (enviado || !volverAlInicio.current) return;
     volverAlInicio.current = false;

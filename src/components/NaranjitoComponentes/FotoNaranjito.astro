@@ -1,8 +1,8 @@
 ---
 import { getImage } from "astro:assets";
-import video from "../../assets/naranjito/imagenes-distrito/naranjito-rio.mp4";
-import videoWebm from "../../assets/naranjito/imagenes-distrito/naranjito-rio.webm";
-import poster from "../../assets/naranjito/imagenes-distrito/naranjito-rio-poster.jpg";
+import video from "../../assets/naranjito/naranjito-rio.mp4";
+import videoWebm from "../../assets/naranjito/naranjito-rio.webm";
+import poster from "../../assets/naranjito/naranjito-rio-poster.webp";
 
 const posterOptimizado = await getImage({ src: poster, width: 1024, format: "webp", quality: 70 });
 ---

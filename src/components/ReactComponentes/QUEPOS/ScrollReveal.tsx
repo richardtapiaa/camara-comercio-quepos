@@ -17,7 +17,6 @@ export const MagicText: React.FC<MagicTextProps> = ({ text, className, opacidadI
   const container = useRef<HTMLParagraphElement>(null);
   const words = text.split(" ");
 
-  // Las palabras se encienden una tras otra mientras el párrafo sube del 90 % al 25 % de la pantalla.
   useEffect(() => {
     const parrafo = container.current;
     if (!parrafo) return;

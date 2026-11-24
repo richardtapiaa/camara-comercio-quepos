@@ -1,6 +1,5 @@
 ---
 import { Picture } from "astro:assets";
-// Copias del logo sin el margen transparente de alrededor, para que en la barra el dibujo se vea más grande
 import logoNav from "../../assets/compartido/logo-camara-nav.webp";
 import logoBlanco from "../../assets/compartido/logo-camara-blanco-nav.webp";
 import { contacto } from "../../lib/sitio";
@@ -36,16 +35,11 @@ const links: Array<Enlace | Desplegable> = [
   { label: "Bolsa De Empleo", href: "/bolsa-de-empleo" },
 ];
 
-// Página actual: se compara la ruta sin la barra final. "Inicio" (/) solo cuenta en la portada; los demás también
-// en sus subpáginas (por ejemplo /noticias/algo marca "Noticias").
 const rutaActual = Astro.url.pathname.replace(/\/+$/, "") || "/";
 const esActual = (href: string) =>
   href === "/" ? rutaActual === "/" : rutaActual === href || rutaActual.startsWith(`${href}/`);
 const desplegableActual = (link: Desplegable) => link.submenu.some((sub) => esActual(sub.href));
 
-// Rayita bajo el enlace de la página actual (en escritorio); hereda el color del texto, así que es oscura sobre
-// la barra blanca y blanca sobre el Hero. En el menú de celular (letras azul claro), el enlace actual va en blanco
-// con una barrita en el azul de la Cámara.
 const claseActual =
   "lg:relative lg:after:absolute lg:after:inset-x-0 lg:after:bottom-1 lg:after:h-0.5 lg:after:rounded-full lg:after:bg-current max-lg:relative max-lg:text-white! max-lg:before:absolute max-lg:before:inset-y-3 max-lg:before:left-0 max-lg:before:w-1 max-lg:before:rounded-r-full max-lg:before:bg-[#2780c9]";
 
@@ -58,8 +52,6 @@ const claseLink =
   data-solid="false"
   class="group/nav fixed inset-x-0 top-0 z-50 w-full rounded-b-[32px] transition-[background-color,box-shadow,translate] duration-300 data-[solid=false]:bg-gradient-to-b data-[solid=false]:from-black/50 data-[solid=false]:to-transparent data-[solid=true]:shadow-[0_1px_0_rgb(15_23_42/0.06),0_10px_30px_-14px_rgb(15_23_42/0.18)] data-[hidden=true]:-translate-y-full"
 >
-  <!-- Fondo de vidrio al bajar por la página: blanco translúcido con desenfoque. Va en una capa aparte y no en el
-       header porque el desenfoque en el header encerraría dentro de él al menú de celular (que es fixed). -->
   <div
     class="pointer-events-none absolute inset-0 -z-10 rounded-b-[32px] border-b border-slate-900/5 bg-white/80 opacity-0 backdrop-blur-xl backdrop-saturate-150 transition-opacity duration-300 group-data-[solid=true]/nav:opacity-100 supports-[not(backdrop-filter:blur(1px))]:bg-white"
     aria-hidden="true"
@@ -202,7 +194,6 @@ const claseLink =
         }
       </ul>
 
-      <!-- Pie del panel (solo celular): botón para afiliarse, contacto con íconos y redes sociales -->
       <div class="mt-auto flex flex-col gap-4 px-6 pb-6 pt-5 lg:hidden">
         <a
           href="/unete"

@@ -1,11 +1,6 @@
 import * as React from "react";
 import type { AnimationItem } from "lottie-web";
 
-// Animación Lottie de confirmación. Por defecto es la de "correo enviado" (src/assets/contacto/email-send.json),
-// pero se puede pasar otra con `cargarAnimacion` (por ejemplo, la mano de Únete). El reproductor y el JSON se cargan
-// solo cuando hace falta (después de enviar), así no pesan en la carga inicial de la página. Se reproduce en bucle
-// desde que `reproducir` pasa a true; con "reducir movimiento" activado se muestra quieta en el último cuadro.
-
 export type CargadorAnimacion = () => Promise<{ default: unknown }>;
 
 const cargarCorreoEnviado: CargadorAnimacion = () => import("../../../assets/contacto/email-send.json");

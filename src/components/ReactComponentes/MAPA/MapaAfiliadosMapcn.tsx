@@ -125,8 +125,6 @@ export default function MapaAfiliadosMapcn({ afiliados }: { afiliados: AfiliadoM
   );
 }
 
-// Colores del paisaje real de Quepos: bosque verde profundo, potreros más claros, arena y un Pacífico
-// verdeazulado. Las sombras del relieve (abajo) se dibujan encima y le dan volumen a las montañas.
 const COLORES_MAPA: Record<string, [propiedad: "background-color" | "fill-color" | "line-color", color: string]> = {
   background: ["background-color", "#e7edd6"],
   landcover: ["fill-color", "#b3d398"],
@@ -145,8 +143,6 @@ const TERRENOS_EXTRA = [
   { id: "playas", tipo: "beach", color: "#f1dfab" },
 ];
 
-// Relieve: elevación gratuita de AWS Terrain Tiles (formato "terrarium", hasta zoom 14; más cerca se
-// estira). Se dibuja como sombras, con luz desde el noroeste, debajo de ríos, mar, calles y nombres.
 const FUENTE_RELIEVE: RasterDEMSourceSpecification = {
   type: "raster-dem",
   tiles: ["https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"],
@@ -189,8 +185,6 @@ function ColoresMapa() {
           type: "hillshade",
           source: "relieve",
           paint: {
-            // Marcado de lejos (se leen las montañas) y se apaga al llegar al nivel de calles: más allá del
-            // zoom 14 la elevación se estira y las sombras se ven como manchas y cuadros junto a la costa.
             "hillshade-exaggeration": ["interpolate", ["linear"], ["zoom"], 9, 0.55, 13, 0.45, 14.5, 0.25, 15.5, 0],
             "hillshade-illumination-direction": 315,
             "hillshade-shadow-color": "#2f4a2c",
@@ -206,7 +200,6 @@ function ColoresMapa() {
   return null;
 }
 
-// Margen alrededor del cantón (en grados, ~5 km) para considerar que la persona está "en Quepos".
 const MARGEN_CANTON = 0.05;
 
 const estaEnQuepos = ({ longitude, latitude }: { longitude: number; latitude: number }) => {
@@ -219,9 +212,6 @@ const estaEnQuepos = ({ longitude, latitude }: { longitude: number; latitude: nu
   );
 };
 
-// Botón "Mi ubicación": marca a la persona con un punto azul y acerca el mapa, pero solo si está en
-// Quepos; si está lejos no saca el mapa del cantón y le avisa. Va justo encima de los botones de zoom
-// (MapControls los pone en bottom-10 right-2; 66 px de alto + 6 px de separación) y usa su mismo estilo.
 function MiUbicacion() {
   const { map } = useMap();
   const [buscando, setBuscando] = useState(false);
@@ -261,7 +251,6 @@ function MiUbicacion() {
             : "No se pudo obtener su ubicación. Inténtelo de nuevo.",
         );
       },
-      // Sin tiempo límite, un permiso ignorado dejaría el botón cargando para siempre.
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 },
     );
   };
@@ -416,8 +405,6 @@ function zoomParaVerLogo(indice: Supercluster<AfiliadoMapa>, afiliado: AfiliadoM
   return ZOOM_MAXIMO_GRUPOS + 1;
 }
 
-// Abre la tarjeta del afiliado que viene en la dirección (/mapa-afiliados#id, desde "Ver en el mapa" en la página
-// de Afiliados) y lleva el mapa hasta su logo, con el mismo encuadre que al tocar un marcador.
 function AbrirDesdeEnlace({
   afiliados,
   indice,
@@ -621,7 +608,6 @@ function ModalFoto({
     return () => {
       entrada.revert();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -632,7 +618,6 @@ function ModalFoto({
     };
     window.addEventListener("keydown", alPresionar, true);
     return () => window.removeEventListener("keydown", alPresionar, true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return createPortal(

@@ -1,16 +1,9 @@
 ---
 import logo from "../../assets/compartido/logo-camara-nav-400.webp";
 
-// Igual que el mapa del sitio anterior (camaracomercioquepos.com): satelital, centrado en Quepos, zoom 15, fijo
-// (sin moverse ni hacer zoom) y con un marcador "Quepos" con el logo de la Cámara.
 const ubicacion = { lat: 9.4246, lng: -84.1698, zoom: 15 };
 ---
 
-<!--
-  Mapa satelital fijo a todo el ancho. En vez de cargar una librería de mapas, ubicacion-mapa.ts coloca las
-  imágenes satelitales de Esri (World Imagery) que cubren la sección, solo cuando se acerca a la pantalla.
-  El marcador va en el centro, que es el punto de la ubicación.
--->
 <section aria-labelledby="titulo-ubicacion" class="bg-white">
   <h2 id="titulo-ubicacion" class="sr-only">Ubicación</h2>
   <div
@@ -24,7 +17,6 @@ const ubicacion = { lat: 9.4246, lng: -84.1698, zoom: 15 };
   >
     <div data-mapa-capas class="absolute inset-0" aria-hidden="true"></div>
 
-    <!-- Marcador con su ventanita, apuntando al centro del mapa -->
     <div class="pointer-events-none absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-full flex-col items-center" aria-hidden="true">
       <div class="mb-2 flex flex-col items-center rounded-2xl bg-white px-5 py-3 text-center shadow-[0_12px_30px_-10px_rgba(0,0,0,0.55)]">
         <p class="text-base font-semibold text-slate-900">Quepos</p>

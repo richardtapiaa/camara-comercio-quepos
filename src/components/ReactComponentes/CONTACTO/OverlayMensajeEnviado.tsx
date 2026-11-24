@@ -3,11 +3,6 @@ import { createPortal } from "react-dom";
 import FondoSello from "../../compartidos/FondoSello";
 import AnimacionCorreoEnviado, { type CargadorAnimacion } from "./AnimacionCorreoEnviado";
 
-// Pantalla completa de "mensaje enviado": baja desde arriba (por encima de la barra de navegación) animando la
-// altura de 0 a 100dvh y, cuando termina de bajar, reproduce la animación de correo enviado. Se cierra con el
-// botón, con la X o con Escape, y sube de nuevo. Va en un portal dentro de <body> para que ningún contenedor con
-// transform o overflow la recorte.
-
 interface Props {
   abierto: boolean;
   onCerrar: () => void;
@@ -44,7 +39,6 @@ const OverlayMensajeEnviado = ({
     setHaAbierto(true);
     bloquearScroll(true);
     botonCerrar.current?.focus({ preventScroll: true });
-    // Sin transición (reducir movimiento) no hay transitionend: se da por desplegado de una vez
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) setDesplegado(true);
 
     const alTeclear = (e: KeyboardEvent) => e.key === "Escape" && onCerrar();
@@ -71,8 +65,6 @@ const OverlayMensajeEnviado = ({
         abierto ? "h-dvh" : "h-0"
       }`}
     >
-      {/* Sello de la Cámara abajo a la derecha. Mide lo mismo que la pantalla (no que el panel), así queda quieto y
-          el panel lo va descubriendo mientras baja. */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-dvh">
         <FondoSello lado="derecha" abajo fijo={false} opacidad={0.3} />
       </div>

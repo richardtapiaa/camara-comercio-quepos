@@ -6,9 +6,6 @@ import { TarjetaNoticia } from "../../components/ReactComponentes/NoticiasCompon
 import { obtenerPostsFacebook, type PostFacebook } from "../../lib/facebook";
 import { formatoFecha, parrafos, recortar, separarTitulo, slugNoticia, trozosConEnlaces } from "../../lib/noticias";
 
-// Una página por noticia, generada al construir el sitio con las mismas
-// publicaciones de Facebook que muestra /noticias. Cada una recibe además las
-// tres noticias más recientes (sin repetirse a sí misma) para "Otras noticias".
 export async function getStaticPaths() {
   const posts = await obtenerPostsFacebook(10);
   return posts.map((post) => ({
@@ -34,14 +31,6 @@ const claseEnlaceTexto =
 ---
 
 <Layout titulo={titulo} descripcion={descripcion}>
-  <!--
-    Desktop: la imagen a la izquierda (fija mientras se lee) y a la derecha la
-    fecha, el título y el texto. Celular: título, imagen y texto, en ese orden.
-    Las columnas se arman con la cuadrícula (filas y columnas de lg:), así el
-    orden del HTML sigue siendo título, imagen y texto para lectores de pantalla.
-    El sello de la Cámara queda de fondo detrás de la noticia y de "Otras
-    noticias"; por eso el fondo blanco va en este contenedor y no en cada parte.
-  -->
   <div class="relative isolate overflow-x-clip bg-white">
   <FondoSello />
   <article aria-labelledby="titulo-noticia" class="px-6 pb-16 pt-32 sm:px-10 sm:pt-40">

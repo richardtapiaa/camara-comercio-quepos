@@ -9,7 +9,6 @@ const AreaTextoAutoajustable = ({ ref, value, ...props }: Props) => {
   const ajustar = React.useCallback(() => {
     const elemento = area.current;
     if (!elemento) return;
-    // Al poner la altura en "auto" la página puede encogerse un instante y mover el scroll; se guarda y se repone
     const scrollAntes = window.scrollY;
     elemento.style.height = "auto";
     const bordes = elemento.offsetHeight - elemento.clientHeight;

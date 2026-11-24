@@ -1,12 +1,9 @@
 ---
 import { Picture } from "astro:assets";
-import foto from "../../assets/naranjito/imagenes-distrito/valle-naranjito.webp";
+import foto from "../../assets/naranjito/valle-naranjito.webp";
 import siluetaPaisaje from "../../assets/naranjito/paisaje-naranjito.svg";
 import { sizesHasta2x } from "../../lib/imagenes";
 
-// Datos de Wikipedia, que cita al INEC y a la División Territorial
-// Administrativa (consultados en noviembre de 2026). Cada punto lleva un sello
-// con check de un azul distinto.
 const puntos = [
   { texto: "Distrito del cantón de Quepos desde 1971", color: "#326dab" },
   { texto: "104,68 km² de fincas, ríos y bosque", color: "#4e79de" },
@@ -15,19 +12,6 @@ const puntos = [
 ];
 ---
 
-<!--
-  Mismo diseño que "Conoce Savegre": en desktop la foto ocupa la mitad izquierda
-  y llega hasta el borde de la pantalla (solo se redondean sus esquinas
-  derechas); a la derecha van el título, la entrada y la lista con check,
-  alineados con el ancho del resto del sitio. En celular la foto va arriba, con
-  márgenes, y el texto debajo. Sin JavaScript; la foto se sirve en AVIF o WebP,
-  en el tamaño de cada pantalla.
-  De fondo va un sello tenue del paisaje de Naranjito (el mismo de la foto de la
-  sección siguiente), pegado abajo a la derecha: en desktop queda detrás del
-  texto, del alto de la sección como máximo, y su lado izquierdo se esconde
-  detrás de la foto; en celular ocupa el ancho de la pantalla, detrás de la
-  lista.
--->
 <section id="info-naranjito" aria-labelledby="titulo-info-naranjito" class="relative overflow-hidden bg-white py-20 sm:py-24">
   <img
     src={siluetaPaisaje.src}

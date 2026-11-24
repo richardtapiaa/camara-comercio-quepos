@@ -1,8 +1,3 @@
-// Mapa del cantón en el inicio: al tocar un distrito, una copia de su forma se
-// agranda hasta el centro de la pantalla y luego se abre su página. Con
-// "reducir movimiento", o con Ctrl/Cmd/Shift/Alt o clic del medio, el enlace
-// funciona normal. La página del distrito se precarga al pasar el mouse o al
-// enfocarlo con el teclado (salvo con ahorro de datos o conexión 2G).
 const DURACION = 750;
 const ESPERA_PRECARGA = 80;
 
@@ -13,8 +8,6 @@ let respaldo = 0;
 const mapa = document.querySelector<SVGSVGElement>("[data-mapa-quepos]");
 if (mapa) {
   mapa.querySelectorAll<SVGAElement>("a[data-distrito]").forEach((enlace) => activarDistrito(mapa, enlace));
-  // Al volver con el botón "atrás", el navegador puede restaurar la página
-  // con la copia agrandada todavía encima: se quita.
   addEventListener("pageshow", (e) => {
     if (e.persisted) limpiar();
   });

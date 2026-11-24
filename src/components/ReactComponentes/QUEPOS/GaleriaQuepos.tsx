@@ -112,7 +112,6 @@ export function Gallery({ children, images = [] }: { children: React.ReactNode; 
 }
 
 export function GalleryGrid({ children, className, rejilla = false }: { children: React.ReactNode; className?: string; rejilla?: boolean }) {
-  // rejilla: cuadrícula pareja (1 columna en celular, 2 en tablet, 4 en escritorio); si no, columnas tipo mosaico.
   const base = rejilla ? "grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4 lg:gap-7" : "columns-2 gap-3 md:columns-3 md:gap-4 lg:columns-4";
   return <div className={cn(base, className)}>{children}</div>;
 }
@@ -364,7 +363,6 @@ const primerasDeColumna = (total: number) => {
 const TAMANOS_REJILLA = "(min-width: 1600px) 370px, (min-width: 1024px) 23vw, (min-width: 640px) 48vw, 100vw";
 
 const GaleriaQuepos = ({ items, className, rejilla = false }: { items: GaleriaItem[]; className?: string; rejilla?: boolean }) => {
-  // En rejilla se cargan de inmediato las fotos de la primera fila; en mosaico, las primeras de cada columna.
   const visiblesAlAbrir = rejilla ? new Set([0, 1, 2, 3]) : primerasDeColumna(items.length);
   return (
     <Gallery images={items.map((item) => ({ id: String(item.id), src: item.src, alt: item.alt }))}>

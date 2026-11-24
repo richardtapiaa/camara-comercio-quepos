@@ -9,20 +9,18 @@ import { categoriasAfiliados } from "../../content.config";
 import logo from "../../assets/compartido/logo-camara.webp";
 import { sello480, sello900, selloSizes, selloSrcSet } from "../../lib/sello";
 import "../../styles/afiliados/afiliados.css";
-// Íconos de SVG Repo, todos de un solo color: negro.
-import iconoTelefono from "../../assets/afiliados/iconos-svg/icono-telefono.svg";
-import iconoWhatsapp from "../../assets/afiliados/iconos-svg/icono-whatsapp.svg";
-import iconoCorreo from "../../assets/afiliados/iconos-svg/icono-correo.svg";
-import iconoWeb from "../../assets/afiliados/iconos-svg/icono-web.svg";
-import iconoMapa from "../../assets/afiliados/iconos-svg/icono-mapa.svg";
-import iconoFacebook from "../../assets/afiliados/iconos-svg/icono-facebook.svg";
-import iconoInstagram from "../../assets/afiliados/iconos-svg/icono-instagram.svg";
+import iconoTelefono from "../../assets/afiliados/iconos/icono-telefono.svg";
+import iconoWhatsapp from "../../assets/afiliados/iconos/icono-whatsapp.svg";
+import iconoCorreo from "../../assets/afiliados/iconos/icono-correo.svg";
+import iconoWeb from "../../assets/afiliados/iconos/icono-web.svg";
+import iconoMapa from "../../assets/afiliados/iconos/icono-mapa.svg";
+import iconoFacebook from "../../assets/afiliados/iconos/icono-facebook.svg";
+import iconoInstagram from "../../assets/afiliados/iconos/icono-instagram.svg";
 
 const afiliados = (await getCollection("afiliados")).sort((a, b) =>
   a.data.nombre.localeCompare(b.data.nombre, "es"),
 );
 
-// Afiliados que salen en el mapa: solo esos llevan el enlace "Ver en el mapa".
 const enMapa = new Set((await getCollection("mapaAfiliados")).map(({ id }) => id));
 
 const categorias = categoriasAfiliados.filter((c) => afiliados.some((a) => a.data.categoria === c));
@@ -43,7 +41,6 @@ const soloDigitos = (telefono: string) => telefono.replace(/[^\d+]/g, "");
 
 const claseDato = "group/dato flex items-center gap-3 transition-colors hover:text-slate-950";
 
-// Cada dato lleva su ícono solo, sin fondo.
 const claseInsignia =
   "flex size-7 shrink-0 items-center justify-center";
 const insignia = { telefono: claseInsignia, correo: claseInsignia, web: claseInsignia };
@@ -51,7 +48,6 @@ const claseIcono = "size-6";
 
 const dominio = (url: string) => new URL(url).hostname.replace(/^www\./, "");
 
-// Botón redondo de las redes sociales, al pie de la card.
 const claseRed =
   "block size-8 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2780c9] focus-visible:ring-offset-2";
 ---
@@ -83,10 +79,6 @@ const claseRed =
       </p>
     </div>
 
-    <!--
-      Buscador: campo con borde (al enfocarlo, un halo gris suave) y botón × para borrar; debajo, las categorías como botones
-      visibles con la cantidad de afiliados de cada una (afiliados.ts filtra con data-cat-chip / aria-pressed).
-    -->
     <div class="mx-auto mt-10 flex w-full max-w-2xl flex-col items-center gap-4">
       <label class="relative block w-full">
         <span class="sr-only">Buscar afiliado por nombre</span>
@@ -138,7 +130,6 @@ const claseRed =
         afiliados.map(({ id, data }) => (
           <li id={id} data-afiliado data-categoria={data.categoria} data-nombre={normalizar(data.nombre)} class="scroll-mt-28 pt-20">
             <article class="afiliado-card relative isolate flex h-full flex-col rounded-[2.5rem] bg-white px-6 pb-7 text-center ring-1 ring-slate-900/5">
-              <!-- Sello de la Cámara de fondo, muy tenue, abajo a la derecha: indica que el negocio es afiliado -->
               <div class="pointer-events-none absolute inset-0 -z-10 overflow-hidden rounded-[2.5rem]" aria-hidden="true">
                 <img
                   src={sello480.src}

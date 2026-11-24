@@ -9,10 +9,6 @@ const telefonoEnlace = contacto.telefono.replace(/[^+\d]/g, "");
 const claseIcono = "size-4 shrink-0 text-slate-500";
 ---
 
-<!--
-  Formulario de contacto en dos columnas: a la izquierda el título, un texto corto, la ilustración y los datos de
-  contacto; a la derecha el formulario. En celular, uno debajo del otro.
--->
 <section id="formulario-contacto" aria-labelledby="titulo-formulario-contacto" class="bg-white px-6 pb-20 pt-6 sm:px-10 sm:pb-28">
   <div class="mx-auto grid max-w-[1320px] items-center gap-14 lg:grid-cols-2 lg:gap-20">
     <div>
@@ -69,7 +65,6 @@ const claseIcono = "size-4 shrink-0 text-slate-500";
       </ul>
     </div>
 
-    <!-- Card con el logo de la Cámara (centrado) y el formulario -->
     <div class="rounded-[2rem] bg-white p-6 shadow-[0_24px_60px_-24px_rgba(15,40,70,0.3)] ring-1 ring-slate-200/80 sm:p-10">
       <Image
         src={logo}

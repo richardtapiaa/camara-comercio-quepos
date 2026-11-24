@@ -52,7 +52,6 @@ const items = await Promise.all(
   fotos.map(async ([nombre, alt], i) => ({ id: i + 1, ...(await variantesGaleria(foto(nombre))), alt })),
 );
 
-// Hojas de líneas y aves en vuelo (compartidos/decoracion): solo en pantallas anchas, donde hay margen a los lados.
 const hojas = [
   { clase: "left-[1.5%] top-[25rem] w-36", giro: -22 },
   { clase: "right-[2%] top-[45%] w-32", giro: 28 },
@@ -75,20 +74,16 @@ const bandadas: { clase: string; aves: [number, number, number][] }[] = [
   {hojas.map(({ clase, giro }) => <HojaLineas class={`hidden text-[#a8967a] opacity-55 min-[1680px]:block ${clase}`} giro={giro} />)}
   {bandadas.map(({ clase, aves }) => <BandadaLineas class={`hidden text-[#a8967a] opacity-60 min-[1680px]:block ${clase}`} aves={aves} />)}
 
-  <!-- Palmas en las esquinas de arriba -->
   <Image src={palmera} alt="" width={600} widths={[300, 450, 600]} sizes={sizesPalmera} class={`right-0 ${clasesPalmera}`} loading="lazy" draggable="false" aria-hidden="true" />
   <Image src={palmera} alt="" width={600} widths={[300, 450, 600]} sizes={sizesPalmera} class={`left-0 -scale-x-100 ${clasesPalmera}`} loading="lazy" draggable="false" aria-hidden="true" />
 
-  <!-- Hojas tropicales en las esquinas de abajo (izquierda y, reflejadas, derecha) -->
   <HojasTropicales class="bottom-10 left-0 hidden w-56 md:block lg:w-72" />
   <HojasTropicales class="bottom-10 right-0 hidden w-56 md:block lg:w-72" espejo />
 
-  <!-- Ondas de arena al pie -->
   <OndasArena class="bottom-0 h-40 sm:h-56" />
 
   <h1 id="titulo-galeria" class="sr-only">Galería de Quepos</h1>
 
-  <!-- Texto giratorio "GALERIA" (el mismo de antes: TextVelocity), sin fondo propio para dejar ver el crema -->
   <div class="overflow-hidden pb-8 pt-28 sm:pb-12 sm:pt-32" aria-hidden="true">
     <div class="[mask-image:linear-gradient(to_bottom,black_50%,transparent_96%)]">
       <VelocityScroll

@@ -36,11 +36,6 @@ export const idNoticia = (idPost: string) => `noticia-${idPost}`;
 
 const LARGO_MAXIMO_SLUG = 60;
 
-/**
- * Dirección de la página de una noticia: el título sin tildes ni símbolos y,
- * al final, los últimos 6 dígitos del id de Facebook para que dos noticias
- * con títulos parecidos no choquen. Ej.: "campana-de-recoleccion-de-residuos-381245".
- */
 export function slugNoticia(post: { id: string; texto: string }) {
   const { titulo } = separarTitulo(post.texto);
   const base = titulo
@@ -58,7 +53,6 @@ export const rutaNoticia = (post: { id: string; texto: string }) => `/noticias/$
 
 const patronUrl = /(https?:\/\/[^\s]+)/g;
 
-/** Parte un texto en trozos normales y direcciones web, para mostrar estas como enlaces. */
 export function trozosConEnlaces(texto: string) {
   return texto.split(patronUrl).map((valor, i) => ({ valor, esEnlace: i % 2 === 1 }));
 }

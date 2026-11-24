@@ -1,21 +1,11 @@
 ---
 import { Picture } from "astro:assets";
 import { Leaf } from "lucide-react";
-import foto from "../../assets/actividades/actividades-1.jpg";
+import foto from "../../assets/actividades/perezoso-manuel-antonio.webp";
 import siluetaPerezoso from "../../assets/quepos/perezoso-rama.svg";
 import siluetaBallena from "../../assets/quepos/ballena-cola.svg";
 ---
 
-<!--
-  Mismo diseño que "¿Por qué visitar Quepos?": en desktop la foto ocupa la
-  mitad izquierda y llega hasta el borde de la pantalla (solo se redondean sus
-  esquinas derechas); a la derecha van el título con su ícono y el texto. En
-  celular la foto va arriba, con márgenes, y el texto debajo. La ballena asoma
-  sobre la foto y el perezoso cuelga a la derecha, detrás del texto.
-  La sección sigue siendo un panel fijo (sticky) para el efecto de scroll con
-  la sección siguiente; por eso usa overflow-x-clip y el perezoso va dentro de
-  su propia capa con overflow-hidden.
--->
 <section
   id="biodiversidad-quepos"
   data-panel-sticky

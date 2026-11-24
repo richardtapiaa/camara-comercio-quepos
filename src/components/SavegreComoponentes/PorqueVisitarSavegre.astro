@@ -1,20 +1,18 @@
 ---
 import { Picture } from "astro:assets";
-import fotoRio from "../../assets/Savegre/savegre_actividad1.webp";
-import fotoBosque from "../../assets/Savegre/savegre_actividad2.webp";
-import fotoTrucha from "../../assets/Savegre/savegre_actividad3.webp";
-import fotoCaminata from "../../assets/Savegre/savegre_actividad4.webp";
-import iconoRio from "../../assets/Savegre/iconos-svg/icono-rio.svg";
-import iconoAves from "../../assets/Savegre/iconos-svg/icono-aves.svg";
-import iconoPesca from "../../assets/Savegre/iconos-svg/icono-pesca.svg";
-import iconoCaminata from "../../assets/Savegre/iconos-svg/icono-caminata.svg";
-import siluetaKayak from "../../assets/Savegre/kayak-rio.svg";
-import siluetaQuetzal from "../../assets/Savegre/quetzal-rama.svg";
-import siluetaTrucha from "../../assets/Savegre/trucha-rio.svg";
-import siluetaSendero from "../../assets/Savegre/sendero-bosque.svg";
+import fotoRio from "../../assets/savegre/actividad-catarata.webp";
+import fotoBosque from "../../assets/savegre/actividad-bosque.webp";
+import fotoTrucha from "../../assets/savegre/actividad-trucha.webp";
+import fotoCaminata from "../../assets/savegre/actividad-puente.webp";
+import iconoRio from "../../assets/savegre/iconos/icono-rio.svg";
+import iconoAves from "../../assets/savegre/iconos/icono-aves.svg";
+import iconoPesca from "../../assets/savegre/iconos/icono-pesca.svg";
+import iconoCaminata from "../../assets/savegre/iconos/icono-caminata.svg";
+import siluetaKayak from "../../assets/savegre/kayak-rio.svg";
+import siluetaQuetzal from "../../assets/savegre/quetzal-rama.svg";
+import siluetaTrucha from "../../assets/savegre/trucha-rio.svg";
+import siluetaSendero from "../../assets/savegre/sendero-bosque.svg";
 
-// Íconos a color de SVG Repo (colección Multicolor). Cada card lleva además una silueta tenue de la
-// actividad detrás del texto (sello), con el mismo estilo que las de PorqueVisitarNaranjito.
 const experiencias = [
   {
     icono: iconoRio,
@@ -86,7 +84,6 @@ const experiencias = [
               />
             </div>
             <div class={`relative isolate max-w-xl ${i % 2 === 1 ? "lg:order-1 lg:justify-self-end" : ""}`}>
-              <!-- Sello de la actividad, tenue, detrás del texto -->
               <img
                 src={experiencia.sello.src}
                 width={experiencia.sello.width}

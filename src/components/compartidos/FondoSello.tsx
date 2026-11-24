@@ -6,9 +6,7 @@ interface Props {
   corrido?: boolean;
   claro?: boolean;
   fijo?: boolean;
-  /** Pega el sello abajo (en la esquina de su lado) e inclinado hacia el contenido, en vez de centrarlo. */
   abajo?: boolean;
-  /** Para cuando el sello se ve apenas abre la página: se carga de inmediato y con prioridad. */
   prioritario?: boolean;
 }
 
@@ -17,8 +15,6 @@ const clasesLado = {
   izquierda: { fila: "justify-start", sello: "-ml-24 -rotate-6 lg:-ml-28" },
 };
 
-// Abajo en la esquina, asomando por el borde e inclinado hacia el centro (donde suele ir el texto). La parte de
-// abajo se desvanece para que el sello no termine en una línea recta donde acaba la sección.
 const clasesAbajo = {
   derecha: "-mb-10 -mr-20 rotate-[14deg] sm:-mb-16 lg:-mb-24 lg:-mr-24",
   izquierda: "-mb-10 -ml-20 -rotate-[14deg] sm:-mb-16 lg:-mb-24 lg:-ml-24",

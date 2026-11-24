@@ -482,7 +482,6 @@ type Idioma = "es" | "en";
 export interface VideoQueposIdiomasProps extends Omit<VideoPlayerProps, "src" | "fuentes"> {
   fuentesEs: FuenteVideo[];
   fuentesEn: FuenteVideo[];
-  /** Si se da, el reproductor va dentro de un marco (div) con estas clases. */
   claseMarco?: string;
 }
 
@@ -516,7 +515,6 @@ function VideoQueposIdiomas({ fuentesEs, fuentesEn, autoPlay, claseMarco, ...pro
         return claseMarco ? <div className={claseMarco}>{reproductor}</div> : reproductor;
       })()}
 
-      {/* Selector de idioma tipo cápsula: el activo en azul de la Cámara (aria-pressed), con transición suave */}
       <div
         role="group"
         aria-label="Idioma del video"

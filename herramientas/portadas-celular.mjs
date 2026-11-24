@@ -1,16 +1,13 @@
 import sharp from "sharp";
 
-// Recorte vertical de las portadas para teléfonos: conserva todo el alto y quita los lados que nunca se ven.
-// Cada `izquierda` corresponde a la posición que la portada usa en pantalla, para que el encuadre no cambie.
 const PORTADAS = [
   {
-    foto: "src/assets/Savegre/catarata-savegre.webp",
+    foto: "src/assets/savegre/catarata-savegre.webp",
     proporcion: 5 / 6,
     izquierda: (ancho, _alto, anchoCorte) => (ancho - anchoCorte) * 0.25,
   },
   {
-    // Si cambia izquierda, actualizar el 56cqh y el 72.2cqh de NaranjitoComponentes/Hero.astro.
-    foto: "src/assets/naranjito/imagenes-distrito/naranjito-hero.webp",
+    foto: "src/assets/naranjito/naranjito-hero.webp",
     proporcion: 0.95,
     izquierda: (_ancho, alto) => alto * 0.25,
   },
@@ -32,18 +29,18 @@ const PORTADAS = [
     altoFinal: 704,
   },
   {
-    foto: "src/assets/hospitalidad/vista-hotel-manuel-antonio.jpg",
+    foto: "src/assets/hospitalidad/vista-hotel-manuel-antonio.webp",
     proporcion: 5 / 6,
     izquierda: (ancho, _alto, anchoCorte) => (ancho - anchoCorte) * 0.5,
     altoFinal: 1440,
   },
   {
-    foto: "src/assets/actividades/hero-visitanos.jpg",
+    foto: "src/assets/actividades/hero-visitanos.webp",
     proporcion: 5 / 6,
     izquierda: (ancho, _alto, anchoCorte) => (ancho - anchoCorte) * 0.5,
   },
   {
-    foto: "src/assets/noticias/hero.avif",
+    foto: "src/assets/noticias/hero-noticias.webp",
     proporcion: 5 / 6,
     izquierda: (ancho, _alto, anchoCorte) => (ancho - anchoCorte) * 0.5,
   },
@@ -53,7 +50,7 @@ const PORTADAS = [
     izquierda: (ancho, _alto, anchoCorte) => (ancho - anchoCorte) * 0.5,
   },
   {
-    foto: "src/assets/inicio/hero-quepos-inicio-poster.jpg",
+    foto: "src/assets/inicio/hero-quepos-inicio-poster.webp",
     proporcion: 5 / 6,
     izquierda: () => 0,
   },

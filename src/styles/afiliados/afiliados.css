@@ -21,8 +21,6 @@
   }
 }
 
-/* Al buscar o filtrar, las cards que quedan visibles entran muy suaves: aparecen despacio y suben apenas, una tras otra
-   (--orden lo pone afiliados.ts). Sin animación con "reducir movimiento". */
 [data-afiliado].afiliado-entra {
   animation: afiliado-entra 0.9s cubic-bezier(0.33, 1, 0.68, 1) both;
   animation-delay: calc(var(--orden, 0) * 80ms);
@@ -39,7 +37,6 @@
   }
 }
 
-/* Card de cada afiliado: sombra y un hover suave (sube 2 px y la sombra se intensifica un poco) */
 .afiliado-card {
   box-shadow:
     0 24px 50px -18px rgb(16 42 67 / 0.28),

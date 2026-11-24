@@ -7,49 +7,23 @@ export type TextPathCurve = "wave" | "arc" | "circle";
 export type TextPathDirection = "forward" | "reverse";
 
 export interface TextPathProps {
-  /** The string to tile along the path. */
   text: string;
-  /** Built-in curve. Ignored when `path` is set. Default: `"arc"`. */
   curve?: TextPathCurve;
-  /** Custom SVG path `d`. Wins over `curve`. Open paths only (wave/arc style). */
   path?: string;
-  /** Custom viewBox when using a custom `path`. */
   viewBox?: string;
-  /** Seconds for one seamless loop. Lower = faster. Default: 14 */
   duration?: number;
-  /** Travel direction. Default: `"forward"`. */
   direction?: TextPathDirection;
-  /** Separator between tiled copies. Default: `"  ·  "`. */
   separator?: string;
-  /**
-   * How many text tiles to place. Default: 3.
-   * Wave/arc: tiles along the open path for the marquee.
-   * Circle: copies of the phrase; the ring radius grows so they fit
-   * exactly once around (no overlap, no equal-angle letter hacks).
-   */
   repeats?: number;
-  /** Font size in CSS pixels. Default: 28 */
   fontSize?: number;
-  /** Font weight. Default: 500 */
   fontWeight?: number | string;
-  /** Letter spacing in em. Default: 0.05 */
   letterSpacing?: number;
-  /** Text fill. Omit to inherit `currentColor`. */
   fill?: string;
-  /** Draw the underlying path stroke. Default: false */
   showPath?: boolean;
-  /** Path stroke color. Defaults to a soft theme line. */
   pathColor?: string;
-  /** Path stroke width in CSS pixels. Default: 1 */
   pathWidth?: number;
-  /**
-   * Force the loop paused. When omitted, auto-pauses off-screen or when
-   * the tab is hidden.
-   */
   paused?: boolean;
-  /** Optional Tailwind class for size / color on the host. */
   className?: string;
-  /** Accessible name. Defaults to `text`. */
   "aria-label"?: string;
 }
 
@@ -149,16 +123,6 @@ function useAutoPause(paused: boolean | undefined) {
   return { setHostRef, playing };
 }
 
-/**
- * Circle mode — real SVG textPath on a ring sized to the text.
- *
- * Why not per-letter rotate (CircularText)? Equal angle-per-grapheme fights
- * proportional fonts and looks stepped/uneven. Why not a fixed-radius circle
- * + repeats? Extra copies stack on a closed path and look glitched.
- *
- * Instead: measure the tiled string, set circumference = text length, spin
- * the whole group. Spacing stays native; repeats just make a larger ring.
- */
 function TextPathCircle({
   text,
   duration,
@@ -201,7 +165,6 @@ function TextPathCircle({
   const { setHostRef, playing } = useAutoPause(paused);
 
   const trimmed = text.trim() || "Text Path";
-  // Keep the trailing separator so the wrap seam matches tile seams.
   const displayText = `${trimmed}${separator}`.repeat(Math.max(1, repeats));
 
   const [radius, setRadius] = React.useState(0);
@@ -227,7 +190,6 @@ function TextPathCircle({
   const cx = size / 2;
   const cy = size / 2;
   const r = radius > 0 ? radius : Math.max(1, size / 2 - pad);
-  // Start at 12 o'clock, sweep clockwise (readable L→R across the top).
   const pathD = `M ${cx} ${cy - r} A ${r} ${r} 0 1 1 ${cx} ${cy + r} A ${r} ${r} 0 1 1 ${cx} ${cy - r}`;
 
   React.useEffect(() => {
@@ -280,7 +242,6 @@ function TextPathCircle({
         className,
       )}
     >
-      {/* Off-canvas measure — same font metrics as the visible textPath. */}
       <text
         ref={measureRef}
         x={-9999}
@@ -326,9 +287,6 @@ function TextPathCircle({
   );
 }
 
-/**
- * Open path mode — SVG textPath marquee (wave / arc / custom path).
- */
 function TextPathOpen({
   text,
   curve,
@@ -385,7 +343,6 @@ function TextPathOpen({
   const tile = `${trimmed}${separator}`;
   const displayText = tile.repeat(Math.max(1, repeats));
 
-  // Reset marquee seam when content/metrics change — not on pause alone.
   React.useEffect(() => {
     offsetRef.current = 0;
     textPathRef.current?.setAttribute("startOffset", "0");
@@ -539,17 +496,6 @@ function TextPathOpen({
   );
 }
 
-/**
- * TextPath
- *
- * Curved headline text via SVG textPath for every curve.
- *
- * Motion contract:
- * - Wave/arc: seamless tile loop via startOffset (rAF, no re-renders).
- * - Circle: ring radius = textLength / 2π, then spin the group (no stacking).
- * - `repeats` tiles the string; on circle the ring grows to fit.
- * - Auto-pauses off-screen / hidden tabs; honours reduced motion.
- */
 export function TextPath({
   text,
   curve = "arc",

@@ -1,12 +1,9 @@
 ---
-import iconoRed from "../../assets/icons-svg/unete-icons/red-empresarial.svg";
-import iconoIntermediacion from "../../assets/icons-svg/unete-icons/intermediacion.svg";
-import iconoOportunidades from "../../assets/icons-svg/unete-icons/oportunidades.svg";
-import iconoBeneficios from "../../assets/icons-svg/unete-icons/beneficios.svg";
+import iconoRed from "../../assets/unete/iconos/red-empresarial.svg";
+import iconoIntermediacion from "../../assets/unete/iconos/intermediacion.svg";
+import iconoOportunidades from "../../assets/unete/iconos/oportunidades.svg";
+import iconoBeneficios from "../../assets/unete/iconos/beneficios.svg";
 
-// Mismo diseño de tarjeta que "¿Por qué afiliarse?" del inicio (components/home/PorQueAfiliarse.astro).
-// Íconos de la colección "Strategy Management Flat Vectors" de Cyber Olympus en SVG Repo, con licencia CC BY 4.0:
-// la licencia pide dar crédito al autor, por eso va la línea de créditos debajo de las tarjetas.
 const beneficios = [
   {
     icono: iconoRed,
@@ -31,8 +28,6 @@ const beneficios = [
 ];
 ---
 
-<!-- Tarjetas de beneficios montadas sobre la parte de abajo del Hero (margen negativo). Detrás va un fondo blanco
-     con el borde de arriba curvo, que tapa la foto desde la mitad de las tarjetas hacia abajo. -->
 <section aria-labelledby="titulo-beneficios-unete" class="relative z-10 -mt-44 px-6 pb-20 sm:-mt-52 sm:px-10 lg:-mt-56">
   <div aria-hidden="true" class="absolute inset-x-0 bottom-0 top-28 -z-10 rounded-t-[50%_3rem] bg-white sm:top-32 sm:rounded-t-[50%_5rem]"></div>
   <h2 id="titulo-beneficios-unete" class="sr-only">Beneficios de afiliarse</h2>

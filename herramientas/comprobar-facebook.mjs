@@ -17,8 +17,6 @@ const consultar = async (url) => {
   };
 };
 
-// Astro vacía dist/ al empezar a compilar. Esta comprobación corre antes, para que un fallo de Facebook
-// detenga la compilación sin borrar la última versión buena del sitio.
 export default function comprobarFacebook() {
   let raiz;
   return {
